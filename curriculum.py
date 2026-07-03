@@ -96,6 +96,7 @@ CURRICULUM = {
     "GeometricSequenceGenerator": {"grade_level": HIGH, "difficulty": 4},
     "RecursiveExplicitGenerator": {"grade_level": HIGH, "difficulty": 4},
     "SigmaNotationGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "PascalTriangleGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

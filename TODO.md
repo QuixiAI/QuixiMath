@@ -81,7 +81,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Functions
 
 ### Sequences & Series
-- [ ] Pascal's triangle — build rows by hand, read off nCr (bridge to FOIL powers and binomial probability) · `PascalTriangleGenerator` · middle · d3
 
 ### Complex Numbers
 - [ ] Powers of i; add/subtract/multiply complex numbers · `ComplexNumberOpsGenerator` · high · d4
