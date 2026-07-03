@@ -79,7 +79,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ## Backlog
 
 ### Functions
-- [ ] Inverse functions — algebraic method, verify f(f⁻¹(x)) = x (ties A1) · `InverseFunctionGenerator` · high · d4
 
 ### Sequences & Series
 - [ ] Arithmetic sequences — nth term and partial sum · `ArithmeticSequenceGenerator` · high · d4
