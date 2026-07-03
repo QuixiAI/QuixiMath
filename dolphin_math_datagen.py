@@ -69,6 +69,7 @@ from generators.round_solids_generator import RoundSolidsGenerator
 from generators.factor_gcf_generator import FactorGCFGenerator
 from generators.factor_trinomial_generator import FactorTrinomialGenerator
 from generators.factor_special_forms_generator import FactorSpecialFormsGenerator
+from generators.factor_grouping_generator import FactorGroupingGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -297,6 +298,7 @@ ALL_GENERATORS = [
     FactorTrinomialGenerator(),
     FactorTrinomialGenerator("general"),
     FactorSpecialFormsGenerator(),
+    FactorGroupingGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
