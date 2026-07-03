@@ -114,45 +114,9 @@ from generators.compound_probability_generator import (
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
 
 # -----------------------------------------------------------
-# definitive op-code legend (For reference across generator files)
-# -----------------------------------------------------------
-# Arithmetic  : D(ivide), M(ultiply), S(ubtract), A(dd)
-#             : B(ring down: remainder_before, digit_down, new_num_to_divide)
-#             : R(emainder)
-#             : C(onvert fraction for LCD)
-#             : L(CD calculation)
-#             : I(nvert fraction: orig_frac_str, inverted_frac_str)
-#             : PDEC(Place Decimal in product - old method)
-#             : F(raction simplification)
-# Dec Add/Sub : DEC_ALIGN(num1_aligned, num2_aligned)
-#             : DEC_ADD_COL(col_name, details_str, result_str)
-#             : DEC_SUB_COL(col_name, details_str, result_str)
-#             : DEC_CARRY_FINAL(carry_digit)
-# Dec Mult    : MUL_SETUP(int1_str, int2_str)
-#             : MUL_PARTIAL(digit, top_int_str, partial_product_shifted_str)
-#             : ADD_PARTIALS(sum_expression_str, result_sum_str)
-#             : COUNT_DP(dp1, dp2, total_dp)
-#             : PLACE_DP(sum_int_str, total_dp, final_result_str)
-# Dec Div     : DEC_SHIFT(orig_expr, shifted_expr, shift_places)
-#             : DIV_SETUP(integer_dividend, integer_divisor)
-#             : PLACE_DP_Q(quotient_digits_str, dp_position_from_left_in_shifted_dividend)
-#             : (Reuses B, D, M, S from Arithmetic)
-# Percent     : PERCENT_TO_DEC, SETUP_PERCENT_EQ, REARRANGE_EQ, PERCENT_CALC_PART, DEC_TO_PERCENT
-#             : (Uses division steps internally for find_percent/find_whole)
-# Algebra     : G(CD - not used?), DISC(riminant calc), ROOT(square root)
-#             : Q1/Q2(Quadratic formula roots)
-#             : DIST(ribute term: factor, expr_in_parens, result_expr)
-#             : REWRITE(expression/equation after step: new_form_string)
-#             : COMB_X(Combine X terms: term1, term2, result_term)
-#             : COMB_CONST(Combine Constant terms: const1, const2, result_const)
-#             : SUBST(itute value: var_name, value, resulting_expr)
-#             : MOVE_TERM(term_moved, target_side, resulting_equation_str)
-#             : DIV_COEFF(Divide by coefficient: numerator, denominator, result_str)
-# Geometry    : E(xponent/Power)
-#             : (Reuses ROOT)
-# Algebra+    : PROP_SETUP (Proportional relationships)
-# Tools       : AB_SET AB_INFO AB_ADD_DGT AB_CARRY AB_CARRY_FINAL
-# Final Answer: Z  (Contains the final formatted answer string)
+# Op-code legend: see OPCODES.md (generated; regenerate with
+# `python tools/gen_opcode_legend.py`). The vocabulary is descriptive and
+# evolves organically — generators may introduce new op-codes freely.
 # -----------------------------------------------------------
 
 # ===========================================================================
