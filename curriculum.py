@@ -63,6 +63,7 @@ CURRICULUM = {
     "RatioTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "TipBillSplitGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "LinearFractionalGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "SpecialSolutionEquationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "ScalingGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SimilarFiguresScaleGenerator": {"grade_level": MIDDLE, "difficulty": 3},

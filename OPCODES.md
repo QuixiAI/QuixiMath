@@ -4,20 +4,20 @@
 
 The scratchpad vocabulary belongs to the model and evolves organically: generators may introduce new op-codes freely, and this legend is *descriptive*, not prescriptive. Steps are pipe-delimited strings (`CODE|field|field|...`, at most 4 payload fields) built with `helpers.step()`; the final step of every problem is `Z|<final_answer>`.
 
-248 distinct op-codes observed.
+250 distinct op-codes observed.
 
 | Code | Payload fields | Example | Used by |
 |---|---|---|---|
 | `A` | 3 | `A\|25\|36\|61` | evaluate_expression_generator.py, fraction_op_generator.py, geometry_area_perimeter_generator.py, graph_interpret_generator.py, mixed_number_operation_generator.py, order_of_operations_generator.py, percent_word_problem_generator.py, polygon_perimeter_generator.py, pythag_hyp_generator.py, simple_stats_generator.py, temperature_conversion_generator.py, tip_bill_split_generator.py |
-| `ABS_CASE` | 2 | `ABS_CASE\|Case 1\|3x + 3 = 3` | absolute_value_equation_generator.py |
-| `ABS_CHECK` | 2 | `ABS_CHECK\|-5 < 0\|Absolute value cannot be negative` | absolute_value_equation_generator.py |
-| `ABS_INEQ_CHECK` | 2 | `ABS_INEQ_CHECK\|-1 < 0\|Absolute value is always non-negative` | absolute_value_inequality_generator.py |
-| `ABS_INEQ_PART` | 2 | `ABS_INEQ_PART\|Part 1\|x + 5 >= 2 -> x >= -3` | absolute_value_inequality_generator.py |
-| `ABS_INEQ_SETUP` | 1 | `ABS_INEQ_SETUP\|\|x + 5\| >= 2` | absolute_value_inequality_generator.py |
-| `ABS_INEQ_SPECIAL` | 2 | `ABS_INEQ_SPECIAL\|c = 0\|Check logic for <` | absolute_value_inequality_generator.py |
-| `ABS_INEQ_SPLIT` | 2 | `ABS_INEQ_SPLIT\|OR case\|x + 5 >= 2 OR x + 5 <= -2` | absolute_value_inequality_generator.py |
-| `ABS_SETUP` | 1 | `ABS_SETUP\|\|4x + 5\| = 0` | absolute_value_equation_generator.py |
-| `ABS_SPLIT` | 2, 3 | `ABS_SPLIT\|Single case\|4x + 5 = 0` | absolute_value_equation_generator.py |
+| `ABS_CASE` | 2 | `ABS_CASE\|Case 1\|x - 7 = 3` | absolute_value_equation_generator.py |
+| `ABS_CHECK` | 2 | `ABS_CHECK\|-3 < 0\|Absolute value cannot be negative` | absolute_value_equation_generator.py |
+| `ABS_INEQ_CHECK` | 2 | `ABS_INEQ_CHECK\|-5 < 0\|Absolute value is always non-negative` | absolute_value_inequality_generator.py |
+| `ABS_INEQ_PART` | 2 | `ABS_INEQ_PART\|Part 1\|2x - 2 >= 11 -> x >= 13/2` | absolute_value_inequality_generator.py |
+| `ABS_INEQ_SETUP` | 1 | `ABS_INEQ_SETUP\|\|5x - 9\| < 10` | absolute_value_inequality_generator.py |
+| `ABS_INEQ_SPECIAL` | 2 | `ABS_INEQ_SPECIAL\|c = 0\|Check logic for <=` | absolute_value_inequality_generator.py |
+| `ABS_INEQ_SPLIT` | 2 | `ABS_INEQ_SPLIT\|AND case\|-10 < 5x - 9 < 10` | absolute_value_inequality_generator.py |
+| `ABS_SETUP` | 1 | `ABS_SETUP\|\|x - 7\| = 3` | absolute_value_equation_generator.py |
+| `ABS_SPLIT` | 2, 3 | `ABS_SPLIT\|Two cases\|x - 7 = 3\|x - 7 = -3` | absolute_value_equation_generator.py |
 | `AB_ADD_DGT` | 3 | `AB_ADD_DGT\|col_0\|4+8+0\|12` | abacus_addition_generator.py |
 | `AB_CARRY` | 3 | `AB_CARRY\|col_0\|1\|col_1` | abacus_addition_generator.py |
 | `AB_CARRY_FINAL` | 1 | `AB_CARRY_FINAL\|1` | abacus_addition_generator.py |
@@ -26,27 +26,28 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `ADD_COL` | 3 | `ADD_COL\|col_1\|7+1+0\|->8 (carry 0)` | multi_digit_addition_generator.py |
 | `ADD_PARTIALS` | 2 | `ADD_PARTIALS\|295292 + 3691150 + 51676100 + 516761000 + 738230000\|1310653542` | decimal_mult_generator.py, multi_digit_multiplication_generator.py |
 | `ALIGN_NUM` | 2 | `ALIGN_NUM\|22977\|55918` | number_comparison_generator.py |
-| `ANGLE_RELATION` | 1 | `ANGLE_RELATION\|2x + 9 = 3x + 1` | angle_relationships_generator.py |
+| `ANGLE_RELATION` | 1 | `ANGLE_RELATION\|3x + 10 = 6x - 35` | angle_relationships_generator.py |
 | `ANGLE_SETUP` | 2 | `ANGLE_SETUP\|vertical\|Vertical angles are equal` | angle_relationships_generator.py |
-| `ANGLE_SOLVE` | 2 | `ANGLE_SOLVE\|-1x = -8\|x = 8` | angle_relationships_generator.py |
+| `ANGLE_SOLVE` | 2 | `ANGLE_SOLVE\|-3x = -45\|x = 15` | angle_relationships_generator.py |
 | `AREA` | 1, 3 | `AREA\|60` | geometry_area_perimeter_generator.py |
 | `B` | 3 | `B\|38\|1\|381` | decimal_div_generator.py, long_division_generator.py, percent_problem_generator.py |
 | `BORROW` | 3 | `BORROW\|col_1\|from_left\|1` | multi_digit_subtraction_generator.py |
 | `C` | 3 | `C\|5/4\|20\|25/20` | fraction_comparison_generator.py, fraction_op_generator.py, mixed_number_operation_generator.py |
-| `CALC` | 1 | `CALC\|x = 1` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `CALC` | 1 | `CALC\|x = -8` | systems_elimination_generator.py, systems_substitution_generator.py |
 | `CARRY_FINAL` | 1 | `CARRY_FINAL\|1` | multi_digit_addition_generator.py |
-| `CHECK` | 3 | `CHECK\|cross_products\|2×24=48\|3×16=48` | linear_fractional_generator.py, ratio_table_generator.py, tip_bill_split_generator.py |
-| `CIRCLE_CALCULATE` | 2 | `CIRCLE_CALCULATE\|C = 30π\|30π` | circle_generator.py |
-| `CIRCLE_FORMULA` | 1 | `CIRCLE_FORMULA\|C = 2πr` | circle_generator.py |
-| `CIRCLE_SETUP` | 2 | `CIRCLE_SETUP\|15\|radius` | circle_generator.py |
-| `CIRCLE_SUBSTITUTE` | 1 | `CIRCLE_SUBSTITUTE\|C = 2 × π × 15` | circle_generator.py |
+| `CHECK` | 3 | `CHECK\|cross_products\|2×24=48\|3×16=48` | linear_fractional_generator.py, ratio_table_generator.py, special_solution_equation_generator.py, tip_bill_split_generator.py |
+| `CHECK_POINT` | 3 | `CHECK_POINT\|x=0\|11·0 + 13 = 13\|11·0 + 12 = 12` | special_solution_equation_generator.py |
+| `CIRCLE_CALCULATE` | 2 | `CIRCLE_CALCULATE\|C = 17π\|17π` | circle_generator.py |
+| `CIRCLE_FORMULA` | 1 | `CIRCLE_FORMULA\|C = πd` | circle_generator.py |
+| `CIRCLE_SETUP` | 2 | `CIRCLE_SETUP\|17\|diameter` | circle_generator.py |
+| `CIRCLE_SUBSTITUTE` | 1 | `CIRCLE_SUBSTITUTE\|C = π × 17` | circle_generator.py |
 | `CMP` | 3 | `CMP\|14/22\|33/22\|<` | fraction_comparison_generator.py, graph_interpret_generator.py |
 | `CMP_NUM` | 3 | `CMP_NUM\|22977\|55918\|<` | number_comparison_generator.py |
-| `COMB_CONST` | 3 | `COMB_CONST\|9\|-1\|8` | equation_from_two_points_generator.py, linear_complex_generator.py, simplify_expression_generator.py |
-| `COMB_X` | 3 | `COMB_X\|-4x\|-4x\|-8x` | linear_complex_generator.py, simplify_expression_generator.py |
+| `COMB_CONST` | 3 | `COMB_CONST\|9\|-1\|8` | equation_from_two_points_generator.py, linear_complex_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py |
+| `COMB_X` | 3 | `COMB_X\|-4x\|-4x\|-8x` | linear_complex_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py |
 | `COMPOSITE_FACTOR` | 2 | `COMPOSITE_FACTOR\|2\|31` | divisibility_classification_generator.py |
-| `COMP_INEQ_PART` | 2 | `COMP_INEQ_PART\|Part 1\|2x - 4 < -16 -> x < -6` | compound_inequality_generator.py |
-| `COMP_INEQ_SETUP` | 1 | `COMP_INEQ_SETUP\|14 < x + 9 < 17` | compound_inequality_generator.py |
+| `COMP_INEQ_PART` | 2 | `COMP_INEQ_PART\|Part 1\|x + 2 < -2 -> x < -4` | compound_inequality_generator.py |
+| `COMP_INEQ_SETUP` | 1 | `COMP_INEQ_SETUP\|6 < x + 4 < 9` | compound_inequality_generator.py |
 | `CONV_FACTOR` | 2 | `CONV_FACTOR\|1 ft\|12 in` | dimensional_analysis_generator.py, multi_step_unit_conversion_generator.py, rate_conversion_generator.py, unit_conversion_generator.py |
 | `CONV_RESULT` | 2 | `CONV_RESULT\|8 ft\|96 in` | dimensional_analysis_generator.py, multi_step_unit_conversion_generator.py, rate_conversion_generator.py, temperature_conversion_generator.py, unit_conversion_generator.py |
 | `COUNT_DP` | 3 | `COUNT_DP\|1\|2\|3` | decimal_mult_generator.py |
@@ -60,36 +61,36 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `DEC_TO_PERCENT` | 2 | `DEC_TO_PERCENT\|3.5\|350.00%` | fraction_decimal_percent_converter.py, percent_problem_generator.py, tip_bill_split_generator.py |
 | `DEC_TYPE` | 2 | `DEC_TYPE\|2/11\|repeating` | repeating_decimal_generator.py |
 | `DEC_VALUE` | 2 | `DEC_VALUE\|2/11\|0.181818` | repeating_decimal_generator.py |
-| `DISC` | 3 | `DISC\|36\|-108\|144` | quadratic_generator.py |
-| `DIST` | 3 | `DIST\|-1\|-4x-5\|4x+5` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, simplify_expression_generator.py |
-| `DIST_COMBINE` | 1 | `DIST_COMBINE\|8y + 21 = -27` | systems_substitution_generator.py |
-| `DIST_TERM` | 2 | `DIST_TERM\|3x\|9x^3 - 6x^2 + 12x` | multiplying_polynomials_generator.py |
+| `DISC` | 3 | `DISC\|225\|216\|9` | quadratic_generator.py |
+| `DIST` | 3 | `DIST\|-1\|-4x-5\|4x+5` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py |
+| `DIST_COMBINE` | 1 | `DIST_COMBINE\|-4y + -35 = 1` | systems_substitution_generator.py |
+| `DIST_TERM` | 2 | `DIST_TERM\|x\|1x^3 + 2x^2 + 3x` | multiplying_polynomials_generator.py |
 | `DIV_CHECK` | 3 | `DIV_CHECK\|62\|2\|0` | divisibility_classification_generator.py |
 | `DIV_COEFF` | 3 | `DIV_COEFF\|8\|-8\|x=-1` | linear_complex_generator.py |
 | `DIV_SETUP` | 2 | `DIV_SETUP\|577\|80` | decimal_div_generator.py, percent_problem_generator.py |
-| `E` | 3 | `E\|200\|2\|40000` | pythag_hyp_generator.py |
-| `EQ_2PT_SETUP` | 2 | `EQ_2PT_SETUP\|(0, -3)\|(-1, -6)` | equation_from_two_points_generator.py |
-| `EQ_OP_BOTH` | 4 | `EQ_OP_BOTH\|divide\|2\|x\|1` | absolute_value_equation_generator.py, linear_fractional_generator.py, one_step_equation_generator.py, systems_elimination_generator.py, systems_substitution_generator.py, two_step_equation_generator.py |
-| `EQ_OP_NOTE` | 3 | `EQ_OP_NOTE\|subtract\|n\|from both sides` | equation_from_two_points_generator.py, literal_equation_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, standard_form_conversion_generator.py |
-| `EQ_RESULT` | 2 | `EQ_RESULT\|x\|1` | linear_fractional_generator.py, one_step_equation_generator.py, two_step_equation_generator.py |
-| `EQ_SETUP` | 1 | `EQ_SETUP\|x = 120/5` | linear_fractional_generator.py, literal_equation_generator.py, one_step_equation_generator.py, proportion_word_problem_generator.py, standard_form_conversion_generator.py, two_step_equation_generator.py |
+| `E` | 3 | `E\|21\|2\|441` | pythag_hyp_generator.py |
+| `EQ_2PT_SETUP` | 2 | `EQ_2PT_SETUP\|(-2, -7)\|(-3, -5)` | equation_from_two_points_generator.py |
+| `EQ_OP_BOTH` | 4 | `EQ_OP_BOTH\|divide\|2\|x\|1` | absolute_value_equation_generator.py, linear_fractional_generator.py, one_step_equation_generator.py, special_solution_equation_generator.py, systems_elimination_generator.py, systems_substitution_generator.py, two_step_equation_generator.py |
+| `EQ_OP_NOTE` | 3 | `EQ_OP_NOTE\|multiply\|z\|to both sides` | equation_from_two_points_generator.py, literal_equation_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, standard_form_conversion_generator.py |
+| `EQ_RESULT` | 2 | `EQ_RESULT\|x\|1` | linear_fractional_generator.py, one_step_equation_generator.py, special_solution_equation_generator.py, two_step_equation_generator.py |
+| `EQ_SETUP` | 1 | `EQ_SETUP\|x = 120/5` | linear_fractional_generator.py, literal_equation_generator.py, one_step_equation_generator.py, proportion_word_problem_generator.py, special_solution_equation_generator.py, standard_form_conversion_generator.py, two_step_equation_generator.py |
 | `EQ_SIMPLIFY` | 1 | `EQ_SIMPLIFY\|x/5 = -2` | linear_fractional_generator.py, two_step_equation_generator.py |
-| `EXP_EXPAND` | 1 | `EXP_EXPAND\|(-4) × (-4) × (-4) × (-4) × (-4)` | exponent_generator.py |
-| `EXP_PARTIAL` | 3 | `EXP_PARTIAL\|-4\|-4\|16` | exponent_generator.py |
-| `EXP_RULE_APPLY` | 4 | `EXP_RULE_APPLY\|multiply\|3\|5\|15` | exponent_generator.py |
-| `EXP_RULE_IDENTIFY` | 2 | `EXP_RULE_IDENTIFY\|power_rule\|(x^a)^b = x^(ab)` | exponent_generator.py |
-| `EXP_RULE_SETUP` | 1 | `EXP_RULE_SETUP\|(b^3)^5` | exponent_generator.py |
-| `EXP_RULE_SIMPLIFY` | 1 | `EXP_RULE_SIMPLIFY\|b^15` | exponent_generator.py |
-| `EXP_SETUP` | 2 | `EXP_SETUP\|-4\|5` | exponent_generator.py |
+| `EXP_EXPAND` | 1 | `EXP_EXPAND\|(-5) × (-5)` | exponent_generator.py |
+| `EXP_PARTIAL` | 3 | `EXP_PARTIAL\|-5\|-5\|25` | exponent_generator.py |
+| `EXP_RULE_APPLY` | 4 | `EXP_RULE_APPLY\|negate\|4\|\|4` | exponent_generator.py |
+| `EXP_RULE_IDENTIFY` | 2 | `EXP_RULE_IDENTIFY\|negative_exponent\|x^(-n) = 1/x^n` | exponent_generator.py |
+| `EXP_RULE_SETUP` | 1 | `EXP_RULE_SETUP\|x^(-4)` | exponent_generator.py |
+| `EXP_RULE_SIMPLIFY` | 1 | `EXP_RULE_SIMPLIFY\|1/x^4` | exponent_generator.py |
+| `EXP_SETUP` | 2 | `EXP_SETUP\|-5\|2` | exponent_generator.py |
 | `F` | 2 | `F\|3/6\|1/2` | fraction_op_generator.py, mixed_number_operation_generator.py, repeating_decimal_generator.py, simple_probability_generator.py, slope_two_points_generator.py |
 | `FACT_CHECK` | 3 | `FACT_CHECK\|31\|1\|0` | factors_generator.py |
 | `FACT_PAIR` | 2 | `FACT_PAIR\|1\|31` | factors_generator.py |
-| `FIND_SLOPE` | 2 | `FIND_SLOPE\|Given slope (m1)\|-4/2` | parallel_perpendicular_line_generator.py |
-| `FOIL_F` | 2 | `FOIL_F\|First: (2x) * (3x)\|6x^2` | multiplying_binomials_generator.py |
-| `FOIL_I` | 2 | `FOIL_I\|Inner: (9) * (3x)\|27x` | multiplying_binomials_generator.py |
-| `FOIL_L` | 2 | `FOIL_L\|Last: (9) * (8)\|72` | multiplying_binomials_generator.py |
-| `FOIL_O` | 2 | `FOIL_O\|Outer: (2x) * (8)\|16x` | multiplying_binomials_generator.py |
-| `FOIL_SETUP` | 1 | `FOIL_SETUP\|(2x + 9)(3x + 8)` | multiplying_binomials_generator.py |
+| `FIND_SLOPE` | 2 | `FIND_SLOPE\|Given slope (m1)\|-2` | parallel_perpendicular_line_generator.py |
+| `FOIL_F` | 2 | `FOIL_F\|First: (-1x) * (-2x)\|2x^2` | multiplying_binomials_generator.py |
+| `FOIL_I` | 2 | `FOIL_I\|Inner: (-4) * (-2x)\|8x` | multiplying_binomials_generator.py |
+| `FOIL_L` | 2 | `FOIL_L\|Last: (-4) * (2)\|-8` | multiplying_binomials_generator.py |
+| `FOIL_O` | 2 | `FOIL_O\|Outer: (-1x) * (2)\|-2x` | multiplying_binomials_generator.py |
+| `FOIL_SETUP` | 1 | `FOIL_SETUP\|(-x - 4)(-2x + 2)` | multiplying_binomials_generator.py |
 | `FRAC_TO_DEC` | 2 | `FRAC_TO_DEC\|7/10\|0.7` | fraction_decimal_percent_converter.py |
 | `GCD_RESULT` | 1 | `GCD_RESULT\|1` | lcm_generator.py |
 | `GCD_START` | 2 | `GCD_START\|75\|134` | gcf_generator.py, lcm_generator.py |
@@ -104,7 +105,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `I` | 2 | `I\|3/2\|2/3` | fraction_op_generator.py, mixed_number_operation_generator.py |
 | `IMPROPER_TO_MIX` | 2 | `IMPROPER_TO_MIX\|486/35\|13 31/35` | mixed_number_operation_generator.py |
 | `INEQ_FLIP` | 1 | `INEQ_FLIP\|Multiplying by negative number reverses inequality` | linear_fractional_generator.py, one_step_inequality_generator.py, two_step_inequality_generator.py |
-| `INEQ_OP_ALL` | 3 | `INEQ_OP_ALL\|add\|5\|-11 < 1x < 21` | absolute_value_inequality_generator.py, compound_inequality_generator.py |
+| `INEQ_OP_ALL` | 3 | `INEQ_OP_ALL\|add\|9\|-1 < 5x < 19` | absolute_value_inequality_generator.py, compound_inequality_generator.py |
 | `INEQ_OP_BOTH` | 4 | `INEQ_OP_BOTH\|subtract\|13\|x\|0` | linear_fractional_generator.py, one_step_inequality_generator.py, two_step_inequality_generator.py |
 | `INEQ_RESULT` | 3 | `INEQ_RESULT\|x\|≤\|0` | linear_fractional_generator.py, one_step_inequality_generator.py, two_step_inequality_generator.py |
 | `INEQ_SETUP` | 1 | `INEQ_SETUP\|x + 13 ≤ 13` | linear_fractional_generator.py, one_step_inequality_generator.py, two_step_inequality_generator.py |
@@ -117,7 +118,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `INT_SIGN_RULE` | 2 | `INT_SIGN_RULE\|subtract_rule\|Subtracting is adding the opposite` | integer_operations_generator.py |
 | `L` | 3 | `L\|4\|5\|20` | fraction_comparison_generator.py, fraction_op_generator.py, linear_fractional_generator.py, mixed_number_operation_generator.py |
 | `LCM_FROM_GCD` | 3 | `LCM_FROM_GCD\|113*20\|1\|2260` | lcm_generator.py |
-| `LINE_RELATION_SETUP` | 3 | `LINE_RELATION_SETUP\|parallel\|y = -4/2x - 4\|(5, 3)` | parallel_perpendicular_line_generator.py |
+| `LINE_RELATION_SETUP` | 3 | `LINE_RELATION_SETUP\|parallel\|y = -2x - 5\|(6, -2)` | parallel_perpendicular_line_generator.py |
 | `M` | 2, 3 | `M\|6\|99\|594` | decimal_div_generator.py, dimensional_analysis_generator.py, evaluate_expression_generator.py, fraction_op_generator.py, geometry_area_perimeter_generator.py, graph_interpret_generator.py, long_division_generator.py, mixed_number_operation_generator.py, multi_step_unit_conversion_generator.py, order_of_operations_generator.py, percent_problem_generator.py, percent_word_problem_generator.py, proportion_word_problem_generator.py, proportional_relationship_generator.py, rate_conversion_generator.py, ratio_table_generator.py, temperature_conversion_generator.py, tip_bill_split_generator.py, unit_conversion_generator.py, volume_rect_prism_generator.py |
 | `MEAN_DIV` | 3 | `MEAN_DIV\|68\|7\|9.714285714285714` | simple_stats_generator.py |
 | `MEDIAN_PAIR` | 2 | `MEDIAN_PAIR\|7\|9` | simple_stats_generator.py |
@@ -125,20 +126,20 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `MIX_IMPROPER` | 2 | `MIX_IMPROPER\|3 6/7\|27/7` | mixed_number_operation_generator.py |
 | `MODE` | 2 | `MODE\|1\|2, 3, 6, 11, 13, 14, 16, 20` | simple_stats_generator.py |
 | `MODE_COUNT` | 2 | `MODE_COUNT\|2\|1` | simple_stats_generator.py |
-| `MONO_ADD_EXP` | 2 | `MONO_ADD_EXP\|x^2 * x^4 = x^(2+4)\|x^6` | monomial_mult_div_generator.py |
-| `MONO_DIV_COEFF` | 2 | `MONO_DIV_COEFF\|24 / 6\|4` | monomial_mult_div_generator.py |
-| `MONO_MULT_COEFF` | 2 | `MONO_MULT_COEFF\|-7 * -3\|21` | monomial_mult_div_generator.py |
-| `MONO_SETUP` | 1 | `MONO_SETUP\|(24x^9) / (6x^5)` | monomial_mult_div_generator.py |
-| `MONO_SUB_EXP` | 2 | `MONO_SUB_EXP\|x^9 / x^5 = x^(9-5)\|x^4` | monomial_mult_div_generator.py |
-| `MOVE_TERM` | 3 | `MOVE_TERM\|+4x\|left\|-4x+1-4x = +9` | linear_complex_generator.py, standard_form_conversion_generator.py |
+| `MONO_ADD_EXP` | 2 | `MONO_ADD_EXP\|x^3 * x^9 = x^(3+9)\|x^12` | monomial_mult_div_generator.py |
+| `MONO_DIV_COEFF` | 2 | `MONO_DIV_COEFF\|-14 / -7\|2` | monomial_mult_div_generator.py |
+| `MONO_MULT_COEFF` | 2 | `MONO_MULT_COEFF\|-4 * 1\|-4` | monomial_mult_div_generator.py |
+| `MONO_SETUP` | 1 | `MONO_SETUP\|(-14x^7) / (-7x^3)` | monomial_mult_div_generator.py |
+| `MONO_SUB_EXP` | 2 | `MONO_SUB_EXP\|x^7 / x^3 = x^(7-3)\|x^4` | monomial_mult_div_generator.py |
+| `MOVE_TERM` | 3 | `MOVE_TERM\|+4x\|left\|-4x+1-4x = +9` | linear_complex_generator.py, special_solution_equation_generator.py, standard_form_conversion_generator.py |
 | `MUL_PARTIAL` | 3 | `MUL_PARTIAL\|4\|73823\|295292` | decimal_mult_generator.py, multi_digit_multiplication_generator.py |
 | `MUL_SETUP` | 2 | `MUL_SETUP\|73823\|17754` | decimal_mult_generator.py, multi_digit_multiplication_generator.py |
 | `MUL_TERM` | 3 | `MUL_TERM\|4\|(1/2)x\|2x` | linear_fractional_generator.py |
-| `NEW_SLOPE` | 2 | `NEW_SLOPE\|New slope (m2) = -4/2\|Parallel lines have the same slope` | parallel_perpendicular_line_generator.py |
-| `PARALLEL_RELATION` | 1 | `PARALLEL_RELATION\|6x + 25 = 2x + 85` | angle_relationships_generator.py |
+| `NEW_SLOPE` | 2 | `NEW_SLOPE\|New slope (m2) = -2\|Parallel lines have the same slope` | parallel_perpendicular_line_generator.py |
+| `PARALLEL_RELATION` | 1 | `PARALLEL_RELATION\|3x + 7 = 3x + 7` | angle_relationships_generator.py |
 | `PARALLEL_SETUP` | 2 | `PARALLEL_SETUP\|alternate_interior\|Alternate interior angles are equal` | angle_relationships_generator.py |
-| `PARALLEL_SOLVE` | 2 | `PARALLEL_SOLVE\|4x = 60\|x = 15` | angle_relationships_generator.py |
-| `PERCENT_CALC_PART` | 3 | `PERCENT_CALC_PART\|0.8\|10\|8` | percent_problem_generator.py |
+| `PARALLEL_SOLVE` | 2 | `PARALLEL_SOLVE\|0x = 0\|x = 20` | angle_relationships_generator.py |
+| `PERCENT_CALC_PART` | 3 | `PERCENT_CALC_PART\|0.25\|40\|10` | percent_problem_generator.py |
 | `PERCENT_TO_DEC` | 2 | `PERCENT_TO_DEC\|90%\|0.9` | fraction_decimal_percent_converter.py, percent_problem_generator.py, percent_word_problem_generator.py, tip_bill_split_generator.py |
 | `PERIM` | 1 | `PERIM\|26` | geometry_area_perimeter_generator.py, polygon_perimeter_generator.py |
 | `PF_PRIME` | 1 | `PF_PRIME\|3` | prime_factorization_generator.py, repeating_decimal_generator.py |
@@ -147,112 +148,113 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PICTO_KEY` | 2 | `PICTO_KEY\|■\|5` | graph_interpret_generator.py |
 | `PLACE_DP` | 3 | `PLACE_DP\|2760333\|3\|2760.333` | decimal_mult_generator.py |
 | `PLACE_DP_Q` | 2 | `PLACE_DP_Q\|72125\|2` | decimal_div_generator.py, percent_problem_generator.py |
-| `POINT_SLOPE_SETUP` | 1 | `POINT_SLOPE_SETUP\|y + 3 = 3(x - 0)` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py |
-| `POLY_COMBINE` | 1 | `POLY_COMBINE\|-13x - 3` | multiplying_binomials_generator.py, polynomial_add_sub_generator.py |
+| `POINT_SLOPE_SETUP` | 1 | `POINT_SLOPE_SETUP\|y + 7 = -2(x + 2)` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py |
+| `POLY_COMBINE` | 1 | `POLY_COMBINE\|x^3 - 3x^2 - 6x + 8` | multiplying_binomials_generator.py, polynomial_add_sub_generator.py |
 | `POLY_DIST_NEG` | 1 | `POLY_DIST_NEG\|Distribute negative sign to second polynomial` | polynomial_add_sub_generator.py |
-| `POLY_DIV_SETUP` | 1 | `POLY_DIV_SETUP\|(- 8x^6 + 6x^2) / (2x^2)` | polynomial_div_monomial_generator.py |
-| `POLY_DIV_SPLIT` | 1 | `POLY_DIV_SPLIT\|(-8x^6) / (2x^2) + (6x^2) / (2x^2)` | polynomial_div_monomial_generator.py |
-| `POLY_GROUP_LIKE` | 1 | `POLY_GROUP_LIKE\|(-7x -6x) + (-3)` | multiplying_polynomials_generator.py, polynomial_add_sub_generator.py |
-| `POLY_MULT_SETUP` | 1 | `POLY_MULT_SETUP\|(3x - 4)(3x^2 - 2x + 4)` | multiplying_polynomials_generator.py |
-| `POLY_SETUP` | 1 | `POLY_SETUP\|(-7x) + (-6x - 3)` | polynomial_add_sub_generator.py |
+| `POLY_DIV_SETUP` | 1 | `POLY_DIV_SETUP\|(4x^5 - 1x^4 + 4x^3) / (x^2)` | polynomial_div_monomial_generator.py |
+| `POLY_DIV_SPLIT` | 1 | `POLY_DIV_SPLIT\|(4x^5) / (x^2) + (-1x^4) / (x^2) + (4x^3) / (x^2)` | polynomial_div_monomial_generator.py |
+| `POLY_GROUP_LIKE` | 1 | `POLY_GROUP_LIKE\|(-4x^3 +5x^3) + (-6x^2 +3x^2) + (-6x) + (8)` | multiplying_polynomials_generator.py, polynomial_add_sub_generator.py |
+| `POLY_MULT_SETUP` | 1 | `POLY_MULT_SETUP\|(x + 4)(x^2 + 2x + 3)` | multiplying_polynomials_generator.py |
+| `POLY_SETUP` | 1 | `POLY_SETUP\|(-4x^3 - 6x^2) + (5x^3 + 3x^2 - 6x + 8)` | polynomial_add_sub_generator.py |
 | `PRIME` | 1 | `PRIME\|37` | divisibility_classification_generator.py |
-| `PROB_CONDITIONAL` | 2 | `PROB_CONDITIONAL\|P(second clubs\|first was clubs)\|4/17 = 12/51` | compound_probability_generator.py |
+| `PROB_CONDITIONAL` | 2 | `PROB_CONDITIONAL\|P(blue\|first was red)\|4/7` | compound_probability_generator.py |
 | `PROB_DEPENDENT` | 1 | `PROB_DEPENDENT\|Drawing without replacement means dependent events` | compound_probability_generator.py |
-| `PROB_DESCRIBE` | 1 | `PROB_DESCRIBE\|Two coin flips, looking for tails then tails` | compound_probability_generator.py |
-| `PROB_IDENTIFY` | 2 | `PROB_IDENTIFY\|P(tails)\|1/2` | compound_probability_generator.py |
-| `PROB_INDEPENDENT` | 1 | `PROB_INDEPENDENT\|Coin flips are independent events` | compound_probability_generator.py |
-| `PROB_MULTIPLY` | 3 | `PROB_MULTIPLY\|1/2\|1/2\|1/4` | compound_probability_generator.py |
+| `PROB_DESCRIBE` | 1 | `PROB_DESCRIBE\|Draw with replacement: red then green` | compound_probability_generator.py |
+| `PROB_IDENTIFY` | 2 | `PROB_IDENTIFY\|P(red)\|9/14` | compound_probability_generator.py |
+| `PROB_INDEPENDENT` | 1 | `PROB_INDEPENDENT\|Drawing with replacement means independent events` | compound_probability_generator.py |
+| `PROB_MULTIPLY` | 3 | `PROB_MULTIPLY\|9/14\|1/7\|9/98` | compound_probability_generator.py |
 | `PROB_SETUP` | 2 | `PROB_SETUP\|1\|7` | simple_probability_generator.py |
 | `PROB_SIMPLIFY` | 2 | *(not observed in sampling)* | compound_probability_generator.py |
 | `PROP_SETUP` | 1 | `PROP_SETUP\|15/5 = x/8` | proportion_word_problem_generator.py, proportional_relationship_generator.py |
-| `PYTHAG_CALCULATE` | 2 | `PYTHAG_CALCULATE\|d² = 36 + 64 = 100\|100` | pythag_leg_generator.py |
-| `PYTHAG_CONTEXT` | 2 | `PYTHAG_CONTEXT\|displacement\|east=6m, north=8m` | pythag_leg_generator.py |
+| `PYTHAG_CALCULATE` | 2 | `PYTHAG_CALCULATE\|d² = 100 + 576 = 676\|676` | pythag_leg_generator.py |
+| `PYTHAG_CONTEXT` | 2 | `PYTHAG_CONTEXT\|displacement\|east=10m, north=24m` | pythag_leg_generator.py |
 | `PYTHAG_FORMULA` | 1 | `PYTHAG_FORMULA\|a² + b² = c²` | pythag_leg_generator.py |
-| `PYTHAG_MODEL` | 3 | `PYTHAG_MODEL\|east=6\|north=8\|distance=?` | pythag_leg_generator.py |
-| `PYTHAG_ROOT` | 2 | `PYTHAG_ROOT\|64\|8` | pythag_leg_generator.py |
-| `PYTHAG_SETUP` | 3 | `PYTHAG_SETUP\|c=10\|a=6\|b=?` | pythag_leg_generator.py |
-| `PYTHAG_SOLVE` | 2 | `PYTHAG_SOLVE\|b² = 100 - 36\|64` | pythag_leg_generator.py |
-| `PYTHAG_SQUARE` | 2 | `PYTHAG_SQUARE\|6\|36` | pythag_leg_generator.py |
-| `PYTHAG_SUBSTITUTE` | 1 | `PYTHAG_SUBSTITUTE\|6² + b² = 10²` | pythag_leg_generator.py |
-| `Q1` | 4 | `Q1\|6\|12\|6\|3` | quadratic_generator.py |
-| `Q2` | 4 | `Q2\|6\|12\|6\|-1` | quadratic_generator.py |
+| `PYTHAG_MODEL` | 3 | `PYTHAG_MODEL\|east=10\|north=24\|distance=?` | pythag_leg_generator.py |
+| `PYTHAG_ROOT` | 2 | `PYTHAG_ROOT\|1764\|42` | pythag_leg_generator.py |
+| `PYTHAG_SETUP` | 3 | `PYTHAG_SETUP\|c=58\|a=40\|b=?` | pythag_leg_generator.py |
+| `PYTHAG_SOLVE` | 2 | `PYTHAG_SOLVE\|b² = 3364 - 1600\|1764` | pythag_leg_generator.py |
+| `PYTHAG_SQUARE` | 2 | `PYTHAG_SQUARE\|40\|1600` | pythag_leg_generator.py |
+| `PYTHAG_SUBSTITUTE` | 1 | `PYTHAG_SUBSTITUTE\|40² + b² = 58²` | pythag_leg_generator.py |
+| `Q1` | 4 | `Q1\|-15\|3\|6\|-2` | quadratic_generator.py |
+| `Q2` | 4 | `Q2\|-15\|3\|6\|-3` | quadratic_generator.py |
 | `R` | 1 | `R\|28` | long_division_generator.py |
 | `RATIO_BASE` | 3 | `RATIO_BASE\|2:3\|1\|2:3` | ratio_table_generator.py |
 | `RATIO_TABLE` | 2 | `RATIO_TABLE\|Red (liters): 2, 12, 16, 22\|Blue (liters): 3, 18, ?, 33` | ratio_table_generator.py |
-| `REARRANGE_EQ` | 1 | `REARRANGE_EQ\|whole = 10 / 0.1` | percent_problem_generator.py |
-| `REWRITE` | 1 | `REWRITE\|12 + 36` | evaluate_expression_generator.py, linear_complex_generator.py, linear_fractional_generator.py, literal_equation_generator.py, order_of_operations_generator.py, simplify_expression_generator.py, standard_form_conversion_generator.py |
-| `ROOT` | 2 | `ROOT\|42025\|205` | pythag_hyp_generator.py, quadratic_generator.py |
-| `ROOT_EXTRACT` | 2 | `ROOT_EXTRACT\|3` | exponent_generator.py |
-| `ROOT_IDENTIFY` | 3 | `ROOT_IDENTIFY\|9\|perfect_square\|3` | exponent_generator.py |
-| `ROOT_SETUP` | 1 | `ROOT_SETUP\|√9` | exponent_generator.py |
-| `ROOT_SIMPLIFY` | 1 | `ROOT_SIMPLIFY\|6√7` | exponent_generator.py |
+| `REARRANGE_EQ` | 1 | `REARRANGE_EQ\|whole = 90 / 0.75` | percent_problem_generator.py |
+| `REWRITE` | 1 | `REWRITE\|12 + 36` | evaluate_expression_generator.py, linear_complex_generator.py, linear_fractional_generator.py, literal_equation_generator.py, order_of_operations_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py, standard_form_conversion_generator.py |
+| `ROOT` | 2 | `ROOT\|5625\|75` | pythag_hyp_generator.py, quadratic_generator.py |
+| `ROOT_EXTRACT` | 2 | `ROOT_EXTRACT\|4` | exponent_generator.py |
+| `ROOT_IDENTIFY` | 3 | `ROOT_IDENTIFY\|16\|perfect_square\|4` | exponent_generator.py |
+| `ROOT_SETUP` | 1 | `ROOT_SETUP\|√16` | exponent_generator.py |
+| `ROOT_SIMPLIFY` | 1 | `ROOT_SIMPLIFY\|6√3` | exponent_generator.py |
 | `ROUND_CHECK` | 3 | `ROUND_CHECK\|93155\|10\|>=5` | place_value_rounding_generator.py |
 | `ROUND_RESULT` | 2 | `ROUND_RESULT\|93155\|93160` | place_value_rounding_generator.py |
 | `S` | 3 | `S\|632\|594\|38` | decimal_div_generator.py, fraction_op_generator.py, graph_interpret_generator.py, linear_simple_generator.py, long_division_generator.py, mixed_number_operation_generator.py, order_of_operations_generator.py, percent_problem_generator.py, percent_word_problem_generator.py, slope_two_points_generator.py, temperature_conversion_generator.py, tip_bill_split_generator.py |
-| `SA_BASES` | 2 | `SA_BASES\|2π(4)² = 2π × 16\|32π` | volume_3d_generator.py |
-| `SA_FACES` | 3 | `SA_FACES\|top/bottom\|5 × 5\|25` | volume_3d_generator.py |
+| `SA_BASES` | 2 | `SA_BASES\|2π(8)² = 2π × 64\|128π` | volume_3d_generator.py |
+| `SA_FACES` | 3 | `SA_FACES\|top/bottom\|6 × 7\|42` | volume_3d_generator.py |
 | `SA_FORMULA` | 1 | `SA_FORMULA\|SA = 2(lw + lh + wh)` | volume_3d_generator.py |
-| `SA_LATERAL` | 2 | `SA_LATERAL\|2π × 4 × 9\|72π` | volume_3d_generator.py |
-| `SA_SETUP` | 2 | `SA_SETUP\|rectangular_prism\|l=5, w=5, h=7` | volume_3d_generator.py |
-| `SA_TOTAL` | 2 | `SA_TOTAL\|SA = 2(25 + 35 + 35)\|190` | volume_3d_generator.py |
+| `SA_LATERAL` | 2 | `SA_LATERAL\|2π × 8 × 7\|112π` | volume_3d_generator.py |
+| `SA_SETUP` | 2 | `SA_SETUP\|rectangular_prism\|l=6, w=7, h=11` | volume_3d_generator.py |
+| `SA_TOTAL` | 2 | `SA_TOTAL\|SA = 2(42 + 66 + 77)\|370` | volume_3d_generator.py |
 | `SCALE_DIV` | 3 | `SCALE_DIV\|112\|16\|7.0` | scaling_generator.py |
 | `SCALE_IDENTIFY` | 2 | `SCALE_IDENTIFY\|112 feet\|scaled_dimension` | scaling_generator.py |
 | `SCALE_MULT` | 3 | `SCALE_MULT\|2.5\|100\|250.0` | scaling_generator.py |
 | `SCALE_SETUP` | 3 | `SCALE_SETUP\|1 inch\|16 feet\|16` | scaling_generator.py |
-| `SCI_IDENTIFY` | 2 | `SCI_IDENTIFY\|2.8\|5` | exponent_generator.py |
-| `SCI_MOVE_DECIMAL` | 2 | `SCI_MOVE_DECIMAL\|left\|5` | exponent_generator.py |
-| `SCI_OPERATION` | 4 | `SCI_OPERATION\|divide_coefficients\|4.5\|1.5\|3.0` | exponent_generator.py |
-| `SCI_SETUP` | 1 | `SCI_SETUP\|280000` | exponent_generator.py |
-| `SETUP_PERCENT_EQ` | 1 | `SETUP_PERCENT_EQ\|10 = 0.1 * whole` | percent_problem_generator.py |
+| `SCI_IDENTIFY` | 2 | `SCI_IDENTIFY\|6.0\|8` | exponent_generator.py |
+| `SCI_MOVE_DECIMAL` | 2 | `SCI_MOVE_DECIMAL\|left\|8` | exponent_generator.py |
+| `SCI_OPERATION` | 4 | `SCI_OPERATION\|multiply_coefficients\|2.5\|3.6\|9.0` | exponent_generator.py |
+| `SCI_SETUP` | 1 | `SCI_SETUP\|(2.5 × 10^5) × (3.6 × 10^3)` | exponent_generator.py |
+| `SETUP_PERCENT_EQ` | 1 | `SETUP_PERCENT_EQ\|part = 0.25 * 40` | percent_problem_generator.py |
 | `SIMILAR_APPLY` | 3 | `SIMILAR_APPLY\|6\|5\|30` | scaling_generator.py |
 | `SIMILAR_SCALE` | 3 | `SIMILAR_SCALE\|15\|5\|3` | scaling_generator.py |
 | `SIMILAR_SETUP` | 3 | `SIMILAR_SETUP\|square\|5\|15` | scaling_generator.py |
 | `SLOPE_CALC` | 2 | *(not observed in sampling)* | equation_from_two_points_generator.py |
 | `SLOPE_FORMULA` | 1 | `SLOPE_FORMULA\|m = (y2 - y1) / (x2 - x1)` | equation_from_two_points_generator.py, slope_two_points_generator.py |
-| `SLOPE_INT_IDENTIFY` | 2 | `SLOPE_INT_IDENTIFY\|Slope (m)\|-2` | slope_intercept_form_generator.py |
+| `SLOPE_INT_IDENTIFY` | 2 | `SLOPE_INT_IDENTIFY\|Slope (m)\|-8` | slope_intercept_form_generator.py |
 | `SLOPE_INT_MATCH` | 2 | `SLOPE_INT_MATCH\|Compare to Slope-Intercept Form\|y = mx + b` | slope_intercept_form_generator.py |
-| `SLOPE_INT_SETUP` | 1 | `SLOPE_INT_SETUP\|y = -2x + 7` | slope_intercept_form_generator.py |
-| `SLOPE_RESULT` | 1 | `SLOPE_RESULT\|3` | equation_from_two_points_generator.py |
-| `SLOPE_SETUP` | 2 | `SLOPE_SETUP\|(10, 3)\|(-9, -1)` | slope_two_points_generator.py |
-| `SLOPE_SUBST` | 1 | `SLOPE_SUBST\|m = (-1 - 3) / (-9 - 10)` | equation_from_two_points_generator.py, slope_two_points_generator.py |
+| `SLOPE_INT_SETUP` | 1 | `SLOPE_INT_SETUP\|y = 7 - 8x` | slope_intercept_form_generator.py |
+| `SLOPE_RESULT` | 1 | `SLOPE_RESULT\|-2` | equation_from_two_points_generator.py |
+| `SLOPE_SETUP` | 2 | `SLOPE_SETUP\|(7, 1)\|(-10, 0)` | slope_two_points_generator.py |
+| `SLOPE_SUBST` | 1 | `SLOPE_SUBST\|m = (0 - 1) / (-10 - 7)` | equation_from_two_points_generator.py, slope_two_points_generator.py |
 | `SLOPE_UNDEFINED` | 1 | `SLOPE_UNDEFINED\|Division by zero` | slope_two_points_generator.py |
 | `SORT` | 2 | `SORT\|5,17,20,3,9,13,1\|1,3,5,9,13,17,20` | simple_stats_generator.py |
-| `STAT_ABS_DEV` | 2 | `STAT_ABS_DEV\|10\|10` | statistics_generator.py |
-| `STAT_AVERAGE` | 2 | `STAT_AVERAGE\|(59 + 60) / 2\|59.5` | statistics_generator.py |
-| `STAT_COUNT` | 1 | `STAT_COUNT\|10` | statistics_generator.py |
-| `STAT_DEVIATION` | 3 | `STAT_DEVIATION\|37\|27\|10` | statistics_generator.py |
-| `STAT_DIVIDE` | 2 | `STAT_DIVIDE\|430 / 10\|43` | statistics_generator.py |
-| `STAT_FREQUENCY` | 2 | `STAT_FREQUENCY\|30\|1` | statistics_generator.py |
-| `STAT_MAD` | 3 | `STAT_MAD\|50\|7\|7.14` | statistics_generator.py |
+| `SPECIAL_SOLUTION` | 2 | `SPECIAL_SOLUTION\|13 = 12\|contradiction: no value of x works` | special_solution_equation_generator.py |
+| `STAT_ABS_DEV` | 2 | `STAT_ABS_DEV\|1\|1` | statistics_generator.py |
+| `STAT_AVERAGE` | 2 | `STAT_AVERAGE\|(47 + 61) / 2\|54.0` | statistics_generator.py |
+| `STAT_COUNT` | 1 | `STAT_COUNT\|8` | statistics_generator.py |
+| `STAT_DEVIATION` | 3 | `STAT_DEVIATION\|28\|27\|1` | statistics_generator.py |
+| `STAT_DIVIDE` | 2 | `STAT_DIVIDE\|336 / 8\|42` | statistics_generator.py |
+| `STAT_FREQUENCY` | 2 | `STAT_FREQUENCY\|17\|2` | statistics_generator.py |
+| `STAT_MAD` | 3 | `STAT_MAD\|32\|5\|6.4` | statistics_generator.py |
 | `STAT_MAX` | 1 | `STAT_MAX\|87` | statistics_generator.py |
-| `STAT_MEAN` | 2 | `STAT_MEAN\|189 / 7\|27` | statistics_generator.py |
-| `STAT_MIDDLE` | 2 | `STAT_MIDDLE\|position 4\|61` | statistics_generator.py |
-| `STAT_MIN` | 1 | `STAT_MIN\|25` | statistics_generator.py |
-| `STAT_MODE` | 2 | `STAT_MODE\|No mode\|All values appear with same frequency` | statistics_generator.py |
-| `STAT_ORDER` | 1 | `STAT_ORDER\|15, 19, 34, 61, 64, 66, 95` | statistics_generator.py |
-| `STAT_RANGE` | 2 | `STAT_RANGE\|87 - 25\|62` | statistics_generator.py |
-| `STAT_SETUP` | 1 | `STAT_SETUP\|38, 54, 23, 34, 64, 67, 37, 50, 33, 30` | statistics_generator.py |
-| `STAT_SUM` | 2 | `STAT_SUM\|38 + 54 + 23 + 34 + 64 + 67 + 37 + 50 + 33 + 30\|430` | statistics_generator.py |
+| `STAT_MEAN` | 2 | `STAT_MEAN\|135 / 5\|27` | statistics_generator.py |
+| `STAT_MIDDLE` | 2 | `STAT_MIDDLE\|positions 4 and 5\|47, 61` | statistics_generator.py |
+| `STAT_MIN` | 1 | `STAT_MIN\|45` | statistics_generator.py |
+| `STAT_MODE` | 2 | `STAT_MODE\|26\|4` | statistics_generator.py |
+| `STAT_ORDER` | 1 | `STAT_ORDER\|36, 44, 46, 47, 61, 63, 82, 92` | statistics_generator.py |
+| `STAT_RANGE` | 2 | `STAT_RANGE\|87 - 45\|42` | statistics_generator.py |
+| `STAT_SETUP` | 1 | `STAT_SETUP\|31, 43, 45, 23, 35, 61, 30, 68` | statistics_generator.py |
+| `STAT_SUM` | 2 | `STAT_SUM\|31 + 43 + 45 + 23 + 35 + 61 + 30 + 68\|336` | statistics_generator.py |
 | `SUBST` | 3 | `SUBST\|x\|0\|2(0)-3y+9` | evaluate_expression_generator.py |
 | `SUB_COL` | 3 | `SUB_COL\|col_1\|1-6-borrow0\|->5 (borrow_out 1)` | multi_digit_subtraction_generator.py |
-| `SYS_ADD` | 1 | `SYS_ADD\|Add equations: 2y = 8` | systems_elimination_generator.py |
-| `SYS_EQ_NEW` | 1 | `SYS_EQ_NEW\|New equation with y only` | systems_substitution_generator.py |
-| `SYS_ISOLATE` | 2 | `SYS_ISOLATE\|Isolate x in Eq 1\|x = 4y + 2` | systems_substitution_generator.py |
-| `SYS_MULT` | 1 | `SYS_MULT\|Eq1 * 3` | systems_elimination_generator.py |
-| `SYS_REWRITE` | 2 | `SYS_REWRITE\|3x + 3y = -18\|-3x - 1y = 26` | systems_elimination_generator.py |
-| `SYS_SETUP` | 2 | `SYS_SETUP\|x = y + 7\|3x + 5y = -27` | systems_elimination_generator.py, systems_substitution_generator.py |
-| `SYS_SUBST` | 1 | `SYS_SUBST\|Substitute (y + 7) for x in Eq 2` | systems_substitution_generator.py |
-| `SYS_SUBST_BACK` | 1 | `SYS_SUBST_BACK\|Substitute y=-6 into Eq 1` | systems_elimination_generator.py, systems_substitution_generator.py |
-| `TRI_ANGLE_SETUP` | 3 | `TRI_ANGLE_SETUP\|51\|76\|x` | angle_relationships_generator.py |
-| `TRI_ANGLE_SOLVE` | 2 | `TRI_ANGLE_SOLVE\|x = 180 - 51 - 76\|53` | angle_relationships_generator.py |
-| `TRI_ANGLE_SUM` | 1 | `TRI_ANGLE_SUM\|51 + 76 + x = 180` | angle_relationships_generator.py |
+| `SYS_ADD` | 1 | `SYS_ADD\|Add equations: -9x = -81` | systems_elimination_generator.py |
+| `SYS_EQ_NEW` | 1 | `SYS_EQ_NEW\|New equation with x only` | systems_substitution_generator.py |
+| `SYS_ISOLATE` | 2 | `SYS_ISOLATE\|Isolate x in Eq 1\|x = -3y + -35` | systems_substitution_generator.py |
+| `SYS_MULT` | 1 | `SYS_MULT\|Eq1 * 2, Eq2 * -1` | systems_elimination_generator.py |
+| `SYS_REWRITE` | 2 | `SYS_REWRITE\|-8x + 8y = -32\|-1x - 8y = -49` | systems_elimination_generator.py |
+| `SYS_SETUP` | 2 | `SYS_SETUP\|x + 3y = -35\|1x -1y = 1` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `SYS_SUBST` | 1 | `SYS_SUBST\|Substitute x in Eq 2` | systems_substitution_generator.py |
+| `SYS_SUBST_BACK` | 1 | `SYS_SUBST_BACK\|Substitute y=-9 into x = -3y + -35` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `TRI_ANGLE_SETUP` | 3 | `TRI_ANGLE_SETUP\|48\|62\|exterior` | angle_relationships_generator.py |
+| `TRI_ANGLE_SOLVE` | 2 | `TRI_ANGLE_SOLVE\|exterior = 48 + 62\|110` | angle_relationships_generator.py |
+| `TRI_ANGLE_SUM` | 1 | `TRI_ANGLE_SUM\|Exterior angle = sum of remote interior angles` | angle_relationships_generator.py |
 | `UNIT_RATE_DIV` | 3 | `UNIT_RATE_DIV\|$1.50\|3\|$0.50` | unit_rate_generator.py |
 | `UNIT_RATE_PICK` | 2 | `UNIT_RATE_PICK\|7\|70` | unit_rate_generator.py |
 | `UNIT_RATE_SETUP` | 3 | `UNIT_RATE_SETUP\|3\|tickets\|$1.50` | unit_rate_generator.py |
 | `UNIT_RATE_TABLE` | 2 | `UNIT_RATE_TABLE\|7,9,10\|70,90,100` | unit_rate_generator.py |
 | `VOLUME` | 1 | `VOLUME\|208` | volume_rect_prism_generator.py |
-| `VOL_BASE_AREA` | 2 | `VOL_BASE_AREA\|Base Area = (1/2) × 12 × 7\|42.0` | volume_3d_generator.py |
-| `VOL_CALCULATE` | 2 | `VOL_CALCULATE\|V = 42.0 × 11\|462.0` | volume_3d_generator.py |
+| `VOL_BASE_AREA` | 2 | `VOL_BASE_AREA\|Base Area = (1/2) × 4 × 8\|16.0` | volume_3d_generator.py |
+| `VOL_CALCULATE` | 2 | `VOL_CALCULATE\|V = 16.0 × 6\|96.0` | volume_3d_generator.py |
 | `VOL_FORMULA` | 1 | `VOL_FORMULA\|V = Base Area × length` | volume_3d_generator.py |
-| `VOL_SETUP` | 2 | `VOL_SETUP\|triangular_prism\|b=12, h_tri=7, length=11` | volume_3d_generator.py |
-| `Z` | 1 | `Z\|63 R84` | abacus_addition_generator.py, absolute_value_equation_generator.py, absolute_value_inequality_generator.py, angle_relationships_generator.py, circle_generator.py, compound_inequality_generator.py, compound_probability_generator.py, decimal_add_sub_generator.py, decimal_div_generator.py, decimal_mult_generator.py, dimensional_analysis_generator.py, divisibility_classification_generator.py, equation_from_two_points_generator.py, evaluate_expression_generator.py, exponent_generator.py, factors_generator.py, fraction_comparison_generator.py, fraction_decimal_percent_converter.py, fraction_op_generator.py, gcf_generator.py, geometry_area_perimeter_generator.py, graph_interpret_generator.py, integer_operations_generator.py, lcm_generator.py, linear_complex_generator.py, linear_fractional_generator.py, linear_simple_generator.py, literal_equation_generator.py, long_division_generator.py, mixed_number_operation_generator.py, monomial_mult_div_generator.py, multi_digit_addition_generator.py, multi_digit_multiplication_generator.py, multi_digit_subtraction_generator.py, multi_step_unit_conversion_generator.py, multiplying_binomials_generator.py, multiplying_polynomials_generator.py, number_comparison_generator.py, one_step_equation_generator.py, one_step_inequality_generator.py, order_of_operations_generator.py, parallel_perpendicular_line_generator.py, percent_problem_generator.py, percent_word_problem_generator.py, place_value_rounding_generator.py, point_slope_generator.py, polygon_perimeter_generator.py, polynomial_add_sub_generator.py, polynomial_div_monomial_generator.py, prime_factorization_generator.py, proportion_word_problem_generator.py, proportional_relationship_generator.py, pythag_hyp_generator.py, pythag_leg_generator.py, quadratic_generator.py, rate_conversion_generator.py, ratio_table_generator.py, repeating_decimal_generator.py, scaling_generator.py, simple_probability_generator.py, simple_stats_generator.py, simplify_expression_generator.py, slope_intercept_form_generator.py, slope_two_points_generator.py, standard_form_conversion_generator.py, statistics_generator.py, systems_elimination_generator.py, systems_substitution_generator.py, temperature_conversion_generator.py, tip_bill_split_generator.py, two_step_equation_generator.py, two_step_inequality_generator.py, unit_conversion_generator.py, unit_rate_generator.py, volume_3d_generator.py, volume_rect_prism_generator.py |
+| `VOL_SETUP` | 2 | `VOL_SETUP\|triangular_prism\|b=4, h_tri=8, length=6` | volume_3d_generator.py |
+| `Z` | 1 | `Z\|63 R84` | abacus_addition_generator.py, absolute_value_equation_generator.py, absolute_value_inequality_generator.py, angle_relationships_generator.py, circle_generator.py, compound_inequality_generator.py, compound_probability_generator.py, decimal_add_sub_generator.py, decimal_div_generator.py, decimal_mult_generator.py, dimensional_analysis_generator.py, divisibility_classification_generator.py, equation_from_two_points_generator.py, evaluate_expression_generator.py, exponent_generator.py, factors_generator.py, fraction_comparison_generator.py, fraction_decimal_percent_converter.py, fraction_op_generator.py, gcf_generator.py, geometry_area_perimeter_generator.py, graph_interpret_generator.py, integer_operations_generator.py, lcm_generator.py, linear_complex_generator.py, linear_fractional_generator.py, linear_simple_generator.py, literal_equation_generator.py, long_division_generator.py, mixed_number_operation_generator.py, monomial_mult_div_generator.py, multi_digit_addition_generator.py, multi_digit_multiplication_generator.py, multi_digit_subtraction_generator.py, multi_step_unit_conversion_generator.py, multiplying_binomials_generator.py, multiplying_polynomials_generator.py, number_comparison_generator.py, one_step_equation_generator.py, one_step_inequality_generator.py, order_of_operations_generator.py, parallel_perpendicular_line_generator.py, percent_problem_generator.py, percent_word_problem_generator.py, place_value_rounding_generator.py, point_slope_generator.py, polygon_perimeter_generator.py, polynomial_add_sub_generator.py, polynomial_div_monomial_generator.py, prime_factorization_generator.py, proportion_word_problem_generator.py, proportional_relationship_generator.py, pythag_hyp_generator.py, pythag_leg_generator.py, quadratic_generator.py, rate_conversion_generator.py, ratio_table_generator.py, repeating_decimal_generator.py, scaling_generator.py, simple_probability_generator.py, simple_stats_generator.py, simplify_expression_generator.py, slope_intercept_form_generator.py, slope_two_points_generator.py, special_solution_equation_generator.py, standard_form_conversion_generator.py, statistics_generator.py, systems_elimination_generator.py, systems_substitution_generator.py, temperature_conversion_generator.py, tip_bill_split_generator.py, two_step_equation_generator.py, two_step_inequality_generator.py, unit_conversion_generator.py, unit_rate_generator.py, volume_3d_generator.py, volume_rect_prism_generator.py |
