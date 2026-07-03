@@ -236,6 +236,8 @@ ALL_GENERATORS = [
     # --- Exponents & Roots ---
     ExponentEvaluationGenerator(),
     ExponentRulesGenerator(),
+    ExponentRulesGenerator(base_style="decimal"),
+    ExponentRulesGenerator(base_style="fraction"),
     ExponentMixedRulesGenerator(),
     ScientificNotationGenerator(),
     RootsAndRadicalsGenerator(),

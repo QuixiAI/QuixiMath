@@ -96,17 +96,39 @@ class ExponentRulesGenerator(ProblemGenerator):
     """
 
     RULES = ['product', 'quotient', 'power', 'negative', 'zero']
+    BASE_STYLES = ['variable', 'decimal', 'fraction']
 
-    def __init__(self, rule: str = None):
+    def __init__(self, rule: str = None, base_style: str = 'variable'):
         """
         Initialize generator.
 
         Args:
             rule: One of 'product', 'quotient', 'power', 'negative', 'zero' or None for random
+            base_style: 'variable' (x, y, ...), 'decimal' ((0.4), ...), or
+                'fraction' ((2/3), ...) — the rules are identical whatever
+                the base looks like, which is the point of the variant.
         """
         if rule is not None and rule not in self.RULES:
             raise ValueError(f"Invalid rule: {rule}. Must be one of {self.RULES} or None.")
+        if base_style not in self.BASE_STYLES:
+            raise ValueError(f"Invalid base_style: {base_style}. Must be one of {self.BASE_STYLES}.")
         self.rule = rule
+        self.base_style = base_style
+        self.op_symbol = base_style
+
+    def _pick_base(self):
+        """Returns the display string for a base in the configured style."""
+        if self.base_style == 'decimal':
+            tenths = random.choice([t for t in range(2, 30) if t % 10 != 0])
+            return f"({tenths / 10:.1f})"
+        if self.base_style == 'fraction':
+            from math import gcd
+            while True:
+                den = random.randint(2, 9)
+                num = random.randint(1, den - 1)
+                if gcd(num, den) == 1:
+                    return f"({num}/{den})"
+        return random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
 
     def generate(self) -> dict:
         """Generate an exponent rule problem."""
@@ -125,7 +147,7 @@ class ExponentRulesGenerator(ProblemGenerator):
 
     def _generate_product_rule(self) -> dict:
         """Generate x^a · x^b = x^(a+b) problem."""
-        base = random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
+        base = self._pick_base()
         exp1 = random.randint(2, 8)
         exp2 = random.randint(2, 8)
         result_exp = exp1 + exp2
@@ -150,7 +172,7 @@ class ExponentRulesGenerator(ProblemGenerator):
 
     def _generate_quotient_rule(self) -> dict:
         """Generate x^a / x^b = x^(a-b) problem."""
-        base = random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
+        base = self._pick_base()
         # Ensure exp1 > exp2 for positive result
         exp1 = random.randint(5, 12)
         exp2 = random.randint(2, exp1 - 1)
@@ -176,7 +198,7 @@ class ExponentRulesGenerator(ProblemGenerator):
 
     def _generate_power_rule(self) -> dict:
         """Generate (x^a)^b = x^(ab) problem."""
-        base = random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
+        base = self._pick_base()
         exp1 = random.randint(2, 5)
         exp2 = random.randint(2, 5)
         result_exp = exp1 * exp2
@@ -200,16 +222,22 @@ class ExponentRulesGenerator(ProblemGenerator):
         )
 
     def _generate_negative_exponent(self) -> dict:
-        """Generate x^(-n) = 1/x^n problem."""
-        base = random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
+        """Generate x^(-n) = 1/x^n (or reciprocal flip for fraction bases)."""
+        base = self._pick_base()
         exp = random.randint(2, 6)
 
         problem = f"Simplify: {base}^(-{exp})"
-        answer = f"1/{base}^{exp}"
-
         steps = []
         steps.append(step("EXP_RULE_SETUP", f"{base}^(-{exp})"))
-        steps.append(step("EXP_RULE_IDENTIFY", "negative_exponent", "x^(-n) = 1/x^n"))
+        if self.base_style == 'fraction':
+            # (a/b)^(-n) = (b/a)^n — the reciprocal flip.
+            num, den = base.strip("()").split("/")
+            answer = f"{den}^{exp}" if num == "1" else f"({den}/{num})^{exp}"
+            steps.append(step("EXP_RULE_IDENTIFY", "negative_exponent_reciprocal",
+                              "(a/b)^(-n) = (b/a)^n"))
+        else:
+            answer = f"1/{base}^{exp}"
+            steps.append(step("EXP_RULE_IDENTIFY", "negative_exponent", "x^(-n) = 1/x^n"))
         steps.append(step("EXP_RULE_APPLY", "negate", exp, "", exp))
         steps.append(step("EXP_RULE_SIMPLIFY", answer))
         steps.append(step("Z", answer))
@@ -225,9 +253,13 @@ class ExponentRulesGenerator(ProblemGenerator):
     def _generate_zero_exponent(self) -> dict:
         """Generate x^0 = 1 problem."""
         # Use various bases to make it interesting
-        base_type = random.choice(['variable', 'number', 'expression'])
+        base_type = ('styled' if self.base_style != 'variable'
+                     else random.choice(['variable', 'number', 'expression']))
+        if base_type == 'styled':
+            base = self._pick_base()
+            problem = f"Simplify: {base}^0"
 
-        if base_type == 'variable':
+        elif base_type == 'variable':
             base = random.choice(['x', 'y', 'a', 'b', 'm', 'n'])
             problem = f"Simplify: {base}^0"
         elif base_type == 'number':

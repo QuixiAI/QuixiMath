@@ -260,5 +260,66 @@ class TestRootsAndRadicalsGenerator(unittest.TestCase):
             self.assertIn("√", result["final_answer"])
 
 
+class TestExponentRulesBaseStyles(unittest.TestCase):
+    """Decimal and fractional bases: same rules, styled bases (A9 oracles)."""
+
+    def _oracle_sweep(self, base_style, n=300):
+        import re
+        random.seed(9)
+        gen = ExponentRulesGenerator(base_style=base_style)
+        for _ in range(n):
+            res = gen.generate()
+            expr = res["problem"].split(": ", 1)[1]
+            ans = res["final_answer"]
+            base_re = r"\((\d+\.\d|\d+/\d+)\)"
+            if res["operation"] == "exponent_zero_rule":
+                self.assertEqual(ans, "1")
+                continue
+            exps = [int(e) for e in re.findall(r"\^\(?(-?\d+)\)?", expr)]
+            base = re.search(base_re, expr).group(1)
+            if res["operation"] == "exponent_product_rule":
+                self.assertEqual(ans, f"({base})^{exps[0] + exps[1]}", expr)
+            elif res["operation"] == "exponent_quotient_rule":
+                self.assertEqual(ans, f"({base})^{exps[0] - exps[1]}", expr)
+            elif res["operation"] == "exponent_power_rule":
+                self.assertEqual(ans, f"({base})^{exps[0] * exps[1]}", expr)
+            else:  # negative rule
+                n_exp = -exps[0]
+                if base_style == "fraction":
+                    num, den = base.split("/")
+                    expected = (f"{den}^{n_exp}" if num == "1"
+                                else f"({den}/{num})^{n_exp}")
+                    self.assertEqual(ans, expected, expr)
+                else:
+                    self.assertEqual(ans, f"1/({base})^{n_exp}", expr)
+
+    def test_decimal_bases(self):
+        self._oracle_sweep("decimal")
+
+    def test_fraction_bases(self):
+        self._oracle_sweep("fraction")
+
+    def test_variable_style_unchanged(self):
+        random.seed(4)
+        gen = ExponentRulesGenerator(base_style="variable")
+        for _ in range(50):
+            res = gen.generate()
+            self.assertNotIn("(0.", res["problem"])
+
+    def test_fraction_bases_are_reduced(self):
+        import re
+        from math import gcd
+        random.seed(5)
+        gen = ExponentRulesGenerator(base_style="fraction")
+        for _ in range(200):
+            m = re.search(r"\((\d+)/(\d+)\)", gen.generate()["problem"])
+            if m:
+                self.assertEqual(gcd(int(m.group(1)), int(m.group(2))), 1)
+
+    def test_bad_base_style_raises(self):
+        with self.assertRaises(ValueError):
+            ExponentRulesGenerator(base_style="bogus")
+
+
 if __name__ == '__main__':
     unittest.main()

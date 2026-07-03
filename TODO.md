@@ -101,9 +101,6 @@ Not new skills — multipliers on everything. **A0–A2 and A9 gate the Algebra 
 
 ## Backlog
 
-### Exponents (completion)
-- [ ] Decimal and fractional bases in exponent rules — variant of `ExponentRulesGenerator` · middle · d4
-
 ### Functions
 - [ ] Function evaluation from rules and tables — f(3) = ? · `FunctionEvaluationGenerator` · high · d3
 - [ ] Build value tables from rules (linear/quadratic/exponential) · `FunctionTableGenerator` · high · d3
