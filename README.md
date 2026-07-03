@@ -164,7 +164,23 @@ python dolphin_math_datagen.py -n 50000 -o my_dataset.jsonl -s 123
 python dolphin_math_datagen.py -n 50000 -s 123
 ```
 
-Default values are 10,000 examples (outputting to `dolphin_math_10000.jsonl` by default if `-o` is omitted). Omit `-s/--seed` for non-deterministic data; provide a seed to make runs reproducible.
+Default values are 10,000 examples (outputting to `dolphin_math_10000.jsonl` by default if `-o` is omitted). Omit `-s/--seed` for non-deterministic data; provide a seed to make runs reproducible byte-for-byte.
+
+### Sampling, Weights, and Deduplication
+
+Dataset builds sample **equally per skill** (generator class): variant instances of one class — e.g. the four `FractionOpGenerator` ops — share a single slot, so no skill is over-represented just because it has more instances. Override individual skill weights with `--weights` (unlisted skills keep weight 1.0):
+
+```bash
+# inline spec
+python dolphin_math_datagen.py -n 10000 --weights "QuadraticGenerator=3,MeanGenerator=0.5"
+
+# or a JSON file: {"QuadraticGenerator": 3}
+python dolphin_math_datagen.py -n 10000 --weights weights.json
+```
+
+Exact repeats of `(operation, problem)` are skipped by default; pass `--allow-duplicates` to keep them. Each build prints a per-generator stats table (emitted / duplicates skipped / errors) and stops early with a warning if the selected skills' problem space is exhausted before reaching `-n`.
+
+Note: `MixedNumberOperationsRandom` is excluded from the default pool (it duplicates the four `MixedNumberOperationGenerator` variants) but can still be requested explicitly via `--generators`.
 
 ### Running Tests
 
@@ -172,277 +188,36 @@ Unit tests are provided for each generator. To run all tests:
 
 ```bash
 python -m unittest discover tests
+# or, with the dev dependency group installed (uv sync):
+uv run pytest tests
 ```
 
 ---
 
-## Op-Code Reference
+## Output Format
 
-The `steps` field in the output JSON contains a list of strings, each representing a step in the solution. Steps are formatted as `OP_CODE|arg1|arg2|...`.
+Each line of the generated JSONL is one problem:
 
-### Naming Conventions
+```json
+{
+  "problem_id": "1f8b6be5-...",
+  "operation": "long_division",
+  "problem": "1834 / 5",
+  "steps": ["D|18|5|3", "M|3|5|15", "S|18|15|3", "B|3|3|33", "...", "Z|366 R4"],
+  "final_answer": "366 R4",
+  "grade_level": "elementary",
+  "difficulty": 3
+}
+```
 
-- **Short codes** (1-2 chars): Core arithmetic operations used across many generators
-- **Prefixed codes**: Domain-specific operations grouped by prefix (e.g., `STAT_`, `EQ_`, `PYTHAG_`)
+- `steps` — the visible scratchpad: pipe-delimited op-code strings (`CODE|field|field|...`, up to 4 payload fields), ending with `Z|<final_answer>`.
+- `grade_level` (`elementary` / `middle` / `high`) and `difficulty` (coarse 1-5 tier) are stamped from the per-class table in `curriculum.py`; a generator may emit either key itself to override (e.g. difficulty computed from its operands).
 
-### Core Arithmetic (used across generators)
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `A` | Add | addend1, addend2, sum |
-| `S` | Subtract | minuend, subtrahend, difference |
-| `M` | Multiply | factor1, factor2, product |
-| `D` | Divide | dividend, divisor, quotient |
-| `B` | Bring down (long division) | remainder_before, digit_down, new_number |
-| `R` | Remainder | final_remainder |
-| `E` | Exponent/Power | base, exponent, result |
-| `Z` | Final answer | answer_string |
+## Op-Code Legend
 
-### Fractions
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `L` | Find LCD | denominator1, denominator2, lcd |
-| `C` | Convert to LCD | original_fraction, lcd, converted_fraction |
-| `I` | Invert fraction | original, inverted |
-| `F` | Simplify fraction | unsimplified, simplified |
-| `CMP` | Compare fractions | frac1, frac2, relation (<, >, =) |
+The full legend of op-codes in use lives in [OPCODES.md](OPCODES.md) — a **generated** file; regenerate it with `python tools/gen_opcode_legend.py` (verify freshness with `--check`).
 
-### Mixed Numbers
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `MIX_IMPROPER` | Convert mixed to improper | mixed_str, improper_str |
-| `IMPROPER_TO_MIX` | Convert improper to mixed | improper_str, mixed_str |
-
-### Integer Column Arithmetic
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `INT_ALIGN` | Align numbers for column math | num1_padded, num2_padded |
-| `ADD_COL` | Add column | col_name, calculation, result_with_carry |
-| `SUB_COL` | Subtract column | col_name, calculation, result_with_borrow |
-| `BORROW` | Borrow from next column | col_name, from_left, 1 |
-| `CARRY_FINAL` | Final carry digit | carry_value |
-
-### Decimal Arithmetic
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `DEC_ALIGN` | Align by decimal point | num1_aligned, num2_aligned |
-| `DEC_ADD_COL` | Add decimal column | col_name, calculation, result |
-| `DEC_SUB_COL` | Subtract decimal column | col_name, calculation, result |
-| `DEC_CARRY_FINAL` | Final decimal carry | carry_value |
-| `DEC_SHIFT` | Shift decimal for division | original_expr, shifted_expr, places |
-| `MUL_SETUP` | Setup multiplication | int1, int2 |
-| `MUL_PARTIAL` | Partial product | digit, multiplicand, partial_product |
-| `ADD_PARTIALS` | Sum partial products | expression, result |
-| `COUNT_DP` | Count decimal places | dp1, dp2, total |
-| `PLACE_DP` | Place decimal in result | integer_result, places, final_result |
-| `DIV_SETUP` | Setup division | dividend, divisor |
-| `PLACE_DP_Q` | Place decimal in quotient | quotient_digits, position |
-
-### Factors & Multiples
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `FACT_CHECK` | Check divisibility | n, divisor, remainder |
-| `FACT_PAIR` | Record factor pair | factor1, factor2 |
-| `PF_STEP` | Prime factorization step | n, prime, quotient |
-| `PF_PRIME` | Mark as prime | n |
-| `GCD_START` | Start Euclidean algorithm | a, b |
-| `GCD_STEP` | Euclidean step | a, b, remainder |
-| `GCD_RESULT` | Final GCD | gcd |
-| `LCM_FROM_GCD` | Compute LCM | product_expr, gcd, lcm |
-
-### Equations & Inequalities
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `EQ_SETUP` | Show equation | equation_string |
-| `EQ_OP_BOTH` | Apply operation to both sides | operation, value, result_expr, result_value |
-| `EQ_SIMPLIFY` | Simplify equation | simplified_equation |
-| `EQ_RESULT` | Final result | variable, value |
-| `INEQ_SETUP` | Show inequality | inequality_string |
-| `INEQ_OP_BOTH` | Apply operation to both sides | operation, value, result_expr, result_value |
-| `INEQ_SIMPLIFY` | Simplify inequality | simplified_inequality |
-| `INEQ_FLIP` | Flip inequality sign | reason |
-| `INEQ_RESULT` | Final result | variable, relation, value |
-
-### Algebra
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `REWRITE` | Rewrite expression | new_form |
-| `DIST` | Distribute | factor, expression, result |
-| `COMB_X` | Combine x terms | term1, term2, result |
-| `COMB_CONST` | Combine constants | const1, const2, result |
-| `SUBST` | Substitute value | variable, value, result_expression |
-| `MOVE_TERM` | Move term across equals | term, target_side, result_equation |
-| `DIV_COEFF` | Divide by coefficient | numerator, denominator, result |
-| `DISC` | Discriminant | b_squared, four_ac, discriminant |
-| `ROOT` | Square root | radicand, result |
-| `Q1`, `Q2` | Quadratic roots | neg_b, sqrt_disc, two_a, root_value |
-| `PROP_SETUP` | Setup proportion | proportion_string |
-
-### Exponents & Radicals
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `EXP_SETUP` | Setup exponent | base, exponent |
-| `EXP_EXPAND` | Expand multiplication | expanded_form |
-| `EXP_PARTIAL` | Partial multiplication | value1, value2, result |
-| `EXP_RULE_SETUP` | Setup exponent rule | expression |
-| `EXP_RULE_IDENTIFY` | Identify rule | rule_name, rule_formula |
-| `EXP_RULE_APPLY` | Apply rule | operation, exp1, exp2, result |
-| `EXP_RULE_SIMPLIFY` | Simplify result | simplified |
-| `SCI_SETUP` | Setup scientific notation | number |
-| `SCI_IDENTIFY` | Identify coefficient/exponent | coefficient, exponent |
-| `SCI_MOVE_DECIMAL` | Move decimal | direction, places |
-| `ROOT_SETUP` | Setup root | expression |
-| `ROOT_IDENTIFY` | Identify root type | radicand, type, result |
-| `ROOT_EXTRACT` | Extract root | result |
-
-### Geometry
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `PERIM` | Perimeter result | value |
-| `AREA` | Area result | value |
-| `VOLUME` | Volume result | value |
-| `CIRCLE_SETUP` | Setup circle problem | value, type (radius/diameter) |
-| `CIRCLE_FORMULA` | Show formula | formula |
-| `CIRCLE_SUBSTITUTE` | Substitute values | substituted_formula |
-| `CIRCLE_CALCULATE` | Calculate | calculation, result |
-| `VOL_SETUP` | Setup volume | shape, dimensions |
-| `VOL_FORMULA` | Volume formula | formula |
-| `VOL_BASE_AREA` | Calculate base area | calculation, result |
-| `VOL_CALCULATE` | Calculate volume | calculation, result |
-| `SA_SETUP` | Setup surface area | shape, dimensions |
-| `SA_FORMULA` | Surface area formula | formula |
-| `SA_FACES` | Calculate face areas | face_type, calculation, result |
-| `SA_BASES` | Calculate base areas | calculation, result |
-| `SA_LATERAL` | Calculate lateral area | calculation, result |
-| `SA_TOTAL` | Total surface area | calculation, result |
-
-### Pythagorean Theorem
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `PYTHAG_SETUP` | Setup problem | c=hyp, a=leg, b=? |
-| `PYTHAG_FORMULA` | Show formula | formula |
-| `PYTHAG_SUBSTITUTE` | Substitute values | substituted_formula |
-| `PYTHAG_SQUARE` | Square a value | value, result |
-| `PYTHAG_SOLVE` | Solve for unknown | equation, result |
-| `PYTHAG_ROOT` | Take square root | radicand, result |
-| `PYTHAG_CONTEXT` | Word problem context | context_type, values |
-| `PYTHAG_MODEL` | Model the problem | leg1, leg2, unknown |
-| `PYTHAG_CALCULATE` | Intermediate calculation | calculation, result |
-
-### Angles
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `ANGLE_SETUP` | Setup angle problem | relationship, equation |
-| `ANGLE_RELATION` | Simplify relationship | simplified_equation |
-| `ANGLE_SOLVE` | Solve for variable | equation, solution |
-| `PARALLEL_SETUP` | Setup parallel lines | angle_type, relationship |
-| `PARALLEL_RELATION` | Show equation | equation |
-| `PARALLEL_SOLVE` | Solve | equation, solution |
-| `TRI_ANGLE_SETUP` | Setup triangle angles | angle1, angle2, angle3 |
-| `TRI_ANGLE_SUM` | Show sum equation | equation |
-| `TRI_ANGLE_SOLVE` | Solve for angle | equation, result |
-
-### Scaling & Similarity
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `SCALE_SETUP` | Setup scale | scale_unit, actual_unit, factor |
-| `SCALE_IDENTIFY` | Identify given/find | given_value, find_type |
-| `SCALE_MULT` | Multiply by scale | value, factor, result |
-| `SCALE_DIV` | Divide by scale | value, factor, result |
-| `SIMILAR_SETUP` | Setup similar figures | figure_type, sides_a, sides_b |
-| `SIMILAR_SCALE` | Find scale factor | side_a, side_b, factor |
-| `SIMILAR_APPLY` | Apply scale factor | known_side, factor, result |
-| `UNIT_RATE_SETUP` | Setup unit rate | quantity, unit, total |
-| `UNIT_RATE_DIV` | Calculate rate | total, quantity, rate |
-| `UNIT_RATE_TABLE` | Show table data | x_values, y_values |
-| `UNIT_RATE_PICK` | Pick values from table | x, y |
-
-### Statistics
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `STAT_SETUP` | Setup dataset | values |
-| `STAT_SUM` | Sum values | expression, result |
-| `STAT_COUNT` | Count values | n |
-| `STAT_DIVIDE` | Divide for mean | expression, result |
-| `STAT_ORDER` | Order values | ordered_values |
-| `STAT_MIDDLE` | Find middle | position(s), value(s) |
-| `STAT_AVERAGE` | Average middle values | calculation, result |
-| `STAT_FREQUENCY` | Count frequency | value, count |
-| `STAT_MODE` | Identify mode | mode_value(s), frequency |
-| `STAT_MIN` | Find minimum | value |
-| `STAT_MAX` | Find maximum | value |
-| `STAT_RANGE` | Calculate range | calculation, result |
-| `STAT_MEAN` | Calculate mean | calculation, result |
-| `STAT_DEVIATION` | Calculate deviation | value, mean, deviation |
-| `STAT_ABS_DEV` | Absolute deviation | deviation, abs_deviation |
-| `STAT_MAD` | Mean absolute deviation | sum, count, result |
-| `SORT` | Sort values | unsorted, sorted |
-| `MEAN_DIV` | Divide for mean | sum, count, result |
-| `MODE_COUNT` | Count for mode | value, count |
-| `MODE` | Mode result | max_count, mode_values |
-| `MEDIAN_PAIR` | Middle pair for even count | value1, value2 |
-
-### Probability
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `PROB_SETUP` | Setup probability | description or favorable, total |
-| `PROB_IDENTIFY` | Identify probability | event, probability |
-| `PROB_INDEPENDENT` | Note independence | explanation |
-| `PROB_DEPENDENT` | Note dependence | explanation |
-| `PROB_CONDITIONAL` | Conditional probability | event, probability |
-| `PROB_MULTIPLY` | Multiply probabilities | prob1, prob2, result |
-
-### Percentages
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `PERCENT_TO_DEC` | Convert percent to decimal | percent, decimal |
-| `SETUP_PERCENT_EQ` | Setup equation | equation |
-| `REARRANGE_EQ` | Rearrange equation | rearranged |
-| `PERCENT_CALC_PART` | Calculate part | percent_dec, whole, result |
-| `DEC_TO_PERCENT` | Convert decimal to percent | decimal, percent |
-| `FRAC_TO_DEC` | Convert fraction to decimal | fraction, decimal |
-| `DEC_TO_FRAC` | Convert decimal to fraction | decimal, fraction |
-
-### Unit Conversions
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `CONV_FACTOR` | Conversion factor | from_unit, to_unit |
-| `CONV_RESULT` | Conversion result | from_value, to_value |
-
-### Place Value & Rounding
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `ROUND_CHECK` | Check rounding digit | value, place, comparison |
-| `ROUND_RESULT` | Rounding result | original, rounded |
-| `ALIGN_NUM` | Align for comparison | num1, num2 |
-| `CMP_NUM` | Compare numbers | num1, num2, relation |
-
-### Divisibility
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `DIV_CHECK` | Check divisibility | n, divisor, remainder |
-| `PRIME` | Mark as prime | n |
-| `COMPOSITE_FACTOR` | Show factor | factor, cofactor |
-
-### Graph Interpretation
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `GRAPH_DATA` | Graph type and data | graph_type, data_string |
-| `GRAPH_READ` | Read value | category/time, value |
-| `GRAPH_MIN` | Minimum value | category, value |
-| `GRAPH_MAX` | Maximum value | category, value |
-| `GRAPH_CHANGE` | Change between points | from, to, change |
-| `GRAPH_MAX_CHANGE` | Largest change | from, to, change |
-| `PICTO_KEY` | Pictograph key | symbol, value_per_symbol |
-| `PICTO_COUNT` | Count symbols | category, count |
-
-### Abacus
-| Code | Description | Arguments |
-|------|-------------|-----------|
-| `AB_SET` | Set initial number | number |
-| `AB_INFO` | Informational text | text |
-| `AB_ADD_DGT` | Add digits in column | col_name, calculation, sum |
-| `AB_CARRY` | Carry to next column | from_col, carry, to_col |
-| `AB_CARRY_FINAL` | Final carry | carry_value |
+The scratchpad vocabulary belongs to the model and evolves organically: generators may introduce new op-codes freely, and the legend is *descriptive*, not prescriptive. The pipeline validates only step *structure* (op-code present, field count, final `Z|` matching `final_answer`) — never the vocabulary. When writing generators, stay consistent within a generator and keep every step human-legible: the same cues a person would write on paper.
 
 ---
 

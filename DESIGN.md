@@ -1,11 +1,19 @@
 # Design Overview
 
 ## Architecture
-- **Core contract:** `ProblemGenerator.generate() -> dict` (in `base_generator.py`) returns `problem_id`, `operation`, human-readable `problem`, `steps` (list of delimited op-codes), and `final_answer`. The last step must start with `Z|`.
+- **Core contract:** `ProblemGenerator.generate() -> dict` (in `base_generator.py`) returns `problem_id`, `operation`, human-readable `problem`, `steps` (list of pipe-delimited op-code strings), and `final_answer`. The last step must be exactly `Z|<final_answer>`. The pipeline then stamps `grade_level` and `difficulty` from `curriculum.py` (generator-emitted values win).
 - **Generators:** One class per skill in `generators/` (e.g., `long_division_generator.py`). Each is independent, seeded via `random` in `dolphin_math_datagen.py`, and responsible for validating its own outputs before returning.
-- **Data flow:** `dolphin_math_datagen.py` seeds RNG, selects a generator, calls `generate()`, asserts required keys and final `Z|` step, then writes JSONL via `write_jsonl`. `--sample` prints one example per generator; `-n/-o/-s` builds datasets.
+- **Data flow:** `dolphin_math_datagen.py` seeds RNG, samples a skill (equal weight per class by default, `--weights` to override) then an instance within it, calls `generate()`, stamps metadata, runs `validate_example()`, dedups on `(operation, problem)`, then writes JSONL via `write_jsonl`. `--sample` prints one example per generator; `-n/-o/-s` builds datasets.
 - **Step encoding:** Steps are pipe-delimited strings built with `helpers.step()` and `DELIM="|"`. Opcodes capture atomic reasoning moves (divide, multiply, bring-down, etc.) and end with `Z` holding the formatted answer string.
-- **Extensibility:** To add a skill, create a new generator implementing `ProblemGenerator`, emit well-formed steps (including `Z|`), add it to `ALL_GENERATORS` in `dolphin_math_datagen.py`, and mirror tests in `tests/`.
+- **Extensibility:** To add a skill, create a new generator implementing `ProblemGenerator`, emit well-formed steps (including `Z|`), add it to `ALL_GENERATORS` in `dolphin_math_datagen.py`, add a `curriculum.CURRICULUM` entry, regenerate `OPCODES.md`, and mirror tests in `tests/`.
+
+## Pipeline
+- **Philosophy:** the scratchpad ultimately belongs to the model — it may invent its own op-codes. The op-code vocabulary is therefore *organic*: no fixed registry, no vocabulary enforcement. `OPCODES.md` is a generated, descriptive legend (`tools/gen_opcode_legend.py`, AST-scan of `step()` call sites plus sampled examples). One rule of hygiene is enforced socially, not mechanically: one op-code = one meaning (don't reuse an existing code with different field semantics).
+- **Validation (`validate_example`):** structure only — required keys, non-empty `steps` of non-empty strings, op-code present, at most 4 payload fields per step, final step `Z|<final_answer>` (string-coerced), `grade_level` in {elementary, middle, high}, `difficulty` an int in 1–5.
+- **Metadata:** `curriculum.py` maps every registered class to `grade_level`/`difficulty`; `stamp_metadata()` fills the keys post-`generate()` with setdefault semantics so generators can override per-instance. Test-enforced invariant: every `ALL_GENERATORS` class has a valid entry.
+- **Sampling:** instances group into skills by class name; each skill draws with equal probability (or its `--weights` override), then one instance uniformly within the skill. `MixedNumberOperationsRandom` is excluded from the default pool as a duplicate of the four `MixedNumberOperationGenerator` variants.
+- **Dedup & budget:** exact `(operation, problem)` repeats are skipped (unless `--allow-duplicates`); the attempt budget is `n*10 + 1000` with an early stop after `max(2000, n)` consecutive rejects (exhausted problem space). A per-generator stats table (emitted / duplicates skipped / errors) prints after every build, and `build_dataset` returns the same summary programmatically.
+- **Reproducibility:** with `-s/--seed`, builds are byte-for-byte deterministic (`helpers.jid()` draws UUIDs from the seeded `random` module); without a seed, natural randomness.
 
 ## Curriculum (Generators & Skills)
 - **Long Division:** Integers 2–99 divisors; includes bring-down (`B`), divide (`D`), multiply (`M`), subtract (`S`), remainder (`R`), and final `Z`.

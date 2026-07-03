@@ -17,8 +17,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
 [tool.setuptools]
-py-modules = ["dolphin_math_datagen", "base_generator", "helpers"]
+py-modules = ["dolphin_math_datagen", "base_generator", "helpers", "curriculum"]
 
 [tool.setuptools.packages.find]
 include = ["generators"]
