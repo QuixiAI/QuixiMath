@@ -96,6 +96,7 @@ from generators.geometric_sequence_generator import GeometricSequenceGenerator
 from generators.recursive_explicit_generator import RecursiveExplicitGenerator
 from generators.sigma_notation_generator import SigmaNotationGenerator
 from generators.pascal_triangle_generator import PascalTriangleGenerator
+from generators.complex_number_ops_generator import ComplexNumberOpsGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -351,6 +352,7 @@ ALL_GENERATORS = [
     RecursiveExplicitGenerator(),
     SigmaNotationGenerator(),
     PascalTriangleGenerator(),
+    ComplexNumberOpsGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
