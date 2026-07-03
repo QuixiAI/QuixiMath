@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------
-# ultra_math_dataset.py
+# dolphin_math_datagen.py
 # Main script to generate the dataset using individual generator classes.
 # -----------------------------------------------------------
 import json
@@ -8,13 +8,6 @@ import random
 import argparse
 import sys
 import os
-
-# Dynamically add the parent directory to sys.path to allow absolute imports
-# when running the script directly.
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
 
 # Import Generator Classes (from generators subdirectory)
 from generators.long_division_generator import LongDivisionGenerator
