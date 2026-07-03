@@ -60,6 +60,7 @@ from generators.graph_interpret_generator import GraphInterpretGenerator
 # Middle School (6-8) Generators
 from generators.integer_operations_generator import IntegerOperationsGenerator
 from generators.unit_rate_generator import UnitRateGenerator, UnitRateFromTableGenerator
+from generators.ratio_table_generator import RatioTableGenerator
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from generators.one_step_equation_generator import OneStepEquationGenerator
 from generators.two_step_equation_generator import TwoStepEquationGenerator
@@ -206,6 +207,7 @@ ALL_GENERATORS = [
     # --- Ratios & Proportions ---
     UnitRateGenerator(),
     UnitRateFromTableGenerator(),
+    RatioTableGenerator(),
     ScalingGenerator(),
     SimilarFiguresScaleGenerator(),
     ProportionalRelationshipGenerator(),

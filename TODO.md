@@ -102,7 +102,6 @@ Not new skills — multipliers on everything. **A0–A2 and A9 gate the Algebra 
 ## Backlog
 
 ### Ratios, Percents & Consumer Math
-- [ ] Ratio tables — fill missing entries, verify by cross-multiplication · `RatioTableGenerator` · middle · d3
 - [ ] Tip and bill-splitting (extends the implemented percent word problems) · `TipBillSplitGenerator` · middle · d3
 
 ### Equations & Inequalities (completion)
