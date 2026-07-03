@@ -71,6 +71,7 @@ from generators.factor_trinomial_generator import FactorTrinomialGenerator
 from generators.factor_special_forms_generator import FactorSpecialFormsGenerator
 from generators.factor_grouping_generator import FactorGroupingGenerator
 from generators.quadratic_factoring_generator import QuadraticFactoringGenerator
+from generators.quadratic_square_root_generator import QuadraticSquareRootGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -301,6 +302,7 @@ ALL_GENERATORS = [
     FactorSpecialFormsGenerator(),
     FactorGroupingGenerator(),
     QuadraticFactoringGenerator(),
+    QuadraticSquareRootGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
