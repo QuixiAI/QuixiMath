@@ -76,6 +76,28 @@ class TestFunctionEvaluationGenerator(unittest.TestCase):
                 elif f[0] == "A":
                     self.assertEqual(int(f[1]) + int(f[2]), int(f[3]), s)
 
+    def test_subst_always_parenthesizes_input(self):
+        """Regression: f(5) with rule -4x + 5 must render -4(5), not -45."""
+        gen = FunctionEvaluationGenerator()
+        for _ in range(400):
+            result = gen.generate()
+            if result["operation"] != "function_evaluation_rule":
+                continue
+            k = int(re.search(r"\((-?\d+)\)\.$", result["problem"]).group(1))
+            subst = next(s for s in result["steps"]
+                         if s.startswith(f"SUBST{DELIM}"))
+            expr = subst.split(DELIM)[3]
+            want = 2 if "^2" in expr else 1
+            self.assertEqual(expr.count(f"({k})"), want, subst)
+
+    def test_no_unit_coefficient_rendering(self):
+        """No '1x' / '-1x' style terms in rules."""
+        gen = FunctionEvaluationGenerator()
+        for _ in range(400):
+            result = gen.generate()
+            rule = result["problem"].split(", find")[0]
+            self.assertNotRegex(rule, r"(?<!\d)1[a-z]", rule)
+
     def test_table_lookup_matches_table(self):
         gen = FunctionEvaluationGenerator("table")
         for _ in range(100):

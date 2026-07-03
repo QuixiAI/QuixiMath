@@ -3,8 +3,9 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-def signed(n):
-    return f"({n})" if n < 0 else str(n)
+def sub(n):
+    """A substituted input is always parenthesized: f(3) = 2(3) + 5."""
+    return f"({n})"
 
 
 class FunctionEvaluationGenerator(ProblemGenerator):
@@ -57,7 +58,7 @@ class FunctionEvaluationGenerator(ProblemGenerator):
 
         k = random.choice([v for v in range(-9, 10) if v != 0])
         b = random.choice([v for v in range(-9, 10) if v != 0])
-        a = random.choice([v for v in range(-5, 6) if v not in (0, 1)])
+        a = random.choice([v for v in range(-5, 6) if v not in (-1, 0, 1)])
         b_txt = f"+ {b}" if b > 0 else f"- {-b}"
 
         if variant == "linear":
@@ -65,7 +66,7 @@ class FunctionEvaluationGenerator(ProblemGenerator):
             value = a * k + b
             steps = [
                 step("FUNC_SETUP", rule, f"{fname}({k})"),
-                step("SUBST", var, k, f"{a}{signed(k)} {b_txt}"),
+                step("SUBST", var, k, f"{a}{sub(k)} {b_txt}"),
                 step("M", a, k, a * k),
                 step("A", a * k, b, value),
                 step("Z", value),
@@ -75,7 +76,7 @@ class FunctionEvaluationGenerator(ProblemGenerator):
                               str(value))
 
         c = random.randint(-9, 9)
-        b2 = random.choice([v for v in range(-6, 7) if v != 0])
+        b2 = random.choice([v for v in range(-6, 7) if v not in (-1, 0, 1)])
         b2_txt = f"+ {b2}{var}" if b2 > 0 else f"- {-b2}{var}"
         c_txt = f"+ {c}" if c >= 0 else f"- {-c}"
         rule = f"{fname}({var}) = {a}{var}^2 {b2_txt} {c_txt}"
@@ -86,9 +87,9 @@ class FunctionEvaluationGenerator(ProblemGenerator):
         steps = [
             step("FUNC_SETUP", rule, f"{fname}({k})"),
             step("SUBST", var, k,
-                 f"{a}{signed(k)}^2 {'+' if b2 > 0 else '-'} "
-                 f"{abs(b2)}{signed(k)} {c_txt}"),
-            step("E", signed(k), 2, sq),
+                 f"{a}{sub(k)}^2 {'+' if b2 > 0 else '-'} "
+                 f"{abs(b2)}{sub(k)} {c_txt}"),
+            step("E", sub(k), 2, sq),
             step("M", a, sq, t1),
             step("M", b2, k, t2),
             step("A", t1, t2, t1 + t2),
