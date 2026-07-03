@@ -67,6 +67,7 @@ from generators.special_solution_equation_generator import SpecialSolutionEquati
 from generators.exponent_mixed_rules_generator import ExponentMixedRulesGenerator
 from generators.round_solids_generator import RoundSolidsGenerator
 from generators.factor_gcf_generator import FactorGCFGenerator
+from generators.factor_trinomial_generator import FactorTrinomialGenerator
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from generators.one_step_equation_generator import OneStepEquationGenerator
 from generators.two_step_equation_generator import TwoStepEquationGenerator
@@ -289,6 +290,7 @@ ALL_GENERATORS = [
     PolynomialAddSubGenerator(),
     MonomialMultDivGenerator(),
     FactorGCFGenerator(),
+    FactorTrinomialGenerator(),
     MultiplyingBinomialsGenerator(),
     MultiplyingPolynomialsGenerator(),
     PolynomialDivMonomialGenerator(),
