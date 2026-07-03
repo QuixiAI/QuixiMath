@@ -278,6 +278,6 @@ When adding a new generator:
 1. Create `generators/my_new_generator.py` extending `ProblemGenerator`
 2. Create `tests/test_my_new_generator.py` with unit tests
 3. **IMPORTANT**: Add import and instance to `ALL_GENERATORS` in `dolphin_math_datagen.py`
-4. Update `TODO.md` to mark the item as complete
+4. Delete the item's line from `TODO.md` (it's a pure backlog — only unimplemented skills are listed)
 5. Run `python dolphin_math_datagen.py --sample --generators MyNewGenerator` to verify output
 6. Run `python -m unittest discover tests` to ensure all tests pass
