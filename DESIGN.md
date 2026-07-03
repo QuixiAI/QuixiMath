@@ -80,7 +80,9 @@ referenced by their 1-indexed number.
   `final_answer` is the missing step verbatim (pipe format).
 - **Estimate-then-compute**: not a new record shape — a variant where steps
   open with `ESTIMATE|<rounding work>|<estimate>` and close with
-  `CHECK|magnitude|<estimate>|<exact>` before `Z`.
+  `ESTIMATE_CHECK|<estimate>|<exact>|<verdict>` before `Z`. (Its own code,
+  not `CHECK`: an estimate and the exact value agree only approximately,
+  and `CHECK`'s contract requires exact agreement.)
 
 ## Curriculum (Generators & Skills)
 - **Long Division:** Integers 2–99 divisors; includes bring-down (`B`), divide (`D`), multiply (`M`), subtract (`S`), remainder (`R`), and final `Z`.

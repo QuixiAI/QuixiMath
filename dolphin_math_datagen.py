@@ -297,6 +297,8 @@ ALL_GENERATORS = [
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
     FillInStepGenerator(),
+    MultiDigitMultiplicationGenerator(estimate=True),
+    LongDivisionGenerator(estimate=True),
     MultiplyingBinomialsGenerator(),
     MultiplyingPolynomialsGenerator(),
     PolynomialDivMonomialGenerator(),

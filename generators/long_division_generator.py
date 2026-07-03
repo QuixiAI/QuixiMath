@@ -3,14 +3,44 @@ from base_generator import ProblemGenerator
 from helpers import step, jid, DELIM
 
 class LongDivisionGenerator(ProblemGenerator):
-    """Generates long division problems (e.g., 1234 / 56)."""
+    """Generates long division problems (e.g., 1234 / 56).
+
+    With estimate=True, the steps open with a compatible-numbers ESTIMATE
+    (the nearest round number that divides evenly) and close with an
+    ESTIMATE_CHECK comparing the exact quotient against it.
+    """
+
+    def __init__(self, estimate: bool = False):
+        self.estimate = estimate
+        if estimate:
+            self.op_symbol = "estimate"
+
+    @staticmethod
+    def _compatible_estimate(dividend, divisor):
+        """Nearest m×10^t×divisor to the dividend -> (est_dividend, est_q)."""
+        best = None
+        for t in range(len(str(dividend))):
+            for m in range(1, 10):
+                v = m * 10 ** t * divisor
+                key = (abs(v - dividend), v)
+                if best is None or key < best[0]:
+                    best = (key, v, m * 10 ** t)
+        return best[1], best[2]
 
     def generate(self) -> dict:
         dividend = random.randint(10, 9999)
         divisor = random.randint(2, 99)
         steps = []
-        operation = "long_division"
+        operation = ("long_division_estimated" if self.estimate
+                     else "long_division")
         problem = f"{dividend} / {divisor}" # Use / for consistency
+
+        est_q = None
+        if self.estimate and dividend >= divisor:
+            est_dividend, est_q = self._compatible_estimate(dividend, divisor)
+            steps.append(step("ESTIMATE",
+                              f"{dividend} ÷ {divisor} ≈ {est_dividend} ÷ {divisor}",
+                              est_q))
 
         if dividend < divisor:  # trivial remainder-only case
             final_answer_str = f"0 R{dividend}"
@@ -80,12 +110,21 @@ class LongDivisionGenerator(ProblemGenerator):
                               f"{q_val}×{divisor}+{r_val}={q_val * divisor + r_val}",
                               str(dividend)))
 
+        if est_q is not None:
+            exact_q = 0 if dividend < divisor else int(q_str)
+            steps.append(step("ESTIMATE_CHECK", est_q, exact_q,
+                              f"{exact_q} ≈ {est_q} ✓"))
+
         steps.append(step("Z", final_answer_str)) # Final answer step
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation=operation,
             problem=problem,
             steps=steps,
             final_answer=final_answer_str
         )
+        if self.estimate:
+            result["grade_level"] = "middle"
+            result["difficulty"] = 3
+        return result

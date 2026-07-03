@@ -4,7 +4,7 @@
 
 The scratchpad vocabulary belongs to the model and evolves organically: generators may introduce new op-codes freely, and this legend is *descriptive*, not prescriptive. Steps are pipe-delimited strings (`CODE|field|field|...`, at most 4 payload fields) built with `helpers.step()`; the final step of every problem is `Z|<final_answer>`.
 
-261 distinct op-codes observed.
+263 distinct op-codes observed.
 
 | Code | Payload fields | Example | Used by |
 |---|---|---|---|
@@ -65,7 +65,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `DISC` | 3 | `DISC\|1089\|1080\|9` | quadratic_generator.py |
 | `DIST` | 3 | `DIST\|3\|-4x+3\|-12x+9` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py |
 | `DIST_COMBINE` | 1 | `DIST_COMBINE\|-20y + 105 = -15` | systems_substitution_generator.py |
-| `DIST_TERM` | 2 | `DIST_TERM\|-3x\|- 12x^3 - 15x^2 - 6x` | multiplying_polynomials_generator.py |
+| `DIST_TERM` | 2 | `DIST_TERM\|2x\|2x^3 - 8x^2 + 2x` | multiplying_polynomials_generator.py |
 | `DIV_CHECK` | 3 | `DIV_CHECK\|89\|2\|1` | divisibility_classification_generator.py |
 | `DIV_COEFF` | 3 | `DIV_COEFF\|-5\|-8\|x=5/8` | linear_complex_generator.py |
 | `DIV_SETUP` | 2 | `DIV_SETUP\|75\|10` | decimal_div_generator.py, percent_problem_generator.py |
@@ -77,6 +77,8 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `EQ_RESULT` | 2 | `EQ_RESULT\|x\|-8` | error_spotting_generator.py, fill_in_step_generator.py, linear_fractional_generator.py, one_step_equation_generator.py, special_solution_equation_generator.py, two_step_equation_generator.py |
 | `EQ_SETUP` | 1 | `EQ_SETUP\|x = 45/3` | error_spotting_generator.py, fill_in_step_generator.py, linear_fractional_generator.py, literal_equation_generator.py, one_step_equation_generator.py, proportion_word_problem_generator.py, special_solution_equation_generator.py, standard_form_conversion_generator.py, two_step_equation_generator.py |
 | `EQ_SIMPLIFY` | 1 | `EQ_SIMPLIFY\|10x = -70` | error_spotting_generator.py, fill_in_step_generator.py, linear_fractional_generator.py, two_step_equation_generator.py |
+| `ESTIMATE` | 2 | `ESTIMATE\|99566 × 33926 ≈ 100000 × 30000\|3000000000` | long_division_generator.py, multi_digit_multiplication_generator.py |
+| `ESTIMATE_CHECK` | 3 | `ESTIMATE_CHECK\|3000000000\|3377876116\|3377876116 ≈ 3000000000 ✓` | long_division_generator.py, multi_digit_multiplication_generator.py |
 | `EXP_EXPAND` | 1 | `EXP_EXPAND\|10 × 10` | exponent_generator.py |
 | `EXP_PARTIAL` | 3 | `EXP_PARTIAL\|10\|10\|100` | exponent_generator.py |
 | `EXP_RULE_APPLY` | 4 | `EXP_RULE_APPLY\|negate\|3\|\|3` | exponent_generator.py, exponent_mixed_rules_generator.py |
@@ -90,11 +92,11 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `FACT_PAIR` | 2 | `FACT_PAIR\|1\|107` | factors_generator.py |
 | `FIND_SLOPE` | 2 | `FIND_SLOPE\|Given slope (m1)\|3/2` | parallel_perpendicular_line_generator.py |
 | `FLAG` | 2 | `FLAG\|4\|11 × 2 = 22, not 20` | error_spotting_generator.py |
-| `FOIL_F` | 2 | `FOIL_F\|First: (-1x) * (6x)\|-6x^2` | multiplying_binomials_generator.py |
-| `FOIL_I` | 2 | `FOIL_I\|Inner: (-6) * (6x)\|-36x` | multiplying_binomials_generator.py |
-| `FOIL_L` | 2 | `FOIL_L\|Last: (-6) * (5)\|-30` | multiplying_binomials_generator.py |
-| `FOIL_O` | 2 | `FOIL_O\|Outer: (-1x) * (5)\|-5x` | multiplying_binomials_generator.py |
-| `FOIL_SETUP` | 1 | `FOIL_SETUP\|(-x - 6)(6x + 5)` | multiplying_binomials_generator.py |
+| `FOIL_F` | 2 | `FOIL_F\|First: (6x) * (8x)\|48x^2` | multiplying_binomials_generator.py |
+| `FOIL_I` | 2 | `FOIL_I\|Inner: (9) * (8x)\|72x` | multiplying_binomials_generator.py |
+| `FOIL_L` | 2 | `FOIL_L\|Last: (9) * (-5)\|-45` | multiplying_binomials_generator.py |
+| `FOIL_O` | 2 | `FOIL_O\|Outer: (6x) * (-5)\|-30x` | multiplying_binomials_generator.py |
+| `FOIL_SETUP` | 1 | `FOIL_SETUP\|(6x + 9)(8x - 5)` | multiplying_binomials_generator.py |
 | `FRAC_TO_DEC` | 2 | `FRAC_TO_DEC\|2/6\|0.3333333333` | fraction_decimal_percent_converter.py |
 | `GCD_RESULT` | 1 | `GCD_RESULT\|2` | lcm_generator.py |
 | `GCD_START` | 2 | `GCD_START\|35\|61` | gcf_generator.py, lcm_generator.py |
@@ -159,10 +161,10 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `POINT_SLOPE_SETUP` | 1 | `POINT_SLOPE_SETUP\|y - 6 = 2(x + 7)` | equation_from_two_points_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py |
 | `POLY_COMBINE` | 1 | `POLY_COMBINE\|4x^3 + 8x^2 - 8x + 4` | multiplying_binomials_generator.py, polynomial_add_sub_generator.py |
 | `POLY_DIST_NEG` | 1 | `POLY_DIST_NEG\|Distribute negative sign to second polynomial` | polynomial_add_sub_generator.py |
-| `POLY_DIV_SETUP` | 1 | `POLY_DIV_SETUP\|(3x^7 + 5x^5) / (x^3)` | polynomial_div_monomial_generator.py |
-| `POLY_DIV_SPLIT` | 1 | `POLY_DIV_SPLIT\|(3x^7) / (x^3) + (5x^5) / (x^3)` | polynomial_div_monomial_generator.py |
+| `POLY_DIV_SETUP` | 1 | `POLY_DIV_SETUP\|(- 40x^7 + 8x^5 - 32x^5 + 40x^5) / (8x^3)` | polynomial_div_monomial_generator.py |
+| `POLY_DIV_SPLIT` | 1 | `POLY_DIV_SPLIT\|(-40x^7) / (8x^3) + (8x^5) / (8x^3) + (-32x^5) / (8x^3) + (40x^5) / (8x^3)` | polynomial_div_monomial_generator.py |
 | `POLY_GROUP_LIKE` | 1 | `POLY_GROUP_LIKE\|(4x^3) + (8x^2) + (-1x -7x) + (9 -5)` | multiplying_polynomials_generator.py, polynomial_add_sub_generator.py |
-| `POLY_MULT_SETUP` | 1 | `POLY_MULT_SETUP\|(-3x - 5)(4x^2 + 5x + 2)` | multiplying_polynomials_generator.py |
+| `POLY_MULT_SETUP` | 1 | `POLY_MULT_SETUP\|(2x + 2)(x^2 - 4x + 1)` | multiplying_polynomials_generator.py |
 | `POLY_SETUP` | 1 | `POLY_SETUP\|(4x^3 - x + 9) + (8x^2 - 7x - 5)` | factor_gcf_generator.py, factor_trinomial_generator.py, polynomial_add_sub_generator.py |
 | `PRIME` | 1 | `PRIME\|89` | divisibility_classification_generator.py |
 | `PROB_CONDITIONAL` | 2 | `PROB_CONDITIONAL\|P(second spades\|first was spades)\|4/17 = 12/51` | compound_probability_generator.py |
