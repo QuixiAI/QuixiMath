@@ -70,6 +70,7 @@ from generators.factor_gcf_generator import FactorGCFGenerator
 from generators.factor_trinomial_generator import FactorTrinomialGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
+from generators.normal_table_generator import NormalTableGenerator
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from generators.one_step_equation_generator import OneStepEquationGenerator
 from generators.two_step_equation_generator import TwoStepEquationGenerator
@@ -299,6 +300,7 @@ ALL_GENERATORS = [
     FillInStepGenerator(),
     MultiDigitMultiplicationGenerator(estimate=True),
     LongDivisionGenerator(estimate=True),
+    NormalTableGenerator(),
     MultiplyingBinomialsGenerator(),
     MultiplyingPolynomialsGenerator(),
     PolynomialDivMonomialGenerator(),

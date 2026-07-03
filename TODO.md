@@ -252,12 +252,12 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 - [ ] Calendar arithmetic — days between dates, weekday counting · `CalendarArithmeticGenerator` · middle · d3
 - [ ] Fermi estimation with significant figures carried through the calculation · `FermiEstimationGenerator` · high · d4
 
-### Critic & Estimation Formats — PRIORITIZED (design shipped: DESIGN.md "Derived Record Formats")
-Format decision made: given scratchpads embed in the problem text as
-numbered pipe-dialect lines; no schema change. `ErrorSpottingGenerator`
-shipped (equation + ratio error models) — extend it with more error models
-(long division, fractions) as the library grows.
-- [ ] Normal distribution with z-table excerpt in the problem text (Principle 5 reframe of the removed lookup topics) · `NormalTableGenerator` · high · d4
+### Critic & Estimation Formats
+All four original items shipped (design: DESIGN.md "Derived Record
+Formats"). Remaining growth path: extend `ErrorSpottingGenerator` and
+`FillInStepGenerator` with more flows (long division, fractions,
+factoring), and the estimate variants to more computational generators,
+as the library grows.
 
 ---
 
