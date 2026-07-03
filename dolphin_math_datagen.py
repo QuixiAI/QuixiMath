@@ -62,6 +62,7 @@ from generators.integer_operations_generator import IntegerOperationsGenerator
 from generators.unit_rate_generator import UnitRateGenerator, UnitRateFromTableGenerator
 from generators.ratio_table_generator import RatioTableGenerator
 from generators.tip_bill_split_generator import TipBillSplitGenerator
+from generators.linear_fractional_generator import LinearFractionalGenerator
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from generators.one_step_equation_generator import OneStepEquationGenerator
 from generators.two_step_equation_generator import TwoStepEquationGenerator
@@ -225,6 +226,7 @@ ALL_GENERATORS = [
     # --- Inequalities ---
     OneStepInequalityGenerator(),
     TwoStepInequalityGenerator(),
+    LinearFractionalGenerator(),
 
     # --- Exponents & Roots ---
     ExponentEvaluationGenerator(),

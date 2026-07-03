@@ -102,7 +102,6 @@ Not new skills — multipliers on everything. **A0–A2 and A9 gate the Algebra 
 ## Backlog
 
 ### Equations & Inequalities (completion)
-- [ ] Linear equations/inequalities with fraction & decimal coefficients — clear denominators via LCD first · `LinearFractionalGenerator` · middle · d4
 - [ ] Special-solution equations — identities (infinitely many) and contradictions (none); scratchpad ends `0 = 5 → contradiction` · `SpecialSolutionEquationGenerator` · middle · d4
 - [ ] Order-of-operations edge cases with mixed numbers and decimals — difficulty variant of `OrderOfOperationsGenerator` (see A3) · middle · d4
 
