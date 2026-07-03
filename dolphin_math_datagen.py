@@ -69,6 +69,7 @@ from generators.round_solids_generator import RoundSolidsGenerator
 from generators.factor_gcf_generator import FactorGCFGenerator
 from generators.factor_trinomial_generator import FactorTrinomialGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
+from generators.fill_in_step_generator import FillInStepGenerator
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from generators.one_step_equation_generator import OneStepEquationGenerator
 from generators.two_step_equation_generator import TwoStepEquationGenerator
@@ -295,6 +296,7 @@ ALL_GENERATORS = [
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
+    FillInStepGenerator(),
     MultiplyingBinomialsGenerator(),
     MultiplyingPolynomialsGenerator(),
     PolynomialDivMonomialGenerator(),
@@ -431,7 +433,10 @@ def validate_example(example):
         fields = s.split(DELIM)
         if not fields[0]:
             raise ValueError(f"step {i} has an empty op-code: {s!r}")
-        if len(fields) > 5:
+        # The final Z step is exempt from the field-count check: it is
+        # constrained by exact equality with final_answer below, and critic
+        # formats put a pipe-format step inside the answer itself.
+        if len(fields) > 5 and i != len(steps) - 1:
             raise ValueError(f"step {i} has more than 4 payload fields: {s!r}")
     expected_final = f"Z{DELIM}{example['final_answer']}"
     if steps[-1] != expected_final:

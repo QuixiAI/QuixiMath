@@ -69,6 +69,7 @@ CURRICULUM = {
     "FactorGCFGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FactorTrinomialGenerator": {"grade_level": HIGH, "difficulty": 4},
     "ErrorSpottingGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "ScalingGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SimilarFiguresScaleGenerator": {"grade_level": MIDDLE, "difficulty": 3},

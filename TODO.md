@@ -257,7 +257,6 @@ Format decision made: given scratchpads embed in the problem text as
 numbered pipe-dialect lines; no schema change. `ErrorSpottingGenerator`
 shipped (equation + ratio error models) — extend it with more error models
 (long division, fractions) as the library grows.
-- [ ] Fill-in-the-missing-step — one given line blanked; answer is the missing step verbatim · `FillInStepGenerator` · middle · d3
 - [ ] Estimate-then-compute — ESTIMATE opens, CHECK|magnitude closes; variant flag on multiplication/division generators first · middle · d3
 - [ ] Normal distribution with z-table excerpt in the problem text (Principle 5 reframe of the removed lookup topics) · `NormalTableGenerator` · high · d4
 
