@@ -77,6 +77,7 @@ CURRICULUM = {
     "DiscriminantGenerator": {"grade_level": HIGH, "difficulty": 4},
     "RadicalVariableSimplifyGenerator": {"grade_level": HIGH, "difficulty": 4},
     "RadicalAddSubGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "RadicalMultiplyGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
