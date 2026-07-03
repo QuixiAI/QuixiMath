@@ -93,6 +93,7 @@ CURRICULUM = {
     "DomainRangeGenerator": {"grade_level": HIGH, "difficulty": 4},
     "InverseFunctionGenerator": {"grade_level": HIGH, "difficulty": 4},
     "ArithmeticSequenceGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "GeometricSequenceGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
