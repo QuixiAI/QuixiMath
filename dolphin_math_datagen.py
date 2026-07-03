@@ -91,6 +91,7 @@ from generators.function_operations_generator import FunctionOperationsGenerator
 from generators.function_composition_generator import FunctionCompositionGenerator
 from generators.domain_range_generator import DomainRangeGenerator
 from generators.inverse_function_generator import InverseFunctionGenerator
+from generators.arithmetic_sequence_generator import ArithmeticSequenceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -341,6 +342,7 @@ ALL_GENERATORS = [
     FunctionCompositionGenerator(),
     DomainRangeGenerator(),
     InverseFunctionGenerator(),
+    ArithmeticSequenceGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
