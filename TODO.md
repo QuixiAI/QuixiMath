@@ -119,7 +119,6 @@ bind extra hard at this level:
 ### Linear Algebra (beyond the small-matrix K-12 items)
 
 ### Differential Equations
-- [ ] Equilibria and stability of autonomous ODEs — sign analysis of f(y) · `StabilityGenerator` · college · d3
 
 ### Discrete Math & Combinatorics
 - [ ] Set algebra, power sets, Cartesian products · `SetOperationsGenerator` · college · d2

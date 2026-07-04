@@ -301,6 +301,7 @@ CURRICULUM = {
     "LaplaceIVPGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "ODESystemGenerator": {"grade_level": COLLEGE, "difficulty": 5},
     "SeriesSolutionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "StabilityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

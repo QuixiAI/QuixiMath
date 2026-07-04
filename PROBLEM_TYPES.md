@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**269 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**270 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5652,6 +5652,28 @@ Steps:
   SOLVE_CONST|C1 = -4|C2 = 1
   Z|x(t) = [-8e^(3t) + e^(4t), -4e^(3t) + e^(4t)]
 Answer: x(t) = [-8e^(3t) + e^(4t), -4e^(3t) + e^(4t)]
+```
+
+### Stability — `StabilityGenerator`  ·  college · difficulty 3
+
+Equilibria and stability for autonomous ODEs dy/dt = f(y).
+
+**Variants:** `stability_factored_polynomial`
+
+```
+Problem: For dy/dt = (y + 5)(y + 1)(y - 1), find equilibria and classify stability by sign analysis.
+Steps:
+  ODE_SETUP|dy/dt = (y + 5)(y + 1)(y - 1)|equilibria and stability
+  EQUILIBRIA|f(y) = 0|y=-5, y=-1, y=1
+  SIGN_TEST|(-inf, -5)|y = -6|f(y) = -35 (negative)|down
+  SIGN_TEST|(-5, -1)|y = -3|f(y) = 16 (positive)|up
+  SIGN_TEST|(-1, 1)|y = 0|f(y) = -5 (negative)|down
+  SIGN_TEST|(1, inf)|y = 2|f(y) = 21 (positive)|up
+  STABILITY|y=-5|left down, right up|unstable
+  STABILITY|y=-1|left up, right down|stable
+  STABILITY|y=1|left down, right up|unstable
+  Z|equilibria: y=-5 unstable; y=-1 stable; y=1 unstable
+Answer: equilibria: y=-5 unstable; y=-1 stable; y=1 unstable
 ```
 
 ## Graduate
