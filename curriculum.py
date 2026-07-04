@@ -147,6 +147,7 @@ CURRICULUM = {
     "MatrixOpsGenerator": {"grade_level": HIGH, "difficulty": 4},
     "DeterminantGenerator": {"grade_level": HIGH, "difficulty": 4},
     "MatrixInverseGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "CramersRuleGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

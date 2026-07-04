@@ -95,7 +95,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Trigonometry
 
 ### Vectors & Matrices
-- [ ] Cramer's rule · `CramersRuleGenerator` · high · d5
 - [ ] Row reduction / Gaussian elimination — superb tabular scratchpad material · `RowReductionGenerator` · high · d5
 
 ### Limits

@@ -146,6 +146,7 @@ from generators.dot_product_generator import DotProductGenerator
 from generators.matrix_ops_generator import MatrixOpsGenerator
 from generators.determinant_generator import DeterminantGenerator
 from generators.matrix_inverse_generator import MatrixInverseGenerator
+from generators.cramers_rule_generator import CramersRuleGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -451,6 +452,7 @@ ALL_GENERATORS = [
     MatrixOpsGenerator(),
     DeterminantGenerator(),
     MatrixInverseGenerator(),
+    CramersRuleGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
