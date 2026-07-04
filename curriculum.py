@@ -440,6 +440,7 @@ CURRICULUM = {
     "FirstLawGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "HeatEngineGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "EntropyChangeGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "CalorimetryGenerator": {"grade_level": COLLEGE, "difficulty": 2},
 }
 
 

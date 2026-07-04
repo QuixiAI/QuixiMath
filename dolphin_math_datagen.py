@@ -375,6 +375,7 @@ from generators.gas_law_generator import GasLawGenerator
 from generators.first_law_generator import FirstLawGenerator
 from generators.heat_engine_generator import HeatEngineGenerator
 from generators.entropy_change_generator import EntropyChangeGenerator
+from generators.calorimetry_generator import CalorimetryGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -921,6 +922,7 @@ ALL_GENERATORS = [
     FirstLawGenerator(),
     HeatEngineGenerator(),
     EntropyChangeGenerator(),
+    CalorimetryGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

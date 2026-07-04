@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**408 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**409 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8046,6 +8046,22 @@ Steps:
   LOG_TERM|7|ln(10)|7*ln(10)
   Z|DeltaS=7*ln(10) J/K
 Answer: DeltaS=7*ln(10) J/K
+```
+
+### Calorimetry — `CalorimetryGenerator`  ·  college · difficulty 2
+
+Calorimetry with sensible heat and phase changes.
+
+**Variants:** `calorimetry_ice_to_water`, `calorimetry_phase_change`, `calorimetry_temperature_change`
+
+```
+Problem: A substance of mass m=25 kg undergoes a phase change with latent heat L=225 J/kg. Find heat q.
+Steps:
+  CAL_SETUP|phase_change|m=25|L=225
+  CAL_FORMULA|q=m*L
+  M|25|225|5625
+  Z|q=5625 J
+Answer: q=5625 J
 ```
 
 ## Graduate
