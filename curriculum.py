@@ -420,6 +420,7 @@ CURRICULUM = {
     "ZTransformGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "SignalArithmeticGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "TransferFunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "RouthHurwitzGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**388 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**389 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9437,4 +9437,26 @@ Steps:
   TRANSFER|T(s)=7/(s^2+14s+52)
   Z|T(s)=7/(s^2+14s+52)
 Answer: T(s)=7/(s^2+14s+52)
+```
+
+### Routh Hurwitz — `RouthHurwitzGenerator`  ·  graduate · difficulty 4
+
+Cubic Routh-Hurwitz stability array.
+
+**Variants:** `routh_hurwitz_cubic`
+
+```
+Problem: Build the Routh-Hurwitz array for p(s)=s^3+25s^2+27s+6 and determine stability.
+Steps:
+  ROUTH_SETUP|p(s)=s^3+25s^2+27s+6
+  ROUTH_ROW|s^3|1, 27
+  ROUTH_ROW|s^2|25, 6
+  M|25|27|675
+  S|675|6|669
+  D|669|25|669/25
+  ROUTH_ROW|s^1|669/25, 0
+  ROUTH_ROW|s^0|6
+  CHECK|first column=[1,25,669/25,6]|stable
+  Z|first column=[1,25,669/25,6]; stable
+Answer: first column=[1,25,669/25,6]; stable
 ```

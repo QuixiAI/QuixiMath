@@ -156,7 +156,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Optimization & Operations Research
 
 ### Signals & Systems / Control
-- [ ] Routh-Hurwitz stability array · `RouthHurwitzGenerator` · graduate · d4
 
 ### Physics — Mechanics
 - [ ] Projectile motion — full trajectory solves with components · `ProjectileMotionGenerator` · college · d2
