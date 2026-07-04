@@ -2,6 +2,7 @@ import random
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.systems_elimination_generator import coeff_term
 
 
 def vertex_text(x_value, y_value):
@@ -53,7 +54,7 @@ class LPCornerGenerator(ProblemGenerator):
         best_value = values[best_index]
 
         steps = [
-            step("LP_CORNER_SETUP", f"max z={c1}x+{c2}y",
+            step("LP_CORNER_SETUP", f"max z={coeff_term(c1, 'x')}+{coeff_term(c2, 'y')}",
                  f"0<=x<={x_bound}, 0<=y<={y_bound}",
                  f"x+y<={diagonal}"),
             step("VERTEX_SOLVE", "x=0", "y=0"),
@@ -89,7 +90,7 @@ class LPCornerGenerator(ProblemGenerator):
         )
         steps.append(step("Z", answer))
         problem = (
-            f"Use the corner-point method to maximize z = {c1}x + {c2}y "
+            f"Use the corner-point method to maximize z = {coeff_term(c1, 'x')} + {coeff_term(c2, 'y')} "
             f"subject to 0 <= x <= {x_bound}, 0 <= y <= {y_bound}, "
             f"and x + y <= {diagonal}."
         )

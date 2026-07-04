@@ -4,11 +4,21 @@ from helpers import step, jid
 
 
 class SimpleStatsGenerator(ProblemGenerator):
-    """Computes mean, median, and mode for small integer datasets."""
+    """Computes mean, median, and mode for small integer datasets.
+
+    Mean datasets are constructed with the sum divisible by the count so
+    the answer is an exact integer (hand-friendly); an even-count median
+    is an integer or ends in .5 — never a rounded float.
+    """
 
     def generate(self) -> dict:
-        data = [random.randint(1, 20) for _ in range(random.randint(5, 9))]
         target = random.choice(["mean", "median", "mode"])
+        size = random.randint(5, 9)
+        data = [random.randint(1, 20) for _ in range(size)]
+        if target == "mean":
+            # Redraw until the sum divides evenly: exact integer mean
+            while sum(data) % size:
+                data = [random.randint(1, 20) for _ in range(size)]
         steps = []
 
         # Sort for median/mode clarity
@@ -21,8 +31,9 @@ class SimpleStatsGenerator(ProblemGenerator):
                 new_total = total + val
                 steps.append(step("A", total, val, new_total))
                 total = new_total
-            steps.append(step("MEAN_DIV", total, len(sorted_data), total / len(sorted_data)))
-            final_answer = f"{total / len(sorted_data):.2f}"
+            mean_value = total // len(sorted_data)
+            steps.append(step("MEAN_DIV", total, len(sorted_data), mean_value))
+            final_answer = str(mean_value)
             operation = "mean"
             problem = f"Find mean of {sorted_data}"
 
@@ -35,8 +46,10 @@ class SimpleStatsGenerator(ProblemGenerator):
             else:
                 pair = (sorted_data[mid - 1], sorted_data[mid])
                 steps.append(step("MEDIAN_PAIR", pair[0], pair[1]))
-                median = (pair[0] + pair[1]) / 2
-                steps.append(step("MEAN_DIV", pair[0] + pair[1], 2, median))
+                pair_sum = pair[0] + pair[1]
+                # Exact: integer when the sum is even, else n.5
+                median = pair_sum // 2 if pair_sum % 2 == 0 else f"{pair_sum // 2}.5"
+                steps.append(step("MEAN_DIV", pair_sum, 2, median))
             final_answer = str(median)
             operation = "median"
             problem = f"Find median of {sorted_data}"

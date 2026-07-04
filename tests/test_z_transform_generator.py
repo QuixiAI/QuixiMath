@@ -11,6 +11,7 @@ if repo_root not in sys.path:
 from generators.z_transform_generator import (
     ZTransformGenerator,
     power_base_text,
+    scaled_power_text,
     seq_text,
     transform_text,
     z_denom_text,
@@ -18,12 +19,14 @@ from generators.z_transform_generator import (
 from helpers import DELIM
 
 
+# amplitude / coefficient 1 is dropped in the rendering, so the leading
+# "{amplitude}*" and the difference coefficient are optional groups
 GEOM_RE = re.compile(
-    r"Find the z-transform of x\[n\]=(\d+)\*(\(?-?\d+\)?)\^n u\[n\] and "
+    r"Find the z-transform of x\[n\]=(?:(\d+)\*)?(\(?-?\d+\)?)\^n u\[n\] and "
     r"compute x\[0\] through x\[3\]\."
 )
 DIFF_RE = re.compile(
-    r"Solve y\[n\]-(\(?-?\d+\)?)y\[n-1\]=delta\[n\] with y\[-1\]=0 using "
+    r"Solve y\[n\]-(\(?-?\d+\)?)?y\[n-1\]=delta\[n\] with y\[-1\]=0 using "
     r"z-transforms, and list y\[0\] through y\[4\]\."
 )
 
@@ -37,12 +40,12 @@ def make_step(*parts):
 
 def expected_geometric(problem):
     amplitude_raw, r_raw = GEOM_RE.fullmatch(problem).groups()
-    amplitude = int(amplitude_raw)
+    amplitude = int(amplitude_raw) if amplitude_raw else 1
     r_value = int(r_raw.strip("()"))
     terms = []
     steps = [
         make_step("ZT_SETUP", "geometric",
-                  f"x[n]={amplitude}*{power_base_text(r_value)}^n u[n]"),
+                  f"x[n]={scaled_power_text(amplitude, r_value)}"),
         make_step("ZT_PAIR", "Z{r^n u[n]}=1/(1-r z^-1)"),
         make_step("REWRITE", f"X(z)={transform_text(amplitude, r_value)}"),
     ]
@@ -63,8 +66,9 @@ def expected_geometric(problem):
 
 
 def expected_difference(problem):
-    a_value = int(DIFF_RE.fullmatch(problem).group(1).strip("()"))
-    a_text = power_base_text(a_value)
+    a_raw = DIFF_RE.fullmatch(problem).group(1)
+    a_value = int(a_raw.strip("()")) if a_raw else 1
+    a_text = "" if a_value == 1 else power_base_text(a_value)
     terms = []
     steps = [
         make_step("ZT_SETUP", "difference",

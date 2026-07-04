@@ -10,6 +10,12 @@ def fraction_text(value):
 
 
 def imag_text(value):
+    # Coefficient 1 is dropped: j / -j, not 1j / -1j
+    value = Fraction(value)
+    if value == 1:
+        return "j"
+    if value == -1:
+        return "-j"
     return f"{fraction_text(value)}j"
 
 
@@ -21,7 +27,8 @@ def complex_text(real, imag):
     if real == 0:
         return imag_text(imag)
     sign = "+" if imag > 0 else "-"
-    return f"{fraction_text(real)}{sign}{fraction_text(abs(imag))}j"
+    imag_part = "j" if abs(imag) == 1 else f"{fraction_text(abs(imag))}j"
+    return f"{fraction_text(real)}{sign}{imag_part}"
 
 
 class ACCircuitGenerator(ProblemGenerator):

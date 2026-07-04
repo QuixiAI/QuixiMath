@@ -10,6 +10,26 @@ def fraction_text(value):
     return str(Fraction(value))
 
 
+def power_factor(base, exponent):
+    """Answer-format rendering: ^0 drops the factor, ^1 drops the caret."""
+    if exponent == 0:
+        return ""
+    if exponent == 1:
+        return base
+    return f"{base}^{exponent}"
+
+
+def pdf_formula_text(coef, k_minus, n_minus):
+    factors = [f for f in (power_factor("x", k_minus),
+                           power_factor("(1-x)", n_minus)) if f]
+    coef_text = fraction_text(coef)
+    if not factors:
+        return coef_text
+    if coef == 1:
+        return "*".join(factors)
+    return "*".join([coef_text] + factors)
+
+
 class OrderStatisticsGenerator(ProblemGenerator):
     """
     Uniform(0,1) order statistic pdf, moments, and exact pdf evaluation.
@@ -52,7 +72,7 @@ class OrderStatisticsGenerator(ProblemGenerator):
         var_den = n_plus_one_sq * n_plus_two
         variance = Fraction(var_num, var_den)
 
-        pdf_formula = f"{fraction_text(coef)}*x^{k_minus}*(1-x)^{n_minus}"
+        pdf_formula = pdf_formula_text(coef, k_minus, n_minus)
         steps = [
             step("ORDER_SETUP", f"n={n}", f"k={k}",
                  f"q={fraction_text(q)}"),

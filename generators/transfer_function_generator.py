@@ -55,11 +55,13 @@ class TransferFunctionGenerator(ProblemGenerator):
         b_value = p1 + p2
         c_value = p1 * p2
         numerator_constant = gain * zero
-        numerator = f"{gain}s+{numerator_constant}"
+        # Coefficient 1 is dropped: s+3, not 1s+3
+        gain_text = "" if gain == 1 else str(gain)
+        numerator = f"{gain_text}s+{numerator_constant}"
         denominator = poly2_text(b_value, c_value)
         steps = [
             step("TF_SETUP", "ode",
-                 f"y''+{b_value}y'+{c_value}y={gain}x'+{numerator_constant}x",
+                 f"y''+{b_value}y'+{c_value}y={gain_text}x'+{numerator_constant}x",
                  "zero initial conditions"),
             step("A", p1, p2, b_value),
             step("M", p1, p2, c_value),
@@ -78,7 +80,7 @@ class TransferFunctionGenerator(ProblemGenerator):
         )
         problem = (
             f"With zero initial conditions, find the transfer function, zero, "
-            f"and poles for y''+{b_value}y'+{c_value}y={gain}x'+"
+            f"and poles for y''+{b_value}y'+{c_value}y={gain_text}x'+"
             f"{numerator_constant}x."
         )
         return problem, steps, answer

@@ -1,6 +1,9 @@
 import random
+from fractions import Fraction
+
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.exponential_model_generator import dec
 
 
 class ExponentEvaluationGenerator(ProblemGenerator):
@@ -335,28 +338,19 @@ class ScientificNotationGenerator(ProblemGenerator):
 
     def _generate_to_scientific(self) -> dict:
         """Convert standard form to scientific notation."""
-        # Generate a coefficient (1 <= c < 10)
-        coefficient = random.randint(10, 99) / 10  # gives 1.0 to 9.9
+        # Generate a coefficient (1 <= c < 10), in exact tenths
+        coefficient = Fraction(random.randint(10, 99), 10)
 
         # Generate power
         power = random.choice([-6, -5, -4, -3, -2, 3, 4, 5, 6, 7, 8])
 
-        # Calculate standard form number
-        number = coefficient * (10 ** power)
-
-        # Format number for display
-        if power >= 0:
-            number_str = f"{int(number)}" if number == int(number) else f"{number:.0f}"
-        else:
-            number_str = f"{number:.{-power + 1}f}".rstrip('0').rstrip('.')
+        # Calculate standard form number exactly
+        number = coefficient * Fraction(10) ** power
+        number_str = dec(number)
 
         problem = f"Write in scientific notation: {number_str}"
 
-        # Format answer
-        if coefficient == int(coefficient):
-            answer = f"{int(coefficient)} × 10^{power}"
-        else:
-            answer = f"{coefficient} × 10^{power}"
+        answer = f"{dec(coefficient)} × 10^{power}"
 
         steps = []
         steps.append(step("SCI_SETUP", number_str))
@@ -366,7 +360,7 @@ class ScientificNotationGenerator(ProblemGenerator):
         else:
             steps.append(step("SCI_MOVE_DECIMAL", "right", -power))
 
-        steps.append(step("SCI_IDENTIFY", coefficient, power))
+        steps.append(step("SCI_IDENTIFY", dec(coefficient), power))
         steps.append(step("Z", answer))
 
         return dict(
@@ -379,33 +373,20 @@ class ScientificNotationGenerator(ProblemGenerator):
 
     def _generate_from_scientific(self) -> dict:
         """Convert scientific notation to standard form."""
-        coefficient = random.randint(10, 99) / 10
+        coefficient = Fraction(random.randint(10, 99), 10)
         power = random.choice([-5, -4, -3, -2, 2, 3, 4, 5, 6])
 
-        # Format input
-        if coefficient == int(coefficient):
-            sci_notation = f"{int(coefficient)} × 10^{power}"
-        else:
-            sci_notation = f"{coefficient} × 10^{power}"
+        sci_notation = f"{dec(coefficient)} × 10^{power}"
 
         problem = f"Write in standard form: {sci_notation}"
 
-        # Calculate standard form
-        number = coefficient * (10 ** power)
-
-        # Format answer
-        if power >= 0:
-            if number == int(number):
-                answer = str(int(number))
-            else:
-                answer = str(number)
-        else:
-            # Format with appropriate decimal places
-            answer = f"{number:.{-power + 1}f}".rstrip('0').rstrip('.')
+        # Calculate standard form exactly
+        number = coefficient * Fraction(10) ** power
+        answer = dec(number)
 
         steps = []
         steps.append(step("SCI_SETUP", sci_notation))
-        steps.append(step("SCI_IDENTIFY", coefficient, power))
+        steps.append(step("SCI_IDENTIFY", dec(coefficient), power))
 
         if power > 0:
             steps.append(step("SCI_MOVE_DECIMAL", "right", power))
@@ -424,14 +405,15 @@ class ScientificNotationGenerator(ProblemGenerator):
 
     def _generate_multiply(self) -> dict:
         """Multiply two numbers in scientific notation."""
-        # Generate two scientific notation numbers
-        c1 = random.randint(10, 50) / 10
-        c2 = random.randint(10, 50) / 10
+        # Generate two scientific notation numbers, in exact tenths
+        c1 = Fraction(random.randint(10, 50), 10)
+        c2 = Fraction(random.randint(10, 50), 10)
         p1 = random.randint(2, 6)
         p2 = random.randint(2, 6)
 
-        # Calculate result
-        c_result = c1 * c2
+        # Calculate result exactly (raw product has at most 2 decimals)
+        raw = c1 * c2
+        c_result = raw
         p_result = p1 + p2
 
         # Adjust if coefficient >= 10
@@ -440,22 +422,20 @@ class ScientificNotationGenerator(ProblemGenerator):
             p_result += 1
 
         # Format inputs
-        n1 = f"({c1} × 10^{p1})"
-        n2 = f"({c2} × 10^{p2})"
+        n1 = f"({dec(c1)} × 10^{p1})"
+        n2 = f"({dec(c2)} × 10^{p2})"
 
         problem = f"Multiply: {n1} × {n2}"
 
-        # Round coefficient for clean answer
-        c_result = round(c_result, 2)
-        answer = f"{c_result} × 10^{p_result}"
+        answer = f"{dec(c_result)} × 10^{p_result}"
 
         steps = []
         steps.append(step("SCI_SETUP", f"{n1} × {n2}"))
-        steps.append(step("SCI_OPERATION", "multiply_coefficients", c1, c2, c1 * c2))
+        steps.append(step("SCI_OPERATION", "multiply_coefficients", dec(c1), dec(c2), dec(raw)))
         steps.append(step("SCI_OPERATION", "add_exponents", p1, p2, p1 + p2))
 
-        if c1 * c2 >= 10:
-            steps.append(step("SCI_OPERATION", "adjust_coefficient", c1 * c2, c_result, p_result))
+        if raw >= 10:
+            steps.append(step("SCI_OPERATION", "adjust_coefficient", dec(raw), dec(c_result), p_result))
 
         steps.append(step("Z", answer))
 
@@ -469,10 +449,11 @@ class ScientificNotationGenerator(ProblemGenerator):
 
     def _generate_divide(self) -> dict:
         """Divide two numbers in scientific notation."""
-        # Generate two scientific notation numbers
-        # Use clean coefficients to avoid floating point issues
-        # c2 choices that divide cleanly: 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0
-        c2_options = [1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0]
+        # Generate two scientific notation numbers, constructed so the
+        # coefficient quotient is exact
+        c2_options = [Fraction(10, 10), Fraction(15, 10), Fraction(20, 10),
+                      Fraction(25, 10), Fraction(30, 10), Fraction(40, 10),
+                      Fraction(50, 10)]
         c2 = random.choice(c2_options)
         multiplier = random.randint(2, 8)
         c1 = c2 * multiplier
@@ -480,8 +461,9 @@ class ScientificNotationGenerator(ProblemGenerator):
         p1 = random.randint(5, 10)
         p2 = random.randint(2, 4)
 
-        # Calculate result
-        c_result = c1 / c2
+        # Calculate result exactly (c1/c2 is the integer multiplier)
+        raw = c1 / c2
+        c_result = raw
         p_result = p1 - p2
 
         # Adjust if coefficient >= 10
@@ -489,25 +471,21 @@ class ScientificNotationGenerator(ProblemGenerator):
             c_result /= 10
             p_result += 1
 
-        # Round to avoid floating point display issues
-        c1 = round(c1, 1)
-        c_result = round(c_result, 2)
-
         # Format inputs
-        n1 = f"({c1} × 10^{p1})"
-        n2 = f"({c2} × 10^{p2})"
+        n1 = f"({dec(c1)} × 10^{p1})"
+        n2 = f"({dec(c2)} × 10^{p2})"
 
         problem = f"Divide: {n1} ÷ {n2}"
 
-        answer = f"{c_result} × 10^{p_result}"
+        answer = f"{dec(c_result)} × 10^{p_result}"
 
         steps = []
         steps.append(step("SCI_SETUP", f"{n1} ÷ {n2}"))
-        steps.append(step("SCI_OPERATION", "divide_coefficients", c1, c2, round(c1 / c2, 2)))
+        steps.append(step("SCI_OPERATION", "divide_coefficients", dec(c1), dec(c2), dec(raw)))
         steps.append(step("SCI_OPERATION", "subtract_exponents", p1, p2, p1 - p2))
 
-        if c1 / c2 >= 10:
-            steps.append(step("SCI_OPERATION", "adjust_coefficient", round(c1 / c2, 2), c_result, p_result))
+        if raw >= 10:
+            steps.append(step("SCI_OPERATION", "adjust_coefficient", dec(raw), dec(c_result), p_result))
 
         steps.append(step("Z", answer))
 

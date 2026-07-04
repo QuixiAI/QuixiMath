@@ -58,7 +58,18 @@ def expected_flow(example):
     n_plus_two = n_plus_one + 1
     var_den = n_plus_one_sq * n_plus_two
     variance = Fraction(var_num, var_den)
-    pdf_formula = f"{fraction_text(coef)}*x^{k_minus}*(1-x)^{n_minus}"
+    # Answer-format conventions: drop ^0 factors, render ^1 as the bare base
+    factors = []
+    if k_minus == 1:
+        factors.append("x")
+    elif k_minus > 1:
+        factors.append(f"x^{k_minus}")
+    if n_minus == 1:
+        factors.append("(1-x)")
+    elif n_minus > 1:
+        factors.append(f"(1-x)^{n_minus}")
+    pdf_formula = "*".join(([fraction_text(coef)] if coef != 1 or not factors
+                            else []) + factors)
     steps = [
         make_step("ORDER_SETUP", f"n={n}", f"k={k}",
                   f"q={fraction_text(q)}"),
@@ -167,6 +178,13 @@ class TestOrderStatisticsGenerator(unittest.TestCase):
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
             self.assertNotIn(DELIM, result["final_answer"])
+
+    def test_pdf_formula_follows_answer_format_conventions(self):
+        # No x^0 / (1-x)^0 factors and no ^1 in the rendered pdf
+        for _ in range(300):
+            answer = self.gen.generate()["final_answer"]
+            self.assertNotIn("^0", answer)
+            self.assertNotRegex(answer, r"\^1(?!\d)")
 
 
 if __name__ == "__main__":

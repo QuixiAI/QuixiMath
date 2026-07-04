@@ -12,8 +12,10 @@ from generators.lp_corner_generator import LPCornerGenerator, vertex_text
 from helpers import DELIM
 
 
+# coefficient 1 is rendered without the digit (x, not 1x), so the
+# coefficient groups are optional
 PROBLEM_RE = re.compile(
-    r"Use the corner-point method to maximize z = (\d+)x \+ (\d+)y "
+    r"Use the corner-point method to maximize z = (\d*)x \+ (\d*)y "
     r"subject to 0 <= x <= (\d+), 0 <= y <= (\d+), and x \+ y <= "
     r"(\d+)\."
 )
@@ -29,7 +31,8 @@ def make_step(*parts):
 def parse_problem(problem):
     match = PROBLEM_RE.fullmatch(problem)
     assert match is not None, problem
-    return tuple(int(match.group(i)) for i in range(1, 6))
+    return tuple(int(match.group(i)) if match.group(i) else 1
+                 for i in range(1, 6))
 
 
 def objective_value(c1, c2, vertex):
@@ -51,8 +54,10 @@ def expected_flow(example):
     values = [objective_value(c1, c2, vertex) for vertex in vertices]
     best_value = max(values)
     best_vertex = vertices[values.index(best_value)]
+    x_term_text = "x" if c1 == 1 else f"{c1}x"
+    y_term_text = "y" if c2 == 1 else f"{c2}y"
     steps = [
-        make_step("LP_CORNER_SETUP", f"max z={c1}x+{c2}y",
+        make_step("LP_CORNER_SETUP", f"max z={x_term_text}+{y_term_text}",
                   f"0<=x<={x_bound}, 0<=y<={y_bound}",
                   f"x+y<={diagonal}"),
         make_step("VERTEX_SOLVE", "x=0", "y=0"),

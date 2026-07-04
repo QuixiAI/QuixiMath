@@ -12,8 +12,9 @@ from generators.simplex_generator import SimplexGenerator
 from helpers import DELIM
 
 
+# c2 = 1 renders without the coefficient (y, not 1y), so its group is optional
 PROBLEM_RE = re.compile(
-    r"Use the simplex method to maximize z = (\d+)x \+ (\d+)y "
+    r"Use the simplex method to maximize z = (\d+)x \+ (\d*)y "
     r"subject to x <= (\d+), y <= (\d+), x >= 0, y >= 0\."
 )
 
@@ -28,7 +29,9 @@ def make_step(*parts):
 def parse_problem(problem):
     match = PROBLEM_RE.fullmatch(problem)
     assert match is not None, problem
-    c1, c2, x_bound, y_bound = (int(match.group(i)) for i in range(1, 5))
+    c1 = int(match.group(1))
+    c2 = int(match.group(2)) if match.group(2) else 1
+    x_bound, y_bound = int(match.group(3)), int(match.group(4))
     return c1, c2, x_bound, y_bound
 
 
@@ -37,13 +40,14 @@ def expected_flow(example):
     zx = c1 * x_bound
     zy = c2 * y_bound
     z_value = zx + zy
+    y_term = "y" if c2 == 1 else f"{c2}y"
     steps = [
-        make_step("SIMPLEX_SETUP", f"max z={c1}x+{c2}y",
+        make_step("SIMPLEX_SETUP", f"max z={c1}x+{y_term}",
                   f"x<={x_bound}", f"y<={y_bound}"),
         make_step("TABLEAU", "initial",
                   f"s1: x + s1 = {x_bound}",
                   f"s2: y + s2 = {y_bound}"),
-        make_step("TABLEAU", "z row", f"-{c1}x - {c2}y + z = 0"),
+        make_step("TABLEAU", "z row", f"-{c1}x - {y_term} + z = 0"),
         make_step("ENTER", "x", f"most negative reduced cost -{c1}"),
         make_step("D", x_bound, 1, x_bound),
         make_step("RATIO", "s1 row", f"{x_bound}/1", x_bound),
@@ -52,7 +56,7 @@ def expected_flow(example):
         make_step("M", c1, x_bound, zx),
         make_step("TABLEAU", "after x pivot",
                   f"x={x_bound} - s1",
-                  f"z row: -{c2}y + {c1}s1 + z = {zx}"),
+                  f"z row: -{y_term} + {c1}s1 + z = {zx}"),
         make_step("ENTER", "y", f"remaining negative reduced cost -{c2}"),
         make_step("D", y_bound, 1, y_bound),
         make_step("RATIO", "s2 row", f"{y_bound}/1", y_bound),

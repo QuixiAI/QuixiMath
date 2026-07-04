@@ -1,12 +1,19 @@
 import random
+from fractions import Fraction
+
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.exponential_model_generator import dec
 
 
 class DimensionalAnalysisGenerator(ProblemGenerator):
     """
     Performs multi-factor dimensional analysis across dosing (mg/kg), flow rates,
     pressure, and rate conversions with explicit factor-label multiplications/divisions.
+
+    All arithmetic is exact: factor values are Fractions rendered as
+    terminating decimals, and kPa->atm inputs are constructed backward as
+    multiples of 101.325 so the division is exact.
     """
 
     def generate(self) -> dict:
@@ -17,6 +24,7 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
                 "value_unit": "kg",
                 "target_unit": "mg",
                 "factors": [("dosage", "10 mg", "1 kg")],  # 10 mg/kg
+                "note": " at a dosage of 10 mg per kg",
             },
             {
                 "type": "flow",
@@ -35,6 +43,7 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
                 "target_unit": "kPa",
                 # 1 psi ≈ 6.9 kPa (rounded)
                 "factors": [("pressure", "6.9 kPa", "1 psi")],
+                "note": " using 1 psi = 6.9 kPa",
             },
             {
                 "type": "pressure_atm",
@@ -43,6 +52,7 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
                 "target_unit": "atm",
                 # 1 atm = 101.325 kPa => multiply by 1/101.325
                 "factors": [("pressure", "1 atm", "101.325 kPa")],
+                "note": " using 1 atm = 101.325 kPa",
             },
             {
                 "type": "pressure_atm_to_kpa",
@@ -50,6 +60,7 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
                 "value_unit": "atm",
                 "target_unit": "kPa",
                 "factors": [("pressure", "101.325 kPa", "1 atm")],
+                "note": " using 1 atm = 101.325 kPa",
             },
             {
                 "type": "dose_rate",
@@ -68,34 +79,39 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
 
         base_value = random.randint(1, 5)
         if scenario["type"] == "dosing":
-            value = base_value * 5  # 5,10,... keeps numbers tidy
+            value = Fraction(base_value * 5)  # 5,10,... keeps numbers tidy
         elif scenario["type"] in ("flow",):
-            value = base_value * 2  # 2,4,... L/min
+            value = Fraction(base_value * 2)  # 2,4,... L/min
         elif scenario["type"] == "dose_rate":
-            value = base_value * 10  # 10,20,... mcg/min
+            value = Fraction(base_value * 10)  # 10,20,... mcg/min
+        elif scenario["type"] == "pressure_atm":
+            # Constructed backward: a multiple of 101.325 divides exactly
+            value = Fraction("101.325") * base_value
         else:
-            value = base_value * 3  # pressure multiples
+            value = Fraction(base_value * 3)  # pressure multiples
 
         steps = []
         running = value
+        value_str = dec(value)
 
-        problem = f"{scenario['desc']}: Convert {value} {scenario['value_unit']} to {scenario['target_unit']}"
+        problem = (f"{scenario['desc']}: Convert {value_str} "
+                   f"{scenario['value_unit']} to {scenario['target_unit']}"
+                   f"{scenario.get('note', '')}")
 
         for name, num, den in scenario["factors"]:
             steps.append(step("CONV_FACTOR", den, num))
-            num_val = float(num.split()[0])
-            den_val = float(den.split()[0])
+            num_val = Fraction(num.split()[0])
+            den_val = Fraction(den.split()[0])
             after_mul = running * num_val
-            steps.append(step("M", running, num_val, after_mul))
+            steps.append(step("M", dec(running), dec(num_val), dec(after_mul)))
             running = after_mul
             if den_val != 1:
                 after_div = running / den_val
-                steps.append(step("D", running, den_val, after_div))
+                steps.append(step("D", dec(running), dec(den_val), dec(after_div)))
                 running = after_div
 
-        final = round(running, 4) if "pressure" in scenario["type"] else round(running, 2)
-        final_answer = f"{final} {scenario['target_unit']}"
-        steps.append(step("CONV_RESULT", f"{value} {scenario['value_unit']}", final_answer))
+        final_answer = f"{dec(running)} {scenario['target_unit']}"
+        steps.append(step("CONV_RESULT", f"{value_str} {scenario['value_unit']}", final_answer))
         steps.append(step("Z", final_answer))
 
         return dict(

@@ -1,7 +1,9 @@
 import unittest
 import random
+import re
 import sys
 import os
+from fractions import Fraction
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -204,6 +206,68 @@ class TestScientificNotationGenerator(unittest.TestCase):
             result = gen.generate()
             self.assertEqual(result["operation"], "scientific_notation_divide")
             self.assertIn("Divide", result["problem"])
+
+
+SCI_TERM_RE = re.compile(r"^(-?\d+(?:\.\d+)?) × 10\^(-?\d+)$")
+SCI_PAREN_RE = re.compile(r"\((-?\d+(?:\.\d+)?) × 10\^(-?\d+)\)")
+
+
+def sci_value(coeff_str, power_str):
+    return Fraction(coeff_str) * Fraction(10) ** int(power_str)
+
+
+class TestScientificNotationOracle(unittest.TestCase):
+    """A9 oracle: recompute answers from the problem text with exact
+    arithmetic (Fraction), independent of the generator's shift logic."""
+
+    def test_convert_to_oracle(self):
+        gen = ScientificNotationGenerator(problem_type='to_scientific')
+        for _ in range(300):
+            result = gen.generate()
+            number = Fraction(result["problem"].split(": ", 1)[1])
+            m = SCI_TERM_RE.match(result["final_answer"])
+            self.assertIsNotNone(m, result["final_answer"])
+            coeff = Fraction(m.group(1))
+            self.assertEqual(sci_value(m.group(1), m.group(2)), number)
+            self.assertTrue(1 <= coeff < 10, result["final_answer"])
+
+    def test_convert_from_oracle(self):
+        gen = ScientificNotationGenerator(problem_type='from_scientific')
+        for _ in range(300):
+            result = gen.generate()
+            m = SCI_TERM_RE.match(result["problem"].split(": ", 1)[1])
+            self.assertIsNotNone(m, result["problem"])
+            self.assertEqual(Fraction(result["final_answer"]),
+                             sci_value(m.group(1), m.group(2)))
+            # Minimal-digit rendering: no trailing zeros after the point
+            self.assertNotRegex(result["final_answer"], r"\.\d*0$")
+
+    def test_multiply_divide_oracle(self):
+        for ptype in ("multiply", "divide"):
+            gen = ScientificNotationGenerator(problem_type=ptype)
+            for _ in range(300):
+                result = gen.generate()
+                terms = SCI_PAREN_RE.findall(result["problem"])
+                self.assertEqual(len(terms), 2, result["problem"])
+                a = sci_value(*terms[0])
+                b = sci_value(*terms[1])
+                expected = a * b if ptype == "multiply" else a / b
+                m = SCI_TERM_RE.match(result["final_answer"])
+                self.assertIsNotNone(m, result["final_answer"])
+                self.assertEqual(sci_value(m.group(1), m.group(2)), expected)
+                coeff = Fraction(m.group(1))
+                self.assertTrue(1 <= coeff < 10, result["final_answer"])
+
+    def test_no_float_artifacts(self):
+        # Legitimate exact values have at most 7 decimals (9.9 × 10^-6);
+        # anything longer is binary-float noise (e.g. 440.00000000000006).
+        gen = ScientificNotationGenerator()
+        for _ in range(400):
+            result = gen.generate()
+            blobs = result["steps"] + [result["problem"],
+                                       result["final_answer"]]
+            for blob in blobs:
+                self.assertNotRegex(blob, r"\d\.\d{10,}", blob)
 
 
 class TestRootsAndRadicalsGenerator(unittest.TestCase):

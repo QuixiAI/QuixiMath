@@ -9,21 +9,31 @@
   2. Add an instance to the `ALL_GENERATORS` list (e.g., `MyNewGenerator()`)
   3. Add a `curriculum.CURRICULUM` entry for the class (grade_level + difficulty) — enforced by `tests/test_datagen_pipeline.py`
   Generators not in `ALL_GENERATORS` will NOT appear in `--sample` output or dataset generation!
-- After adding or changing op-codes, regenerate the legend: `python tools/gen_opcode_legend.py` (check freshness with `--check`). The vocabulary is descriptive and organic — new op-codes are fine; stay consistent within a generator.
+- After adding or changing op-codes, regenerate the legend: `uv run python tools/gen_opcode_legend.py` (check freshness with `--check`). The vocabulary is descriptive and organic — new op-codes are fine, but one op-code must keep one field meaning. Reuse an existing code only when the field semantics match.
 - Tests: `tests/` mirrors generator names (`test_long_division_generator.py`, etc.) using `unittest`. Keep new tests co-located with matching generator names.
+- Catalog: `PROBLEM_TYPES.md` is the authoritative generated catalog and count of problem types. Regenerate it after adding or materially changing a generator.
 - Artifacts: JSONL datasets write to repo root unless you pass `-o`. Avoid committing large generated files.
 
 ## Build, Test, and Development Commands
-- **Virtual environment:** Always activate the venv before running commands: `source .venv/bin/activate` (or prefix commands with `uv run`).
-- Sample run: `python dolphin_math_datagen.py --sample` (add `--generators ClassA,ClassB` to limit; add `-s` to fix seed).
-- Full dataset: `python dolphin_math_datagen.py -n 50000 -o dolphin_math_50000.jsonl` (optionally add `--generators ...` and `-s`).
+- **Virtual environment:** Prefer `uv run python ...` for commands so the project environment is selected explicitly. If not using `uv run`, activate the venv first with `source .venv/bin/activate`.
+- Sample run: `uv run python dolphin_math_datagen.py --sample` (add `--generators ClassA,ClassB` to limit; add `-s` to fix seed).
+- Full dataset: `uv run python dolphin_math_datagen.py -n 50000 -o dolphin_math_50000.jsonl` (optionally add `--generators ...` and `-s`).
 - Builds sample equally per skill (class); override with `--weights "ClassA=2.5,ClassB=0.5"` or a JSON file. Exact `(operation, problem)` repeats are skipped unless `--allow-duplicates`; a per-generator stats table prints at the end.
 - Default dataset filename when `-o` omitted: `dolphin_math_<n>.jsonl`.
-- Tests (all): `python -m unittest discover tests` (or `uv run pytest tests` with the dev group installed).
-- Tests (focused): `python -m unittest tests.test_quadratic_generator`.
-- Op-code legend: `python tools/gen_opcode_legend.py` regenerates `OPCODES.md`; `--check` verifies freshness.
-- Backlog check: `python tools/check_backlog.py` fails if a shipped (registered) generator still has an unchecked TODO.md line — delete the item's line when it ships.
-- Problem catalog: `python tools/gen_problem_types.py` regenerates the user-facing `PROBLEM_TYPES.md` (one entry per generator with a worked example); `--check` verifies freshness. Regenerate after adding or changing a generator.
+- Tests (all): `uv run python -m unittest discover tests` (or `uv run pytest tests` with the dev group installed).
+- Tests (focused): `uv run python -m unittest tests.test_quadratic_generator`.
+- Op-code legend: `uv run python tools/gen_opcode_legend.py` regenerates `OPCODES.md`; `--check` verifies freshness.
+- Problem catalog: `uv run python tools/gen_problem_types.py` regenerates the user-facing `PROBLEM_TYPES.md` (one entry per generator with a worked example); `--check` verifies freshness. Regenerate after adding or changing a generator.
+
+## Generator Design Principles
+- Every arithmetic action should be explicit. If a human would write it in the margin, emit a step for it.
+- Steps should be human-legible: show alignment, carries/borrows, trial candidates, rejected paths, checks, and current-expression rewrites when those are part of the pencil-and-paper procedure.
+- Verify before answering where natural: substitute back, apply an inverse operation, check a magnitude, or emit another compact `CHECK` step before `Z|`.
+- Do not require unstated lookups. Any trig value, z/t/chi-square critical value, logarithm, normal CDF value, or other table/calculator value must be supplied in the problem text, avoided by construction, or left symbolic/exact.
+- Use hand-friendly operands. The procedure should be the hard part, not digit grinding.
+- If the answer space is tiny, make `final_answer` composite enough to grade reliably rather than a coin-flip label.
+- Construct data backward from exact answers: use triples, perfect squares, denominators dividing powers of 2 and 5 for `dec()`, dyadic probabilities, divisible coefficients, or exact symbolic forms. `dec(Fraction)` is only valid for terminating decimals; otherwise render a reduced fraction or constrain the inputs.
+- Pipe-safety is mandatory: no step field may contain raw ASCII `|`. Use alternatives such as `abs(r)` or `‖u‖`. Keep steps to at most four payload fields after the op-code.
 
 ## Coding Style & Naming Conventions
 - Python 3.9+; 4-space indentation; prefer explicit, side-effect-free helpers.
@@ -37,18 +47,23 @@
   an oracle that recomputes `final_answer` **from the problem text alone**
   (parse the problem, solve it independently with exact arithmetic —
   `fractions.Fraction`, integer math — and compare). The generator agreeing
-  with itself is not verification. Also verify the arithmetic inside emitted
+  with itself is not verification; prefer a different route when practical
+  (brute-force enumeration, identity checks, numeric finite differences or
+  quadrature, matrix-product verification, etc.). Also verify the arithmetic inside emitted
   steps (A/S/M/D/E/ROOT/CHECK fields) where practical. Use sympy (dev-dep)
   only when stdlib-exact arithmetic genuinely can't express the oracle.
 - Answer strings must follow the conventions in DESIGN.md ("Answer Format
   Conventions") — graders depend on exact equality with the `Z|` payload.
 - Use deterministic seeds in tests to stabilize expectations; assert both `steps` content and final answers where possible. Patch `random` if you need specific borrow/carry scenarios.
-- Run `python -m unittest discover tests` before raising a PR; include targeted runs when touching a single generator.
-- Manual check: `python dolphin_math_datagen.py --sample --generators <GeneratorName>` and verify the steps match human pencil-and-paper workflow (alignment, carries/borrows, etc.).
+- Include pipe-safety and render-sanity tests for generated examples. Common regressions are stray `|`, `1x`, `-1x`, `^1`, `+ 0`, `--`, or parser regexes that swallow a sentence period after a decimal.
+- During generator development, run the focused test first; before raising a PR or handing off, run `uv run python -m unittest discover tests`.
+- Build a restricted seeded sample of roughly 200 examples, e.g. `uv run python dolphin_math_datagen.py -n 200 -o /tmp/foo.jsonl -s 7 --generators FooGenerator`, and inspect both the stats table and sample output. Generator errors must be zero; high duplicate skips can be acceptable for intentionally small exact problem spaces, but should be noticed.
+- Manual check: `uv run python dolphin_math_datagen.py --sample --generators <GeneratorName>` and verify the steps match human pencil-and-paper workflow (alignment, carries/borrows, etc.).
 - For new skills: define op-codes upfront, keep every arithmetic action explicit (no hidden mental math), and ensure rewrites show the current expression after each operation.
 
 ## Commit & Pull Request Guidelines
 - Commit messages: short present-tense summaries (e.g., `add percent generator edge cases`, `fix quadratic step formatting`), matching existing history.
+- Commit generator work with sole author `Eric Hartford <eric@quixi.ai>` and no `Co-Authored-By` trailer: `git commit --author="Eric Hartford <eric@quixi.ai>" -m "add foo generator"`.
 - Pull requests should include: purpose/summary, key commands run (tests, sample or dataset generation), sample output snippet or file path, and any linked issues.
 - Screenshot/JSON snippets are welcome when changes affect output formatting or op-code ordering.
 - Keep diffs minimal and grouped by concern (generator logic vs. tests vs. docs); avoid drive-by refactors unless necessary.

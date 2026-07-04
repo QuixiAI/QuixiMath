@@ -9,9 +9,10 @@ def seq_text(values):
 
 
 def z_denom_text(r_value):
-    if r_value > 0:
-        return f"1-{r_value}z^-1"
-    return f"1+{-r_value}z^-1"
+    # Coefficient 1 is dropped: 1-z^-1, not 1-1z^-1
+    coeff = "" if abs(r_value) == 1 else str(abs(r_value))
+    sign = "-" if r_value > 0 else "+"
+    return f"1{sign}{coeff}z^-1"
 
 
 def transform_text(numerator, r_value):
@@ -20,6 +21,13 @@ def transform_text(numerator, r_value):
 
 def power_base_text(value):
     return f"({value})" if value < 0 else str(value)
+
+
+def scaled_power_text(amplitude, r_value):
+    base = f"{power_base_text(r_value)}^n u[n]"
+    if amplitude == 1:
+        return base
+    return f"{amplitude}*{base}"
 
 
 class ZTransformGenerator(ProblemGenerator):
@@ -68,7 +76,7 @@ class ZTransformGenerator(ProblemGenerator):
         terms = []
         steps = [
             step("ZT_SETUP", "geometric",
-                 f"x[n]={amplitude}*{power_base_text(r_value)}^n u[n]"),
+                 f"x[n]={scaled_power_text(amplitude, r_value)}"),
             step("ZT_PAIR", "Z{r^n u[n]}=1/(1-r z^-1)"),
             step("REWRITE", f"X(z)={transform_text(amplitude, r_value)}"),
         ]
@@ -86,8 +94,7 @@ class ZTransformGenerator(ProblemGenerator):
             f"ROC magnitude(z)>{abs(r_value)}; terms={seq_text(terms)}"
         )
         problem = (
-            f"Find the z-transform of x[n]={amplitude}*"
-            f"{power_base_text(r_value)}^n u[n] "
+            f"Find the z-transform of x[n]={scaled_power_text(amplitude, r_value)} "
             "and compute x[0] through x[3]."
         )
         return problem, steps, answer
@@ -95,7 +102,8 @@ class ZTransformGenerator(ProblemGenerator):
     def _generate_difference(self):
         a_value = random.choice([v for v in range(-20, 21) if v not in (0,)])
         terms = []
-        a_text = power_base_text(a_value)
+        # Coefficient 1 is dropped: y[n]-y[n-1], not y[n]-1y[n-1]
+        a_text = "" if a_value == 1 else power_base_text(a_value)
         steps = [
             step("ZT_SETUP", "difference",
                  f"y[n]-{a_text}y[n-1]=delta[n]", "y[-1]=0"),

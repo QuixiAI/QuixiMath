@@ -2,7 +2,8 @@ import unittest
 import random
 import sys
 import os
-from statistics import mean, median, multimode
+from fractions import Fraction
+from statistics import median, multimode
 
 # Ensure repo root on path
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,20 +21,26 @@ class TestSimpleStatsGenerator(unittest.TestCase):
         self.gen = SimpleStatsGenerator()
 
     def test_stats_correctness(self):
-        res = self.gen.generate()
-        self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
-        data_str = res["problem"].split("of")[1].strip().strip("[]")
-        data = [int(x.strip()) for x in data_str.split(",") if x.strip()]
-        op = res["operation"]
-        if op == "mean":
-            expected = round(mean(data), 2)
-            self.assertAlmostEqual(float(res["final_answer"]), expected, places=2)
-        elif op == "median":
-            self.assertAlmostEqual(float(res["final_answer"]), float(median(data)))
-        else:
-            modes = multimode(data)
-            result_modes = [int(x.strip()) for x in res["final_answer"].split(",")]
-            self.assertCountEqual(result_modes, modes)
+        for _ in range(500):
+            res = self.gen.generate()
+            self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
+            data_str = res["problem"].split("of")[1].strip().strip("[]")
+            data = [int(x.strip()) for x in data_str.split(",") if x.strip()]
+            op = res["operation"]
+            if op == "mean":
+                # Datasets are constructed so the mean is an exact integer
+                expected = Fraction(sum(data), len(data))
+                self.assertEqual(expected.denominator, 1, res["problem"])
+                self.assertEqual(res["final_answer"], str(expected))
+            elif op == "median":
+                expected = Fraction(median(data))
+                self.assertEqual(Fraction(res["final_answer"]), expected)
+                # Exact rendering: integer or n.5, never a rounded float
+                self.assertRegex(res["final_answer"], r"^\d+(\.5)?$")
+            else:
+                modes = multimode(data)
+                result_modes = [int(x.strip()) for x in res["final_answer"].split(",")]
+                self.assertCountEqual(result_modes, modes)
 
 
 if __name__ == "__main__":

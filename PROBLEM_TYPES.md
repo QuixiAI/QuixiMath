@@ -535,7 +535,7 @@ Converts between Fahrenheit, Celsius, and Kelvin using explicit add/subtract and
 ```
 Problem: Convert 154 K to C
 Steps:
-  S|154|273.15|-119.14999999999998
+  S|154|273.15|-119.15
   CONV_RESULT|154 K|-119.15 C
   Z|-119.15 C
 Answer: -119.15 C
@@ -548,14 +548,14 @@ Performs multi-factor dimensional analysis across dosing (mg/kg), flow rates, pr
 **Variants:** `dimensional_analysis`
 
 ```
-Problem: Pressure conversion: Convert 12 kPa to atm
+Problem: Pressure conversion: Convert 405.3 kPa to atm using 1 atm = 101.325 kPa
 Steps:
   CONV_FACTOR|101.325 kPa|1 atm
-  M|12|1.0|12.0
-  D|12.0|101.325|0.11843079200592153
-  CONV_RESULT|12 kPa|0.1184 atm
-  Z|0.1184 atm
-Answer: 0.1184 atm
+  M|405.3|1|405.3
+  D|405.3|101.325|4
+  CONV_RESULT|405.3 kPa|4 atm
+  Z|4 atm
+Answer: 4 atm
 ```
 
 ### Percent Word Problem — `PercentWordProblemGenerator`  ·  elementary · difficulty 3
@@ -615,13 +615,13 @@ Computes mean, median, and mode for small integer datasets.
 **Variants:** `mean`, `median`, `mode`
 
 ```
-Problem: Find median of [2, 9, 10, 13, 14, 16, 16, 17]
+Problem: Find median of [2, 9, 10, 12, 13, 16, 16, 17]
 Steps:
-  SORT|14,2,9,17,16,13,10,16|2,9,10,13,14,16,16,17
-  MEDIAN_PAIR|13|14
-  MEAN_DIV|27|2|13.5
-  Z|13.5
-Answer: 13.5
+  SORT|2,9,17,16,13,10,16,12|2,9,10,12,13,16,16,17
+  MEDIAN_PAIR|12|13
+  MEAN_DIV|25|2|12.5
+  Z|12.5
+Answer: 12.5
 ```
 
 ### Simple Probability — `SimpleProbabilityGenerator`  ·  elementary · difficulty 1
@@ -1089,13 +1089,13 @@ Generates scientific notation problems.
 **Variants:** `scientific_notation_convert_from`, `scientific_notation_convert_to`, `scientific_notation_divide`, `scientific_notation_multiply`
 
 ```
-Problem: Divide: (25.0 × 10^5) ÷ (5.0 × 10^3)
+Problem: Divide: (25 × 10^5) ÷ (5 × 10^3)
 Steps:
-  SCI_SETUP|(25.0 × 10^5) ÷ (5.0 × 10^3)
-  SCI_OPERATION|divide_coefficients|25.0|5.0|5.0
+  SCI_SETUP|(25 × 10^5) ÷ (5 × 10^3)
+  SCI_OPERATION|divide_coefficients|25|5|5
   SCI_OPERATION|subtract_exponents|5|3|2
-  Z|5.0 × 10^2
-Answer: 5.0 × 10^2
+  Z|5 × 10^2
+Answer: 5 × 10^2
 ```
 
 ### Roots And Radicals — `RootsAndRadicalsGenerator`  ·  middle · difficulty 4
@@ -2174,12 +2174,12 @@ Generates systems of linear equations to be solved by substitution.
 ```
 Problem: Solve the system:
 1) y = 3x - 3
-2) 2x + 1y = 7
+2) 2x + y = 7
 Steps:
-  SYS_SETUP|y = 3x - 3|2x + 1y = 7
+  SYS_SETUP|y = 3x - 3|2x + y = 7
   SYS_SUBST|Substitute (3x - 3) for y in Eq 2
   SYS_EQ_NEW|New equation with x only
-  DIST_COMBINE|5x + -3 = 7
+  DIST_COMBINE|5x - 3 = 7
   EQ_OP_BOTH|subtract|-3|5x|10
   EQ_OP_BOTH|divide|5|x|2
   SYS_SUBST_BACK|Substitute x=2 into Eq 1
@@ -2196,19 +2196,19 @@ Generates systems of linear equations to be solved by elimination.
 
 ```
 Problem: Solve the system by elimination:
-1) -1x + 5y = 13
+1) -x + 5y = 13
 2) 2x + 5y = 19
 Steps:
-  SYS_SETUP|-1x + 5y = 13|2x + 5y = 19
+  SYS_SETUP|-x + 5y = 13|2x + 5y = 19
   SYS_MULT|Eq2 * -1
-  SYS_REWRITE|-1x + 5y = 13|-2x - 5y = -19
+  SYS_REWRITE|-x + 5y = 13|-2x - 5y = -19
   SYS_ADD|Add equations: -3x = -6
   EQ_OP_BOTH|divide|-3|x|2
   SYS_SUBST_BACK|Substitute into Eq 1
-  CALC|-1(2) + 5y = 13
+  CALC|-(2) + 5y = 13
   EQ_OP_BOTH|subtract|-2|5y|15
   EQ_OP_BOTH|divide|5|y|3
-  CHECK|substitute|22 + 53 = 19|19
+  CHECK|substitute|2(2) + 5(3) = 19|19
   Z|x=2, y=3
 Answer: x=2, y=3
 ```
@@ -10806,7 +10806,7 @@ Steps:
   FACT|1|1
   M|720|1|720
   D|40320|720|56
-  ORDER_PDF|f_{7:8}(x)=56*x^6*(1-x)^1
+  ORDER_PDF|f_{7:8}(x)=56*x^6*(1-x)
   S|1|2/3|1/3
   E|2/3|6|64/729
   E|1/3|1|1/3
@@ -10820,8 +10820,8 @@ Steps:
   A|9|1|10
   M|81|10|810
   D|14|810|7/405
-  Z|f_{7:8}(x)=56*x^6*(1-x)^1; E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
-Answer: f_{7:8}(x)=56*x^6*(1-x)^1; E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
+  Z|f_{7:8}(x)=56*x^6*(1-x); E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
+Answer: f_{7:8}(x)=56*x^6*(1-x); E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
 ```
 
 ### Transportation — `TransportationGenerator`  ·  graduate · difficulty 4

@@ -3,6 +3,33 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 import math
 
+
+def coeff_term(coeff, var):
+    """Render coeff*var with the 1-coefficient dropped: x, -x, 3x."""
+    if coeff == 1:
+        return var
+    if coeff == -1:
+        return f"-{var}"
+    return f"{coeff}{var}"
+
+
+def signed_term(coeff, var):
+    """Continuation term with explicit sign: '+ 3y', '- y'."""
+    sign = "+" if coeff >= 0 else "-"
+    return f"{sign} {coeff_term(abs(coeff), var)}"
+
+
+def subst_term(coeff, value):
+    """Render coeff*(value) with the value always parenthesized, so
+    3*(8) never reads as the number 38."""
+    val_text = f"({value})"
+    if coeff == 1:
+        return val_text
+    if coeff == -1:
+        return f"-{val_text}"
+    return f"{coeff}{val_text}"
+
+
 class SystemsEliminationGenerator(ProblemGenerator):
     """
     Generates systems of linear equations to be solved by elimination.
@@ -69,11 +96,7 @@ class SystemsEliminationGenerator(ProblemGenerator):
         
         # Formatting
         def fmt_eq(a, b, res):
-            term_a = f"{a}x"
-            term_b = f"{b}y"
-            if b >= 0: term_b = f"+ {b}y"
-            else: term_b = f"- {abs(b)}y"
-            return f"{term_a} {term_b} = {res}"
+            return f"{coeff_term(a, 'x')} {signed_term(b, 'y')} = {res}"
             
         eq1_str = fmt_eq(A, B, C)
         eq2_str = fmt_eq(D, E, F)
@@ -113,7 +136,7 @@ class SystemsEliminationGenerator(ProblemGenerator):
         sum_B = new_B1 + new_E2
         sum_C = new_C1 + new_F2
         
-        term = f"{sum_A}x" if target_var == 'y' else f"{sum_B}y" # The one that survives
+        term = coeff_term(sum_A, 'x') if target_var == 'y' else coeff_term(sum_B, 'y') # The one that survives
         steps.append(step("SYS_ADD", f"Add equations: {term} = {sum_C}"))
         
         # Step 3: Solve
@@ -141,25 +164,25 @@ class SystemsEliminationGenerator(ProblemGenerator):
         # A(x) + B(y) = C
         if found_var == 'x':
             # A(val) + By = C
-            steps.append(step("CALC", f"{A}({found_val}) + {B}y = {C}"))
+            steps.append(step("CALC", f"{subst_term(A, found_val)} {signed_term(B, 'y')} = {C}"))
             val_term = A * found_val
-            steps.append(step("EQ_OP_BOTH", "subtract", val_term, f"{B}y", C - val_term))
+            steps.append(step("EQ_OP_BOTH", "subtract", val_term, coeff_term(B, 'y'), C - val_term))
             steps.append(step("EQ_OP_BOTH", "divide", B, "y", y_sol))
         else:
             # Ax + B(val) = C
-            steps.append(step("CALC", f"{A}x + {B}({found_val}) = {C}"))
+            steps.append(step("CALC", f"{coeff_term(A, 'x')} {'+' if B >= 0 else '-'} {subst_term(abs(B), found_val)} = {C}"))
             val_term = B * found_val
-            steps.append(step("EQ_OP_BOTH", "subtract", val_term, f"{A}x", C - val_term))
+            steps.append(step("EQ_OP_BOTH", "subtract", val_term, coeff_term(A, 'x'), C - val_term))
             steps.append(step("EQ_OP_BOTH", "divide", A, "x", x_sol))
             
         # Self-verification (A1), on about half of examples: the solution
         # must also satisfy Eq 2 (the equation NOT used for back-substitution).
         if random.random() < 0.5:
-            xt = f"({x_sol})" if x_sol < 0 else str(x_sol)
-            yt = f"({y_sol})" if y_sol < 0 else str(y_sol)
-            e_term = f"+ {E}{yt}" if E >= 0 else f"- {abs(E)}{yt}"
+            x_term = subst_term(D, x_sol)
+            e_sign = "+" if E >= 0 else "-"
+            y_term = subst_term(abs(E), y_sol)
             steps.append(step("CHECK", "substitute",
-                              f"{D}{xt} {e_term} = {D * x_sol + E * y_sol}",
+                              f"{x_term} {e_sign} {y_term} = {D * x_sol + E * y_sol}",
                               str(F)))
 
         ans = f"x={x_sol}, y={y_sol}"

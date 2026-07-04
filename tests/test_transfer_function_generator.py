@@ -15,9 +15,11 @@ from generators.transfer_function_generator import (
 from helpers import DELIM
 
 
+# gain 1 is rendered without the coefficient (x', not 1x'), so the gain
+# group is optional
 ODE_RE = re.compile(
     r"With zero initial conditions, find the transfer function, zero, and "
-    r"poles for y''\+(\d+)y'\+(\d+)y=(\d+)x'\+(\d+)x\."
+    r"poles for y''\+(\d+)y'\+(\d+)y=(\d*)x'\+(\d+)x\."
 )
 BLOCK_RE = re.compile(
     r"Reduce a unity negative-feedback block diagram with G1=(\d+)/\(s\+(\d+)\) "
@@ -41,16 +43,18 @@ def factor_pair(total, product):
 
 
 def expected_ode(problem):
-    b_value, c_value, gain, numerator_constant = (
-        int(value) for value in ODE_RE.fullmatch(problem).groups()
-    )
+    b_raw, c_raw, gain_raw, const_raw = ODE_RE.fullmatch(problem).groups()
+    b_value, c_value = int(b_raw), int(c_raw)
+    gain = int(gain_raw) if gain_raw else 1
+    numerator_constant = int(const_raw)
     p1, p2 = factor_pair(b_value, c_value)
     zero = numerator_constant // gain
-    numerator = f"{gain}s+{numerator_constant}"
+    gain_text = "" if gain == 1 else str(gain)
+    numerator = f"{gain_text}s+{numerator_constant}"
     denominator = poly2_text(b_value, c_value)
     steps = [
         make_step("TF_SETUP", "ode",
-                  f"y''+{b_value}y'+{c_value}y={gain}x'+{numerator_constant}x",
+                  f"y''+{b_value}y'+{c_value}y={gain_text}x'+{numerator_constant}x",
                   "zero initial conditions"),
         make_step("A", p1, p2, b_value),
         make_step("M", p1, p2, c_value),
