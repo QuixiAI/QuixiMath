@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**263 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**264 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5505,6 +5505,30 @@ Steps:
   SOLVE_Y|y/x = 2 ln(x) - 5|y = x(2 ln(x) - 5)
   Z|y = x(2 ln(x) - 5)
 Answer: y = x(2 ln(x) - 5)
+```
+
+### Second Order ODE — `SecondOrderODEGenerator`  ·  college · difficulty 3
+
+Homogeneous second-order constant-coefficient ODEs.
+
+**Variants:** `second_order_ode_complex_roots`, `second_order_ode_distinct_real`, `second_order_ode_repeated_root`
+
+```
+Problem: Solve y'' - 6y' + 9y = 0 with y(0) = -4 and y'(0) = -11.
+Steps:
+  ODE_SETUP|y'' - 6y' + 9y = 0|y(0) = -4, y'(0) = -11
+  CHAR_EQ|assume y=e^(rx)|r^2 - 6r + 9 = 0
+  FACTOR|r^2 - 6r + 9|(r - 3)^2 = 0
+  CHAR_ROOTS|r = 3|repeated
+  SOL_FORM|y = (C1 + C2x)e^(3x)
+  SUBST|x=0|C1 = -4
+  DERIV_FORM|y'|(C2 + 3(C1 + C2x))e^(3x)
+  SUBST|x=0|C2 + 3C1 = -11
+  M|3|-4|-12
+  S|-11|-12|1
+  SOLVE_CONST|C1 = -4|C2 = 1
+  Z|y = (-4 + x)e^(3x)
+Answer: y = (-4 + x)e^(3x)
 ```
 
 ## Graduate
