@@ -101,7 +101,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Derivatives
 
 ### Calculus — Integrals & Differential Equations
-- [ ] Volumes — disk, washer, cross-sections, shells · `SolidRevolutionGenerator` · high · d5
 - [ ] Separable differential equations; dy/dt = ky growth/decay · `SeparableODEGenerator` · high · d5
 - [ ] Integration by parts · `IntegrationByPartsGenerator` · high · d5
 - [ ] Partial fraction decomposition & integration · `PartialFractionsGenerator` · high · d5
