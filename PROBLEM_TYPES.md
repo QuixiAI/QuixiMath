@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**314 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**315 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7538,4 +7538,22 @@ Steps:
   COEFF|c_5|2/15625
   Z|c_0=2/5, c_1=2/25, c_2=2/125, c_3=2/625, c_4=2/3125, c_5=2/15625
 Answer: c_0=2/5, c_1=2/25, c_2=2/125, c_3=2/625, c_4=2/3125, c_5=2/15625
+```
+
+### Spherical Triangle — `SphericalTriangleGenerator`  ·  graduate · difficulty 4
+
+Mechanical spherical-triangle calculations with supplied exact trig values.
+
+**Variants:** `spherical_triangle_cosines`, `spherical_triangle_sines`
+
+```
+Problem: In a spherical triangle, side a=150 deg, side b=90 deg, and angle A=150 deg. Given sin(a)=1/2, sin(b)=1, and sin(A)=1/2, use the spherical law of sines to find sin(B).
+Steps:
+  SPHERICAL_TRIANGLE_SETUP|a=150 deg, b=90 deg, A=150 deg|find sin(B)
+  SPHERICAL_SINE_LAW|sin(A)/sin(a)=sin(B)/sin(b)
+  TRIG_VALUE|sin(a)=1/2|sin(b)=1|sin(A)=1/2
+  M|1|1/2|1/2
+  D|1/2|1/2|1
+  Z|sin(B) = 1
+Answer: sin(B) = 1
 ```

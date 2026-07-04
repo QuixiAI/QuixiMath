@@ -281,6 +281,7 @@ from generators.contour_integral_generator import ContourIntegralGenerator
 from generators.laurent_series_generator import LaurentSeriesGenerator
 from generators.great_circle_generator import GreatCircleGenerator
 from generators.spherical_excess_generator import SphericalExcessGenerator
+from generators.spherical_triangle_generator import SphericalTriangleGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -733,6 +734,7 @@ ALL_GENERATORS = [
     LaurentSeriesGenerator(),
     GreatCircleGenerator(),
     SphericalExcessGenerator(),
+    SphericalTriangleGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
