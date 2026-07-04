@@ -133,7 +133,6 @@ bind extra hard at this level:
 ### Spherical & Non-Euclidean Geometry
 Angle sums that refuse to be 180° — mind-bending results from ordinary
 arithmetic. Nice angles (30°/45°/60°/90°) keep everything exact per Principle 5.
-- [ ] Spherical excess & Girard's theorem — angle sum − 180° gives the triangle's area (octant triangle: 90°+90°+90° = 270°, area = πR²/2) · `SphericalExcessGenerator` · college · d3
 - [ ] Spherical triangles — spherical laws of sines and cosines · `SphericalTriangleGenerator` · graduate · d4
 - [ ] Hyperbolic functions — sinh/cosh/tanh evaluation in exact e-form; hyperbolic identities as CHECK steps (cosh² − sinh² = 1) · `HyperbolicFunctionGenerator` · college · d3
 - [ ] Hyperbolic triangle area via angle defect — π − (A+B+C); the mirror image of Girard · `AngleDefectGenerator` · college · d3

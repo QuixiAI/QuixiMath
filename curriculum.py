@@ -345,6 +345,7 @@ CURRICULUM = {
     "ContourIntegralGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "LaurentSeriesGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "GreatCircleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "SphericalExcessGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
