@@ -313,6 +313,7 @@ from generators.clebsch_gordan_generator import ClebschGordanGenerator
 from generators.einstein_summation_generator import EinsteinSummationGenerator
 from generators.index_raising_generator import IndexRaisingGenerator
 from generators.riemann_tensor_generator import RiemannTensorGenerator
+from generators.four_vector_generator import FourVectorGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -797,6 +798,7 @@ ALL_GENERATORS = [
     EinsteinSummationGenerator(),
     IndexRaisingGenerator(),
     RiemannTensorGenerator(),
+    FourVectorGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

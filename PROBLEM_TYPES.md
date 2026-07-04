@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**346 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**347 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8261,4 +8261,22 @@ Steps:
   A|1/10000|1/10000|1/5000
   Z|scalar curvature = 1/5000
 Answer: scalar curvature = 1/5000
+```
+
+### Four Vector — `FourVectorGenerator`  ·  graduate · difficulty 3
+
+Four-vector arithmetic with signature (+,-,-,-).
+
+**Variants:** `four_vector_dot_product`, `four_vector_mass_shell`
+
+```
+Problem: In units c=1, solve E^2 = p^2 + m^2 for momentum p=12 and mass m=35.
+Steps:
+  FOUR_VECTOR_SETUP|mass_shell|c=1|p=12, m=35
+  E|12|2|144
+  E|35|2|1225
+  A|144|1225|1369
+  ROOT|sqrt(1369)|37
+  Z|E = 37
+Answer: E = 37
 ```

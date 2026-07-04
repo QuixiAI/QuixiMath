@@ -144,7 +144,6 @@ matrix arithmetic or explicit integration — no functional analysis proofs.
 The symmetry machinery of particle physics, done as explicit matrix work.
 
 ### Tensors & General Relativity (computational)
-- [ ] 4-vector arithmetic — signature dot products; solve E² = (pc)² + (mc²)² · `FourVectorGenerator` · graduate · d3
 - [ ] Schwarzschild plug-ins — rₛ = 2GM/c²; gravitational time dilation √(1 − rₛ/r); constants provided · `SchwarzschildGenerator` · graduate · d4
 - [ ] Planck units — derive Planck length/time/mass from ℏ, G, c by pure dimensional analysis · `PlanckUnitsGenerator` · graduate · d4
 - [ ] Black-hole thermodynamics — Hawking temperature and Bekenstein-Hawking entropy solves; quantum gravity's most famous arithmetic · `HawkingGenerator` · graduate · d4
