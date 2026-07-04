@@ -101,7 +101,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Derivatives
 
 ### Calculus — Integrals & Differential Equations
-- [ ] Riemann sums (left/right/midpoint) & trapezoidal rule — tabular arithmetic scratchpads · `RiemannSumGenerator` · high · d4
 - [ ] Area under and between curves · `AreaBetweenCurvesGenerator` · high · d5
 - [ ] Volumes — disk, washer, cross-sections, shells · `SolidRevolutionGenerator` · high · d5
 - [ ] Separable differential equations; dy/dt = ky growth/decay · `SeparableODEGenerator` · high · d5
@@ -337,7 +336,6 @@ algebra checks. Constants and logs provided per Principle 5.
 - [ ] Fixed-point iteration with |g′| < 1 convergence check · `FixedPointGenerator` · college · d3
 - [ ] Interpolation — Lagrange form; Newton divided-difference tables · `InterpolationGenerator` · college · d4
 - [ ] Finite-difference tables; forward/central difference derivatives · `FiniteDifferenceGenerator` · college · d3
-- [ ] Trapezoid/Simpson with error bounds (extends `RiemannSumGenerator`) · `NumericalIntegrationGenerator` · college · d3
 - [ ] Runge-Kutta single steps — RK2/RK4 stage tables (extends `EulerMethodGenerator`) · `RungeKuttaGenerator` · college · d4
 
 ### Probability Theory & Mathematical Statistics
