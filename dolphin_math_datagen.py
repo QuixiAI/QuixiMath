@@ -140,6 +140,7 @@ from generators.trig_identity_verify_generator import TrigIdentityVerifyGenerato
 from generators.trig_equation_generator import TrigEquationGenerator
 from generators.triangle_solve_generator import TriangleSolveGenerator
 from generators.triangle_area_sas_generator import TriangleAreaSASGenerator
+from generators.polar_parametric_generator import PolarParametricGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -439,6 +440,7 @@ ALL_GENERATORS = [
     TrigEquationGenerator(),
     TriangleSolveGenerator(),
     TriangleAreaSASGenerator(),
+    PolarParametricGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
