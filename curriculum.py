@@ -384,6 +384,7 @@ CURRICULUM = {
     "HawkingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "CasimirForceGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "NaturalUnitsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "InvariantMassGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

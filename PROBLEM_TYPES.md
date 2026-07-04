@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**352 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**353 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8375,4 +8375,30 @@ Steps:
   M|29/25|25/29|1
   Z|L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
 Answer: L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
+```
+
+### Invariant Mass — `InvariantMassGenerator`  ·  graduate · difficulty 4
+
+Relativistic kinematics with exact invariant quantities.
+
+**Variants:** `invariant_mass_cm_energy`, `invariant_mass_invariant_mass`, `invariant_mass_threshold`, `invariant_mass_two_body_momentum`
+
+```
+Problem: A parent of mass M=34 decays into two equal daughters m1=m2=8. Compute the two-body momentum p=sqrt((M^2-(m1+m2)^2)*(M^2-(m1-m2)^2))/(2*M).
+Steps:
+  KIN_SETUP|two_body_momentum|M=34|m1=8,m2=8|p
+  KIN_FORMULA|p=sqrt((M^2-(m1+m2)^2)*(M^2-(m1-m2)^2))/(2*M)
+  A|8|8|16
+  S|8|8|0
+  E|34|2|1156
+  E|16|2|256
+  E|0|2|0
+  S|1156|256|900
+  S|1156|0|1156
+  M|900|1156|1040400
+  ROOT|sqrt(1040400)|1020
+  M|2|34|68
+  D|1020|68|15
+  Z|p = 15
+Answer: p = 15
 ```

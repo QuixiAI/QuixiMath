@@ -319,6 +319,7 @@ from generators.planck_units_generator import PlanckUnitsGenerator
 from generators.hawking_generator import HawkingGenerator
 from generators.casimir_force_generator import CasimirForceGenerator
 from generators.natural_units_generator import NaturalUnitsGenerator
+from generators.invariant_mass_generator import InvariantMassGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -809,6 +810,7 @@ ALL_GENERATORS = [
     HawkingGenerator(),
     CasimirForceGenerator(),
     NaturalUnitsGenerator(),
+    InvariantMassGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

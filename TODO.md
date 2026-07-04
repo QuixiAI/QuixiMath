@@ -148,7 +148,6 @@ The symmetry machinery of particle physics, done as explicit matrix work.
 ### Particle Physics Arithmetic
 The daily hand-computation of the field — kinematics, bookkeeping, and
 algebra checks. Constants and logs provided per Principle 5.
-- [ ] Relativistic kinematics — invariant mass of decay products, CM energy √s, threshold energies, two-body decay momenta · `InvariantMassGenerator` · graduate · d4
 - [ ] Conservation bookkeeping — audit charge, lepton, and baryon number: is this reaction allowed? (n → p + e⁻ + ν̄ₑ ✓) · `ConservationLawGenerator` · college · d3
 - [ ] Quark content arithmetic — hadron charges from constituents (uud → +1) · `QuarkCompositionGenerator` · college · d3
 - [ ] Widths & branching ratios — partial widths → BR; lifetime τ = ℏ/Γ · `BranchingRatioGenerator` · graduate · d3
