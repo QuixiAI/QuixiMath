@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**325 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**326 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7766,4 +7766,24 @@ Steps:
   CHECK|sin-cos family|orthogonal
   Z|inner product = 0
 Answer: inner product = 0
+```
+
+### Legendre Construction — `LegendreConstructionGenerator`  ·  graduate · difficulty 4
+
+Construct P_2 or P_3 by Gram-Schmidt on {1, x, x^2, x^3} over [-1, 1], then scale to the standard Legendre leading coefficient.
+
+**Variants:** `legendre_construction_p2`, `legendre_construction_p3`
+
+```
+Problem: Use Gram-Schmidt on {1, x, x^2, x^3} over [-1,1] to construct the Legendre polynomial P_3 with leading coefficient 5/2.
+Steps:
+  LEGENDRE_SETUP|target=P_3|inner product integral_-1^1 f(x)g(x) dx
+  INTEGRAL|<x,x>|2/3
+  INTEGRAL|<x^3,x>|2/5
+  D|2/5|2/3|3/5
+  PROJECTION|x^3 onto x|3/5
+  POLY_SUB|x^3|3x/5|x^3 - 3x/5
+  POLY_SCALE|x^3 - 3x/5|5/2|(5x^3 - 3x)/2
+  Z|P_3(x) = (5x^3 - 3x)/2
+Answer: P_3(x) = (5x^3 - 3x)/2
 ```

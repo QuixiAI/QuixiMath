@@ -357,6 +357,7 @@ CURRICULUM = {
     "GaussBonnetGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MetricArcLengthGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "FunctionInnerProductGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "LegendreConstructionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

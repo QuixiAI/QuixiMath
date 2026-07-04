@@ -292,6 +292,7 @@ from generators.gaussian_curvature_generator import GaussianCurvatureGenerator
 from generators.gauss_bonnet_generator import GaussBonnetGenerator
 from generators.metric_arc_length_generator import MetricArcLengthGenerator
 from generators.function_inner_product_generator import FunctionInnerProductGenerator
+from generators.legendre_construction_generator import LegendreConstructionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -755,6 +756,7 @@ ALL_GENERATORS = [
     GaussBonnetGenerator(),
     MetricArcLengthGenerator(),
     FunctionInnerProductGenerator(),
+    LegendreConstructionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
