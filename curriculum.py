@@ -388,6 +388,7 @@ CURRICULUM = {
     "ConservationLawGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "QuarkCompositionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "BranchingRatioGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "CrossSectionGenerator": {"grade_level": GRADUATE, "difficulty": 3},
 }
 
 

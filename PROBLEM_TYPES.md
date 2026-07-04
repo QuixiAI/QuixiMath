@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**356 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**357 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8475,4 +8475,20 @@ Steps:
   D|14|2|7
   Z|tau = 7
 Answer: tau = 7
+```
+
+### Cross Section — `CrossSectionGenerator`  ·  graduate · difficulty 3
+
+Collider luminosity and cross-section arithmetic.
+
+**Variants:** `cross_section_cross_section`, `cross_section_events_fb`, `cross_section_events_pb`, `cross_section_luminosity`
+
+```
+Problem: Given target N=216 events and cross section sigma=3 fb, compute required integrated luminosity L=N/sigma in fb^-1.
+Steps:
+  COLLIDER_SETUP|luminosity|N=216 events|sigma=3 fb
+  D|216|3|72
+  UNIT_ATTACH|72|fb^-1|L = 72 fb^-1
+  Z|L = 72 fb^-1
+Answer: L = 72 fb^-1
 ```
