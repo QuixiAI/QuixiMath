@@ -164,6 +164,7 @@ from generators.curve_analysis_generator import CurveAnalysisGenerator
 from generators.optimization_generator import OptimizationGenerator
 from generators.mean_value_theorem_generator import MeanValueTheoremGenerator
 from generators.antiderivative_generator import AntiderivativeGenerator
+from generators.u_substitution_generator import USubstitutionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -487,6 +488,7 @@ ALL_GENERATORS = [
     OptimizationGenerator(),
     MeanValueTheoremGenerator(),
     AntiderivativeGenerator(),
+    USubstitutionGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),

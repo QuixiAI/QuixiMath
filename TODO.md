@@ -101,7 +101,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Derivatives
 
 ### Calculus — Integrals & Differential Equations
-- [ ] u-substitution · `USubstitutionGenerator` · high · d5
 - [ ] Definite integrals via FTC; average value · `DefiniteIntegralGenerator` · high · d4
 - [ ] Riemann sums (left/right/midpoint) & trapezoidal rule — tabular arithmetic scratchpads · `RiemannSumGenerator` · high · d4
 - [ ] Area under and between curves · `AreaBetweenCurvesGenerator` · high · d5
