@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**274 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**275 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5778,6 +5778,49 @@ Steps:
   D|840|24|35
   Z|solutions = 35
 Answer: solutions = 35
+```
+
+### Derangement — `DerangementGenerator`  ·  college · difficulty 3
+
+Derangement counts by the recurrence D_n=(n-1)(D_(n-1)+D_(n-2)).
+
+**Variants:** `derangement_recurrence`
+
+```
+Problem: How many derangements are there of 10 distinct forms?
+Steps:
+  DERANGE_SETUP|n = 10|no item fixed
+  RECURRENCE|D_n|(n-1)(D_(n-1)+D_(n-2))
+  INITIAL|D_0 = 1|D_1 = 0
+  A|0|1|1
+  M|1|1|1
+  DERANGE_VALUE|D_2|1
+  A|1|0|1
+  M|2|1|2
+  DERANGE_VALUE|D_3|2
+  A|2|1|3
+  M|3|3|9
+  DERANGE_VALUE|D_4|9
+  A|9|2|11
+  M|4|11|44
+  DERANGE_VALUE|D_5|44
+  A|44|9|53
+  M|5|53|265
+  DERANGE_VALUE|D_6|265
+  A|265|44|309
+  M|6|309|1854
+  DERANGE_VALUE|D_7|1854
+  A|1854|265|2119
+  M|7|2119|14833
+  DERANGE_VALUE|D_8|14833
+  A|14833|1854|16687
+  M|8|16687|133496
+  DERANGE_VALUE|D_9|133496
+  A|133496|14833|148329
+  M|9|148329|1334961
+  DERANGE_VALUE|D_10|1334961
+  Z|D_10 = 1334961
+Answer: D_10 = 1334961
 ```
 
 ## Graduate

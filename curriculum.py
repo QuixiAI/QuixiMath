@@ -306,6 +306,7 @@ CURRICULUM = {
     "RelationCheckGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "InclusionExclusionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "StarsAndBarsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "DerangementGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
