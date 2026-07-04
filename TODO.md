@@ -127,7 +127,6 @@ bind extra hard at this level:
 ### Number Theory & Cryptography
 
 ### Abstract Algebra (computational side only)
-- [ ] Quaternion arithmetic — Hamilton's table (i² = j² = k² = ijk = −1), non-commutativity shown explicitly (ij = k but ji = −k), norms, conjugates, inverses, and rotating a 3D vector via qvq⁻¹ · `QuaternionGenerator` · graduate · d4
 
 ### Complex Analysis (computational)
 - [ ] Euler's formula — rectangular ↔ polar ↔ exponential form conversions, Euler's identity as the d1 case · `EulerFormulaGenerator` · college · d3

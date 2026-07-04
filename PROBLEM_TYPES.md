@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**301 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**302 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7095,4 +7095,128 @@ Steps:
   R|x + 1
   Z|quotient = x^3 + x^2; remainder = x + 1
 Answer: quotient = x^3 + x^2; remainder = x + 1
+```
+
+### Quaternion — `QuaternionGenerator`  ·  graduate · difficulty 4
+
+Quaternion multiplication, conjugates, norms, inverses, and rotations.
+
+**Variants:** `quaternion_arithmetic`, `quaternion_rotation`
+
+```
+Problem: Let q=(0,0,-1,0) and v=(0,-4,0,4) represent a unit quaternion and a pure-vector quaternion. Rotate v by q*v*q^-1.
+Steps:
+  QUAT_SETUP|q=(0,0,-1,0)|v=(0,-4,0,4)
+  HAMILTON|i*i|-1
+  HAMILTON|j*j|-1
+  HAMILTON|k*k|-1
+  HAMILTON|i*j|k
+  HAMILTON|j*i|-k
+  M|0|0|0
+  A|0|0|0
+  M|0|0|0
+  A|0|0|0
+  M|-1|-1|1
+  A|0|1|1
+  M|0|0|0
+  A|1|0|1
+  NORM_SQUARED|q|1
+  CHECK|unit norm|yes
+  CONJUGATE|q|(0,0,1,0)
+  F|0|1|0
+  F|0|1|0
+  F|1|1|1
+  F|0|1|0
+  QUAT_INVERSE|q|(0,0,1,0)
+  QUAT_MUL_START|q*v|q|v
+  M|0|0|0
+  A|0|0|0
+  M|0|-4|0
+  S|0|0|0
+  A|0|0|0
+  M|-1|0|0
+  S|0|0|0
+  A|0|0|0
+  M|0|4|0
+  S|0|0|0
+  A|0|0|0
+  QUAT_COMPONENT|q*v|real|0
+  M|0|-4|0
+  A|0|0|0
+  M|0|0|0
+  A|0|0|0
+  M|-1|4|-4
+  A|0|-4|-4
+  M|0|0|0
+  S|0|0|0
+  A|-4|0|-4
+  QUAT_COMPONENT|q*v|i|-4
+  M|0|0|0
+  A|0|0|0
+  M|0|4|0
+  S|0|0|0
+  A|0|0|0
+  M|-1|0|0
+  A|0|0|0
+  M|0|-4|0
+  A|0|0|0
+  QUAT_COMPONENT|q*v|j|0
+  M|0|4|0
+  A|0|0|0
+  M|0|0|0
+  A|0|0|0
+  M|-1|-4|4
+  S|0|4|-4
+  A|0|-4|-4
+  M|0|0|0
+  A|-4|0|-4
+  QUAT_COMPONENT|q*v|k|-4
+  QUAT_RESULT|q*v|(0,-4,0,-4)
+  QUAT_MUL_START|q*v*q^-1|q*v|q^-1
+  M|0|0|0
+  A|0|0|0
+  M|-4|0|0
+  S|0|0|0
+  A|0|0|0
+  M|0|1|0
+  S|0|0|0
+  A|0|0|0
+  M|-4|0|0
+  S|0|0|0
+  A|0|0|0
+  QUAT_COMPONENT|q*v*q^-1|real|0
+  M|0|0|0
+  A|0|0|0
+  M|-4|0|0
+  A|0|0|0
+  M|0|0|0
+  A|0|0|0
+  M|-4|1|-4
+  S|0|-4|4
+  A|0|4|4
+  QUAT_COMPONENT|q*v*q^-1|i|4
+  M|0|1|0
+  A|0|0|0
+  M|-4|0|0
+  S|0|0|0
+  A|0|0|0
+  M|0|0|0
+  A|0|0|0
+  M|-4|0|0
+  A|0|0|0
+  QUAT_COMPONENT|q*v*q^-1|j|0
+  M|0|0|0
+  A|0|0|0
+  M|-4|1|-4
+  A|0|-4|-4
+  M|0|0|0
+  S|0|0|0
+  A|-4|0|-4
+  M|-4|0|0
+  A|-4|0|-4
+  QUAT_COMPONENT|q*v*q^-1|k|-4
+  QUAT_RESULT|q*v*q^-1|(0,4,0,-4)
+  ROTATED_VECTOR|(4,0,-4)
+  Z|qvq^-1 = (0,4,0,-4); vector = (4,0,-4)
+Answer: qvq^-1 = (0,4,0,-4); vector = (4,0,-4)
 ```
