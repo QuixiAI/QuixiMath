@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**300 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**301 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7066,4 +7066,33 @@ Steps:
   CHECK|cosets partition group|yes
   Z|cosets = 1H={1, 43, 49, 7}; 11H={11, 53, 59, 17}; 13H={13, 19, 37, 31}; 23H={23, 29, 47, 41}; index = 4
 Answer: cosets = 1H={1, 43, 49, 7}; 11H={11, 53, 59, 17}; 13H={13, 19, 37, 31}; 23H={23, 29, 47, 41}; index = 4
+```
+
+### Finite Field — `FiniteFieldGenerator`  ·  graduate · difficulty 4
+
+Polynomial arithmetic over prime fields and GF(2) polynomial division.
+
+**Variants:** `finite_field_gf2_division`, `finite_field_zp`
+
+```
+Problem: Over GF(2), divide x^6 + x^4 + x^3 + x^2 + x + 1 by x^3 + x^2 + 1. Use XOR for coefficient arithmetic.
+Steps:
+  FIELD_SETUP|GF(2)[x]|addition is XOR
+  POLYDIV_SETUP|x^6 + x^4 + x^3 + x^2 + x + 1|x^3 + x^2 + 1
+  DIV_TERM|x^6|x^3|x^3
+  GF2_XOR|quotient x^3|0 xor 1|1
+  GF2_XOR|remainder x^3|1 xor 1|0
+  GF2_XOR|remainder x^5|0 xor 1|1
+  GF2_XOR|remainder x^6|1 xor 1|0
+  POLY_REMAINDER|x^5 + x^4 + x^2 + x + 1
+  DIV_TERM|x^5|x^3|x^2
+  GF2_XOR|quotient x^2|0 xor 1|1
+  GF2_XOR|remainder x^2|1 xor 1|0
+  GF2_XOR|remainder x^4|1 xor 1|0
+  GF2_XOR|remainder x^5|1 xor 1|0
+  POLY_REMAINDER|x + 1
+  QUOTIENT|x^3 + x^2
+  R|x + 1
+  Z|quotient = x^3 + x^2; remainder = x + 1
+Answer: quotient = x^3 + x^2; remainder = x + 1
 ```
