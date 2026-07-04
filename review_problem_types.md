@@ -6,10 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] MeanGenerator — Mean (middle · d3)
-- [ ] MedianGenerator — Median (middle · d3)
-- [ ] ModeGenerator — Mode (middle · d3)
-- [ ] RangeGenerator — Range (middle · d3)
 - [ ] MeanAbsoluteDeviationGenerator — Mean Absolute Deviation (middle · d4)
 - [ ] CompoundProbabilityIndependentGenerator — Compound Probability Independent (middle · d4)
 - [ ] CompoundProbabilityDependentGenerator — Compound Probability Dependent (middle · d4)

@@ -1354,7 +1354,7 @@ Steps:
   STAT_SETUP|63, 15, 43, 75, 72, 61, 48, 71
   STAT_ORDER|15, 43, 48, 61, 63, 71, 72, 75
   STAT_MIDDLE|positions 4 and 5|61, 63
-  STAT_AVERAGE|(61 + 63) / 2|62.0
+  STAT_AVERAGE|(61 + 63) / 2|62
   Z|62
 Answer: 62
 ```

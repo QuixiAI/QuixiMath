@@ -134,14 +134,14 @@ class MedianGenerator(ProblemGenerator):
             mid_idx2 = size // 2
             val1 = ordered[mid_idx1]
             val2 = ordered[mid_idx2]
-            median = (val1 + val2) / 2
+            pair_sum = val1 + val2
+            # exact rendering: integer when even, n.5 otherwise (no 53.0)
+            median_text = (str(pair_sum // 2) if pair_sum % 2 == 0
+                           else f"{pair_sum // 2}.5")
             steps_list.append(step("STAT_MIDDLE", f"positions {mid_idx1 + 1} and {mid_idx2 + 1}", f"{val1}, {val2}"))
-            steps_list.append(step("STAT_AVERAGE", f"({val1} + {val2}) / 2", median))
+            steps_list.append(step("STAT_AVERAGE", f"({val1} + {val2}) / 2", median_text))
 
-            if median == int(median):
-                final_answer = str(int(median))
-            else:
-                final_answer = str(median)
+            final_answer = median_text
 
         steps_list.append(step("Z", final_answer))
 
