@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**249 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**250 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5209,4 +5209,24 @@ Steps:
   WORK_DIFF|phi(end) - phi(start)|45 - 22|23
   Z|potential 4*x^2 + y^2 - x*y + 3*x + 2*y; work 23
 Answer: potential 4*x^2 + y^2 - x*y + 3*x + 2*y; work 23
+```
+
+### Vector Theorem — `VectorTheoremGenerator`  ·  college · difficulty 5
+
+Green's theorem, divergence theorem, and Stokes' theorem computations using the easier side of the theorem.
+
+**Variants:** `vector_theorem_divergence_box`, `vector_theorem_green_rectangle`, `vector_theorem_stokes_disk`
+
+```
+Problem: Use the divergence theorem to compute the outward flux of F=<x, -5*y, -z> through the box 0 <= x <= 10, 0 <= y <= 9, 0 <= z <= 8.
+Steps:
+  THEOREM_SETUP|divergence theorem|F=<x, -5*y, -z>|box 10 by 9 by 8
+  PARTIAL_RESULT|P_x|1
+  PARTIAL_RESULT|Q_y|-5
+  PARTIAL_RESULT|R_z|-1
+  THEOREM_REWRITE|outward flux|triple integral of div F
+  REGION_MEASURE|volume|10*9*8|720
+  FLUX_SUM|(1 - 5 - 1)*720|-3600
+  Z|outward flux -3600
+Answer: outward flux -3600
 ```

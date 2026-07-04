@@ -281,6 +281,7 @@ CURRICULUM = {
     "JacobianGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DivCurlGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "LineIntegralGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "VectorTheoremGenerator": {"grade_level": COLLEGE, "difficulty": 5},
 }
 
 
