@@ -315,6 +315,7 @@ from generators.index_raising_generator import IndexRaisingGenerator
 from generators.riemann_tensor_generator import RiemannTensorGenerator
 from generators.four_vector_generator import FourVectorGenerator
 from generators.schwarzschild_generator import SchwarzschildGenerator
+from generators.planck_units_generator import PlanckUnitsGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -801,6 +802,7 @@ ALL_GENERATORS = [
     RiemannTensorGenerator(),
     FourVectorGenerator(),
     SchwarzschildGenerator(),
+    PlanckUnitsGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

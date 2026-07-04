@@ -380,6 +380,7 @@ CURRICULUM = {
     "RiemannTensorGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "FourVectorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "SchwarzschildGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "PlanckUnitsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

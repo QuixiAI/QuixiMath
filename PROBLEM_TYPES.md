@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**348 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**349 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8296,4 +8296,22 @@ Steps:
   ROOT|sqrt(16/25)|4/5
   Z|time dilation factor = 4/5
 Answer: time dilation factor = 4/5
+```
+
+### Planck Units — `PlanckUnitsGenerator`  ·  graduate · difficulty 4
+
+Planck length, time, and mass from supplied hbar, G, and c.
+
+**Variants:** `planck_units_length`, `planck_units_mass`, `planck_units_time`
+
+```
+Problem: Given hbar=49, G=1, and c=9, compute the Planck time sqrt(hbar*G/c^5).
+Steps:
+  PLANCK_SETUP|time|hbar=49|G=1|c=9
+  M|49|1|49
+  E|9|5|59049
+  D|49|59049|49/59049
+  ROOT|sqrt(49/59049)|7/243
+  Z|t_P = 7/243
+Answer: t_P = 7/243
 ```
