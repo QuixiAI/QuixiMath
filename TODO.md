@@ -87,7 +87,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Polynomials & Rational Functions
 
 ### Exponentials & Logarithms
-- [ ] Exponential models — growth/decay, depreciation, half-life, A = Pe^rt · `ExponentialModelGenerator` · high · d4
 - [ ] Exponential ↔ log conversion; evaluating logs; change of base; ln · `LogConversionGenerator` · high · d4
 - [ ] Log properties — product/quotient/power; expand and condense · `LogPropertiesGenerator` · high · d4
 - [ ] Solve exponential equations — same base, and via logs · `ExponentialEquationGenerator` · high · d5
@@ -483,7 +482,6 @@ algebra checks. Constants and logs provided per Principle 5.
 - [ ] Molarity and dilution — M₁V₁ = M₂V₂, mixing · `SolutionChemGenerator` · high · d3
 - [ ] pH/pOH — log arithmetic with provided log values or powers of ten · `PHCalculationGenerator` · high · d4
 - [ ] Ideal-gas stoichiometry — PV = nRT crossovers · `GasStoichiometryGenerator` · high · d4
-- [ ] Radioactive decay chains — activity and multi-step decays (beyond the single-step half-life in `ExponentialModelGenerator`) · `DecayChainGenerator` · high · d4
 
 ### Information Theory & Coding
 - [ ] Entropy of discrete distributions — dyadic probabilities so log₂ is exact (Principle 5 by construction) · `EntropyGenerator` · college · d3
