@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**398 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**399 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9664,4 +9664,29 @@ Steps:
   EL_SOLVE|thetaddot|-10*sin(theta)
   Z|thetaddot=-10*sin(theta)
 Answer: thetaddot=-10*sin(theta)
+```
+
+### Hamiltonian — `HamiltonianGenerator`  ·  graduate · difficulty 4
+
+Hamilton's equations for mass-spring, pendulum, and Atwood systems.
+
+**Variants:** `hamiltonian_atwood`, `hamiltonian_mass_spring`, `hamiltonian_pendulum`
+
+```
+Problem: For a pendulum Hamiltonian with mass m=7, length L=1, and g=10, write H and Hamilton's equations.
+Steps:
+  HAM_SETUP|pendulum|m=7, L=1|g=10, q=theta
+  E|1|2|1
+  M|7|1|7
+  M|7|10|70
+  M|70|1|70
+  HAMILTONIAN|H=p_theta^2/(2mL^2)+mgL*(1-cos(theta))
+  PARTIAL|dH/dp_theta|p_theta/(mL^2)
+  HAM_EQ|thetadot=dH/dp_theta|thetadot=p_theta/7
+  PARTIAL|dH/dtheta|mgL*sin(theta)
+  HAM_EQ|p_thetadot=-dH/dtheta|p_thetadot=-70*sin(theta)
+  D|70|7|10
+  HAM_EQ|thetaddot=p_thetadot/(mL^2)|thetaddot=-10*sin(theta)
+  Z|thetadot=p_theta/7; p_thetadot=-70*sin(theta); thetaddot=-10*sin(theta)
+Answer: thetadot=p_theta/7; p_thetadot=-70*sin(theta); thetaddot=-10*sin(theta)
 ```

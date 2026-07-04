@@ -158,7 +158,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Signals & Systems / Control
 
 ### Physics — Mechanics
-- [ ] Hamilton's equations for the same systems · `HamiltonianGenerator` · graduate · d4
 
 ### Physics — Electromagnetism & Circuits
 - [ ] Coulomb superposition — fields and potentials of point-charge sets · `ElectrostaticsGenerator` · college · d3
