@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**306 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**307 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7333,4 +7333,37 @@ Steps:
   MULTIVALUED_LOG|ln(49) + i*(-pi/3 + 2pi*k)|k in Z
   Z|Log(z) = ln(49) - i*pi/3; log(z) = ln(49) + i*(-pi/3 + 2pi*k), k in Z
 Answer: Log(z) = ln(49) - i*pi/3; log(z) = ln(49) + i*(-pi/3 + 2pi*k), k in Z
+```
+
+### Mobius Transform — `MobiusTransformGenerator`  ·  graduate · difficulty 4
+
+Mobius transformation images, fixed points, and cross-ratios.
+
+**Variants:** `mobius_transform_cross_ratio`, `mobius_transform_fixed_points`, `mobius_transform_image`
+
+```
+Problem: For T(z) = (-10)/(2z + 12), find the fixed points.
+Steps:
+  MOBIUS_SETUP|T(z)=(-10)/(2z + 12)|fixed points
+  FIXED_EQ|z=(az+b)/(cz+d)
+  EXPAND|c z^2 + (d-a)z - b = 0
+  S|12|0|12
+  S|0|-10|10
+  QUADRATIC|2|12|10
+  E|-5|2|25
+  M|2|25|50
+  M|12|-5|-60
+  A|50|-60|-10
+  A|-10|10|0
+  CHECK|root -5|0
+  FIXED_POINT|-5
+  E|-1|2|1
+  M|2|1|2
+  M|12|-1|-12
+  A|2|-12|-10
+  A|-10|10|0
+  CHECK|root -1|0
+  FIXED_POINT|-1
+  Z|fixed points = {-5, -1}
+Answer: fixed points = {-5, -1}
 ```

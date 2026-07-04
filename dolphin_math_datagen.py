@@ -273,6 +273,7 @@ from generators.euler_formula_generator import EulerFormulaGenerator
 from generators.de_moivre_generator import DeMoivreGenerator
 from generators.complex_log_generator import ComplexLogGenerator
 from generators.complex_locus_generator import ComplexLocusGenerator
+from generators.mobius_transform_generator import MobiusTransformGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -717,6 +718,7 @@ ALL_GENERATORS = [
     DeMoivreGenerator(),
     ComplexLogGenerator(),
     ComplexLocusGenerator(),
+    MobiusTransformGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
