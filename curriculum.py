@@ -392,6 +392,7 @@ CURRICULUM = {
     "GammaMatrixGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "GrassmannGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "RunningCouplingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "BisectionGenerator": {"grade_level": COLLEGE, "difficulty": 2},
 }
 
 

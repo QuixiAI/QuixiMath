@@ -327,6 +327,7 @@ from generators.cross_section_generator import CrossSectionGenerator
 from generators.gamma_matrix_generator import GammaMatrixGenerator
 from generators.grassmann_generator import GrassmannGenerator
 from generators.running_coupling_generator import RunningCouplingGenerator
+from generators.bisection_generator import BisectionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -825,6 +826,7 @@ ALL_GENERATORS = [
     GammaMatrixGenerator(),
     GrassmannGenerator(),
     RunningCouplingGenerator(),
+    BisectionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

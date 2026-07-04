@@ -150,7 +150,6 @@ The daily hand-computation of the field — kinematics, bookkeeping, and
 algebra checks. Constants and logs provided per Principle 5.
 
 ### Numerical Methods
-- [ ] Bisection — interval-halving table with sign checks · `BisectionGenerator` · college · d2
 - [ ] Newton-Raphson iterations (also serves √a and IRR) · `NewtonRaphsonGenerator` · college · d3
 - [ ] Fixed-point iteration with |g′| < 1 convergence check · `FixedPointGenerator` · college · d3
 - [ ] Interpolation — Lagrange form; Newton divided-difference tables · `InterpolationGenerator` · college · d4

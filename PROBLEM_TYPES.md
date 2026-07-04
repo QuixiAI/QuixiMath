@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**360 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**361 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7124,6 +7124,50 @@ Steps:
   A|-4/3|1/3|-1
   Z|Q = -1
 Answer: Q = -1
+```
+
+### Bisection — `BisectionGenerator`  ·  college · difficulty 2
+
+Bisection tables for f(x)=x^2-n with exact rational midpoints.
+
+**Variants:** `bisection_interval`
+
+```
+Problem: Use bisection for f(x)=x^2-109 on [10, 11] for 3 iterations. Give the final bracket.
+Steps:
+  BISECTION_SETUP|f(x)=x^2-109|interval=[10, 11]|iterations=3
+  M|10|10|100
+  S|100|109|-9
+  SIGN|left|-9|negative
+  M|11|11|121
+  S|121|109|12
+  SIGN|right|12|positive
+  A|10|11|21
+  D|21|2|21/2
+  M|21/2|21/2|441/4
+  S|441/4|109|5/4
+  SIGN|mid1|5/4|positive
+  M|-9|5/4|-45/4
+  SIGN|product_1|-45/4|negative
+  BISECT_UPDATE|1|product < 0|[10, 21/2]
+  A|10|21/2|41/2
+  D|41/2|2|41/4
+  M|41/4|41/4|1681/16
+  S|1681/16|109|-63/16
+  SIGN|mid2|-63/16|negative
+  M|-9|-63/16|567/16
+  SIGN|product_2|567/16|positive
+  BISECT_UPDATE|2|product > 0|[41/4, 21/2]
+  A|41/4|21/2|83/4
+  D|83/4|2|83/8
+  M|83/8|83/8|6889/64
+  S|6889/64|109|-87/64
+  SIGN|mid3|-87/64|negative
+  M|-63/16|-87/64|5481/1024
+  SIGN|product_3|5481/1024|positive
+  BISECT_UPDATE|3|product > 0|[83/8, 21/2]
+  Z|root in [83/8, 21/2]
+Answer: root in [83/8, 21/2]
 ```
 
 ## Graduate
