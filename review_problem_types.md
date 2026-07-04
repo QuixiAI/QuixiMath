@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] FrequencyTableGenerator — Frequency Table (middle · d3)
-- [ ] PermutationCombinationGenerator — Permutation Combination (middle · d4)
 - [ ] BinomialProbabilityGenerator — Binomial Probability (middle · d4)
 - [ ] ProbabilityAdditionRuleGenerator — Probability Addition Rule (middle · d4)
 - [ ] ErrorSpottingGenerator — Error Spotting (middle · d4)
