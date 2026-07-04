@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**265 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**266 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5568,6 +5568,37 @@ Steps:
   SOLVE_CONST|C1 = 1|C2 = 4
   Z|y = e^(-4x) + 4e^(3x) + e^x
 Answer: y = e^(-4x) + 4e^(3x) + e^x
+```
+
+### Variation Parameters — `VariationParametersGenerator`  ·  college · difficulty 5
+
+Variation of parameters for second-order constant-coefficient ODEs. The forcing is exponential and not part of the complementary solution, so the Wronskian and u1/u2 integrals are exact by hand.
+
+**Variants:** `variation_parameters_exponential_forcing`
+
+```
+Problem: Solve y'' - 7y' + 12y = -60e^(-x) by variation of parameters.
+Steps:
+  ODE_SETUP|y'' - 7y' + 12y = -60e^(-x)|variation of parameters
+  CHAR_EQ|assume y=e^(rx)|r^2 - 7r + 12 = 0
+  FACTOR|r^2 - 7r + 12|(r - 3)(r - 4) = 0
+  CHAR_ROOTS|r1 = 3, r2 = 4|fundamental solutions
+  HOM_SOL|y1, y2|y1 = e^(3x), y2 = e^(4x)
+  DERIV_FORM|y1', y2'|y1' = 3e^(3x), y2' = 4e^(4x)
+  WRONSKIAN|y1*y2' - y1'*y2|e^(7x)
+  VOP_FORM|u1' = -y2*g/W|60/1 * e^(-4x)
+  D|60|1|60
+  VOP_FORM|u2' = y1*g/W|-60/1 * e^(-5x)
+  D|-60|1|-60
+  ANTIDERIV|60e^(-4x) dx|-15e^(-4x)
+  D|60|-4|-15
+  ANTIDERIV|-60e^(-5x) dx|12e^(-5x)
+  D|-60|-5|12
+  A|-15|12|-3
+  PARTICULAR|u1*y1 + u2*y2|-3e^(-x)
+  SOL_FORM|y = C1e^(3x) + C2e^(4x) - 3e^(-x)
+  Z|y = C1e^(3x) + C2e^(4x) - 3e^(-x)
+Answer: y = C1e^(3x) + C2e^(4x) - 3e^(-x)
 ```
 
 ## Graduate
