@@ -117,7 +117,6 @@ bind extra hard at this level:
 ### Multivariable Calculus
 
 ### Linear Algebra (beyond the small-matrix K-12 items)
-- [ ] SVD of small matrices via AᵀA eigendecomposition · `SVDGenerator` · graduate · d4
 
 ### Differential Equations
 - [ ] First-order linear — integrating factor · `IntegratingFactorGenerator` · college · d3

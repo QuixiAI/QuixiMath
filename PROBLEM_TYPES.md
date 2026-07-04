@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**259 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**260 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5469,4 +5469,30 @@ Steps:
   CHECK|t = 0|[[1, 0], [0, 1]]|identity
   Z|e^(At)=[[-e^t + 2*e^(3t), 2*e^t - 2*e^(3t)], [-e^t + e^(3t), 2*e^t - e^(3t)]]
 Answer: e^(At)=[[-e^t + 2*e^(3t), 2*e^t - 2*e^(3t)], [-e^t + e^(3t), 2*e^t - e^(3t)]]
+```
+
+### SVD — `SVDGenerator`  ·  graduate · difficulty 4
+
+Singular value decomposition of symmetric 2x2 matrices via A^T A. Matrices have the form [[a, b], [b, a]], so A^T A has exact eigenvectors [1/sqrt(2), +/-1/sqrt(2)] and integer singular values.
+
+**Variants:** `svd_symmetric_2x2`
+
+```
+Problem: Find an SVD A = U*Sigma*V^T for A = [[30, 13], [13, 30]] using A^T A.
+Steps:
+  MAT_SETUP|A = [[30, 13], [13, 30]]|SVD via A^T A
+  ATA|A^T A|[[1069, 780], [780, 1069]]
+  EIGENVALUE|λ1 = 1849|from (30 + 13)^2
+  EIGENVECTOR|λ1 = 1849|[1/√2, 1/√2]
+  ROOT|√1849|43
+  AV_VECTOR|A*v1|[43/√2, 43/√2]
+  U_VECTOR|u1 = A*v1/σ1|[1/√2, 1/√2]
+  EIGENVALUE|λ2 = 289|from (30 - 13)^2
+  EIGENVECTOR|λ2 = 289|[1/√2, -1/√2]
+  ROOT|√289|17
+  AV_VECTOR|A*v2|[17/√2, -17/√2]
+  U_VECTOR|u2 = A*v2/σ2|[1/√2, -1/√2]
+  CHECK|U*Sigma*V^T|[[30, 13], [13, 30]]|matches A
+  Z|U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
+Answer: U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
 ```

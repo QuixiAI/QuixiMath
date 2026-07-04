@@ -226,6 +226,7 @@ from generators.diagonalization_generator import DiagonalizationGenerator
 from generators.gram_schmidt_generator import GramSchmidtGenerator
 from generators.least_squares_generator import LeastSquaresGenerator
 from generators.matrix_exponential_generator import MatrixExponentialGenerator
+from generators.svd_generator import SVDGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -623,6 +624,7 @@ ALL_GENERATORS = [
     GramSchmidtGenerator(),
     LeastSquaresGenerator(),
     MatrixExponentialGenerator(),
+    SVDGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
