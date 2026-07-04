@@ -101,6 +101,22 @@ class TestFractionOpGenerator(unittest.TestCase):
         self.assertTrue(any(inv_num == s.split(DELIM)[2] for s in m_steps), "Expected inverted numerator in multiply step")
         self.assertTrue(any(inv_den == s.split(DELIM)[2] for s in m_steps), "Expected inverted denominator in multiply step")
 
+    def test_oracle_recomputes_answer_from_problem_text(self):
+        """A9 oracle: parse the two fractions, apply the op exactly,
+        compare in lowest terms; subtraction stays non-negative."""
+        for sym in ['+', '-', '*', '/']:
+            gen = FractionOpGenerator(sym)
+            for _ in range(400):
+                result = gen.generate()
+                left, right = result["problem"].split(f" {sym} ")
+                f1, f2 = Fraction(left), Fraction(right)
+                expected = {'+': f1 + f2, '-': f1 - f2,
+                            '*': f1 * f2, '/': f1 / f2}[sym]
+                answer = Fraction(result["final_answer"])
+                self.assertEqual(answer, expected, result["problem"])
+                if sym == '-':
+                    self.assertGreaterEqual(answer, 0, result["problem"])
+
 
 if __name__ == '__main__':
     unittest.main()

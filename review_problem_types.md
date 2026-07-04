@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] FractionOpGenerator — Fraction Op (elementary · d3)
 - [ ] FractionComparisonGenerator — Fraction Comparison (elementary · d3)
 - [ ] MixedNumberOperationsRandom — Mixed Number Operations Random (elementary · d3)
 - [ ] MixedNumberOperationGenerator — Mixed Number Operation (elementary · d3)

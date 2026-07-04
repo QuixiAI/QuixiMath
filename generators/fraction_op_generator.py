@@ -20,6 +20,10 @@ class FractionOpGenerator(ProblemGenerator):
         # Ensure non-zero denominator for division's second operand (n2/d2 -> d2/n2)
         if self.op_symbol == '/' and n2 == 0:
              n2 = random.randint(1, 9) # Ensure n2 is non-zero for inversion
+        # Keep elementary subtraction non-negative (match the integer and
+        # decimal subtraction generators)
+        if self.op_symbol == '-' and Fraction(n1, d1) < Fraction(n2, d2):
+            (n1, d1), (n2, d2) = (n2, d2), (n1, d1)
 
         f1, f2 = Fraction(n1, d1), Fraction(n2, d2)
         steps = []
