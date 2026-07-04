@@ -168,7 +168,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Relativity, Waves & Optics
 
 ### Chemistry Computations
-- [ ] Ideal-gas stoichiometry — PV = nRT crossovers · `GasStoichiometryGenerator` · high · d4
 
 ### Information Theory & Coding
 - [ ] Entropy of discrete distributions — dyadic probabilities so log₂ is exact (Principle 5 by construction) · `EntropyGenerator` · college · d3

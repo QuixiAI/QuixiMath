@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**429 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**430 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5035,6 +5035,27 @@ Steps:
   S|14|1.1|12.9
   Z|pOH=1.1; pH=12.9
 Answer: pOH=1.1; pH=12.9
+```
+
+### Gas Stoichiometry — `GasStoichiometryGenerator`  ·  high · difficulty 4
+
+Stoichiometry chained through PV=nRT with R supplied as 1.
+
+**Variants:** `gas_stoichiometry_gas_to_mass`, `gas_stoichiometry_mass_to_gas_pressure`, `gas_stoichiometry_mass_to_gas_volume`
+
+```
+Problem: Given balanced equation 2 H2O2 -> 2 H2O + O2, 306 g H2O2 reacts. At P=1 atm and T=9 K with R=1, what volume V of O2 gas forms? Molar mass H2O2=34 g/mol.
+Steps:
+  GAS_STOICH_SETUP|mass_to_gas_volume|2 H2O2 -> 2 H2O + O2|given=306 g H2O2, gas=O2
+  MOLAR_MASS|H2O2|34 g/mol
+  D|306|34|9
+  STOICH_RATIO|H2O2->O2|1/2=1/2
+  M|9|1/2|9/2
+  GAS_FORMULA|PV=nRT so V=nT/P with R=1
+  M|9/2|9|81/2
+  D|81/2|1|81/2
+  Z|V O2=81/2 L
+Answer: V O2=81/2 L
 ```
 
 ## College
