@@ -192,6 +192,7 @@ CURRICULUM = {
     "ZScoreGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FrequencyTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "RegressionGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "ExpectedValueGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

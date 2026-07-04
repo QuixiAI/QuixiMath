@@ -186,6 +186,7 @@ from generators.composite_arithmetic_generator import CompositeArithmeticGenerat
 from generators.z_score_generator import ZScoreGenerator
 from generators.frequency_table_generator import FrequencyTableGenerator
 from generators.regression_generator import RegressionGenerator
+from generators.expected_value_generator import ExpectedValueGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -533,6 +534,7 @@ ALL_GENERATORS = [
     ZScoreGenerator(),
     FrequencyTableGenerator(),
     RegressionGenerator(),
+    ExpectedValueGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),

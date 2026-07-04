@@ -84,7 +84,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Series (BC)
 
 ### Statistics
-- [ ] Expected value of discrete distributions · `ExpectedValueGenerator` · high · d4
 - [ ] Confidence intervals (proportion, mean), margin of error, sample size — critical values provided in the problem (Principle 5) · `ConfidenceIntervalGenerator` · high · d5
 - [ ] Hypothesis tests — one-proportion z, one-sample t (critical values provided) · `HypothesisTestGenerator` · high · d5
 - [ ] Chi-square — goodness of fit and independence, with expected-count tables · `ChiSquareGenerator` · high · d5

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**219 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**220 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4502,6 +4502,27 @@ Steps:
   S|32|32|0
   Z|0
 Answer: 0
+```
+
+### Expected Value — `ExpectedValueGenerator`  ·  high · difficulty 4
+
+Expected value and variance of small discrete distributions, and the expected value of simple games. Probabilities share a denominator dividing 100, so E[X], Var(X) and dollar payoffs are all exact.
+
+**Variants:** `expected_value_expected_value`, `expected_value_fair_game`, `expected_value_variance`, `expected_value_winnings`
+
+```
+Problem: A game costs $6 to play. You win $5 with probability 1/4, win $3 with probability 1/4, win $2 with probability 1/2. Is the game fair, favorable, or unfavorable to the player?
+Steps:
+  EV_SETUP|P(win $5) = 1/4; P(win $3) = 1/4; P(win $2) = 1/2|fair? cost = $6
+  M|5|1/4|1.25
+  M|3|1/4|0.75
+  M|2|1/2|1
+  A|1.25|0.75|2
+  A|2|1|3
+  S|3|6|-3
+  CHECK|net vs 0|-3 < 0|unfavorable
+  Z|unfavorable
+Answer: unfavorable
 ```
 
 ### Normal Table — `NormalTableGenerator`  ·  high · difficulty 4
