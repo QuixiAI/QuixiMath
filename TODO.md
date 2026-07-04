@@ -101,7 +101,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Derivatives
 
 ### Calculus — Integrals & Differential Equations
-- [ ] Parametric dy/dx and arc length; polar area · `ParametricCalculusGenerator` · high · d5
 - [ ] Arc length (rectangular) · `ArcLengthGenerator` · high · d5
 
 ### Calculus — Series (BC)
