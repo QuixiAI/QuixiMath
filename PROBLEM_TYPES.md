@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**231 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**232 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1518,6 +1518,24 @@ Steps:
   UNIT_ATTACH|5|m/s^2|5 m/s^2
   Z|5 m/s^2
 Answer: 5 m/s^2
+```
+
+### Physics Formula — `PhysicsFormulaGenerator`  ·  middle · difficulty 4
+
+Work, force, power, and energy formula chains with unit-consistent arithmetic. Minute-based variants explicitly convert minutes to seconds before using watts = joules/second.
+
+**Variants:** `physics_formula_energy`, `physics_formula_force`, `physics_formula_power_minutes`, `physics_formula_power_seconds`, `physics_formula_work`
+
+```
+Problem: A machine does 7020 joules of work in 1 minute. Find the power in watts.
+Steps:
+  PHYS_SETUP|W = 7020 joules|t = 1 minute|power
+  UNIT_CONVERT|1 minute|60 seconds
+  PHYS_FORMULA|P = W/t
+  D|7020|60|117
+  UNIT_ATTACH|117|watts|117 watts
+  Z|117 watts
+Answer: 117 watts
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3

@@ -240,6 +240,7 @@ CURRICULUM = {
     "GeometricProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "FinanceGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "KinematicsGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "PhysicsFormulaGenerator": {"grade_level": MIDDLE, "difficulty": 4},
 
     # ===== HIGH SCHOOL =====
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},

@@ -88,7 +88,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Probability
 
 ### Applied & Cross-Disciplinary
-- [ ] Work/energy/power — W = Fd, P = W/t with conversions · `PhysicsFormulaGenerator` · middle · d4
 - [ ] Binary/hex conversions; two's complement representation · `BaseConversionGenerator` · middle · d3
 - [ ] Arithmetic *in* base 2/8/16 — column addition/multiplication with in-base carries · `BaseArithmeticGenerator` · middle · d4
 - [ ] Bitwise AND/OR/XOR truth tables and masking · `BitwiseOpsGenerator` · middle · d3
