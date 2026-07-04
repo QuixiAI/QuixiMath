@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**285 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**286 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6199,6 +6199,49 @@ Steps:
   ARRAY_STATE|pass 4|3, 17, 26, 32, 33, 20
   Z|array = [3, 17, 26, 32, 33, 20]
 Answer: array = [3, 17, 26, 32, 33, 20]
+```
+
+### DFASimulation — `DFASimulationGenerator`  ·  college · difficulty 3
+
+DFA simulation with a complete state-sequence trace.
+
+**Variants:** `dfa_simulation_contains_11`, `dfa_simulation_ends_with_one`, `dfa_simulation_even_zeros`
+
+```
+Problem: Simulate the DFA with states q0, q1; alphabet 0, 1; start q0; accepting states q1; transitions q0:0->q0,1->q1; q1:0->q0,1->q1 on input 0111111. Give the state sequence and accept/reject result.
+Steps:
+  DFA_SETUP|states q0, q1|alphabet 0, 1|start q0
+  DFA_ACCEPT|q1
+  DFA_TRANSITION|q0|0|q0
+  DFA_TRANSITION|q0|1|q1
+  DFA_TRANSITION|q1|0|q0
+  DFA_TRANSITION|q1|1|q1
+  DFA_INPUT|0111111
+  DFA_STATE|start|q0
+  DFA_READ|pos 1|0
+  DFA_STEP|q0|0|q0
+  DFA_STATE|after 1|q0->q0
+  DFA_READ|pos 2|1
+  DFA_STEP|q0|1|q1
+  DFA_STATE|after 2|q0->q0->q1
+  DFA_READ|pos 3|1
+  DFA_STEP|q1|1|q1
+  DFA_STATE|after 3|q0->q0->q1->q1
+  DFA_READ|pos 4|1
+  DFA_STEP|q1|1|q1
+  DFA_STATE|after 4|q0->q0->q1->q1->q1
+  DFA_READ|pos 5|1
+  DFA_STEP|q1|1|q1
+  DFA_STATE|after 5|q0->q0->q1->q1->q1->q1
+  DFA_READ|pos 6|1
+  DFA_STEP|q1|1|q1
+  DFA_STATE|after 6|q0->q0->q1->q1->q1->q1->q1
+  DFA_READ|pos 7|1
+  DFA_STEP|q1|1|q1
+  DFA_STATE|after 7|q0->q0->q1->q1->q1->q1->q1->q1
+  CHECK|q1 in accepting states|accepted
+  Z|accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
+Answer: accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
 ```
 
 ## Graduate

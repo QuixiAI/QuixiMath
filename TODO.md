@@ -123,7 +123,6 @@ bind extra hard at this level:
 ### Discrete Math & Combinatorics
 
 ### Graph Theory & Algorithms
-- [ ] DFA simulation — state sequence for a given input string · `DFASimulationGenerator` · college · d3
 
 ### Number Theory & Cryptography
 - [ ] Extended Euclid — Bézout coefficients with the back-substitution table · `ExtendedEuclidGenerator` · college · d3
