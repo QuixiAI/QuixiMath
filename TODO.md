@@ -160,7 +160,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Mechanics
 
 ### Physics — Electromagnetism & Circuits
-- [ ] Gauss's law for symmetric distributions · `GaussLawGenerator` · college · d4
 - [ ] RC/RL transients — time constants, exponential answers in exact form · `TransientCircuitGenerator` · college · d4
 - [ ] AC circuits — complex impedance, phasors, resonance (composes with complex arithmetic) · `ACCircuitGenerator` · graduate · d4
 - [ ] Magnetic forces; Biot-Savart and Ampère standard cases · `MagnetismGenerator` · college · d4

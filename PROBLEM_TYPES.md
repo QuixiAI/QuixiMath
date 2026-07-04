@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**400 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**401 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7912,6 +7912,26 @@ Steps:
   A|-4/9|-1/7|-37/63
   Z|V=-37/63 V
 Answer: V=-37/63 V
+```
+
+### Gauss Law — `GaussLawGenerator`  ·  college · difficulty 4
+
+Gauss's law for spherical, cylindrical, and planar symmetry.
+
+**Variants:** `gauss_law_line_charge`, `gauss_law_sheet_charge`, `gauss_law_sphere`
+
+```
+Problem: An infinite line charge has lambda=27 C/m. A cylindrical Gaussian surface has radius r=1 m and length L=5 m. Use epsilon0=1 to find the electric field.
+Steps:
+  GAUSS_SETUP|line_charge|lambda=27, r=1|L=5
+  GAUSS_FORMULA|E*(2πrL)=lambda*L
+  M|27|5|135
+  M|2|1|2
+  M|2|5|10
+  D|135|10|27/2
+  PI_DEN|27/2|π|27/(2π)
+  Z|E=27/(2π) N/C outward-positive
+Answer: E=27/(2π) N/C outward-positive
 ```
 
 ## Graduate

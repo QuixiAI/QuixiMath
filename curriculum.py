@@ -432,6 +432,7 @@ CURRICULUM = {
     "LagrangianGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "HamiltonianGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ElectrostaticsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "GaussLawGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 
