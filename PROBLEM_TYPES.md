@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**464 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**465 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8993,6 +8993,27 @@ Steps:
   PE_ENTRY|1|-sqrt(2)/2
   Z|PE=(sqrt(2)/2,-sqrt(2)/2)
 Answer: PE=(sqrt(2)/2,-sqrt(2)/2)
+```
+
+### Param Count — `ParamCountGenerator`  ·  college · difficulty 3
+
+Transformer and LoRA parameter counting.
+
+**Variants:** `param_count_lora_matrix`, `param_count_transformer_stack`
+
+```
+Problem: Count LoRA parameters for a dense layer with d_in=1024, d_out=384, and rank r=2. Compare r(d_in+d_out) with full fine-tuning d_in*d_out.
+Steps:
+  PARAM_SETUP|type=lora|d_in=1024,d_out=384,rank=2
+  M|1024|384|393216
+  PARAM_PART|full_matrix|393216
+  A|1024|384|1408
+  M|2|1408|2816
+  LORA_COUNT|r*(d_in+d_out)|2816
+  D|2816|393216|11/1536
+  APPROX|lora/full|11/1536
+  Z|full=393216; lora=2816; ratio=11/1536
+Answer: full=393216; lora=2816; ratio=11/1536
 ```
 
 ## Graduate

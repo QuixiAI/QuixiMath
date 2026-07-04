@@ -496,6 +496,7 @@ CURRICULUM = {
     "LayerNormGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ActivationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PositionalEncodingGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ParamCountGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
