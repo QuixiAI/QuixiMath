@@ -126,9 +126,14 @@ class ParallelPerpendicularLineGenerator(ProblemGenerator):
         dist_const_num = -m2_num * x1
         dist_const_den = m2_den
         dist_const_str = self._fmt_frac(dist_const_num, dist_const_den, is_coeff=False)
-        if not dist_const_str.startswith("-"): dist_const_str = "+" + dist_const_str
-        
-        steps.append(step("DIST", m2_str, f"(x {x1_op} {abs(x1)})", f"{dist_term} {dist_const_str}".strip()))
+        if dist_const_str == "0":
+            dist_rhs = dist_term
+        elif dist_const_str.startswith("-"):
+            dist_rhs = f"{dist_term} - {dist_const_str[1:]}"
+        else:
+            dist_rhs = f"{dist_term} + {dist_const_str}"
+
+        steps.append(step("DIST", m2_str, f"(x {x1_op} {abs(x1)})", dist_rhs))
         
         # Move y1
         steps.append(step("EQ_OP_NOTE", "add" if y1 > 0 else "subtract", abs(y1), "to isolate y"))
@@ -154,10 +159,13 @@ class ParallelPerpendicularLineGenerator(ProblemGenerator):
     def _fmt_frac(self, num, den, is_coeff=True):
         if den == 0: return "undef"
         if num == 0: return "0"
+        import math
+        g = math.gcd(num, den)
+        num, den = num // g, den // g
+        if den < 0:
+            num, den = -num, -den
         if den == 1:
             if is_coeff and num == 1: return ""
             if is_coeff and num == -1: return "-"
             return str(num)
-        
-        # Simplify display only? No, assume mostly simplified inputs from logic
         return f"{num}/{den}"

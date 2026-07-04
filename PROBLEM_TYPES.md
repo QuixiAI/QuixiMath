@@ -2159,7 +2159,7 @@ Steps:
   FIND_SLOPE|Given slope (m1)|3
   NEW_SLOPE|New slope (m2) = -1/3|Perpendicular lines have negative reciprocal slopes
   POINT_SLOPE_SETUP|y + 9 = -1/3(x - 3)
-  DIST|-1/3|(x - 3)|-1/3x +3/3
+  DIST|-1/3|(x - 3)|-1/3x + 1
   EQ_OP_NOTE|subtract|9|to isolate y
   Z|y = -1/3x - 8
 Answer: y = -1/3x - 8
