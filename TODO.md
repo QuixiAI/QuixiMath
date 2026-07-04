@@ -115,7 +115,6 @@ bind extra hard at this level:
 - **A8 first.** These items use the `college` and `graduate` grade levels.
 
 ### Multivariable Calculus
-- [ ] Jacobians and change of variables · `JacobianGenerator` · college · d3
 - [ ] Divergence and curl of vector fields · `DivCurlGenerator` · college · d2
 - [ ] Line integrals and work; potential functions for conservative fields · `LineIntegralGenerator` · college · d4
 - [ ] Green's / divergence / Stokes' theorems — compute via the easier side · `VectorTheoremGenerator` · college · d5

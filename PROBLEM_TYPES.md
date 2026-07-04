@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**246 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**247 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5137,4 +5137,26 @@ Steps:
   TRIPLE_EVAL|rho_part * phi_part * angle|512/3*2*2*pi|2048/3*pi
   Z|value 2048/3*pi
 Answer: value 2048/3*pi
+```
+
+### Jacobian — `JacobianGenerator`  ·  college · difficulty 3
+
+Jacobian determinants and linear change-of-variables area scaling.
+
+**Variants:** `jacobian_area_scale`, `jacobian_determinant`
+
+```
+Problem: Use x = 2*u - 5*v, y = -u + 4*v to find the area of the image of 0 <= u <= 9, 0 <= v <= 8.
+Steps:
+  JAC_SETUP|x = 2*u - 5*v|y = -u + 4*v|d(x,y)/d(u,v)
+  PARTIAL_RESULT|x_u|2
+  PARTIAL_RESULT|x_v|-5
+  PARTIAL_RESULT|y_u|-1
+  PARTIAL_RESULT|y_v|4
+  JAC_MATRIX|[[x_u, x_v], [y_u, y_v]]|[[2, -5], [-1, 4]]
+  JAC_DET|x_u*y_v - x_v*y_u|2*4 - (-5)*(-1)|3
+  AREA_SCALE|uv rectangle area|9*8|72
+  AREA_SCALE|image area|abs(3)*72|216
+  Z|image area 216
+Answer: image area 216
 ```
