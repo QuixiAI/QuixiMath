@@ -468,6 +468,7 @@ CURRICULUM = {
     "ChannelCapacityGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "HuffmanCodingGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "ArithmeticCodingGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "HammingCodeGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

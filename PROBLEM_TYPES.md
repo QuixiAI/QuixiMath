@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**436 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**437 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8518,6 +8518,24 @@ Steps:
   KRAFT_CHECK|sum=1|complete
   Z|lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
 Answer: lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
+```
+
+### Hamming Code — `HammingCodeGenerator`  ·  college · difficulty 4
+
+Hamming(7,4) encoding, syndrome computation, and single-error correction.
+
+**Variants:** `hamming_code_correct`, `hamming_code_encode`, `hamming_code_syndrome`
+
+```
+Problem: A Hamming(7,4) even-parity word is received as r=0111011. Compute the syndrome and error position.
+Steps:
+  HAMMING_RECEIVED|r=0111011
+  SYNDROME_CALC|s1=b1 xor b3 xor b5 xor b7|0 xor 1 xor 0 xor 1=0
+  SYNDROME_CALC|s2=b2 xor b3 xor b6 xor b7|1 xor 1 xor 1 xor 1=0
+  SYNDROME_CALC|s4=b4 xor b5 xor b6 xor b7|1 xor 0 xor 1 xor 1=1
+  SYNDROME_VALUE|s1=0, s2=0, s4=1|position=4
+  Z|syndrome=4; error_position=4
+Answer: syndrome=4; error_position=4
 ```
 
 ## Graduate
