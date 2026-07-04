@@ -2013,7 +2013,7 @@ Generates absolute value equations: |ax + b| = c
 ```
 Problem: Solve: |5x + 3| = 0
 Steps:
-  ABS_SETUP||5x + 3| = 0
+  ABS_SETUP|abs(5x + 3) = 0
   ABS_SPLIT|Single case|5x + 3 = 0
   EQ_OP_BOTH|subtract|3|5x|-3
   EQ_OP_BOTH|divide|5|x|-3/5

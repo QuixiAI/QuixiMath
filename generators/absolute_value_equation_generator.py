@@ -57,8 +57,10 @@ class AbsoluteValueEquationGenerator(ProblemGenerator):
                 inner = f"{a}x - {abs(b)}"
                 
         equation = f"|{inner}| = {c}"
+        # pipe-safety: step fields must not contain raw '|' — use abs()
+        step_equation = f"abs({inner}) = {c}"
         steps = []
-        steps.append(step("ABS_SETUP", equation))
+        steps.append(step("ABS_SETUP", step_equation))
         
         if c < 0:
             steps.append(step("ABS_CHECK", f"{c} < 0", "Absolute value cannot be negative"))
@@ -123,7 +125,10 @@ class AbsoluteValueEquationGenerator(ProblemGenerator):
         sol2 = self._solve_linear_steps(a, b, -c, steps)
         solutions.append(sol2)
         
-        final_ans = f"x = {solutions[0]}, x = {solutions[1]}"
+        # A0 convention: multiple roots ascending, joined with ' or '
+        from fractions import Fraction
+        solutions.sort(key=Fraction)
+        final_ans = f"x = {solutions[0]} or x = {solutions[1]}"
         steps.append(step("Z", final_ans))
         
         return dict(

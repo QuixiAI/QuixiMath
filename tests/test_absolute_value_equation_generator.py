@@ -39,10 +39,38 @@ class TestAbsoluteValueEquationGenerator(unittest.TestCase):
         from unittest.mock import patch
         with patch('random.choices', return_value=['two_sol']):
             problem = self.gen.generate()
-            self.assertIn(",", problem['final_answer']) # usually x=A, x=B
+            # A0: 'x = r1 or x = r2', roots ascending
+            self.assertIn(" or ", problem['final_answer'])
             self.assertTrue(any("ABS_SPLIT|Two cases" in s for s in problem['steps']))
             self.assertTrue(any("ABS_CASE|Case 1" in s for s in problem['steps']))
             self.assertTrue(any("ABS_CASE|Case 2" in s for s in problem['steps']))
+
+    def test_oracle_and_pipe_safety(self):
+        """A9 oracle: both roots satisfy |ax+b| = c parsed from the problem;
+        no step field carries a raw pipe; roots ascend."""
+        import re
+        from fractions import Fraction
+        for _ in range(500):
+            res = self.gen.generate()
+            eq = res['problem'].replace('Solve: ', '')
+            m = re.fullmatch(r'\|(.+)\| = (-?\d+)', eq)
+            self.assertIsNotNone(m, eq)
+            inner, c = m.group(1), int(m.group(2))
+            im = re.fullmatch(r'(?:(\d+))?x(?: ([+-]) (\d+))?', inner)
+            a = int(im.group(1)) if im.group(1) else 1
+            b = (0 if im.group(2) is None
+                 else int(im.group(3)) * (1 if im.group(2) == '+' else -1))
+            answer = res['final_answer']
+            for raw in res['steps'][:-1]:
+                self.assertLessEqual(len(raw.split('|')) - 1, 4, raw)
+            if c < 0:
+                self.assertEqual(answer, 'No solution')
+            else:
+                roots = [Fraction(x) for x in re.findall(r'x = (-?\d+(?:/\d+)?)', answer)]
+                self.assertEqual(len(roots), 1 if c == 0 else 2)
+                self.assertEqual(roots, sorted(roots))
+                for root in roots:
+                    self.assertEqual(abs(a * root + b), c, answer)
 
 if __name__ == '__main__':
     unittest.main()
