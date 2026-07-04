@@ -41,5 +41,42 @@ class TestGeometryAreaPerimeterGenerator(unittest.TestCase):
         self.assertEqual(res["final_answer"], f"Perimeter={perim}, Area={area}")
 
 
+    def test_oracle_geometric_consistency(self):
+        """A9 oracle: recompute perimeter/area from the problem text and
+        verify the stated figure actually exists (Heron height check,
+        parallelogram height < side, trapezoid leg triple)."""
+        import math
+        import re
+        gen = GeometryAreaPerimeterGenerator()
+        for _ in range(500):
+            res = gen.generate()
+            p = res["problem"]
+            parts = dict(kv.split("=") for kv in res["final_answer"].split(", "))
+            perim, area = float(parts["Perimeter"]), float(parts["Area"])
+            nums = list(map(int, re.findall(r"\d+", p)))
+            if res["operation"] == "geometry_rectangle":
+                w, h = nums
+                self.assertEqual(perim, 2 * (w + h))
+                self.assertEqual(area, w * h)
+            elif res["operation"] == "geometry_triangle":
+                b, s2, s3, hh, _ = nums
+                self.assertEqual(perim, b + s2 + s3)
+                self.assertEqual(area, b * hh / 2)
+                s = (b + s2 + s3) / 2
+                heron = math.sqrt(s * (s - b) * (s - s2) * (s - s3))
+                self.assertAlmostEqual(heron, area, places=6, msg=p)
+            elif res["operation"] == "geometry_parallelogram":
+                b, sd, hh = nums
+                self.assertEqual(perim, 2 * (b + sd))
+                self.assertEqual(area, b * hh)
+                self.assertLess(hh, sd, p)
+            else:
+                b1, b2, leg, hh = nums
+                self.assertEqual(perim, b1 + b2 + 2 * leg)
+                self.assertEqual(area, (b1 + b2) / 2 * hh)
+                off = (b1 - b2) / 2
+                self.assertEqual(leg ** 2, hh ** 2 + off ** 2, p)
+
+
 if __name__ == "__main__":
     unittest.main()

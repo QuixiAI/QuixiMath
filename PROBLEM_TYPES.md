@@ -418,18 +418,17 @@ Computes perimeter and area for basic shapes with human-style steps.
 **Variants:** `geometry_parallelogram`, `geometry_rectangle`, `geometry_trapezoid`, `geometry_triangle`
 
 ```
-Problem: Trapezoid bases 10, 4, legs 10, height 7: find perimeter and area
+Problem: Trapezoid bases 17, 7, legs 13, height 12: find perimeter and area
 Steps:
-  A|10|4|14
-  M|2|10|20
-  A|14|20|34
-  PERIM|34
-  A|10|4|14
-  D|14|2|7.0
-  M|7.0|7|49.0
-  AREA|49.0
-  Z|Perimeter=34, Area=49.0
-Answer: Perimeter=34, Area=49.0
+  A|17|7|24
+  M|2|13|26
+  A|24|26|50
+  PERIM|50
+  D|24|2|12
+  M|12|12|144
+  AREA|144
+  Z|Perimeter=50, Area=144
+Answer: Perimeter=50, Area=144
 ```
 
 ### Polygon Perimeter — `PolygonPerimeterGenerator`  ·  elementary · difficulty 2
