@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**366 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**367 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7318,6 +7318,40 @@ Steps:
   S|5|993/512|1567/512
   Z|1567/512
 Answer: 1567/512
+```
+
+### Continuous Distribution — `ContinuousDistributionGenerator`  ·  college · difficulty 3
+
+Normalize f(x)=k*x on [0,a], then compute probability, mean, variance.
+
+**Variants:** `continuous_distribution_linear_pdf`
+
+```
+Problem: For pdf f(x)=k*x on 0<=x<=14, first normalize k, then compute P(12<X<14), mean, and variance.
+Steps:
+  CONT_DIST_SETUP|f(x)=k*x|support=[0,14]|interval=(12,14)
+  POWER_INTEGRAL|int_0^a x dx|a^2/2
+  E|14|2|196
+  D|196|2|98
+  D|1|98|1/98
+  POWER_INTEGRAL|int_b^c x dx|(c^2-b^2)/2
+  E|14|2|196
+  E|12|2|144
+  S|196|144|52
+  M|1/98|52|26/49
+  D|26/49|2|13/49
+  POWER_INTEGRAL|E[X]|k*a^3/3
+  E|14|3|2744
+  M|1/98|2744|28
+  D|28|3|28/3
+  POWER_INTEGRAL|E[X^2]|k*a^4/4
+  E|14|4|38416
+  M|1/98|38416|392
+  D|392|4|98
+  M|28/3|28/3|784/9
+  S|98|784/9|98/9
+  Z|k = 1/98, P = 13/49, mean = 28/3, variance = 98/9
+Answer: k = 1/98, P = 13/49, mean = 28/3, variance = 98/9
 ```
 
 ## Graduate

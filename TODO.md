@@ -152,7 +152,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Numerical Methods
 
 ### Probability Theory & Mathematical Statistics
-- [ ] Continuous distributions — normalize a pdf, then P(a<X<b), mean, variance by integration · `ContinuousDistributionGenerator` · college · d3
 - [ ] Named distributions — Poisson, exponential, uniform, normal (z-values provided) · `NamedDistributionGenerator` · college · d3
 - [ ] Joint distributions — marginals, conditionals, independence check, covariance/correlation · `JointDistributionGenerator` · college · d4
 - [ ] Moment generating functions — derive, differentiate for moments · `MGFGenerator` · graduate · d4
