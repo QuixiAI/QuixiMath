@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**309 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**310 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7411,4 +7411,24 @@ Steps:
   FIXED_POINT|-1
   Z|fixed points = {-5, -1}
 Answer: fixed points = {-5, -1}
+```
+
+### Residue — `ResidueGenerator`  ·  graduate · difficulty 4
+
+Residues at simple and higher-order poles using local Laurent terms.
+
+**Variants:** `residue_higher_order`, `residue_simple`
+
+```
+Problem: Find the residue at z=1 of f(z) = (-1 + (z-1) + 2(z-1)^2 + (z-1)^3)/(z-1)^2, whose numerator coefficients in powers of (z-1) are [-1, 1, 2, 1].
+Steps:
+  RESIDUE_SETUP|a=1|f=(-1 + (z-1) + 2(z-1)^2 + (z-1)^3)/(z-1)^2
+  POLE_ORDER|2
+  LAURENT_TERM|-1(z-1)^-2
+  LAURENT_TERM|1(z-1)^-1
+  LAURENT_TERM|2(z-1)^0
+  LAURENT_TERM|1(z-1)^1
+  RESIDUE|1
+  Z|residue = 1
+Answer: residue = 1
 ```
