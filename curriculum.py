@@ -434,6 +434,7 @@ CURRICULUM = {
     "ElectrostaticsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "GaussLawGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "TransientCircuitGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "ACCircuitGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

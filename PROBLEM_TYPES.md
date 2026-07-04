@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**402 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**403 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9752,4 +9752,24 @@ Steps:
   HAM_EQ|thetaddot=p_thetadot/(mL^2)|thetaddot=-10*sin(theta)
   Z|thetadot=p_theta/7; p_thetadot=-70*sin(theta); thetaddot=-10*sin(theta)
 Answer: thetadot=p_theta/7; p_thetadot=-70*sin(theta); thetaddot=-10*sin(theta)
+```
+
+### ACCircuit — `ACCircuitGenerator`  ·  graduate · difficulty 4
+
+AC circuit impedance, phasor current, and resonance.
+
+**Variants:** `ac_circuit_resonance`, `ac_circuit_series_rlc`
+
+```
+Problem: A series RLC circuit has R=27 ohm, L=5 H, and C=1/5 F. Find the resonant angular frequency and impedance at resonance.
+Steps:
+  AC_SETUP|resonance|R=27, L=5|C=1/5
+  AC_FORMULA|omega0^2=1/(L*C)
+  M|5|1/5|1
+  D|1|1|1
+  ROOT|1|1
+  AC_FORMULA|at resonance XL=XC so Z=R
+  AC_COMPLEX|Z|27|0j
+  Z|omega0=1 rad/s; Z=27 ohm
+Answer: omega0=1 rad/s; Z=27 ohm
 ```

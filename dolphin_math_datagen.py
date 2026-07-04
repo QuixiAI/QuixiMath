@@ -369,6 +369,7 @@ from generators.hamiltonian_generator import HamiltonianGenerator
 from generators.electrostatics_generator import ElectrostaticsGenerator
 from generators.gauss_law_generator import GaussLawGenerator
 from generators.transient_circuit_generator import TransientCircuitGenerator
+from generators.ac_circuit_generator import ACCircuitGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -909,6 +910,7 @@ ALL_GENERATORS = [
     ElectrostaticsGenerator(),
     GaussLawGenerator(),
     TransientCircuitGenerator(),
+    ACCircuitGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
