@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**251 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**252 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5248,4 +5248,23 @@ Steps:
   UNIT_NORMAL|T'(0)/norm T'(0)|<-1, 0>
   Z|curvature 1/15; T(0)=<0, 1>; N(0)=<-1, 0>
 Answer: curvature 1/15; T(0)=<0, 1>; N(0)=<-1, 0>
+```
+
+### Centroid — `CentroidGenerator`  ·  college · difficulty 4
+
+Centroids of plane regions using area and moment integrals.
+
+**Variants:** `centroid_line_region`, `centroid_parabola_region`
+
+```
+Problem: Find the centroid of the region under y = 7*x^2 from x = 0 to x = 2 using moments.
+Steps:
+  CENTROID_SETUP|0 <= y <= 7*x^2|0 <= x <= 2|centroid
+  AREA_INT|A = int y dx|7*2^3/3|56/3
+  MOMENT_Y|M_y = int x*y dx|7*2^4/4|28
+  MOMENT_X|M_x = 1/2 int y^2 dx|7^2*2^5/10|784/5
+  CENTROID_COORD|xbar = M_y/A|(28)/(56/3)|3/2
+  CENTROID_COORD|ybar = M_x/A|(784/5)/(56/3)|42/5
+  Z|centroid (3/2, 42/5)
+Answer: centroid (3/2, 42/5)
 ```
