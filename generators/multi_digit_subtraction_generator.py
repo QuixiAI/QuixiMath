@@ -1,10 +1,15 @@
 import random
 from base_generator import ProblemGenerator
+from curriculum import clamp_difficulty
 from helpers import step, jid
 
 
 class MultiDigitSubtractionGenerator(ProblemGenerator):
-    """Generates standard column-form multi-digit subtraction with borrowing."""
+    """Generates standard column-form multi-digit subtraction with borrowing.
+
+    Difficulty is computed per instance (A3): number width plus how
+    much borrowing the specific operands force.
+    """
 
     def generate(self) -> dict:
         operation = "multi_digit_subtraction"
@@ -18,6 +23,7 @@ class MultiDigitSubtractionGenerator(ProblemGenerator):
 
         problem = f"{int(s1)} - {int(s2)}"
         borrow = 0
+        borrows = 0
         steps = []
         steps.append(step("INT_ALIGN", s1, s2))
 
@@ -33,6 +39,7 @@ class MultiDigitSubtractionGenerator(ProblemGenerator):
             if d1_eff < d2:
                 d1_eff += 10
                 borrow_out = 1
+                borrows += 1
                 steps.append(step("BORROW", col_name, "from_left", 1))
 
             col_diff = d1_eff - d2
@@ -51,4 +58,7 @@ class MultiDigitSubtractionGenerator(ProblemGenerator):
             problem=problem,
             steps=steps,
             final_answer=str(final_answer),
+            difficulty=clamp_difficulty(1 + (max_len >= 4) +
+                                        (max_len >= 5) +
+                                        (borrows >= 3)),
         )

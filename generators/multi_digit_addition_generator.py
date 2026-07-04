@@ -1,10 +1,15 @@
 import random
 from base_generator import ProblemGenerator
+from curriculum import clamp_difficulty
 from helpers import step, jid
 
 
 class MultiDigitAdditionGenerator(ProblemGenerator):
-    """Generates standard column-form multi-digit addition with carries."""
+    """Generates standard column-form multi-digit addition with carries.
+
+    Difficulty is computed per instance (A3): number width plus how
+    much carrying the specific operands force.
+    """
 
     def generate(self) -> dict:
         operation = "multi_digit_addition"
@@ -18,6 +23,7 @@ class MultiDigitAdditionGenerator(ProblemGenerator):
 
         problem = f"{int(s1)} + {int(s2)}"
         carry = 0
+        carries = 0
         steps = []
         steps.append(step("INT_ALIGN", s1, s2))
 
@@ -34,6 +40,7 @@ class MultiDigitAdditionGenerator(ProblemGenerator):
             add_result = f"->{result_digit} (carry {new_carry})"
             steps.append(step("ADD_COL", col_name, add_details, add_result))
             carry = new_carry
+            carries += new_carry
 
         if carry:
             steps.append(step("CARRY_FINAL", carry))
@@ -47,4 +54,7 @@ class MultiDigitAdditionGenerator(ProblemGenerator):
             problem=problem,
             steps=steps,
             final_answer=str(final_answer),
+            difficulty=clamp_difficulty(1 + (max_len >= 4) +
+                                        (max_len >= 5) +
+                                        (carries >= 3)),
         )

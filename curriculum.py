@@ -248,6 +248,18 @@ CURRICULUM = {
 }
 
 
+def clamp_difficulty(value):
+    """Clamp a computed per-instance difficulty to the 1-5 scale.
+
+    Generators that compute difficulty from their actual operands
+    (digit counts, carries, signs, step count) emit
+    ``result["difficulty"] = clamp_difficulty(...)``; the emitted
+    value wins over the static table entry (setdefault semantics in
+    stamp_metadata).
+    """
+    return max(1, min(5, value))
+
+
 def metadata_for(gen_instance):
     """Returns the CURRICULUM entry for a generator instance, or None."""
     return CURRICULUM.get(gen_instance.__class__.__name__)

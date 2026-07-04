@@ -1,5 +1,6 @@
 import random
 from base_generator import ProblemGenerator
+from curriculum import clamp_difficulty
 from helpers import step, jid
 
 
@@ -73,4 +74,9 @@ class MultiDigitMultiplicationGenerator(ProblemGenerator):
         if self.estimate:
             result["grade_level"] = "middle"
             result["difficulty"] = 3
+        else:
+            # A3: difficulty from the actual digit load.
+            load = len(top_str) + len(bottom_str)
+            result["difficulty"] = clamp_difficulty(
+                1 + (load >= 5) + (load >= 7) + (load >= 9))
         return result

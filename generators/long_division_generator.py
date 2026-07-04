@@ -1,5 +1,6 @@
 import random
 from base_generator import ProblemGenerator
+from curriculum import clamp_difficulty
 from helpers import step, jid, DELIM
 
 class LongDivisionGenerator(ProblemGenerator):
@@ -127,4 +128,9 @@ class LongDivisionGenerator(ProblemGenerator):
         if self.estimate:
             result["grade_level"] = "middle"
             result["difficulty"] = 3
+        else:
+            # A3: difficulty from the actual operand sizes.
+            result["difficulty"] = clamp_difficulty(
+                1 + (dividend >= 100) + (dividend >= 1000) +
+                (divisor >= 10))
         return result

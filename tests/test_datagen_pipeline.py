@@ -23,6 +23,7 @@ from dolphin_math_datagen import (
     validate_example,
 )
 from generators.multi_digit_addition_generator import MultiDigitAdditionGenerator
+from generators.factors_generator import FactorsGenerator
 from generators.long_division_generator import LongDivisionGenerator
 from generators.mixed_number_operations_random import MixedNumberOperationsRandom
 
@@ -151,12 +152,27 @@ class _UnregisteredGenerator(ProblemGenerator):
 
 class TestStampMetadata(unittest.TestCase):
     def test_stamps_from_table(self):
-        gen = MultiDigitAdditionGenerator()
+        # FactorsGenerator does not self-emit metadata, so the table
+        # supplies both keys.
+        gen = FactorsGenerator()
         random.seed(1)
         example = stamp_metadata(gen.generate(), gen)
-        expected = CURRICULUM["MultiDigitAdditionGenerator"]
+        expected = CURRICULUM["FactorsGenerator"]
         self.assertEqual(example["grade_level"], expected["grade_level"])
         self.assertEqual(example["difficulty"], expected["difficulty"])
+
+    def test_per_instance_difficulty_wins_over_table(self):
+        # MultiDigitAdditionGenerator computes difficulty from its
+        # operands (A3); that emitted value must survive stamping even
+        # though the class has a static CURRICULUM entry.
+        gen = MultiDigitAdditionGenerator()
+        random.seed(1)
+        raw = gen.generate()
+        self.assertIn("difficulty", raw)
+        emitted = raw["difficulty"]
+        stamped = stamp_metadata(raw, gen)
+        self.assertEqual(stamped["difficulty"], emitted)
+        self.assertEqual(stamped["grade_level"], "elementary")
 
     def test_generator_provided_values_win(self):
         gen = MultiDigitAdditionGenerator()
