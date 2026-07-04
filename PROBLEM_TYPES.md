@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**442 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**443 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8599,6 +8599,72 @@ Steps:
   A|4|1|5
   Z|Kraft=5/64; status=feasible_incomplete; slack=59/64; codes=A:00000,B:000100,C:00001
 Answer: Kraft=5/64; status=feasible_incomplete; slack=59/64; codes=A:00000,B:000100,C:00001
+```
+
+### Naive Bayes — `NaiveBayesGenerator`  ·  college · difficulty 4
+
+Naive Bayes classification from binary feature count tables.
+
+**Variants:** `naive_bayes_three_feature`, `naive_bayes_two_feature`
+
+```
+Problem: Classify query known=1, offer=0, urgent=0 by naive Bayes with Laplace smoothing alpha=1. Feature-one counts: Spam N=14, known=6, offer=14, urgent=12; Ham N=13, known=13, offer=4, urgent=7. Use class priors from N.
+Steps:
+  NB_SETUP|query=known=1, offer=0, urgent=0|alpha=1|classes=Spam,Ham
+  D|14|27|14/27
+  NB_PRIOR|Spam|14/27
+  NB_FEATURE_COUNT|Spam|known=1|count=6
+  A|6|1|7
+  A|14|2|16
+  D|7|16|7/16
+  NB_LIKELIHOOD|Spam|known=1|7/16
+  S|14|14|0
+  NB_FEATURE_COUNT|Spam|offer=0|count=0
+  A|0|1|1
+  A|14|2|16
+  D|1|16|1/16
+  NB_LIKELIHOOD|Spam|offer=0|1/16
+  S|14|12|2
+  NB_FEATURE_COUNT|Spam|urgent=0|count=2
+  A|2|1|3
+  A|14|2|16
+  D|3|16|3/16
+  NB_LIKELIHOOD|Spam|urgent=0|3/16
+  D|13|27|13/27
+  NB_PRIOR|Ham|13/27
+  NB_FEATURE_COUNT|Ham|known=1|count=13
+  A|13|1|14
+  A|13|2|15
+  D|14|15|14/15
+  NB_LIKELIHOOD|Ham|known=1|14/15
+  S|13|4|9
+  NB_FEATURE_COUNT|Ham|offer=0|count=9
+  A|9|1|10
+  A|13|2|15
+  D|10|15|2/3
+  NB_LIKELIHOOD|Ham|offer=0|2/3
+  S|13|7|6
+  NB_FEATURE_COUNT|Ham|urgent=0|count=6
+  A|6|1|7
+  A|13|2|15
+  D|7|15|7/15
+  NB_LIKELIHOOD|Ham|urgent=0|7/15
+  NB_SCORE|Spam|start=14/27
+  M|14/27|7/16|49/216
+  M|49/216|1/16|49/3456
+  M|49/3456|3/16|49/18432
+  NB_SCORE|Spam|score=49/18432
+  NB_SCORE|Ham|start=13/27
+  M|13/27|14/15|182/405
+  M|182/405|2/3|364/1215
+  M|364/1215|7/15|2548/18225
+  NB_SCORE|Ham|score=2548/18225
+  A|49/18432|2548/18225|5317529/37324800
+  D|49/18432|5317529/37324800|2025/108521
+  D|2548/18225|5317529/37324800|106496/108521
+  CHECK|Spam vs Ham|49/18432 < 2548/18225|predict=Ham
+  Z|class=Ham; P_Spam_given_x=2025/108521; P_Ham_given_x=106496/108521
+Answer: class=Ham; P_Spam_given_x=2025/108521; P_Ham_given_x=106496/108521
 ```
 
 ## Graduate

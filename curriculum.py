@@ -474,6 +474,7 @@ CURRICULUM = {
     "GradientStepGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PerceptronGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "BackpropGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "NaiveBayesGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 
