@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**227 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**228 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1458,6 +1458,25 @@ Steps:
   PROB_MULTIPLY|13/52|12/51|1/17
   Z|1/17
 Answer: 1/17
+```
+
+### Geometric Probability — `GeometricProbabilityGenerator`  ·  middle · difficulty 4
+
+Geometric probability as a ratio of measures: interval length to total length, rectangle area to total area, or sector angle to full-circle angle. All inputs are integers and all final probabilities are exact.
+
+**Variants:** `geometric_probability_interval`, `geometric_probability_rectangle`, `geometric_probability_sector`
+
+```
+Problem: A point is chosen uniformly at random in a 18 by 6 rectangle. A shaded rectangle inside it is 9 by 5. What is the probability that the point lands in the shaded rectangle? Give an exact answer.
+Steps:
+  GEO_PROB_SETUP|rectangle 18 by 6|shaded rectangle 9 by 5
+  MEASURE_TOTAL|whole area|18 * 6 = 108
+  MEASURE_FAVORABLE|shaded area|9 * 5 = 45
+  GEO_PROB_FORMULA|probability = favorable area / total area
+  FRAC_BUILD|45/108|5/12
+  CHECK|45 <= 108|probability is at most 1
+  Z|5/12
+Answer: 5/12
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3

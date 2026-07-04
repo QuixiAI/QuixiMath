@@ -194,6 +194,7 @@ from generators.permutation_combination_generator import PermutationCombinationG
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
 from generators.probability_addition_rule_generator import ProbabilityAdditionRuleGenerator
 from generators.conditional_probability_generator import ConditionalProbabilityGenerator
+from generators.geometric_probability_generator import GeometricProbabilityGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -400,6 +401,7 @@ ALL_GENERATORS = [
     # --- Probability (Middle School) ---
     CompoundProbabilityIndependentGenerator(),
     CompoundProbabilityDependentGenerator(),
+    GeometricProbabilityGenerator(),
 
     # ===== HIGH SCHOOL =====
 
