@@ -270,24 +270,26 @@ Lists all factors of a number using trial division up to sqrt(n).
 **Variants:** `factors_list`
 
 ```
-Problem: List factors of 110
+Problem: List factors of 209
 Steps:
-  FACT_CHECK|110|1|0
-  FACT_PAIR|1|110
-  FACT_CHECK|110|2|0
-  FACT_PAIR|2|55
-  FACT_CHECK|110|3|2
-  FACT_CHECK|110|4|2
-  FACT_CHECK|110|5|0
-  FACT_PAIR|5|22
-  FACT_CHECK|110|6|2
-  FACT_CHECK|110|7|5
-  FACT_CHECK|110|8|6
-  FACT_CHECK|110|9|2
-  FACT_CHECK|110|10|0
-  FACT_PAIR|10|11
-  Z|1, 2, 5, 10, 11, 22, 55, 110
-Answer: 1, 2, 5, 10, 11, 22, 55, 110
+  FACT_CHECK|209|1|0
+  FACT_PAIR|1|209
+  FACT_CHECK|209|2|1
+  FACT_CHECK|209|3|2
+  FACT_CHECK|209|4|1
+  FACT_CHECK|209|5|4
+  FACT_CHECK|209|6|5
+  FACT_CHECK|209|7|6
+  FACT_CHECK|209|8|1
+  FACT_CHECK|209|9|2
+  FACT_CHECK|209|10|9
+  FACT_CHECK|209|11|0
+  FACT_PAIR|11|19
+  FACT_CHECK|209|12|5
+  FACT_CHECK|209|13|1
+  FACT_CHECK|209|14|13
+  Z|1, 11, 19, 209
+Answer: 1, 11, 19, 209
 ```
 
 ### Prime Factorization — `PrimeFactorizationGenerator`  ·  elementary · difficulty 2

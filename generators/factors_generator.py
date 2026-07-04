@@ -8,7 +8,7 @@ class FactorsGenerator(ProblemGenerator):
     """Lists all factors of a number using trial division up to sqrt(n)."""
 
     def generate(self) -> dict:
-        n = random.randint(12, 144)
+        n = random.randint(12, 400)
         steps = []
         factors = set()
 
