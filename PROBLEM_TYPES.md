@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**350 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**351 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8334,4 +8334,24 @@ Steps:
   D|259|288|259/288
   Z|S_BH = 259/288
 Answer: S_BH = 259/288
+```
+
+### Casimir Force — `CasimirForceGenerator`  ·  graduate · difficulty 3
+
+Casimir force per area between parallel conducting plates.
+
+**Variants:** `casimir_force_pressure`
+
+```
+Problem: Given hbar=13, c=14, and plate separation d=1, compute the Casimir force per area F/A=-π^2*hbar*c/(240*d^4).
+Steps:
+  CASIMIR_FORCE_SETUP|F/A=-π^2*hbar*c/(240*d^4)|hbar=13,c=14,d=1
+  E|1|4|1
+  M|240|1|240
+  M|13|14|182
+  D|182|240|91/120
+  S|0|91/120|-91/120
+  PI2_NUM|-91/120|π^2|-91π^2/120
+  Z|F/A = -91π^2/120
+Answer: F/A = -91π^2/120
 ```

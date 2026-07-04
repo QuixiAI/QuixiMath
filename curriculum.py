@@ -382,6 +382,7 @@ CURRICULUM = {
     "SchwarzschildGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PlanckUnitsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "HawkingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "CasimirForceGenerator": {"grade_level": GRADUATE, "difficulty": 3},
 }
 
 

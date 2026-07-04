@@ -317,6 +317,7 @@ from generators.four_vector_generator import FourVectorGenerator
 from generators.schwarzschild_generator import SchwarzschildGenerator
 from generators.planck_units_generator import PlanckUnitsGenerator
 from generators.hawking_generator import HawkingGenerator
+from generators.casimir_force_generator import CasimirForceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -805,6 +806,7 @@ ALL_GENERATORS = [
     SchwarzschildGenerator(),
     PlanckUnitsGenerator(),
     HawkingGenerator(),
+    CasimirForceGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
