@@ -160,6 +160,7 @@ from generators.tangent_line_generator import TangentLineGenerator
 from generators.related_rates_generator import RelatedRatesGenerator
 from generators.linear_approx_generator import LinearApproxGenerator
 from generators.lhopital_generator import LHopitalGenerator
+from generators.curve_analysis_generator import CurveAnalysisGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -479,6 +480,7 @@ ALL_GENERATORS = [
     RelatedRatesGenerator(),
     LinearApproxGenerator(),
     LHopitalGenerator(),
+    CurveAnalysisGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
