@@ -30,14 +30,15 @@ class ExponentEvaluationGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         """Generate an exponent evaluation problem."""
-        # Generate base
-        if self.allow_negative_base and random.choice([True, False]):
-            base = random.randint(-5, -2)
-        else:
-            base = random.randint(2, 10)
-
-        # Generate exponent (2 to max_exponent)
-        exponent = random.randint(2, self.max_exponent)
+        # Generate base and exponent, keeping the result hand-computable
+        while True:
+            if self.allow_negative_base and random.choice([True, False]):
+                base = random.randint(-9, -2)
+            else:
+                base = random.randint(2, 15)
+            exponent = random.randint(2, self.max_exponent)
+            if abs(base) ** exponent <= 100000:
+                break
 
         # Calculate result
         result = base ** exponent

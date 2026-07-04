@@ -1032,13 +1032,17 @@ Generates exponent evaluation problems (compute a^n).
 **Variants:** `exponent_evaluation`
 
 ```
-Problem: Evaluate: 8^2
+Problem: Evaluate: (-5)^6
 Steps:
-  EXP_SETUP|8|2
-  EXP_EXPAND|8 × 8
-  EXP_PARTIAL|8|8|64
-  Z|64
-Answer: 64
+  EXP_SETUP|-5|6
+  EXP_EXPAND|(-5) × (-5) × (-5) × (-5) × (-5) × (-5)
+  EXP_PARTIAL|-5|-5|25
+  EXP_PARTIAL|25|-5|-125
+  EXP_PARTIAL|-125|-5|625
+  EXP_PARTIAL|625|-5|-3125
+  EXP_PARTIAL|-3125|-5|15625
+  Z|15625
+Answer: 15625
 ```
 
 ### Exponent Rules — `ExponentRulesGenerator`  ·  middle · difficulty 4
