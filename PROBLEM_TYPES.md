@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**287 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**288 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6303,6 +6303,67 @@ Steps:
   CHECK|gcd is last nonzero remainder|6
   Z|gcd = 6; x = -14; y = 17
 Answer: gcd = 6; x = -14; y = 17
+```
+
+### Modular Inverse — `ModularInverseGenerator`  ·  college · difficulty 3
+
+Modular inverses and linear congruence solving.
+
+**Variants:** `linear_congruence`, `modular_inverse`
+
+```
+Problem: Solve the linear congruence 52x congruent to 8 modulo 20.
+Steps:
+  MOD_SETUP|linear congruence|a=52|b=8|modulus=20
+  GCD_RESULT|gcd(52,20)|4
+  CHECK|4 divides 8|solutions exist
+  D|52|4|13
+  D|8|4|2
+  D|20|4|5
+  CONGRUENCE_REDUCE|13x congruent to 2|mod 5
+  EXT_GCD_SETUP|13|5
+  BACK_SUB_ROW|r=13|x=1|y=0
+  BACK_SUB_ROW|r=5|x=0|y=1
+  EUCLID_DIV|13|5|2|3
+  M|2|5|10
+  S|13|10|3
+  M|2|0|0
+  S|1|0|1
+  M|2|1|2
+  S|0|2|-2
+  BACK_SUB_ROW|r=3|x=1|y=-2
+  EUCLID_DIV|5|3|1|2
+  M|1|3|3
+  S|5|3|2
+  M|1|1|1
+  S|0|1|-1
+  M|1|-2|-2
+  S|1|-2|3
+  BACK_SUB_ROW|r=2|x=-1|y=3
+  EUCLID_DIV|3|2|1|1
+  M|1|2|2
+  S|3|2|1
+  M|1|-1|-1
+  S|1|-1|2
+  M|1|3|3
+  S|-2|3|-5
+  BACK_SUB_ROW|r=1|x=2|y=-5
+  EUCLID_DIV|2|1|2|0
+  M|2|1|2
+  S|2|2|0
+  M|2|2|4
+  S|-1|4|-5
+  M|2|-5|-10
+  S|3|-10|13
+  BACK_SUB_ROW|r=0|x=-5|y=13
+  GCD_RESULT|gcd(13,5)|1
+  MOD_NORMALIZE|2|mod 5|2
+  MOD_INVERSE|13 mod 5|2
+  M|2|2|4
+  MOD_REDUCE|4|mod 5|4
+  CONGRUENCE_SOLUTIONS|base 4|step 5|4, 9, 14, 19
+  Z|solutions mod 20 = 4, 9, 14, 19
+Answer: solutions mod 20 = 4, 9, 14, 19
 ```
 
 ## Graduate
