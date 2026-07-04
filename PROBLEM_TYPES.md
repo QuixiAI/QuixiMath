@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**410 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**411 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8062,6 +8062,24 @@ Steps:
   M|25|225|5625
   Z|q=5625 J
 Answer: q=5625 J
+```
+
+### Blackbody — `BlackbodyGenerator`  ·  college · difficulty 3
+
+Blackbody radiation computations with supplied constants.
+
+**Variants:** `blackbody_stefan_power`, `blackbody_wien_peak`
+
+```
+Problem: A blackbody has area A=2 m^2 and temperature T=10 K. Using Stefan-Boltzmann constant sigma=7, find radiated power P.
+Steps:
+  BLACKBODY_SETUP|stefan_power|sigma=7, A=2|T=10
+  BLACKBODY_FORMULA|P=sigma*A*T^4
+  E|10|4|10000
+  M|7|2|14
+  M|14|10000|140000
+  Z|P=140000 W
+Answer: P=140000 W
 ```
 
 ## Graduate

@@ -162,7 +162,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Electromagnetism & Circuits
 
 ### Physics — Thermodynamics & Statistical Mechanics
-- [ ] Blackbody radiation — Wien and Stefan-Boltzmann solves · `BlackbodyGenerator` · college · d3
 
 ### Physics — Quantum Mechanics
 - [ ] Photoelectric effect, de Broglie wavelength, Compton shift · `QuantumFormulaGenerator` · college · d3

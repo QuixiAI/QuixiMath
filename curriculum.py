@@ -442,6 +442,7 @@ CURRICULUM = {
     "EntropyChangeGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "CalorimetryGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "PartitionFunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "BlackbodyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

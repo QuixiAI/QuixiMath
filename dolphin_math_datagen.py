@@ -377,6 +377,7 @@ from generators.heat_engine_generator import HeatEngineGenerator
 from generators.entropy_change_generator import EntropyChangeGenerator
 from generators.calorimetry_generator import CalorimetryGenerator
 from generators.partition_function_generator import PartitionFunctionGenerator
+from generators.blackbody_generator import BlackbodyGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -925,6 +926,7 @@ ALL_GENERATORS = [
     EntropyChangeGenerator(),
     CalorimetryGenerator(),
     PartitionFunctionGenerator(),
+    BlackbodyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
