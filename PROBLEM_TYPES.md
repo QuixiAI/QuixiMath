@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**298 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**299 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6732,6 +6732,40 @@ Steps:
   CHECK|subgroup size = group size|no
   Z|<17> = {1, 17, 9, 13, 25, 5}; generator = no
 Answer: <17> = {1, 17, 9, 13, 25, 5}; generator = no
+```
+
+### Permutation Group — `PermutationGroupGenerator`  ·  college · difficulty 3
+
+Permutation composition, cycle notation, order, and parity.
+
+**Variants:** `permutation_group`
+
+```
+Problem: In S_5, let sigma=[5, 3, 2, 1, 4] and tau=[1, 5, 2, 3, 4], where each list gives images of 1..5. Compute sigma after tau, then give cycle notation, order, and parity.
+Steps:
+  PERM_SETUP|n=5|sigma=[5, 3, 2, 1, 4]|tau=[1, 5, 2, 3, 4]
+  PERM_COMPOSE|i=1|tau(i)=1|sigma(tau(i))=5
+  PERM_COMPOSE|i=2|tau(i)=5|sigma(tau(i))=4
+  PERM_COMPOSE|i=3|tau(i)=2|sigma(tau(i))=3
+  PERM_COMPOSE|i=4|tau(i)=3|sigma(tau(i))=2
+  PERM_COMPOSE|i=5|tau(i)=4|sigma(tau(i))=1
+  PERM_RESULT|[5, 4, 3, 2, 1]
+  CYCLE_TRACE|start 1|1->5->1
+  CYCLE|(1 5)
+  CYCLE_TRACE|start 2|2->4->2
+  CYCLE|(2 4)
+  CYCLE_LENGTHS|2, 2
+  GCD_RESULT|gcd(1,2)|1
+  LCM_STEP|1|2|2
+  GCD_RESULT|gcd(2,2)|2
+  LCM_STEP|2|2|2
+  S|2|1|1
+  A|0|1|1
+  S|2|1|1
+  A|1|1|2
+  PARITY|transpositions 2|even
+  Z|composition = [5, 4, 3, 2, 1]; cycles = (1 5)(2 4); order = 2; parity = even
+Answer: composition = [5, 4, 3, 2, 1]; cycles = (1 5)(2 4); order = 2; parity = even
 ```
 
 ## Graduate

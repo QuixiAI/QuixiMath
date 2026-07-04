@@ -127,7 +127,6 @@ bind extra hard at this level:
 ### Number Theory & Cryptography
 
 ### Abstract Algebra (computational side only)
-- [ ] Permutations — cycle notation, composition, order, parity · `PermutationGroupGenerator` · college · d3
 - [ ] Coset enumeration in small groups · `CosetGenerator` · graduate · d4
 - [ ] Polynomial arithmetic over ℤₚ; GF(2) polynomial division (the algebra behind CRC) · `FiniteFieldGenerator` · graduate · d4
 - [ ] Quaternion arithmetic — Hamilton's table (i² = j² = k² = ijk = −1), non-commutativity shown explicitly (ij = k but ji = −k), norms, conjugates, inverses, and rotating a 3D vector via qvq⁻¹ · `QuaternionGenerator` · graduate · d4

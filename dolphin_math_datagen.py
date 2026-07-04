@@ -265,6 +265,7 @@ from generators.diffie_hellman_generator import DiffieHellmanGenerator
 from generators.primality_test_generator import PrimalityTestGenerator
 from generators.cayley_table_generator import CayleyTableGenerator
 from generators.cyclic_group_generator import CyclicGroupGenerator
+from generators.permutation_group_generator import PermutationGroupGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -701,6 +702,7 @@ ALL_GENERATORS = [
     PrimalityTestGenerator(),
     CayleyTableGenerator(),
     CyclicGroupGenerator(),
+    PermutationGroupGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
