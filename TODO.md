@@ -101,7 +101,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Derivatives
 
 ### Calculus — Integrals & Differential Equations
-- [ ] Arc length (rectangular) · `ArcLengthGenerator` · high · d5
 
 ### Calculus — Series (BC)
 - [ ] Convergence tests — nth-term, geometric, p-series, integral, comparison, limit comparison, ratio, alternating; absolute vs conditional. One generator whose steps include *choosing* the right test · `SeriesConvergenceGenerator` · high · d5

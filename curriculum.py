@@ -177,6 +177,7 @@ CURRICULUM = {
     "EulerMethodGenerator": {"grade_level": HIGH, "difficulty": 5},
     "LogisticGrowthGenerator": {"grade_level": HIGH, "difficulty": 5},
     "ParametricCalculusGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "ArcLengthGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

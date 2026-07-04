@@ -176,6 +176,7 @@ from generators.improper_integral_generator import ImproperIntegralGenerator
 from generators.euler_method_generator import EulerMethodGenerator
 from generators.logistic_growth_generator import LogisticGrowthGenerator
 from generators.parametric_calculus_generator import ParametricCalculusGenerator
+from generators.arc_length_generator import ArcLengthGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -511,6 +512,7 @@ ALL_GENERATORS = [
     EulerMethodGenerator(),
     LogisticGrowthGenerator(),
     ParametricCalculusGenerator(),
+    ArcLengthGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
