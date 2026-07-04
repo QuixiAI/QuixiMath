@@ -143,6 +143,7 @@ CURRICULUM = {
     "TriangleAreaSASGenerator": {"grade_level": HIGH, "difficulty": 4},
     "PolarParametricGenerator": {"grade_level": HIGH, "difficulty": 5},
     "VectorOpsGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "DotProductGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
