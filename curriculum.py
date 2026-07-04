@@ -358,6 +358,7 @@ CURRICULUM = {
     "MetricArcLengthGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "FunctionInnerProductGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "LegendreConstructionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "HermitianCheckGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

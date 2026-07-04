@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**326 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**327 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6997,6 +6997,28 @@ Steps:
   M|1/3|196|196/3
   Z|area = 196pi/3
 Answer: area = 196pi/3
+```
+
+### Hermitian Check — `HermitianCheckGenerator`  ·  college · difficulty 3
+
+Hermitian and unitary verification for 2x2 matrices.
+
+**Variants:** `hermitian_check_hermitian`, `hermitian_check_unitary`
+
+```
+Problem: Check whether U=[[4/5,-3/5],[3/5,4/5]] is unitary.
+Steps:
+  MATRIX_SETUP|unitary|U=[[4/5,-3/5],[3/5,4/5]]
+  ADJOINT|U^dagger=[[4/5,3/5],[-3/5,4/5]]
+  E|4/5|2|16/25
+  E|3/5|2|9/25
+  A|16/25|9/25|1
+  M|4/5|-3/5|-12/25
+  M|3/5|4/5|12/25
+  A|-12/25|12/25|0
+  CHECK|U^dagger U|I|unitary
+  Z|unitary yes; U^dagger U = I
+Answer: unitary yes; U^dagger U = I
 ```
 
 ## Graduate
