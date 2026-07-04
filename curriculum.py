@@ -465,6 +465,7 @@ CURRICULUM = {
     "EntropyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "MutualInformationGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "KLDivergenceGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ChannelCapacityGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

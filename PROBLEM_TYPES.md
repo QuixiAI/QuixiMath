@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**433 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**434 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10426,4 +10426,25 @@ Steps:
   A|-7/510|127/255|247/510
   Z|D_KL(Q to P)=247/510 bits
 Answer: D_KL(Q to P)=247/510 bits
+```
+
+### Channel Capacity — `ChannelCapacityGenerator`  ·  graduate · difficulty 4
+
+Binary symmetric channel entropy and capacity using supplied log values.
+
+**Variants:** `channel_capacity_binary_entropy`, `channel_capacity_block_bits`, `channel_capacity_capacity`
+
+```
+Problem: A binary symmetric channel has crossover probability p=49/100. Use -log2(p)=1.029 and -log2(1-p)=0.971. Find capacity C=1-H_b(p).
+Steps:
+  BSC_SETUP|p=49/100|-log2(p)=1.029|-log2(1-p)=0.971
+  S|1|49/100|51/100
+  BSC_FORMULA|H_b=p*(-log2 p)+(1-p)*(-log2(1-p))
+  M|49/100|1.029|0.50421
+  M|51/100|0.971|0.49521
+  A|0.50421|0.49521|0.99942
+  BSC_FORMULA|C=1-H_b
+  S|1|0.99942|0.00058
+  Z|C=0.00058 bits/use
+Answer: C=0.00058 bits/use
 ```

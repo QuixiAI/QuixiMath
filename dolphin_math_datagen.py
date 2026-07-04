@@ -400,6 +400,7 @@ from generators.gas_stoichiometry_generator import GasStoichiometryGenerator
 from generators.entropy_generator import EntropyGenerator
 from generators.mutual_information_generator import MutualInformationGenerator
 from generators.kl_divergence_generator import KLDivergenceGenerator
+from generators.channel_capacity_generator import ChannelCapacityGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -971,6 +972,7 @@ ALL_GENERATORS = [
     EntropyGenerator(),
     MutualInformationGenerator(),
     KLDivergenceGenerator(),
+    ChannelCapacityGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -170,7 +170,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Chemistry Computations
 
 ### Information Theory & Coding
-- [ ] Binary symmetric channel capacity — 1 − H_b(p) · `ChannelCapacityGenerator` · graduate · d4
 - [ ] Huffman coding — tree construction, expected length vs entropy, Kraft check as verification (A1) · `HuffmanCodingGenerator` · college · d4
 - [ ] Arithmetic coding — interval-narrowing trace · `ArithmeticCodingGenerator` · graduate · d5
 - [ ] Hamming(7,4) — encode, compute syndrome, correct single errors · `HammingCodeGenerator` · college · d4
