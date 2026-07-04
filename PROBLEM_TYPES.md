@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**376 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**377 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7428,6 +7428,38 @@ Steps:
   CHECK|flow01=5/52|flow10=5/52
   Z|pi0=45/52, pi1=7/52
 Answer: pi0=45/52, pi1=7/52
+```
+
+### Simplex — `SimplexGenerator`  ·  college · difficulty 5
+
+Two-pivot simplex tableau for a bounded two-variable LP.
+
+**Variants:** `simplex_two_variable_tableau`
+
+```
+Problem: Use the simplex method to maximize z = 4x + 2y subject to x <= 14, y <= 15, x >= 0, y >= 0.
+Steps:
+  SIMPLEX_SETUP|max z=4x+2y|x<=14|y<=15
+  TABLEAU|initial|s1: x + s1 = 14|s2: y + s2 = 15
+  TABLEAU|z row|-4x - 2y + z = 0
+  ENTER|x|most negative reduced cost -4
+  D|14|1|14
+  RATIO|s1 row|14/1|14
+  PIVOT|row=s1|column=x|pivot=1
+  ROW_OP|z <- z + 4*s1
+  M|4|14|56
+  TABLEAU|after x pivot|x=14 - s1|z row: -2y + 4s1 + z = 56
+  ENTER|y|remaining negative reduced cost -2
+  D|15|1|15
+  RATIO|s2 row|15/1|15
+  PIVOT|row=s2|column=y|pivot=1
+  ROW_OP|z <- z + 2*s2
+  M|2|15|30
+  A|56|30|86
+  TABLEAU|final|x=14, y=15|z=86
+  CHECK|reduced costs for x,y are 0|optimal tableau
+  Z|x=14, y=15, max z=86
+Answer: x=14, y=15, max z=86
 ```
 
 ## Graduate

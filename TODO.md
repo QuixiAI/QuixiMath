@@ -154,7 +154,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Probability Theory & Mathematical Statistics
 
 ### Optimization & Operations Research
-- [ ] Simplex method — tableau pivots to optimality, the classic mechanical table · `SimplexGenerator` · college · d5
 - [ ] LP corner-point method — find vertices via 2×2 solves, evaluate objective · `LPCornerGenerator` · college · d3
 - [ ] Gradient descent iterations on quadratic bowls · `GradientDescentGenerator` · college · d3
 - [ ] Transportation problem — northwest-corner start, stepping-stone improvement · `TransportationGenerator` · graduate · d4
