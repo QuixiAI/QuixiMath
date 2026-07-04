@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**369 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**370 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8845,4 +8845,32 @@ Steps:
   CHECK|reciprocal|alpha_mu*inv_alpha_mu|1
   Z|alpha(mu) = 2/43
 Answer: alpha(mu) = 2/43
+```
+
+### MGF — `MGFGenerator`  ·  graduate · difficulty 4
+
+Derive a discrete moment generating function and differentiate for moments.
+
+**Variants:** `mgf_discrete_three_point`
+
+```
+Problem: A discrete random variable has P(X=0)=25/32, P(X=1)=1/8, and P(X=2)=3/32. Derive M(t), then use M'(0) and M''(0) to find E[X], E[X^2], and Var(X).
+Steps:
+  MGF_SETUP|P(X=0)=25/32|P(X=1)=1/8|P(X=2)=3/32
+  MGF_TERM|x=0|p0*e^(0t)|25/32
+  MGF_TERM|x=1|p1*e^t|1/8*e^t
+  MGF_TERM|x=2|p2*e^(2t)|3/32*e^(2t)
+  REWRITE|M(t)=25/32 + 1/8*e^t + 3/32*e^(2t)
+  DERIVATIVE|M'(t)=1/8*e^t + 3/16*e^(2t)
+  DERIVATIVE|M''(t)=1/8*e^t + 3/8*e^(2t)
+  EVAL_AT_ZERO|e^0=1|e^(2*0)=1
+  M|2|3/32|3/16
+  A|1/8|3/16|5/16
+  E|2|2|4
+  M|4|3/32|3/8
+  A|1/8|3/8|1/2
+  M|5/16|5/16|25/256
+  S|1/2|25/256|103/256
+  Z|M(t)=25/32 + 1/8*e^t + 3/32*e^(2t); E[X]=5/16; E[X^2]=1/2; Var(X)=103/256
+Answer: M(t)=25/32 + 1/8*e^t + 3/32*e^(2t); E[X]=5/16; E[X^2]=1/2; Var(X)=103/256
 ```

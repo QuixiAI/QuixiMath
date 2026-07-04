@@ -401,6 +401,7 @@ CURRICULUM = {
     "ContinuousDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "NamedDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "JointDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "MGFGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
