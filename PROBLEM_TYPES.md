@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**419 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**420 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8143,6 +8143,22 @@ Steps:
   D|1|81/400|400/81
   Z|lambda=400/81 m
 Answer: lambda=400/81 m
+```
+
+### Special Relativity — `SpecialRelativityGenerator`  ·  college · difficulty 3
+
+Special-relativity time dilation, length contraction, and 1D Lorentz event transformations with exact supplied beta and gamma.
+
+**Variants:** `special_relativity_length_contraction`, `special_relativity_lorentz_event`, `special_relativity_time_dilation`
+
+```
+Problem: A rod has proper length L0=54 m and moves with beta=9/41 where gamma=41/40. Find the contracted length L.
+Steps:
+  REL_SETUP|length_contraction|beta=9/41|gamma=41/40
+  REL_FORMULA|L=L0/gamma
+  D|54|41/40|2160/41
+  Z|L=2160/41 m
+Answer: L=2160/41 m
 ```
 
 ## Graduate

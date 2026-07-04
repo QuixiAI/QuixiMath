@@ -386,6 +386,7 @@ from generators.commutator_generator import CommutatorGenerator
 from generators.ladder_operator_generator import LadderOperatorGenerator
 from generators.hydrogen_atom_generator import HydrogenAtomGenerator
 from generators.braket_generator import BraKetGenerator
+from generators.special_relativity_generator import SpecialRelativityGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -943,6 +944,7 @@ ALL_GENERATORS = [
     LadderOperatorGenerator(),
     HydrogenAtomGenerator(),
     BraKetGenerator(),
+    SpecialRelativityGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
