@@ -152,7 +152,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Numerical Methods
 
 ### Probability Theory & Mathematical Statistics
-- [ ] Order statistics — small n, uniform case · `OrderStatisticsGenerator` · graduate · d4
 
 ### Optimization & Operations Research
 - [ ] Simplex method — tableau pivots to optimality, the classic mechanical table · `SimplexGenerator` · college · d5

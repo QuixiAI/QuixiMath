@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**375 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**376 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8997,4 +8997,39 @@ Steps:
   D|1|11/12|12/11
   Z|posterior=Normal(mean=43/33, variance=12/11)
 Answer: posterior=Normal(mean=43/33, variance=12/11)
+```
+
+### Order Statistics — `OrderStatisticsGenerator`  ·  graduate · difficulty 4
+
+Uniform(0,1) order statistic pdf, moments, and exact pdf evaluation.
+
+**Variants:** `order_statistics_uniform_pdf_moments`
+
+```
+Problem: For 8 iid Uniform(0,1) samples, find the pdf, mean, variance, and f(2/3) for the 7-th order statistic X_(7).
+Steps:
+  ORDER_SETUP|n=8|k=7|q=2/3
+  FACT|8|40320
+  S|7|1|6
+  S|8|7|1
+  FACT|6|720
+  FACT|1|1
+  M|720|1|720
+  D|40320|720|56
+  ORDER_PDF|f_{7:8}(x)=56*x^6*(1-x)^1
+  S|1|2/3|1/3
+  E|2/3|6|64/729
+  E|1/3|1|1/3
+  M|56|64/729|3584/729
+  M|3584/729|1/3|3584/2187
+  A|8|1|9
+  D|7|9|7/9
+  S|9|7|2
+  M|7|2|14
+  E|9|2|81
+  A|9|1|10
+  M|81|10|810
+  D|14|810|7/405
+  Z|f_{7:8}(x)=56*x^6*(1-x)^1; E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
+Answer: f_{7:8}(x)=56*x^6*(1-x)^1; E[X_(7)]=7/9; Var(X_(7))=7/405; f_{7:8}(2/3)=3584/2187
 ```

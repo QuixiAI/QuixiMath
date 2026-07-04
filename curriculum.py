@@ -407,6 +407,7 @@ CURRICULUM = {
     "MethodOfMomentsGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "BayesianUpdateGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MarkovChainGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "OrderStatisticsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
