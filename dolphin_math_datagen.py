@@ -128,6 +128,7 @@ from generators.circle_angle_generator import CircleAngleGenerator
 from generators.circle_equation_generator import CircleEquationGenerator
 from generators.taxicab_geometry_generator import TaxicabGeometryGenerator
 from generators.euler_characteristic_generator import EulerCharacteristicGenerator
+from generators.hypercube_counting_generator import HypercubeCountingGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -415,6 +416,7 @@ ALL_GENERATORS = [
     CircleEquationGenerator(),
     TaxicabGeometryGenerator(),
     EulerCharacteristicGenerator(),
+    HypercubeCountingGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),

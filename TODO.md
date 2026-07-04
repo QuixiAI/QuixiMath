@@ -91,7 +91,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Conic Sections
 
 ### Geometry & Measurement
-- [ ] Hypercube counting — vertices, edges, faces, cells of the n-cube via 2ⁿ and C(n,k)·2ⁿ⁻ᵏ; distances in ℝ⁴ · `HypercubeCountingGenerator` · high · d4
 
 ### Trigonometry
 - [ ] SOH-CAH-TOA — write the ratio, find missing side, find missing angle (needed trig values provided in the problem per Principle 5) · `RightTriangleTrigGenerator` · high · d4
