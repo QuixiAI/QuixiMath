@@ -123,6 +123,7 @@ from generators.distance_formula_generator import DistanceFormulaGenerator
 from generators.midpoint_generator import MidpointGenerator
 from generators.segment_partition_generator import SegmentPartitionGenerator
 from generators.transformation_generator import TransformationGenerator
+from generators.arc_sector_generator import ArcSectorGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -405,6 +406,7 @@ ALL_GENERATORS = [
     MidpointGenerator(),
     SegmentPartitionGenerator(),
     TransformationGenerator(),
+    ArcSectorGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
