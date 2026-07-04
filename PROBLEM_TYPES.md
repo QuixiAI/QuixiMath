@@ -509,15 +509,15 @@ Converts rates like mph -> ft/s (and reverse) using factor-label steps with expl
 **Variants:** `convert_rate`
 
 ```
-Problem: Convert 20 m/s to km/hr
+Problem: Convert 125 m/s to km/hr
 Steps:
-  CONV_FACTOR|1 s|3600 hr
-  M|20|3600|72000
-  CONV_FACTOR|1 m|1000 km
-  D|72000|1000|72
-  CONV_RESULT|20 m/s|72 km/hr
-  Z|72 km/hr
-Answer: 72 km/hr
+  CONV_FACTOR|1 hr|3600 s
+  M|125|3600|450000
+  CONV_FACTOR|1 km|1000 m
+  D|450000|1000|450
+  CONV_RESULT|125 m/s|450 km/hr
+  Z|450 km/hr
+Answer: 450 km/hr
 ```
 
 ### Temperature Conversion — `TemperatureConversionGenerator`  ·  elementary · difficulty 3
