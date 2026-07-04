@@ -144,7 +144,6 @@ matrix arithmetic or explicit integration — no functional analysis proofs.
 The symmetry machinery of particle physics, done as explicit matrix work.
 
 ### Tensors & General Relativity (computational)
-- [ ] Black-hole thermodynamics — Hawking temperature and Bekenstein-Hawking entropy solves; quantum gravity's most famous arithmetic · `HawkingGenerator` · graduate · d4
 - [ ] Casimir force between plates — F/A = −π²ℏc/(240d⁴) evaluations · `CasimirForceGenerator` · graduate · d3
 
 ### Particle Physics Arithmetic

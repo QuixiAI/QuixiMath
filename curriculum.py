@@ -381,6 +381,7 @@ CURRICULUM = {
     "FourVectorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "SchwarzschildGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PlanckUnitsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "HawkingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

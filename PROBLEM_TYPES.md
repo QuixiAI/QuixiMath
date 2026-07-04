@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**349 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**350 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8314,4 +8314,24 @@ Steps:
   ROOT|sqrt(49/59049)|7/243
   Z|t_P = 7/243
 Answer: t_P = 7/243
+```
+
+### Hawking — `HawkingGenerator`  ·  graduate · difficulty 4
+
+Hawking temperature and Bekenstein-Hawking entropy evaluations.
+
+**Variants:** `hawking_entropy`, `hawking_temperature`
+
+```
+Problem: Given k_B=7, c=1, A=37, hbar=9, and G=8, compute the Bekenstein-Hawking entropy S_BH=k_B*c^3*A/(4*hbar*G).
+Steps:
+  HAWKING_SETUP|entropy|S_BH=k_B*c^3*A/(4*hbar*G)|k_B=7,c=1,A=37,hbar=9,G=8
+  E|1|3|1
+  M|7|1|7
+  M|7|37|259
+  M|4|9|36
+  M|36|8|288
+  D|259|288|259/288
+  Z|S_BH = 259/288
+Answer: S_BH = 259/288
 ```
