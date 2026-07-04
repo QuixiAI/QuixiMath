@@ -273,6 +273,7 @@ CURRICULUM = {
     # ===== COLLEGE =====
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

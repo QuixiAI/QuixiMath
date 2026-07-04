@@ -115,7 +115,6 @@ bind extra hard at this level:
 - **A8 first.** These items use the `college` and `graduate` grade levels.
 
 ### Multivariable Calculus
-- [ ] Multivariable chain rule; total differential · `MultivarChainRuleGenerator` · college · d3
 - [ ] Critical points via the second-partials (Hessian) test · `HessianClassifyGenerator` · college · d3
 - [ ] Lagrange multipliers — one constraint · `LagrangeMultiplierGenerator` · college · d4
 - [ ] Double integrals — iterated, order reversal, polar conversion · `DoubleIntegralGenerator` · college · d3

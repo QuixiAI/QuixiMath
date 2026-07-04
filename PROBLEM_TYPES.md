@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**241 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**242 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5020,4 +5020,28 @@ Steps:
   DOT|(26, 5) · (-3/5, 4/5)|26*(-3/5) + 5*4/5|-11.6
   Z|-11.6
 Answer: -11.6
+```
+
+### Multivar Chain Rule — `MultivarChainRuleGenerator`  ·  college · difficulty 3
+
+Multivariable chain rule and total differential computations for quadratic functions f(x,y).
+
+**Variants:** `multivar_chain_rule_partial_s`, `multivar_chain_rule_path_derivative`, `multivar_chain_rule_total_diff`
+
+```
+Problem: Let z = f(x,y) = 4*x^2 + y^2 + 2*x + y, where x = 3*s - t + 4 and y = 4*s - t - 2. Find dz/ds at (s, t) = (2, -1).
+Steps:
+  MV_CHAIN_SETUP|z = f(x,y) = 4*x^2 + y^2 + 2*x + y|x = 3*s - t + 4, y = 4*s - t - 2|(s,t) = (2, -1)
+  DERIV_RULE|partial chain rule|dz/ds = f_x*x_s + f_y*y_s
+  CHAIN_VALUE|x(2,-1)|3*2 + (-1)*(-1) + 4|11
+  CHAIN_VALUE|y(2,-1)|4*2 + (-1)*(-1) + (-2)|7
+  PARTIAL_RESULT|f_x|8*x + 2
+  PARTIAL_RESULT|f_y|2*y + 1
+  EVAL_PARTIAL|f_x|8*11 + 2|90
+  EVAL_PARTIAL|f_y|2*7 + 1|15
+  CHAIN_RATE|x_s|3
+  CHAIN_RATE|y_s|4
+  CHAIN_SUM|f_x*x_s + f_y*y_s|90*3 + 15*4|330
+  Z|330
+Answer: 330
 ```
