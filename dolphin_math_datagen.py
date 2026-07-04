@@ -435,6 +435,7 @@ from generators.param_count_generator import ParamCountGenerator
 from generators.flops_memory_generator import FLOPsMemoryGenerator
 from generators.scaling_law_generator import ScalingLawGenerator
 from generators.adam_step_generator import AdamStepGenerator
+from generators.lr_schedule_generator import LRScheduleGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1041,6 +1042,7 @@ ALL_GENERATORS = [
     FLOPsMemoryGenerator(),
     ScalingLawGenerator(),
     AdamStepGenerator(),
+    LRScheduleGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

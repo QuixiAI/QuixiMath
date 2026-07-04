@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**468 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**469 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9059,6 +9059,31 @@ Steps:
   THROUGHPUT|tokens_per_second|50000000/201
   Z|C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
 Answer: C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
+```
+
+### LRSchedule — `LRScheduleGenerator`  ·  college · difficulty 2
+
+Linear warmup plus cosine decay learning-rate schedule.
+
+**Variants:** `lr_schedule_warmup_cosine`
+
+```
+Problem: Evaluate a learning-rate schedule with base_lr=1/1000, min_lr=1/10000, warmup_steps=10, total_steps=410, at step t=410. Use linear warmup, then cosine decay lr=min+1/2*(base-min)*(1+cos(pi*progress)).
+Steps:
+  LR_SETUP|base=1/1000|min=1/10000|warmup=10,total=410,t=410
+  S|410|10|400
+  S|410|10|400
+  D|400|400|1
+  COSINE|pi*1|-1
+  S|1/1000|1/10000|9/10000
+  A|1|-1|0
+  M|9/10000|0|0
+  D|0|2|0
+  A|1/10000|0|1/10000
+  LR_PHASE|decay
+  LR_VALUE|1/10000
+  Z|phase=decay; lr=1/10000
+Answer: phase=decay; lr=1/10000
 ```
 
 ## Graduate
