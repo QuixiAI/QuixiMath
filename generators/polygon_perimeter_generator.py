@@ -9,6 +9,10 @@ class PolygonPerimeterGenerator(ProblemGenerator):
     def generate(self) -> dict:
         n_sides = random.randint(3, 8)
         sides = [random.randint(2, 15) for _ in range(n_sides)]
+        # Polygon inequality: every side must be shorter than the sum of
+        # the others, or no such polygon exists
+        while max(sides) >= sum(sides) - max(sides):
+            sides = [random.randint(2, 15) for _ in range(n_sides)]
         steps = []
 
         # Start with first two sides, then accumulate the rest

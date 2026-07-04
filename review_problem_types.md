@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] PolygonPerimeterGenerator — Polygon Perimeter (elementary · d2)
 - [ ] VolumeRectPrismGenerator — Volume Rect Prism (elementary · d3)
 - [ ] UnitConversionGenerator — Unit Conversion (elementary · d2)
 - [ ] MultiStepUnitConversionGenerator — Multi Step Unit Conversion (elementary · d3)
