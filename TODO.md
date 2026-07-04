@@ -91,7 +91,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Conic Sections
 
 ### Geometry & Measurement
-- [ ] Nets → surface area — net given textually as a list of faces with dimensions · `NetsSurfaceAreaGenerator` · middle · d4
 - [ ] Area of regular polygons via apothem · `RegularPolygonAreaGenerator` · high · d4
 - [ ] Similar triangles — set up ratios, solve for missing sides · `SimilarTrianglesGenerator` · high · d4
 - [ ] Geometric mean — altitude and leg relationships in right triangles · `GeometricMeanGenerator` · high · d4
