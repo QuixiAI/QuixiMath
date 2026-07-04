@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] MultiDigitMultiplicationGenerator — Multi Digit Multiplication (elementary · d3)
 - [ ] AbacusAdditionGenerator — Abacus Addition (elementary · d2)
 - [ ] DecimalAddSubGenerator — Decimal Add Sub (elementary · d3)
 - [ ] DecimalMultGenerator — Decimal Mult (elementary · d3)
