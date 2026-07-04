@@ -443,6 +443,7 @@ CURRICULUM = {
     "CalorimetryGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "PartitionFunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BlackbodyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "QuantumFormulaGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

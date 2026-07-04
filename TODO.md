@@ -164,7 +164,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Thermodynamics & Statistical Mechanics
 
 ### Physics — Quantum Mechanics
-- [ ] Photoelectric effect, de Broglie wavelength, Compton shift · `QuantumFormulaGenerator` · college · d3
 - [ ] Particle in a box — energy levels, transition wavelengths · `ParticleInBoxGenerator` · college · d3
 - [ ] Normalize wavefunctions; expectation values ⟨x⟩, ⟨x²⟩ by integration · `WavefunctionGenerator` · graduate · d4
 - [ ] Spin-½ — apply Pauli matrices, eigenvalues, measurement probabilities · `SpinHalfGenerator` · graduate · d4
