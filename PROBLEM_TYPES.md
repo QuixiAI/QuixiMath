@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**357 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**358 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8491,4 +8491,29 @@ Steps:
   UNIT_ATTACH|72|fb^-1|L = 72 fb^-1
   Z|L = 72 fb^-1
 Answer: L = 72 fb^-1
+```
+
+### Gamma Matrix — `GammaMatrixGenerator`  ·  graduate · difficulty 5
+
+Small Dirac gamma-matrix algebra checks by explicit 4x4 multiplication.
+
+**Variants:** `gamma_matrix_anticommutator_entry`, `gamma_matrix_trace`
+
+```
+Problem: Given gamma3=[[0,0,-1,0],[0,0,0,-1],[1,0,0,0],[0,1,0,0]] and gamma1=[[0,-1,0,0],[1,0,0,0],[0,0,0,1],[0,0,-1,0]] with eta_31=0, compute Tr(gamma3*gamma1).
+Steps:
+  GAMMA_SETUP|trace|gamma3,gamma1|Tr(product)
+  MATRIX_PRODUCT|gamma3gamma1|gamma3*gamma1
+  DOT4|gamma3gamma1|(1,1)|0*0 + 0*1 + -1*0 + 0*0|0
+  TRACE_ADD|gamma3gamma1|(1,1)|0 + 0|0
+  DOT4|gamma3gamma1|(2,2)|0*-1 + 0*0 + 0*0 + -1*0|0
+  TRACE_ADD|gamma3gamma1|(2,2)|0 + 0|0
+  DOT4|gamma3gamma1|(3,3)|1*0 + 0*0 + 0*0 + 0*-1|0
+  TRACE_ADD|gamma3gamma1|(3,3)|0 + 0|0
+  DOT4|gamma3gamma1|(4,4)|0*0 + 1*0 + 0*1 + 0*0|0
+  TRACE_ADD|gamma3gamma1|(4,4)|0 + 0|0
+  TRACE_EXPECT|4*eta_31|0|0
+  CHECK|trace theorem|computed=0|expected=0
+  Z|Tr(gamma3*gamma1) = 0
+Answer: Tr(gamma3*gamma1) = 0
 ```
