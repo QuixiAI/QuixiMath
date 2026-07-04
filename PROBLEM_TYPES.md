@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**452 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**453 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11402,4 +11402,44 @@ Steps:
   PROJECT|P4|-3
   Z|cov=[[2,0], [0,9/2]]; pc=(0,1); scores=0,0,3,-3
 Answer: cov=[[2,0], [0,9/2]]; pc=(0,1); scores=0,0,3,-3
+```
+
+### Low Rank Approx — `LowRankApproxGenerator`  ·  graduate · difficulty 4
+
+Rank-1 truncated SVD approximation and Frobenius reconstruction error.
+
+**Variants:** `low_rank_svd_rank1`
+
+```
+Problem: For diagonal matrix A=[[13,0], [0,15]], compute the rank-1 truncated SVD approximation and Frobenius reconstruction error.
+Steps:
+  LOWRANK_SETUP|A=[[13,0], [0,15]]|rank=1
+  E|13|2|169
+  E|15|2|225
+  EIGENVALUES|A^T A|169,225
+  ROOT|sqrt(169)|13
+  SINGULAR_VALUE|sigma1|13
+  ROOT|sqrt(225)|15
+  SINGULAR_VALUE|sigma2|15
+  CHECK|sigma1 vs sigma2|13 < 15|keep=sigma2
+  TRUNCATE|rank=1|discard=13
+  APPROX_ENTRY|(1,1)|0
+  S|13|0|13
+  E|13|2|169
+  APPROX_ENTRY|(1,2)|0
+  S|0|0|0
+  E|0|2|0
+  APPROX_ENTRY|(2,1)|0
+  S|0|0|0
+  E|0|2|0
+  APPROX_ENTRY|(2,2)|15
+  S|15|15|0
+  E|0|2|0
+  A|0|169|169
+  A|169|0|169
+  A|169|0|169
+  A|169|0|169
+  ROOT|sqrt(169)|13
+  Z|A_rank1=[[0,0], [0,15]]; error=13
+Answer: A_rank1=[[0,0], [0,15]]; error=13
 ```

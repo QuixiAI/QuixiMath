@@ -175,7 +175,6 @@ algebra checks. Constants and logs provided per Principle 5.
 Poetic bonus: the model learns to compute its own building blocks on paper.
 
 ### Matrix Calculus & ML Linear Algebra
-- [ ] Low-rank approximation — truncated SVD of small matrices, reconstruction error in Frobenius norm · `LowRankApproxGenerator` · graduate · d4
 
 ### Kernel Methods
 - [ ] Kernel evaluations & Gram matrices — polynomial and RBF kernels over 2-3 points (RBF exponent values exact or provided per Principle 5) · `KernelEvaluationGenerator` · graduate · d3
