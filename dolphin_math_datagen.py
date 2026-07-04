@@ -277,6 +277,7 @@ from generators.mobius_transform_generator import MobiusTransformGenerator
 from generators.fractal_iteration_generator import FractalIterationGenerator
 from generators.cauchy_riemann_generator import CauchyRiemannGenerator
 from generators.residue_generator import ResidueGenerator
+from generators.contour_integral_generator import ContourIntegralGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -725,6 +726,7 @@ ALL_GENERATORS = [
     FractalIterationGenerator(),
     CauchyRiemannGenerator(),
     ResidueGenerator(),
+    ContourIntegralGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

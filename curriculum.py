@@ -342,6 +342,7 @@ CURRICULUM = {
     "FractalIterationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "CauchyRiemannGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ResidueGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ContourIntegralGenerator": {"grade_level": GRADUATE, "difficulty": 5},
 }
 
 

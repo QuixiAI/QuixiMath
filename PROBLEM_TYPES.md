@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**310 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**311 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7431,4 +7431,27 @@ Steps:
   RESIDUE|1
   Z|residue = 1
 Answer: residue = 1
+```
+
+### Contour Integral — `ContourIntegralGenerator`  ·  graduate · difficulty 5
+
+Contour integrals by the residue theorem over positively oriented circles centered at the origin.
+
+**Variants:** `contour_integral_residue_theorem`
+
+```
+Problem: Evaluate the positively oriented contour integral over |z|=5 of f(z) = 3/(z-6) + 2/(z+8) + 1/(z+4).
+Steps:
+  CONTOUR_SETUP|abs(z)=5|positive orientation|f=3/(z-6) + 2/(z+8) + 1/(z+4)
+  POLE_TEST|pole 6|abs(6) < 5|outside
+  RESIDUE|pole 6|3|outside
+  POLE_TEST|pole -8|abs(-8) < 5|outside
+  RESIDUE|pole -8|2|outside
+  POLE_TEST|pole -4|abs(-4) < 5|inside
+  RESIDUE|pole -4|1|inside
+  A|0|1|1
+  RESIDUE_SUM|1
+  M|2|1|2
+  Z|integral = 2pi i
+Answer: integral = 2pi i
 ```

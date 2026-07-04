@@ -129,7 +129,6 @@ bind extra hard at this level:
 ### Abstract Algebra (computational side only)
 
 ### Complex Analysis (computational)
-- [ ] Contour integrals via the residue theorem · `ContourIntegralGenerator` · graduate · d5
 - [ ] Taylor/Laurent coefficients of rational functions · `LaurentSeriesGenerator` · graduate · d5
 
 ### Spherical & Non-Euclidean Geometry
