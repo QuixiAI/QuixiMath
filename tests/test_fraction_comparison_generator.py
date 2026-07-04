@@ -41,6 +41,21 @@ class TestFractionComparisonGenerator(unittest.TestCase):
         else:
             self.assertEqual(lhs, rhs)
 
+    def test_oracle_recomputes_relation_from_problem_text(self):
+        """A9 oracle: parse both fractions from the problem, compare
+        exactly, and check the answer echoes the operands as written."""
+        relations = set()
+        for _ in range(500):
+            res = self.gen.generate()
+            lhs_str, rhs_str = res["problem"].replace("Compare: ", "").split(" ? ")
+            lhs, rhs = Fraction(lhs_str), Fraction(rhs_str)
+            relation = ">" if lhs > rhs else "<" if lhs < rhs else "="
+            relations.add(relation)
+            self.assertEqual(res["final_answer"],
+                             f"{lhs_str} {relation} {rhs_str}", res["problem"])
+        # all three relations should appear, including equivalent pairs
+        self.assertEqual(relations, {">", "<", "="})
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -201,14 +201,13 @@ Compares two fractions using common denominator (human LCD method).
 **Variants:** `fraction_compare`
 
 ```
-Problem: Compare: 7/8 ? 1/6
+Problem: Compare: 7/8 ? 21/24
 Steps:
-  L|8|6|24
+  L|8|24|24
   C|7/8|24|21/24
-  C|1/6|24|4/24
-  CMP|21/24|4/24|>
-  Z|7/8 > 1/6
-Answer: 7/8 > 1/6
+  CMP|21/24|21/24|=
+  Z|7/8 = 21/24
+Answer: 7/8 = 21/24
 ```
 
 ### Mixed Number Operations Random — `MixedNumberOperationsRandom`  ·  elementary · difficulty 3
