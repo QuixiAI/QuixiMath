@@ -379,6 +379,7 @@ CURRICULUM = {
     "IndexRaisingGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "RiemannTensorGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "FourVectorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "SchwarzschildGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

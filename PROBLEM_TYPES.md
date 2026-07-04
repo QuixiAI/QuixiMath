@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**347 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**348 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8279,4 +8279,21 @@ Steps:
   ROOT|sqrt(1369)|37
   Z|E = 37
 Answer: E = 37
+```
+
+### Schwarzschild — `SchwarzschildGenerator`  ·  graduate · difficulty 4
+
+Schwarzschild radius and time-dilation plug-ins with supplied constants.
+
+**Variants:** `schwarzschild_radius`, `schwarzschild_time_dilation`
+
+```
+Problem: Given Schwarzschild radius r_s=18 and radius r=50, compute the time dilation factor sqrt(1 - r_s/r).
+Steps:
+  SCHWARZSCHILD_SETUP|time_dilation|r_s=18|r=50
+  D|18|50|9/25
+  S|1|9/25|16/25
+  ROOT|sqrt(16/25)|4/5
+  Z|time dilation factor = 4/5
+Answer: time dilation factor = 4/5
 ```
