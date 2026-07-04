@@ -324,6 +324,7 @@ CURRICULUM = {
     "ModExpGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "TotientGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ContinuedFractionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "QuadraticResidueGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

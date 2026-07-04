@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**292 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**293 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6691,4 +6691,50 @@ Steps:
   A|1|1|2
   Z|coefficient = 2
 Answer: coefficient = 2
+```
+
+### Quadratic Residue — `QuadraticResidueGenerator`  ·  graduate · difficulty 4
+
+Legendre symbol computation by Euler's criterion.
+
+**Variants:** `quadratic_residue_legendre`
+
+```
+Problem: Use Euler's criterion to compute Legendre(99,29).
+Steps:
+  LEGENDRE_SETUP|a=99|p=29
+  S|29|1|28
+  D|28|2|14
+  MOD_REDUCE|99|mod 29|12
+  BINARY_EXPONENT|14|1110
+  M|1|1|1
+  MOD_REDUCE|1|mod 29|1
+  MODEXP_SQUARE|bit 1=1|1
+  M|1|12|12
+  MOD_REDUCE|12|mod 29|12
+  MODEXP_MULTIPLY|bit 1=1|12
+  MODEXP_STATE|after bit 1|12
+  M|12|12|144
+  MOD_REDUCE|144|mod 29|28
+  MODEXP_SQUARE|bit 2=1|28
+  M|28|12|336
+  MOD_REDUCE|336|mod 29|17
+  MODEXP_MULTIPLY|bit 2=1|17
+  MODEXP_STATE|after bit 2|17
+  M|17|17|289
+  MOD_REDUCE|289|mod 29|28
+  MODEXP_SQUARE|bit 3=1|28
+  M|28|12|336
+  MOD_REDUCE|336|mod 29|17
+  MODEXP_MULTIPLY|bit 3=1|17
+  MODEXP_STATE|after bit 3|17
+  M|17|17|289
+  MOD_REDUCE|289|mod 29|28
+  MODEXP_SQUARE|bit 4=0|28
+  MODEXP_MULTIPLY|bit 4=0|skip
+  MODEXP_STATE|after bit 4|28
+  EULER_CRITERION|99^14 mod 29|28
+  LEGENDRE_RESULT|28|-1|quadratic nonresidue
+  Z|Legendre(99,29) = -1
+Answer: Legendre(99,29) = -1
 ```
