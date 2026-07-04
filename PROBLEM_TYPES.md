@@ -256,11 +256,11 @@ Converts between fraction, decimal, and percent with clear human steps.
 **Variants:** `convert_dec_to_frac`, `convert_frac_to_dec`, `convert_frac_to_percent`, `convert_percent_to_dec`, `convert_percent_to_frac`
 
 ```
-Problem: Convert 75% to decimal
+Problem: Convert 108% to decimal
 Steps:
-  PERCENT_TO_DEC|75%|0.75
-  Z|0.75
-Answer: 0.75
+  PERCENT_TO_DEC|108%|1.08
+  Z|1.08
+Answer: 1.08
 ```
 
 ### Factors — `FactorsGenerator`  ·  elementary · difficulty 1
