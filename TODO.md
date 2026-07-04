@@ -103,7 +103,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Integrals & Differential Equations
 
 ### Calculus — Series (BC)
-- [ ] Taylor/Maclaurin polynomials — construction, approximation at a point, Lagrange error bound · `TaylorSeriesGenerator` · high · d5
 
 ### Statistics
 - [ ] Five-number summary, IQR, 1.5×IQR outlier check · `FiveNumberSummaryGenerator` · middle · d3

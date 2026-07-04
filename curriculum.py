@@ -180,6 +180,7 @@ CURRICULUM = {
     "ArcLengthGenerator": {"grade_level": HIGH, "difficulty": 5},
     "SeriesConvergenceGenerator": {"grade_level": HIGH, "difficulty": 5},
     "PowerSeriesGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "TaylorSeriesGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
