@@ -462,6 +462,7 @@ CURRICULUM = {
     "SolutionChemGenerator": {"grade_level": HIGH, "difficulty": 3},
     "PHCalculationGenerator": {"grade_level": HIGH, "difficulty": 4},
     "GasStoichiometryGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "EntropyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

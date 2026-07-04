@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**430 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**431 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8333,6 +8333,22 @@ Steps:
   D|30|28/5|75/14
   Z|lambda=28/5 m; f=75/14 Hz
 Answer: lambda=28/5 m; f=75/14 Hz
+```
+
+### Entropy — `EntropyGenerator`  ·  college · difficulty 3
+
+Shannon entropy and information content for dyadic distributions.
+
+**Variants:** `entropy_counts_entropy`, `entropy_distribution_entropy`, `entropy_event_information`
+
+```
+Problem: An event has probability p=1/16384. Find its information content in bits.
+Steps:
+  INFO_SETUP|p=1/16384|I=-log2(p)
+  LOG2|1/16384|-14
+  S|0|-14|14
+  Z|I=14 bits
+Answer: I=14 bits
 ```
 
 ## Graduate

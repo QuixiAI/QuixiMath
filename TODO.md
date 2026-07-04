@@ -170,7 +170,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Chemistry Computations
 
 ### Information Theory & Coding
-- [ ] Entropy of discrete distributions — dyadic probabilities so log₂ is exact (Principle 5 by construction) · `EntropyGenerator` · college · d3
 - [ ] Joint/conditional entropy and mutual information from a joint table · `MutualInformationGenerator` · college · d4
 - [ ] KL divergence between small distributions · `KLDivergenceGenerator` · graduate · d4
 - [ ] Binary symmetric channel capacity — 1 − H_b(p) · `ChannelCapacityGenerator` · graduate · d4
