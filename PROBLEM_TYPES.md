@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**290 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**291 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6462,6 +6462,37 @@ Steps:
   MODEXP_STATE|after bit 6|18
   Z|33^56 mod 49 = 18
 Answer: 33^56 mod 49 = 18
+```
+
+### Totient — `TotientGenerator`  ·  college · difficulty 3
+
+Euler totient computation and Fermat/Euler power reductions.
+
+**Variants:** `totient_euler_power`, `totient_fermat_power`, `totient_totient`
+
+```
+Problem: Use Euler's theorem to reduce 7^96 modulo 48.
+Steps:
+  FACTOR_SETUP|48
+  FACTOR_FOUND|2|4
+  FACTOR_FOUND|3|1
+  FACTOR_FORM|48|2^4 * 3
+  D|48|2|24
+  S|2|1|1
+  M|24|1|24
+  PHI_STEP|p=2|24
+  D|24|3|8
+  S|3|1|2
+  M|8|2|16
+  PHI_STEP|p=3|16
+  TOTIENT_RESULT|phi(48)|16
+  GCD_RESULT|gcd(7,48)|1
+  CHECK|gcd = 1|Euler applies
+  MOD_REDUCE|96|mod 16|0
+  POWER_REDUCE|7^96|7^0 mod 48
+  MOD_POWER|7^0|mod 48|1
+  Z|7^96 mod 48 = 1
+Answer: 7^96 mod 48 = 1
 ```
 
 ## Graduate
