@@ -38,7 +38,7 @@ class PascalTriangleGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        n = random.randint(3, 10)
+        n = random.randint(3, 12)
 
         steps = []
         if variant == "row":
