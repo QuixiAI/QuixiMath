@@ -219,6 +219,7 @@ from generators.line_integral_generator import LineIntegralGenerator
 from generators.vector_theorem_generator import VectorTheoremGenerator
 from generators.curve_geometry_generator import CurveGeometryGenerator
 from generators.centroid_generator import CentroidGenerator
+from generators.lu_decomposition_generator import LUDecompositionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -609,6 +610,7 @@ ALL_GENERATORS = [
     VectorTheoremGenerator(),
     CurveGeometryGenerator(),
     CentroidGenerator(),
+    LUDecompositionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**252 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**253 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5267,4 +5267,30 @@ Steps:
   CENTROID_COORD|ybar = M_x/A|(784/5)/(56/3)|42/5
   Z|centroid (3/2, 42/5)
 Answer: centroid (3/2, 42/5)
+```
+
+### LUDecomposition — `LUDecompositionGenerator`  ·  college · difficulty 3
+
+3x3 LU decomposition with a unit lower-triangular L using Doolittle's method and no pivoting.
+
+**Variants:** `lu_decomposition`
+
+```
+Problem: Find an LU decomposition A = L*U with unit lower triangular L for A = [[-1, 1, -1], [-2, 6, 0], [-2, -14, -7]].
+Steps:
+  LU_SETUP|A = [[-1, 1, -1], [-2, 6, 0], [-2, -14, -7]]|unit lower L
+  LU_ENTRY|u11|a11 = -1|-1
+  LU_ENTRY|u12|a12 = 1|1
+  LU_ENTRY|u13|a13 = -1|-1
+  LU_ENTRY|l21|(-2)/(-1)|2
+  LU_ENTRY|l31|(-2)/(-1)|2
+  LU_ENTRY|u22|6 - 2*1|4
+  LU_ENTRY|u23|0 - 2*(-1)|2
+  LU_ENTRY|l32|((-14) - 2*1)/4|-4
+  LU_ENTRY|u33|(-7) - 2*(-1) - (-4)*2|3
+  LU_RESULT|L|[[1, 0, 0], [2, 1, 0], [2, -4, 1]]
+  LU_RESULT|U|[[-1, 1, -1], [0, 4, 2], [0, 0, 3]]
+  CHECK|L*U|[[-1, 1, -1], [-2, 6, 0], [-2, -14, -7]]|matches A
+  Z|L=[[1, 0, 0], [2, 1, 0], [2, -4, 1]]; U=[[-1, 1, -1], [0, 4, 2], [0, 0, 3]]
+Answer: L=[[1, 0, 0], [2, 1, 0], [2, -4, 1]]; U=[[-1, 1, -1], [0, 4, 2], [0, 0, 3]]
 ```

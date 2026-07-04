@@ -284,6 +284,7 @@ CURRICULUM = {
     "VectorTheoremGenerator": {"grade_level": COLLEGE, "difficulty": 5},
     "CurveGeometryGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "CentroidGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "LUDecompositionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
