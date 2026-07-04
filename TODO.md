@@ -88,7 +88,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Probability
 
 ### Applied & Cross-Disciplinary
-- [ ] Arithmetic *in* base 2/8/16 — column addition/multiplication with in-base carries · `BaseArithmeticGenerator` · middle · d4
 - [ ] Bitwise AND/OR/XOR truth tables and masking · `BitwiseOpsGenerator` · middle · d3
 - [ ] Modular "clock math"; check-digit algorithms (ISBN-10, Luhn) — applied mod arithmetic with real payoff · `ModularArithmeticGenerator` · middle · d4
 - [ ] Digit-by-digit square root — *the* classic by-hand algorithm (plus the divide-and-average variant) · `ManualSquareRootGenerator` · middle · d4

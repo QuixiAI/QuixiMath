@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**233 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**234 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1554,6 +1554,25 @@ Steps:
   REVERSE|0,3,C|C30
   Z|C30
 Answer: C30
+```
+
+### Base Arithmetic — `BaseArithmeticGenerator`  ·  middle · difficulty 4
+
+Column arithmetic in base 2, 8, and 16. Addition works right-to-left with in-base carries; multiplication uses a one-digit multiplier and carries through each column.
+
+**Variants:** `base_arithmetic_addition`, `base_arithmetic_multiplication`
+
+```
+Problem: In base 16, multiply A7_16 by 6_16.
+Steps:
+  BASE_ARITH_SETUP|base 16|A7 * 6
+  BASE_MUL_COL|col 0|7 * 6 + carry 0|42 -> digit A, carry 2
+  BASE_MUL_COL|col 1|A * 6 + carry 2|62 -> digit E, carry 3
+  BASE_CARRY|carry 3|digit 3, carry 0
+  REVERSE|A,E,3|3EA
+  CHECK|167 * 6|1002|3EA
+  Z|3EA_16
+Answer: 3EA_16
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3
