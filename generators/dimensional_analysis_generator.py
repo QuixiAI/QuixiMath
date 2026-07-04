@@ -77,7 +77,7 @@ class DimensionalAnalysisGenerator(ProblemGenerator):
 
         scenario = random.choice(scenarios)
 
-        base_value = random.randint(1, 5)
+        base_value = random.randint(1, 20)
         if scenario["type"] == "dosing":
             value = Fraction(base_value * 5)  # 5,10,... keeps numbers tidy
         elif scenario["type"] in ("flow",):

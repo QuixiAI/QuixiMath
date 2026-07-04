@@ -542,14 +542,14 @@ Performs multi-factor dimensional analysis across dosing (mg/kg), flow rates, pr
 **Variants:** `dimensional_analysis`
 
 ```
-Problem: Pressure conversion: Convert 405.3 kPa to atm using 1 atm = 101.325 kPa
+Problem: Pressure conversion: Convert 1418.55 kPa to atm using 1 atm = 101.325 kPa
 Steps:
   CONV_FACTOR|101.325 kPa|1 atm
-  M|405.3|1|405.3
-  D|405.3|101.325|4
-  CONV_RESULT|405.3 kPa|4 atm
-  Z|4 atm
-Answer: 4 atm
+  M|1418.55|1|1418.55
+  D|1418.55|101.325|14
+  CONV_RESULT|1418.55 kPa|14 atm
+  Z|14 atm
+Answer: 14 atm
 ```
 
 ### Percent Word Problem — `PercentWordProblemGenerator`  ·  elementary · difficulty 3

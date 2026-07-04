@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] TemperatureConversionGenerator — Temperature Conversion (elementary · d3)
-- [ ] DimensionalAnalysisGenerator — Dimensional Analysis (elementary · d3)
 - [ ] PercentWordProblemGenerator — Percent Word Problem (elementary · d3)
 - [ ] RepeatingDecimalGenerator — Repeating Decimal (elementary · d3)
 - [ ] ProportionWordProblemGenerator — Proportion Word Problem (elementary · d3)
