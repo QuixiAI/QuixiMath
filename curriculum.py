@@ -130,6 +130,7 @@ CURRICULUM = {
     "TaxicabGeometryGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "EulerCharacteristicGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "HypercubeCountingGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "RightTriangleTrigGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

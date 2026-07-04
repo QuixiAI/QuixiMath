@@ -93,7 +93,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Geometry & Measurement
 
 ### Trigonometry
-- [ ] SOH-CAH-TOA — write the ratio, find missing side, find missing angle (needed trig values provided in the problem per Principle 5) · `RightTriangleTrigGenerator` · high · d4
 - [ ] Special right triangles — 30-60-90 and 45-45-90 · `SpecialRightTriangleGenerator` · high · d4
 - [ ] Degrees ↔ radians; coterminal and reference angles · `AngleMeasureGenerator` · high · d4
 - [ ] Unit circle exact values; inverse trig evaluation · `UnitCircleGenerator` · high · d4
