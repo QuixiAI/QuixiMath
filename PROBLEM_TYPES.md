@@ -570,19 +570,21 @@ Answer: $81.70
 
 ### Repeating Decimal — `RepeatingDecimalGenerator`  ·  elementary · difficulty 3
 
-Determines whether a fraction converts to a terminating or repeating decimal and shows the decimal expansion.
+Determines whether a fraction converts to a terminating or repeating decimal and shows the exact decimal expansion.
 
 **Variants:** `repeating_decimal`
 
 ```
-Problem: Determine if 7/9 is terminating or repeating, and give the decimal.
+Problem: Determine if 4/6 is terminating or repeating, and give the decimal.
 Steps:
-  F|7/9|7/9
-  PF_PRIME|9
-  DEC_TYPE|7/9|repeating
-  DEC_VALUE|7/9|0.777778
-  Z|0.777778 (repeating)
-Answer: 0.777778 (repeating)
+  F|4/6|2/3
+  PF_PRIME|3
+  DEC_TYPE|2/3|repeating
+  D|20|3|6
+  REPEAT_DETECT|remainder 2 repeats|repetend 6
+  DEC_VALUE|2/3|0.(6)
+  Z|0.(6) (repeating)
+Answer: 0.(6) (repeating)
 ```
 
 ### Proportion Word Problem — `ProportionWordProblemGenerator`  ·  elementary · difficulty 3

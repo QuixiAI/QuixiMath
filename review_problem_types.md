@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] RepeatingDecimalGenerator — Repeating Decimal (elementary · d3)
 - [ ] ProportionWordProblemGenerator — Proportion Word Problem (elementary · d3)
 - [ ] SimpleStatsGenerator — Simple Stats (elementary · d2)
 - [ ] SimpleProbabilityGenerator — Simple Probability (elementary · d1)
