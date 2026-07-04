@@ -798,7 +798,7 @@ Problem: A blueprint has a scale of 1 centimeter = 5 meters. If a wall is actual
 Steps:
   SCALE_SETUP|1 centimeter|5 meters|5
   SCALE_IDENTIFY|25 meters|scaled_dimension
-  SCALE_DIV|25|5|5.0
+  SCALE_DIV|25|5|5
   Z|5 centimeters
 Answer: 5 centimeters
 ```

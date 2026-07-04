@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] TipBillSplitGenerator — Tip Bill Split (middle · d3)
-- [ ] ScalingGenerator — Scaling (middle · d3)
 - [ ] SimilarFiguresScaleGenerator — Similar Figures Scale (middle · d3)
 - [ ] ProportionalRelationshipGenerator — Proportional Relationship (middle · d3)
 - [ ] OneStepEquationGenerator — One Step Equation (middle · d3)

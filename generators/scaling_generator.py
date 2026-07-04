@@ -99,8 +99,9 @@ class ScalingGenerator(ProblemGenerator):
         # Step 2: Identify given and what to find
         steps.append(step("SCALE_IDENTIFY", f"{scaled_value} {pluralize(scale_unit, scaled_value)}", "actual_dimension"))
 
-        # Step 3: Multiply
-        steps.append(step("SCALE_MULT", scaled_value, scale_factor, actual_value))
+        # Step 3: Multiply (render whole results without the .0)
+        actual_num = int(actual_value) if actual_value == int(actual_value) else actual_value
+        steps.append(step("SCALE_MULT", scaled_value, scale_factor, actual_num))
 
         # Final answer
         steps.append(step("Z", actual_str))
@@ -119,8 +120,8 @@ class ScalingGenerator(ProblemGenerator):
         multiplier = random.randint(1, 10)
         actual_value = scale_factor * multiplier
 
-        # Calculate scaled value
-        scaled_value = actual_value / scale_factor  # This equals multiplier
+        # Calculate scaled value (exact integer — it is the multiplier)
+        scaled_value = multiplier
 
         # Build problem text
         if context_type == "map":
