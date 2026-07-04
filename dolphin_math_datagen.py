@@ -137,6 +137,7 @@ from generators.sinusoid_features_generator import SinusoidFeaturesGenerator
 from generators.trig_six_functions_generator import TrigSixFunctionsGenerator
 from generators.trig_identity_eval_generator import TrigIdentityEvalGenerator
 from generators.trig_identity_verify_generator import TrigIdentityVerifyGenerator
+from generators.trig_equation_generator import TrigEquationGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -433,6 +434,7 @@ ALL_GENERATORS = [
     TrigSixFunctionsGenerator(),
     TrigIdentityEvalGenerator(),
     TrigIdentityVerifyGenerator(),
+    TrigEquationGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
