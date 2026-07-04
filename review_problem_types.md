@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ComplexQuadraticGenerator — Complex Quadratic (high · d5)
-- [ ] PolynomialLongDivisionGenerator — Polynomial Long Division (high · d5)
 - [ ] SyntheticDivisionGenerator — Synthetic Division (high · d4)
 - [ ] HornerEvaluationGenerator — Horner Evaluation (high · d4)
 - [ ] RemainderFactorTheoremGenerator — Remainder Factor Theorem (high · d4)
