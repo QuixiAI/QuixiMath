@@ -105,7 +105,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Series (BC)
 
 ### Statistics
-- [ ] Variance & standard deviation by hand — deviation table · `StandardDeviationGenerator` · middle · d4
 - [ ] Z-scores & standardization · `ZScoreGenerator` · high · d4
 - [ ] Frequency tables & histogram interpretation · `FrequencyTableGenerator` · middle · d3
 - [ ] Least-squares regression by formula; r, r², residuals · `RegressionGenerator` · high · d5

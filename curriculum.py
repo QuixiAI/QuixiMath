@@ -182,6 +182,7 @@ CURRICULUM = {
     "PowerSeriesGenerator": {"grade_level": HIGH, "difficulty": 5},
     "TaylorSeriesGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FiveNumberSummaryGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "StandardDeviationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},

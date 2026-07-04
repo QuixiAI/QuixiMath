@@ -181,6 +181,7 @@ from generators.series_convergence_generator import SeriesConvergenceGenerator
 from generators.power_series_generator import PowerSeriesGenerator
 from generators.taylor_series_generator import TaylorSeriesGenerator
 from generators.five_number_summary_generator import FiveNumberSummaryGenerator
+from generators.standard_deviation_generator import StandardDeviationGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -521,6 +522,7 @@ ALL_GENERATORS = [
     PowerSeriesGenerator(),
     TaylorSeriesGenerator(),
     FiveNumberSummaryGenerator(),
+    StandardDeviationGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
