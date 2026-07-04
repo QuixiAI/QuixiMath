@@ -310,6 +310,7 @@ CURRICULUM = {
     "RecurrenceGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "GeneratingFunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BooleanAlgebraGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "GraphCountingGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

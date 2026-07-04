@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**278 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**279 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5888,6 +5888,38 @@ Steps:
   CNF_FORM|(A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
   Z|CNF = (A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
 Answer: CNF = (A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
+```
+
+### Graph Counting — `GraphCountingGenerator`  ·  college · difficulty 3
+
+Graph counting by degree sums and adjacency-matrix powers.
+
+**Variants:** `graph_counting_degree_sequence`, `graph_counting_walk_count`
+
+```
+Problem: For the directed graph with adjacency matrix A = [[0, 1, 0, 0], [0, 0, 0, 0], [1, 0, 0, 1], [1, 1, 1, 0]], how many walks of length 2 go from vertex 4 to vertex 2?
+Steps:
+  GRAPH_SETUP|directed adjacency matrix|4 vertices
+  MATRIX_ROW|row 1|0, 1, 0, 0
+  MATRIX_ROW|row 2|0, 0, 0, 0
+  MATRIX_ROW|row 3|1, 0, 0, 1
+  MATRIX_ROW|row 4|1, 1, 1, 0
+  WALK_GOAL|length 2|4 to 2
+  M|1|1|1
+  WALK_TERM|via 1|A[4,1]*A[1,2]|1
+  A|0|1|1
+  M|1|0|0
+  WALK_TERM|via 2|A[4,2]*A[2,2]|0
+  A|1|0|1
+  M|1|0|0
+  WALK_TERM|via 3|A[4,3]*A[3,2]|0
+  A|1|0|1
+  M|0|1|0
+  WALK_TERM|via 4|A[4,4]*A[4,2]|0
+  A|1|0|1
+  WALK_ENTRY|A^2[4,2]|1
+  Z|walks = 1
+Answer: walks = 1
 ```
 
 ## Graduate

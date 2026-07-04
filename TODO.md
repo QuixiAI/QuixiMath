@@ -123,7 +123,6 @@ bind extra hard at this level:
 ### Discrete Math & Combinatorics
 
 ### Graph Theory & Algorithms
-- [ ] Degree sequences, handshake counts; adjacency-matrix powers for walk counts · `GraphCountingGenerator` · college · d3
 - [ ] Dijkstra shortest path — full distance-table trace · `DijkstraGenerator` · college · d4
 - [ ] Minimum spanning trees — Kruskal and Prim traces · `MSTGenerator` · college · d4
 - [ ] BFS/DFS visit orders; topological sort · `GraphTraversalGenerator` · college · d3
