@@ -393,6 +393,7 @@ CURRICULUM = {
     "GrassmannGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "RunningCouplingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BisectionGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "NewtonRaphsonGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

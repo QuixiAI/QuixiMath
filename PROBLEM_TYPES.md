@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**361 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**362 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7168,6 +7168,38 @@ Steps:
   BISECT_UPDATE|3|product > 0|[83/8, 21/2]
   Z|root in [83/8, 21/2]
 Answer: root in [83/8, 21/2]
+```
+
+### Newton Raphson — `NewtonRaphsonGenerator`  ·  college · difficulty 3
+
+Newton-Raphson tables for f(x)=x^2-n with exact rational iterates.
+
+**Variants:** `newton_raphson_sqrt`
+
+```
+Problem: Use Newton-Raphson on f(x)=x^2-56 with x0=8 for 3 iterations. Give the final iterate.
+Steps:
+  NEWTON_SETUP|f(x)=x^2-56|f'(x)=2x|x0=8,iterations=3
+  M|8|8|64
+  S|64|56|8
+  M|2|8|16
+  D|8|16|1/2
+  S|8|1/2|15/2
+  NEWTON_UPDATE|1|x_0=8|x_1=15/2
+  M|15/2|15/2|225/4
+  S|225/4|56|1/4
+  M|2|15/2|15
+  D|1/4|15|1/60
+  S|15/2|1/60|449/60
+  NEWTON_UPDATE|2|x_1=15/2|x_2=449/60
+  M|449/60|449/60|201601/3600
+  S|201601/3600|56|1/3600
+  M|2|449/60|449/30
+  D|1/3600|449/30|1/53880
+  S|449/60|1/53880|403201/53880
+  NEWTON_UPDATE|3|x_2=449/60|x_3=403201/53880
+  Z|x_3 = 403201/53880
+Answer: x_3 = 403201/53880
 ```
 
 ## Graduate
