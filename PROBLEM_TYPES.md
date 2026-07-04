@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**334 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**335 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7965,4 +7965,26 @@ Steps:
   CHECK|Heisenberg lower bound|>= 1/4|holds
   Z|Delta x Delta p = sqrt(9801pi^2/12 - 1/2)
 Answer: Delta x Delta p = sqrt(9801pi^2/12 - 1/2)
+```
+
+### Matrix Group Check — `MatrixGroupCheckGenerator`  ·  graduate · difficulty 3
+
+Matrix group membership checks for exact 2x2 rotation matrices.
+
+**Variants:** `matrix_group_check_so2`, `matrix_group_check_su2`
+
+```
+Problem: Check whether M=[[112/113,-15/113],[15/113,112/113]] is a member of SU2.
+Steps:
+  MATRIX_GROUP_SETUP|SU2|M=[[112/113,-15/113],[15/113,112/113]]
+  E|112/113|2|12544/12769
+  E|15/113|2|225/12769
+  A|12544/12769|225/12769|1
+  CHECK|U^dagger U|I|metric preserved
+  M|112/113|112/113|12544/12769
+  M|-15/113|15/113|-225/12769
+  S|12544/12769|-225/12769|1
+  CHECK|det M|1|special
+  Z|SU2 member yes; U^dagger U = I, det = 1
+Answer: SU2 member yes; U^dagger U = I, det = 1
 ```

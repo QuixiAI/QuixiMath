@@ -142,7 +142,6 @@ matrix arithmetic or explicit integration — no functional analysis proofs.
 
 ### Lie Groups & Symmetry (computational)
 The symmetry machinery of particle physics, done as explicit matrix work.
-- [ ] Matrix group membership — verify RᵀR = I, det R = 1 for SO(2)/SO(3) candidates; U†U = I, det U = 1 for SU(2) · `MatrixGroupCheckGenerator` · graduate · d3
 - [ ] Rotations from generators — exponentiate so(2)/so(3) elements (composes with `MatrixExponentialGenerator`) · `LieExponentialGenerator` · graduate · d4
 - [ ] Structure constants — verify [Jᵢ, Jⱼ] = iεᵢⱼₖJₖ by explicit commutators of the given matrices · `StructureConstantGenerator` · graduate · d4
 - [ ] Pauli & Gell-Mann algebra — products, anticommutators, trace identities Tr(σᵢσⱼ) = 2δᵢⱼ · `PauliAlgebraGenerator` · graduate · d3

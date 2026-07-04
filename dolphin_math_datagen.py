@@ -301,6 +301,7 @@ from generators.density_matrix_generator import DensityMatrixGenerator
 from generators.von_neumann_entropy_generator import VonNeumannEntropyGenerator
 from generators.projector_generator import ProjectorGenerator
 from generators.uncertainty_generator import UncertaintyGenerator
+from generators.matrix_group_check_generator import MatrixGroupCheckGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -773,6 +774,7 @@ ALL_GENERATORS = [
     VonNeumannEntropyGenerator(),
     ProjectorGenerator(),
     UncertaintyGenerator(),
+    MatrixGroupCheckGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
