@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**351 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**352 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8354,4 +8354,25 @@ Steps:
   PI2_NUM|-91/120|π^2|-91π^2/120
   Z|F/A = -91π^2/120
 Answer: F/A = -91π^2/120
+```
+
+### Natural Units — `NaturalUnitsGenerator`  ·  graduate · difficulty 4
+
+Natural-unit conversion chains with hbar = c = 1.
+
+**Variants:** `natural_units_energy`, `natural_units_length`, `natural_units_mass`, `natural_units_time`
+
+```
+Problem: In natural units with hbar=c=1, a time scale t=25/29 GeV^-1 is given. Compute length L=t, energy E=1/t, and mass m=E.
+Steps:
+  NATURAL_SETUP|time|hbar=1,c=1|t=25/29 GeV^-1
+  UNIT_RULE|c=1|L=t|GeV^-1
+  M|25/29|1|25/29
+  UNIT_RULE|hbar=1|E=1/L|GeV
+  D|1|25/29|29/25
+  UNIT_RULE|c=1|m=E|mass uses GeV
+  M|29/25|1|29/25
+  M|29/25|25/29|1
+  Z|L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
+Answer: L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
 ```
