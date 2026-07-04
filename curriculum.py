@@ -503,6 +503,7 @@ CURRICULUM = {
     "LRScheduleGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "PerplexityGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "QuantizationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "AnnuityGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

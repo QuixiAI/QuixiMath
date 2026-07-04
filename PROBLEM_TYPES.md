@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**471 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**472 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9129,6 +9129,28 @@ Steps:
   ROUNDTRIP_ERROR|sum_abs|3/100
   Z|q=(-33,-11,15); dequant=(-9/5,-7/10,3/5); sum_abs_error=3/100
 Answer: q=(-33,-11,15); dequant=(-9/5,-7/10,3/5); sum_abs_error=3/100
+```
+
+### Annuity — `AnnuityGenerator`  ·  college · difficulty 4
+
+Annuity present/future value and short amortization schedules.
+
+**Variants:** `annuity_amortization`, `annuity_future_value`, `annuity_present_value`
+
+```
+Problem: An ordinary annuity pays $750 at the end of each period for 3 periods at 25% per period. Find the present value.
+Steps:
+  ANNUITY_SETUP|ordinary annuity present value|PMT=750,r=25%,n=3
+  PERCENT_TO_DEC|25%|0.25
+  ANNUITY_FORMULA|PV = PMT*(1 - (1+r)^(-n))/r
+  A|1|0.25|1.25
+  E|1.25|3|1.953125
+  D|1|1.953125|0.512
+  S|1|0.512|0.488
+  D|0.488|0.25|1.952
+  M|750|1.952|1464
+  Z|present_value $1464.00
+Answer: present_value $1464.00
 ```
 
 ## Graduate
