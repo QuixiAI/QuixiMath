@@ -46,11 +46,13 @@ class SpecialSolutionEquationGenerator(ProblemGenerator):
         self.outcome = outcome
 
     def _point_work(self, m, c, x):
-        """'{m}·{x} + {c} = {value}' with sign-aware rendering."""
+        """'{m}·{x} + {c} = {value}' with sign-aware rendering; the
+        1-coefficient is dropped ('(-5) - 41', not '1·(-5) - 41')."""
         val = m * x + c
         sign = "+" if c >= 0 else "-"
         xtxt = f"({x})" if x < 0 else str(x)
-        return f"{m}·{xtxt} {sign} {abs(c)} = {val}"
+        mtxt = "" if m == 1 else "-" if m == -1 else f"{m}·"
+        return f"{mtxt}{xtxt} {sign} {abs(c)} = {val}"
 
     def generate(self) -> dict:
         outcome = self.outcome or random.choice(
@@ -81,11 +83,11 @@ class SpecialSolutionEquationGenerator(ProblemGenerator):
 
         steps = [step("EQ_SETUP", original)]
         steps.append(step("DIST", f, inner, lin(f * g, f * h)))
-        steps.append(step("COMB_X", f"{f * g}x", f"{j}x", f"{m}x"))
+        steps.append(step("COMB_X", lin(f * g, 0), lin(j, 0), lin(m, 0)))
         if k != 0:
             steps.append(step("COMB_CONST", f * h, k, p))
         steps.append(step("REWRITE", f"{lin(m, p)} = {rhs_txt}"))
-        steps.append(step("MOVE_TERM", f"{mp}x", "left",
+        steps.append(step("MOVE_TERM", lin(mp, 0), "left",
                           f"{lin(m - mp, p)} = {q}"))
 
         if outcome == "unique":

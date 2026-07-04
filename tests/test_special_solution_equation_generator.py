@@ -77,15 +77,24 @@ class TestSpecialSolutionEquationGenerator(unittest.TestCase):
 
     def test_step_arithmetic(self):
         """DIST, COMB_X, COMB_CONST, CHECK, CHECK_POINT independently true."""
-        point_re = re.compile(r"(-?\d+)·\(?(-?\d+)\)? ([+-]) (\d+) = (-?\d+)")
+        point_re = re.compile(r"(-?\d*)·?\(?(-?\d+)\)? ([+-]) (\d+) = (-?\d+)")
+
+        def coeff(term):
+            body = term[:-1]  # strip the trailing x
+            if body in ("", "+"):
+                return 1
+            if body == "-":
+                return -1
+            return int(body)
+
         for _ in range(400):
             result = self.gen.generate()
             m, p, mp, q = parse_problem(result["problem"])
             for s in result["steps"]:
                 f = s.split(DELIM)
                 if f[0] == "COMB_X":
-                    self.assertEqual(int(f[1][:-1]) + int(f[2][:-1]),
-                                     int(f[3][:-1]), s)
+                    self.assertEqual(coeff(f[1]) + coeff(f[2]),
+                                     coeff(f[3]), s)
                 elif f[0] == "COMB_CONST":
                     self.assertEqual(int(f[1]) + int(f[2]), int(f[3]), s)
                 elif f[0] in ("CHECK", "CHECK_POINT"):
@@ -93,9 +102,11 @@ class TestSpecialSolutionEquationGenerator(unittest.TestCase):
                     for work in f[2:4]:
                         w = point_re.fullmatch(work)
                         self.assertIsNotNone(w, s)
-                        coef, x, sgn, c, val = (int(w.group(1)), int(w.group(2)),
-                                                w.group(3), int(w.group(4)),
-                                                int(w.group(5)))
+                        coef_raw = w.group(1)
+                        coef = (1 if coef_raw == "" else
+                                -1 if coef_raw == "-" else int(coef_raw))
+                        x, sgn, c, val = (int(w.group(2)), w.group(3),
+                                          int(w.group(4)), int(w.group(5)))
                         c = c if sgn == "+" else -c
                         self.assertEqual(coef * x + c, val, s)
                         vals.append(val)
