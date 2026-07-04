@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**396 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**397 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7871,6 +7871,26 @@ Steps:
   CHECK|angular momentum|54|initial 54
   Z|omega2=54/17 rad/s; L=54 kg*m^2/s
 Answer: omega2=54/17 rad/s; L=54 kg*m^2/s
+```
+
+### SHM — `SHMGenerator`  ·  college · difficulty 3
+
+Simple harmonic motion: angular frequency, period, and energy exchange.
+
+**Variants:** `shm_mass_spring_energy`, `shm_pendulum_period`
+
+```
+Problem: A small-angle pendulum uses g=10 m/s^2 and length L=1/10 m. Find angular frequency and period.
+Steps:
+  SHM_SETUP|pendulum_period|g=10|L=1/10
+  SHM_FORMULA|omega^2=g/L
+  D|10|1/10|100
+  ROOT|100|10
+  SHM_FORMULA|T=2π/omega
+  D|2|10|1/5
+  PI_MULT|1/5|π|π/5
+  Z|omega=10 rad/s; T=π/5 s
+Answer: omega=10 rad/s; T=π/5 s
 ```
 
 ## Graduate

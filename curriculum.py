@@ -428,6 +428,7 @@ CURRICULUM = {
     "OrbitalMechanicsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "StaticsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RotationalDynamicsGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "SHMGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
