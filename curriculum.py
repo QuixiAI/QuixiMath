@@ -507,6 +507,7 @@ CURRICULUM = {
     "BondPricingGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "NPVIRRGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "PortfolioGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "BlackScholesGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

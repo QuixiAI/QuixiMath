@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**475 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**476 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12324,4 +12324,30 @@ Steps:
   PORT_RESULT|expected_return=0.1025|variance=0.011875
   Z|expected_return=0.1025; variance=0.011875
 Answer: expected_return=0.1025; variance=0.011875
+```
+
+### Black Scholes — `BlackScholesGenerator`  ·  graduate · difficulty 4
+
+Black-Scholes call and put evaluation with normal CDF values supplied.
+
+**Variants:** `black_scholes_call_put`
+
+```
+Problem: Evaluate Black-Scholes option prices with S=110, K=110, discount_factor=0.9, N(d1)=0.7, and N(d2)=0.65. Use N(-d)=1-N(d). Compute the call and put prices.
+Steps:
+  BS_SETUP|S=110,K=110|df=0.9|N_d1=0.7,N_d2=0.65
+  BS_FORMULA|C=S*N(d1)-K*df*N(d2)|P=K*df*N(-d2)-S*N(-d1)
+  M|110|0.7|77
+  M|110|0.9|99
+  M|99|0.65|64.35
+  S|77|64.35|12.65
+  S|1|0.7|0.3
+  S|1|0.65|0.35
+  NORMAL_SYMMETRY|N_neg_d1=0.3|N_neg_d2=0.35
+  M|99|0.35|34.65
+  M|110|0.3|33
+  S|34.65|33|1.65
+  BS_RESULT|call=12.65|put=1.65
+  Z|call=12.65; put=1.65
+Answer: call=12.65; put=1.65
 ```

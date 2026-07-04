@@ -184,7 +184,6 @@ construction: choose logits as ln of rationals (Principle 5), so the weights
 come out as exact fractions.
 
 ### Financial Mathematics
-- [ ] Black-Scholes evaluation with N(d₁), N(d₂) provided (Principle 5) · `BlackScholesGenerator` · graduate · d4
 
 ---
 
