@@ -256,6 +256,7 @@ from generators.dfa_simulation_generator import DFASimulationGenerator
 from generators.extended_euclid_generator import ExtendedEuclidGenerator
 from generators.modular_inverse_generator import ModularInverseGenerator
 from generators.crt_generator import CRTGenerator
+from generators.mod_exp_generator import ModExpGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -683,6 +684,7 @@ ALL_GENERATORS = [
     ExtendedEuclidGenerator(),
     ModularInverseGenerator(),
     CRTGenerator(),
+    ModExpGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

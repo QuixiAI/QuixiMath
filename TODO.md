@@ -125,7 +125,6 @@ bind extra hard at this level:
 ### Graph Theory & Algorithms
 
 ### Number Theory & Cryptography
-- [ ] Fast modular exponentiation — square-and-multiply trace · `ModExpGenerator` · college · d3
 - [ ] Euler's totient; Fermat/Euler theorem power reductions · `TotientGenerator` · college · d3
 - [ ] Continued fractions and convergents · `ContinuedFractionGenerator` · college · d4
 - [ ] Quadratic residues — Legendre symbol via Euler's criterion · `QuadraticResidueGenerator` · graduate · d4

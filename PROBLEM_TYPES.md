@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**289 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**290 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6410,6 +6410,58 @@ Steps:
   CRT_CHECK|i=3|7|7
   Z|x = 46 mod 273
 Answer: x = 46 mod 273
+```
+
+### Mod Exp — `ModExpGenerator`  ·  college · difficulty 3
+
+Fast modular exponentiation by left-to-right square-and-multiply.
+
+**Variants:** `mod_exp`
+
+```
+Problem: Use square-and-multiply to compute 33^56 modulo 49.
+Steps:
+  MODEXP_SETUP|base 33|exponent 56|modulus 49
+  MOD_REDUCE|33|mod 49|33
+  BINARY_EXPONENT|56|111000
+  M|1|1|1
+  MOD_REDUCE|1|mod 49|1
+  MODEXP_SQUARE|bit 1=1|1
+  M|1|33|33
+  MOD_REDUCE|33|mod 49|33
+  MODEXP_MULTIPLY|bit 1=1|33
+  MODEXP_STATE|after bit 1|33
+  M|33|33|1089
+  MOD_REDUCE|1089|mod 49|11
+  MODEXP_SQUARE|bit 2=1|11
+  M|11|33|363
+  MOD_REDUCE|363|mod 49|20
+  MODEXP_MULTIPLY|bit 2=1|20
+  MODEXP_STATE|after bit 2|20
+  M|20|20|400
+  MOD_REDUCE|400|mod 49|8
+  MODEXP_SQUARE|bit 3=1|8
+  M|8|33|264
+  MOD_REDUCE|264|mod 49|19
+  MODEXP_MULTIPLY|bit 3=1|19
+  MODEXP_STATE|after bit 3|19
+  M|19|19|361
+  MOD_REDUCE|361|mod 49|18
+  MODEXP_SQUARE|bit 4=0|18
+  MODEXP_MULTIPLY|bit 4=0|skip
+  MODEXP_STATE|after bit 4|18
+  M|18|18|324
+  MOD_REDUCE|324|mod 49|30
+  MODEXP_SQUARE|bit 5=0|30
+  MODEXP_MULTIPLY|bit 5=0|skip
+  MODEXP_STATE|after bit 5|30
+  M|30|30|900
+  MOD_REDUCE|900|mod 49|18
+  MODEXP_SQUARE|bit 6=0|18
+  MODEXP_MULTIPLY|bit 6=0|skip
+  MODEXP_STATE|after bit 6|18
+  Z|33^56 mod 49 = 18
+Answer: 33^56 mod 49 = 18
 ```
 
 ## Graduate
