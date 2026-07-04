@@ -157,6 +157,7 @@ from generators.derivative_transcendental_generator import DerivativeTranscenden
 from generators.implicit_diff_generator import ImplicitDiffGenerator
 from generators.log_diff_higher_order_generator import LogDiffHigherOrderGenerator
 from generators.tangent_line_generator import TangentLineGenerator
+from generators.related_rates_generator import RelatedRatesGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -473,6 +474,7 @@ ALL_GENERATORS = [
     ImplicitDiffGenerator(),
     LogDiffHigherOrderGenerator(),
     TangentLineGenerator(),
+    RelatedRatesGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
