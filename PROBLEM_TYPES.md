@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**288 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**289 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6364,6 +6364,52 @@ Steps:
   CONGRUENCE_SOLUTIONS|base 4|step 5|4, 9, 14, 19
   Z|solutions mod 20 = 4, 9, 14, 19
 Answer: solutions mod 20 = 4, 9, 14, 19
+```
+
+### CRT — `CRTGenerator`  ·  college · difficulty 4
+
+Chinese Remainder Theorem construction for pairwise-coprime moduli.
+
+**Variants:** `crt`
+
+```
+Problem: Solve the CRT system x congruent to 1 modulo 3; x congruent to 4 modulo 7; x congruent to 7 modulo 13. Give the least nonnegative solution modulo the product.
+Steps:
+  CRT_SETUP|3 congruences
+  CRT_TOTAL_MODULUS|3, 7, 13|273
+  CRT_CONGRUENCE|i=1|x=1|mod 3
+  CRT_CONGRUENCE|i=2|x=4|mod 7
+  CRT_CONGRUENCE|i=3|x=7|mod 13
+  D|273|3|91
+  CRT_FACTOR|i=1|M_i=91|mod 3
+  MOD_INVERSE|91 mod 3|1
+  M|1|91|91
+  M|91|1|91
+  CRT_TERM|i=1|91
+  A|0|91|91
+  D|273|7|39
+  CRT_FACTOR|i=2|M_i=39|mod 7
+  MOD_INVERSE|39 mod 7|2
+  M|4|39|156
+  M|156|2|312
+  CRT_TERM|i=2|312
+  A|91|312|403
+  D|273|13|21
+  CRT_FACTOR|i=3|M_i=21|mod 13
+  MOD_INVERSE|21 mod 13|5
+  M|7|21|147
+  M|147|5|735
+  CRT_TERM|i=3|735
+  A|403|735|1138
+  MOD_REDUCE|1138|mod 273|46
+  MOD_REDUCE|46|mod 3|1
+  CRT_CHECK|i=1|1|1
+  MOD_REDUCE|46|mod 7|4
+  CRT_CHECK|i=2|4|4
+  MOD_REDUCE|46|mod 13|7
+  CRT_CHECK|i=3|7|7
+  Z|x = 46 mod 273
+Answer: x = 46 mod 273
 ```
 
 ## Graduate

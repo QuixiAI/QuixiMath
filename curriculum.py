@@ -320,6 +320,7 @@ CURRICULUM = {
     "DFASimulationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ExtendedEuclidGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ModularInverseGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "CRTGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 
