@@ -388,6 +388,7 @@ from generators.hydrogen_atom_generator import HydrogenAtomGenerator
 from generators.braket_generator import BraKetGenerator
 from generators.special_relativity_generator import SpecialRelativityGenerator
 from generators.relativistic_energy_generator import RelativisticEnergyGenerator
+from generators.minkowski_interval_generator import MinkowskiIntervalGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -947,6 +948,7 @@ ALL_GENERATORS = [
     BraKetGenerator(),
     SpecialRelativityGenerator(),
     RelativisticEnergyGenerator(),
+    MinkowskiIntervalGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

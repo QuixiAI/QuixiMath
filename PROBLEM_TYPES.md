@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**421 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**422 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10139,4 +10139,21 @@ Steps:
   TIME_EVOLVE|U psi|[0,2i,1+i]
   Z|U psi=[0,2i,1+i]
 Answer: U psi=[0,2i,1+i]
+```
+
+### Minkowski Interval — `MinkowskiIntervalGenerator`  ·  graduate · difficulty 4
+
+Minkowski interval classification and rapidity addition.
+
+**Variants:** `minkowski_interval_interval_classification`, `minkowski_interval_rapidity_addition`
+
+```
+Problem: Two collinear boosts have rapidities eta1=1/2 and eta2=-5/3. Compute the total rapidity.
+Steps:
+  MINKOWSKI_SETUP|rapidity_addition|eta1=1/2|eta2=-5/3
+  MINKOWSKI_FORMULA|eta_total=eta1+eta2
+  A|1/2|-5/3|-7/6
+  RAPIDITY_SUM|collinear boosts|-7/6
+  Z|eta_total=-7/6
+Answer: eta_total=-7/6
 ```
