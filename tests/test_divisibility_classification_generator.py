@@ -21,7 +21,8 @@ class TestDivisibilityClassificationGenerator(unittest.TestCase):
 
     def test_classification_correctness(self):
         # Run multiple tests to verify correctness across different numbers
-        for _ in range(10):
+        import re
+        for _ in range(500):
             res = self.gen.generate()
             self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
             n = int(res["problem"].split()[1])
@@ -35,7 +36,21 @@ class TestDivisibilityClassificationGenerator(unittest.TestCase):
             if prime:
                 self.assertEqual(answer, "prime", f"Number {n} should be prime")
             else:
-                self.assertEqual(answer, "composite", f"Number {n} should be composite")
+                # composite answers carry a verifiable witness pair
+                match = re.fullmatch(r"composite \((\d+) × (\d+)\)", answer)
+                self.assertIsNotNone(match, f"Number {n}: {answer}")
+                self.assertEqual(int(match.group(1)) * int(match.group(2)), n)
+
+    def test_trial_division_stops_at_first_factor(self):
+        # Human flow: only the last DIV_CHECK may have remainder 0
+        for _ in range(300):
+            res = self.gen.generate()
+            div_checks = [s for s in res["steps"]
+                          if s.startswith(f"DIV_CHECK{DELIM}")]
+            for check in div_checks[:-1]:
+                self.assertFalse(
+                    check.endswith(f"{DELIM}0"),
+                    f"kept checking after finding a factor: {res['steps']}")
 
 
 if __name__ == "__main__":

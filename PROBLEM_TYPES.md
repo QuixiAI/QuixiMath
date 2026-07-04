@@ -402,17 +402,13 @@ Checks divisibility by small primes and classifies as prime/composite.
 **Variants:** `divisibility_classify`
 
 ```
-Problem: Classify 108 as prime or composite
+Problem: Classify 207 as prime or composite
 Steps:
-  DIV_CHECK|108|2|0
-  DIV_CHECK|108|3|0
-  DIV_CHECK|108|5|3
-  DIV_CHECK|108|7|3
-  DIV_CHECK|108|11|9
-  DIV_CHECK|108|13|4
-  COMPOSITE_FACTOR|2|54
-  Z|composite
-Answer: composite
+  DIV_CHECK|207|2|1
+  DIV_CHECK|207|3|0
+  COMPOSITE_FACTOR|3|69
+  Z|composite (3 × 69)
+Answer: composite (3 × 69)
 ```
 
 ### Geometry Area Perimeter — `GeometryAreaPerimeterGenerator`  ·  elementary · difficulty 3
