@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**303 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**304 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6787,6 +6787,52 @@ Steps:
   EXP_FORM|2 e^(i*3pi/2)
   Z|rectangular = -2i; exponential = 2 e^(i*3pi/2)
 Answer: rectangular = -2i; exponential = 2 e^(i*3pi/2)
+```
+
+### De Moivre — `DeMoivreGenerator`  ·  college · difficulty 3
+
+De Moivre powers, roots of unity, and roots of arbitrary complex numbers.
+
+**Variants:** `de_moivre_arbitrary_roots`, `de_moivre_power`, `de_moivre_roots_unity`
+
+```
+Problem: Find all 8-th roots of unity in polar form.
+Steps:
+  DEMOIVRE_SETUP|roots_of_unity|n=8
+  M|360|0|0
+  D|0|8|0
+  ROOT_ANGLE|k=0|0 deg
+  ROOT|cis(0 deg)
+  M|360|1|360
+  D|360|8|45
+  ROOT_ANGLE|k=1|45 deg
+  ROOT|cis(45 deg)
+  M|360|2|720
+  D|720|8|90
+  ROOT_ANGLE|k=2|90 deg
+  ROOT|cis(90 deg)
+  M|360|3|1080
+  D|1080|8|135
+  ROOT_ANGLE|k=3|135 deg
+  ROOT|cis(135 deg)
+  M|360|4|1440
+  D|1440|8|180
+  ROOT_ANGLE|k=4|180 deg
+  ROOT|cis(180 deg)
+  M|360|5|1800
+  D|1800|8|225
+  ROOT_ANGLE|k=5|225 deg
+  ROOT|cis(225 deg)
+  M|360|6|2160
+  D|2160|8|270
+  ROOT_ANGLE|k=6|270 deg
+  ROOT|cis(270 deg)
+  M|360|7|2520
+  D|2520|8|315
+  ROOT_ANGLE|k=7|315 deg
+  ROOT|cis(315 deg)
+  Z|roots = cis(0 deg), cis(45 deg), cis(90 deg), cis(135 deg), cis(180 deg), cis(225 deg), cis(270 deg), cis(315 deg)
+Answer: roots = cis(0 deg), cis(45 deg), cis(90 deg), cis(135 deg), cis(180 deg), cis(225 deg), cis(270 deg), cis(315 deg)
 ```
 
 ## Graduate

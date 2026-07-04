@@ -270,6 +270,7 @@ from generators.coset_generator import CosetGenerator
 from generators.finite_field_generator import FiniteFieldGenerator
 from generators.quaternion_generator import QuaternionGenerator
 from generators.euler_formula_generator import EulerFormulaGenerator
+from generators.de_moivre_generator import DeMoivreGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -711,6 +712,7 @@ ALL_GENERATORS = [
     FiniteFieldGenerator(),
     QuaternionGenerator(),
     EulerFormulaGenerator(),
+    DeMoivreGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

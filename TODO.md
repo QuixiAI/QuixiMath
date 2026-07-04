@@ -129,8 +129,6 @@ bind extra hard at this level:
 ### Abstract Algebra (computational side only)
 
 ### Complex Analysis (computational)
-- [ ] Polar form, De Moivre, nth roots of unity · `DeMoivreGenerator` · college · d3
-- [ ] nth roots of *arbitrary* complex numbers — modulus root + argument fan (variant of `DeMoivreGenerator`) · college · d4
 - [ ] Complex logarithms and complex powers — principal values, multivaluedness as explicit +2πik bookkeeping; the i^i = e^(−π/2) showstopper · `ComplexLogGenerator` · graduate · d4
 - [ ] Complex loci — |z−a| = r and |z−a| = |z−b| identified as circle/line by completing the square in ℂ · `ComplexLocusGenerator` · college · d3
 - [ ] Möbius transformations — images of points, fixed points via quadratic, cross-ratios · `MobiusTransformGenerator` · graduate · d4
