@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**465 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**466 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9014,6 +9014,29 @@ Steps:
   APPROX|lora/full|11/1536
   Z|full=393216; lora=2816; ratio=11/1536
 Answer: full=393216; lora=2816; ratio=11/1536
+```
+
+### FLOPs Memory — `FLOPsMemoryGenerator`  ·  college · difficulty 4
+
+FLOPs and memory arithmetic for transformer-adjacent computations.
+
+**Variants:** `flops_memory_kv_cache`, `flops_memory_matmul_forward`
+
+```
+Problem: Compute KV-cache memory bytes for L=16, h=4, d_k=80, seq=2048, precision_bytes=2 using 2*L*h*d_k*seq*precision_bytes.
+Steps:
+  MEMORY_SETUP|kv_cache|L=16,h=4,d_k=80|seq=2048,precision_bytes=2
+  M|16|4|64
+  M|64|80|5120
+  M|5120|2048|10485760
+  M|2|10485760|20971520
+  KV_CACHE|values|20971520
+  M|20971520|2|41943040
+  KV_CACHE|bytes|41943040
+  D|41943040|1048576|40
+  MEMORY_UNIT|MiB|40
+  Z|bytes=41943040; MiB=40
+Answer: bytes=41943040; MiB=40
 ```
 
 ## Graduate

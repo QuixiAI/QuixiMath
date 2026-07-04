@@ -497,6 +497,7 @@ CURRICULUM = {
     "ActivationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PositionalEncodingGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ParamCountGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "FLOPsMemoryGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

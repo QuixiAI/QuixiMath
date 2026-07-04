@@ -432,6 +432,7 @@ from generators.layer_norm_generator import LayerNormGenerator
 from generators.activation_generator import ActivationGenerator
 from generators.positional_encoding_generator import PositionalEncodingGenerator
 from generators.param_count_generator import ParamCountGenerator
+from generators.flops_memory_generator import FLOPsMemoryGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1035,6 +1036,7 @@ ALL_GENERATORS = [
     ActivationGenerator(),
     PositionalEncodingGenerator(),
     ParamCountGenerator(),
+    FLOPsMemoryGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

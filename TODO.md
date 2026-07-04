@@ -182,7 +182,6 @@ Poetic bonus: the model learns to compute its own building blocks on paper.
 The model hand-computes its own forward pass. Softmax stays exact by
 construction: choose logits as ln of rationals (Principle 5), so the weights
 come out as exact fractions.
-- [ ] FLOPs & memory arithmetic — matmul FLOPs 2mnk through a forward pass; KV-cache bytes = 2·L·h·d_k·seq·precision · `FLOPsMemoryGenerator` · college · d4
 - [ ] Scaling-law arithmetic — C ≈ 6ND, Chinchilla-optimal tokens ≈ 20× params, tokens/s from FLOPs budgets · `ScalingLawGenerator` · college · d3
 - [ ] One Adam step by hand — moment updates, bias correction, parameter update with nice numbers (extends `GradientStepGenerator`) · `AdamStepGenerator` · graduate · d4
 - [ ] Learning-rate schedules — linear warmup + cosine decay evaluated at step t · `LRScheduleGenerator` · college · d2
