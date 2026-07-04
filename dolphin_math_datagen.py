@@ -201,6 +201,7 @@ from generators.kinematics_generator import KinematicsGenerator
 from generators.physics_formula_generator import PhysicsFormulaGenerator
 from generators.base_conversion_generator import BaseConversionGenerator
 from generators.base_arithmetic_generator import BaseArithmeticGenerator
+from generators.bitwise_ops_generator import BitwiseOpsGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -413,6 +414,7 @@ ALL_GENERATORS = [
     PhysicsFormulaGenerator(),
     BaseConversionGenerator(),
     BaseArithmeticGenerator(),
+    BitwiseOpsGenerator(),
 
     # ===== HIGH SCHOOL =====
 

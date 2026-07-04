@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**234 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**235 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1573,6 +1573,27 @@ Steps:
   CHECK|167 * 6|1002|3EA
   Z|3EA_16
 Answer: 3EA_16
+```
+
+### Bitwise Ops — `BitwiseOpsGenerator`  ·  middle · difficulty 3
+
+Bitwise AND, OR, and XOR as truth tables and 4-bit masking operations. Masking traces compute each bit independently, then reassemble the result.
+
+**Variants:** `bitwise_ops_mask`, `bitwise_ops_truth_table`
+
+```
+Problem: Apply bitwise OR to 4-bit value 0001_2 with mask 1000_2. Give the binary and decimal result.
+Steps:
+  BIT_SETUP|0001 OR 1000|4-bit mask
+  BIT_RULE|OR|1 when at least one bit is 1
+  BIT_ROW|bit 0|1 OR 0|1
+  BIT_ROW|bit 1|0 OR 0|0
+  BIT_ROW|bit 2|0 OR 0|0
+  BIT_ROW|bit 3|0 OR 1|1
+  REVERSE|1,0,0,1|1001
+  CHECK|1 OR 8|9|1001
+  Z|1001_2 = 9
+Answer: 1001_2 = 9
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3

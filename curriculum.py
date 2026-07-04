@@ -243,6 +243,7 @@ CURRICULUM = {
     "PhysicsFormulaGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BaseConversionGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "BaseArithmeticGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "BitwiseOpsGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 
     # ===== HIGH SCHOOL =====
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},
