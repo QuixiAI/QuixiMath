@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**332 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**333 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7925,4 +7925,22 @@ Steps:
   A|3/2|1/2|2
   Z|S = 2 bits
 Answer: S = 2 bits
+```
+
+### Projector — `ProjectorGenerator`  ·  graduate · difficulty 3
+
+Verify projector idempotence and completeness relations.
+
+**Variants:** `projector_basis_completeness`, `projector_plus_projector`
+
+```
+Problem: Verify projector completeness for P0=[[1,0],[0,0]] and P1=[[0,0],[0,1]].
+Steps:
+  PROJECTOR_SETUP|P0=[[1,0],[0,0]]|P1=[[0,0],[0,1]]
+  MATRIX_MULT|P0^2|[[1,0],[0,0]]
+  MATRIX_MULT|P1^2|[[0,0],[0,1]]
+  MATRIX_ADD|P0+P1|[[1,0],[0,1]]
+  CHECK|sum_i Pi|[[1,0],[0,1]]|complete
+  Z|complete yes; P0 + P1 = I
+Answer: complete yes; P0 + P1 = I
 ```

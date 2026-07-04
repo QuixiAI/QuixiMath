@@ -364,6 +364,7 @@ CURRICULUM = {
     "PartialTraceGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "DensityMatrixGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "VonNeumannEntropyGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ProjectorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
 }
 
 
