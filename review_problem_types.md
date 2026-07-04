@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] TwoStepEquationGenerator — Two Step Equation (middle · d4)
 - [ ] LinearSimpleGenerator — Linear Simple (middle · d4)
 - [ ] LinearComplexGenerator — Linear Complex (middle · d4)
 - [ ] SimplifyExpressionGenerator — Simplify Expression (middle · d4)
