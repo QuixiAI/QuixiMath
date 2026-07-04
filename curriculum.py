@@ -505,6 +505,7 @@ CURRICULUM = {
     "QuantizationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "AnnuityGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "BondPricingGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "NPVIRRGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

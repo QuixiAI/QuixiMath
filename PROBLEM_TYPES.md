@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**473 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**474 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9182,6 +9182,42 @@ Steps:
   CURRENT_YIELD|0.25
   Z|price $5400.00; current_yield=0.25
 Answer: price $5400.00; current_yield=0.25
+```
+
+### NPVIRR — `NPVIRRGenerator`  ·  college · difficulty 4
+
+Net present value and IRR via Newton iterations.
+
+**Variants:** `npv_irr_irr_newton`, `npv_irr_npv`
+
+```
+Problem: Estimate IRR for cash flows c0=-2900, c1=7250 using Newton's method from r0=0 for 2 iterations.
+Steps:
+  IRR_SETUP|c0=-2900,c1=7250|r0=0,iterations=2
+  A|1|0|1
+  D|7250|1|7250
+  A|-2900|7250|4350
+  IRR_VALUE|f1|4350
+  E|1|2|1
+  D|7250|1|7250
+  M|-1|7250|-7250
+  IRR_VALUE|fprime1|-7250
+  D|4350|-7250|-3/5
+  S|0|-3/5|3/5
+  NEWTON_STEP|1|3/5
+  A|1|3/5|8/5
+  D|7250|8/5|18125/4
+  A|-2900|18125/4|6525/4
+  IRR_VALUE|f2|6525/4
+  E|8/5|2|64/25
+  D|7250|64/25|90625/32
+  M|-1|90625/32|-90625/32
+  IRR_VALUE|fprime2|-90625/32
+  D|6525/4|-90625/32|-72/125
+  S|3/5|-72/125|147/125
+  NEWTON_STEP|2|147/125
+  Z|IRR_estimate=147/125
+Answer: IRR_estimate=147/125
 ```
 
 ## Graduate
