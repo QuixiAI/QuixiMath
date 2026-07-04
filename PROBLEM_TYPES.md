@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**437 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**438 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8536,6 +8536,29 @@ Steps:
   SYNDROME_VALUE|s1=0, s2=0, s4=1|position=4
   Z|syndrome=4; error_position=4
 Answer: syndrome=4; error_position=4
+```
+
+### CRC — `CRCGenerator`  ·  college · difficulty 4
+
+CRC remainder computation by polynomial long division over GF(2).
+
+**Variants:** `crc_remainder`
+
+```
+Problem: Compute the CRC remainder for data 1011111 using generator polynomial 11001. Append 4 zeros before division.
+Steps:
+  CRC_SETUP|data=1011111|poly=11001|augmented=10111110000
+  CRC_XOR|i=0|10111 xor 11001|01110
+  CRC_XOR|i=1|11101 xor 11001|00100
+  CRC_SKIP|i=2|leading bit 0
+  CRC_XOR|i=3|10010 xor 11001|01011
+  CRC_XOR|i=4|10110 xor 11001|01111
+  CRC_XOR|i=5|11110 xor 11001|00111
+  CRC_SKIP|i=6|leading bit 0
+  CRC_REMAINDER|1110
+  CRC_CHECK|codeword=10111111110|remainder=0000|valid
+  Z|remainder=1110; codeword=10111111110
+Answer: remainder=1110; codeword=10111111110
 ```
 
 ## Graduate

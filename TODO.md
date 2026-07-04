@@ -170,7 +170,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Chemistry Computations
 
 ### Information Theory & Coding
-- [ ] CRC — polynomial long division over GF(2), long division's binary cousin · `CRCGenerator` · college · d4
 - [ ] Kraft inequality and code-length feasibility · `KraftInequalityGenerator` · college · d3
 
 ### Machine Learning by Hand
