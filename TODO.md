@@ -162,7 +162,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Electromagnetism & Circuits
 
 ### Physics — Thermodynamics & Statistical Mechanics
-- [ ] Heat engines and refrigerators — efficiency, Carnot limits, COP · `HeatEngineGenerator` · college · d3
 - [ ] Entropy changes for ideal-gas processes and mixing · `EntropyChangeGenerator` · college · d4
 - [ ] Calorimetry with phase changes · `CalorimetryGenerator` · college · d2
 - [ ] Two-level systems — Boltzmann factors, partition function, occupancies, mean energy · `PartitionFunctionGenerator` · graduate · d4

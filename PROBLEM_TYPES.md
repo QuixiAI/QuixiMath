@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**406 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**407 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8011,6 +8011,23 @@ Steps:
   S|50|56|-6
   Z|W=56 J; DeltaU=-6 J
 Answer: W=56 J; DeltaU=-6 J
+```
+
+### Heat Engine — `HeatEngineGenerator`  ·  college · difficulty 3
+
+Heat engines, Carnot limits, and refrigerator coefficients of performance.
+
+**Variants:** `heat_engine_carnot_efficiency`, `heat_engine_engine_efficiency`, `heat_engine_refrigerator_cop`
+
+```
+Problem: A reversible engine operates between Th=919 K and Tc=488 K. Find the Carnot efficiency.
+Steps:
+  ENGINE_SETUP|carnot_efficiency|Th=919|Tc=488
+  ENGINE_FORMULA|eta_C=1-Tc/Th=(Th-Tc)/Th
+  S|919|488|431
+  D|431|919|431/919
+  Z|Carnot efficiency=431/919
+Answer: Carnot efficiency=431/919
 ```
 
 ## Graduate
