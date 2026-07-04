@@ -125,7 +125,6 @@ bind extra hard at this level:
 ### Graph Theory & Algorithms
 
 ### Number Theory & Cryptography
-- [ ] Continued fractions and convergents · `ContinuedFractionGenerator` · college · d4
 - [ ] Quadratic residues — Legendre symbol via Euler's criterion · `QuadraticResidueGenerator` · graduate · d4
 - [ ] RSA with small primes — keygen, encrypt, decrypt, end to end · `RSAGenerator` · college · d4
 - [ ] Diffie-Hellman small-modulus exchange · `DiffieHellmanGenerator` · college · d3

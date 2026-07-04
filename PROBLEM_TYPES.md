@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**291 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**292 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6493,6 +6493,72 @@ Steps:
   MOD_POWER|7^0|mod 48|1
   Z|7^96 mod 48 = 1
 Answer: 7^96 mod 48 = 1
+```
+
+### Continued Fraction — `ContinuedFractionGenerator`  ·  college · difficulty 4
+
+Simple continued fractions and convergents for positive rationals.
+
+**Variants:** `continued_fraction`
+
+```
+Problem: Find the simple continued fraction for 541/110 and list all convergents.
+Steps:
+  CF_SETUP|541/110
+  EUCLID_DIV|541|110|4|101
+  M|4|110|440
+  S|541|440|101
+  CF_PARTIAL|a_0|4
+  EUCLID_DIV|110|101|1|9
+  M|1|101|101
+  S|110|101|9
+  CF_PARTIAL|a_1|1
+  EUCLID_DIV|101|9|11|2
+  M|11|9|99
+  S|101|99|2
+  CF_PARTIAL|a_2|11
+  EUCLID_DIV|9|2|4|1
+  M|4|2|8
+  S|9|8|1
+  CF_PARTIAL|a_3|4
+  EUCLID_DIV|2|1|2|0
+  M|2|1|2
+  S|2|2|0
+  CF_PARTIAL|a_4|2
+  CF_RESULT|[4; 1, 11, 4, 2]
+  CONV_INIT|h_-2=0,h_-1=1|k_-2=1,k_-1=0
+  M|4|1|4
+  A|4|0|4
+  M|4|0|0
+  A|0|1|1
+  CONV_STEP|i=0|h=4|k=1
+  CONVERGENT|i=0|4/1
+  M|1|4|4
+  A|4|1|5
+  M|1|1|1
+  A|1|0|1
+  CONV_STEP|i=1|h=5|k=1
+  CONVERGENT|i=1|5/1
+  M|11|5|55
+  A|55|4|59
+  M|11|1|11
+  A|11|1|12
+  CONV_STEP|i=2|h=59|k=12
+  CONVERGENT|i=2|59/12
+  M|4|59|236
+  A|236|5|241
+  M|4|12|48
+  A|48|1|49
+  CONV_STEP|i=3|h=241|k=49
+  CONVERGENT|i=3|241/49
+  M|2|241|482
+  A|482|59|541
+  M|2|49|98
+  A|98|12|110
+  CONV_STEP|i=4|h=541|k=110
+  CONVERGENT|i=4|541/110
+  Z|continued fraction = [4; 1, 11, 4, 2]; convergents = 4/1, 5/1, 59/12, 241/49, 541/110
+Answer: continued fraction = [4; 1, 11, 4, 2]; convergents = 4/1, 5/1, 59/12, 241/49, 541/110
 ```
 
 ## Graduate
