@@ -300,6 +300,7 @@ from generators.partial_trace_generator import PartialTraceGenerator
 from generators.density_matrix_generator import DensityMatrixGenerator
 from generators.von_neumann_entropy_generator import VonNeumannEntropyGenerator
 from generators.projector_generator import ProjectorGenerator
+from generators.uncertainty_generator import UncertaintyGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -771,6 +772,7 @@ ALL_GENERATORS = [
     DensityMatrixGenerator(),
     VonNeumannEntropyGenerator(),
     ProjectorGenerator(),
+    UncertaintyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -139,7 +139,6 @@ arithmetic. Nice angles (30°/45°/60°/90°) keep everything exact per Principl
 ### Hilbert Spaces & Quantum Information
 Where linear algebra becomes physics. Everything here is finite-dimensional
 matrix arithmetic or explicit integration — no functional analysis proofs.
-- [ ] Uncertainty products — ΔxΔp for particle-in-a-box states (extends `WavefunctionGenerator`, reusing its ⟨x⟩/⟨x²⟩ machinery) · `UncertaintyGenerator` · graduate · d5
 
 ### Lie Groups & Symmetry (computational)
 The symmetry machinery of particle physics, done as explicit matrix work.

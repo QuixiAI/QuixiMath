@@ -365,6 +365,7 @@ CURRICULUM = {
     "DensityMatrixGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "VonNeumannEntropyGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ProjectorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "UncertaintyGenerator": {"grade_level": GRADUATE, "difficulty": 5},
 }
 
 

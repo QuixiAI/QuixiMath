@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**333 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**334 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7943,4 +7943,26 @@ Steps:
   CHECK|sum_i Pi|[[1,0],[0,1]]|complete
   Z|complete yes; P0 + P1 = I
 Answer: complete yes; P0 + P1 = I
+```
+
+### Uncertainty — `UncertaintyGenerator`  ·  graduate · difficulty 5
+
+Uncertainty product for a particle in a 1D box with L=1 and hbar=1.
+
+**Variants:** `uncertainty_particle_box`
+
+```
+Problem: For a particle in a 1D box with L=1 and hbar=1 in state n=99, use the supplied expectation formulas to compute Delta x Delta p exactly.
+Steps:
+  UNCERTAINTY_SETUP|particle in a box|L=1, hbar=1|n=99
+  FORMULA|<x>=1/2|<x^2>=1/3 - 1/(2 n^2 pi^2)
+  FORMULA|<p>=0|<p^2>=n^2 pi^2
+  E|99|2|9801
+  M|2|9801|19602
+  VARIANCE|Delta x^2|1/12 - 1/(19602pi^2)
+  VARIANCE|Delta p^2|9801pi^2
+  PRODUCT|Delta x^2 * Delta p^2|9801pi^2/12 - 1/2
+  CHECK|Heisenberg lower bound|>= 1/4|holds
+  Z|Delta x Delta p = sqrt(9801pi^2/12 - 1/2)
+Answer: Delta x Delta p = sqrt(9801pi^2/12 - 1/2)
 ```
