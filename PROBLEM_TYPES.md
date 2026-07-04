@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**224 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**225 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1644,15 +1644,31 @@ Factorials, permutations, and combinations with the factorial arithmetic written
 **Variants:** `permutation_combination_combination`, `permutation_combination_factorial`, `permutation_combination_permutation`, `permutation_combination_word`
 
 ```
-Problem: In how many ways can 2 people be seated in a row of 2 chairs, chosen from a group of 7?
+Problem: In how many ways can 2 people be seated in a row of 2 chairs, chosen from a group of 10?
 Steps:
-  PERM_SETUP|arrange 2 of 7|order matters
+  PERM_SETUP|arrange 2 of 10|order matters
   IDENTIFY|order matters|use P(n, r)
   PERM_FORMULA|P(n, r) = n·(n-1)···(n-r+1), 2 factors
-  REWRITE|7 · 6
-  M|7|6|42
-  Z|42
-Answer: 42
+  REWRITE|10 · 9
+  M|10|9|90
+  Z|90
+Answer: 90
+```
+
+### Binomial Probability — `BinomialProbabilityGenerator`  ·  middle · difficulty 4
+
+Binomial probabilities for small n, built the by-hand way: P(X = k) = C(n,k)·p^k·(1-p)^(n-k), with the combination and each power shown explicitly. Probabilities are small fractions, so every answer is exact.
+
+**Variants:** `binomial_probability_at_least_one`, `binomial_probability_at_most`, `binomial_probability_exact_k`, `binomial_probability_mean`, `binomial_probability_variance`
+
+```
+Problem: A binomial experiment has n = 5 trials with success probability p = 3/10. Find the expected number of successes.
+Steps:
+  BINOM_SETUP|n = 5, p = 3/10|E[X]
+  BINOM_FORMULA|E[X] = n·p
+  M|5|3/10|1.5
+  Z|1.5
+Answer: 1.5
 ```
 
 ### Error Spotting — `ErrorSpottingGenerator`  ·  middle · difficulty 4

@@ -197,6 +197,7 @@ CURRICULUM = {
     "HypothesisTestGenerator": {"grade_level": HIGH, "difficulty": 5},
     "ChiSquareGenerator": {"grade_level": HIGH, "difficulty": 5},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
