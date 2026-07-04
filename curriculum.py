@@ -353,6 +353,7 @@ CURRICULUM = {
     "StereographicGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "FundamentalFormGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ChristoffelGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "GaussianCurvatureGenerator": {"grade_level": GRADUATE, "difficulty": 5},
 }
 
 

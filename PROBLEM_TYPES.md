@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**321 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**322 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7685,4 +7685,27 @@ Steps:
   D|sqrt(2)/2|sqrt(2)/2|1
   Z|Gamma^phi_thetatheta = -1/2, Gamma^theta_phitheta = Gamma^theta_thetaphi = 1
 Answer: Gamma^phi_thetatheta = -1/2, Gamma^theta_phitheta = Gamma^theta_thetaphi = 1
+```
+
+### Gaussian Curvature — `GaussianCurvatureGenerator`  ·  graduate · difficulty 5
+
+Gaussian curvature for hand-friendly surfaces.
+
+**Variants:** `gaussian_curvature_saddle`, `gaussian_curvature_sphere`
+
+```
+Problem: For the saddle surface z=(14x^2-2y^2)/2, find the Gaussian curvature at the origin using the graph curvature formula.
+Steps:
+  GAUSSIAN_CURVATURE_SETUP|saddle|z=(14x^2-2y^2)/2|point=(0,0)
+  FORMULA|K=(f_xx f_yy - f_xy^2)/(1+f_x^2+f_y^2)^2
+  DERIV|f_x=0, f_y=0|f_xx=14|f_yy=-2, f_xy=0
+  M|14|-2|-28
+  E|0|2|0
+  S|-28|0|-28
+  A|1|0|1
+  E|1|2|1
+  D|-28|1|-28
+  CHECK|negative curvature|-28|saddle
+  Z|K = -28
+Answer: K = -28
 ```
