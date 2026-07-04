@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**438 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**439 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8559,6 +8559,46 @@ Steps:
   CRC_CHECK|codeword=10111111110|remainder=0000|valid
   Z|remainder=1110; codeword=10111111110
 Answer: remainder=1110; codeword=10111111110
+```
+
+### Kraft Inequality — `KraftInequalityGenerator`  ·  college · difficulty 3
+
+Kraft inequality and code-length feasibility for binary prefix codes.
+
+**Variants:** `kraft_inequality_complete`, `kraft_inequality_incomplete`, `kraft_inequality_infeasible`
+
+```
+Problem: Use Kraft's inequality for a binary prefix code with requested lengths A=5, B=6, C=5. Decide whether the lengths are feasible; if feasible, give canonical codewords.
+Steps:
+  KRAFT_SETUP|A=5, B=6, C=5|binary prefix code
+  KRAFT_FORMULA|sum 2^-l_i <= 1
+  E|2|5|32
+  D|1|32|1/32
+  KRAFT_TERM|A|l=5|1/32
+  A|0|1/32|1/32
+  E|2|6|64
+  D|1|64|1/64
+  KRAFT_TERM|B|l=6|1/64
+  A|1/32|1/64|3/64
+  E|2|5|32
+  D|1|32|1/32
+  KRAFT_TERM|C|l=5|1/32
+  A|3/64|1/32|5/64
+  KRAFT_CHECK|sum=5/64|<=1|feasible
+  S|1|5/64|59/64
+  KRAFT_CLASSIFY|slack=59/64|incomplete
+  CANONICAL_ORDER|A=5, C=5, B=6
+  CANONICAL_SHIFT|code=0|left=5|0
+  CODEWORD|A|l=5|00000
+  A|0|1|1
+  CANONICAL_SHIFT|code=1|left=0|1
+  CODEWORD|C|l=5|00001
+  A|1|1|2
+  CANONICAL_SHIFT|code=2|left=1|4
+  CODEWORD|B|l=6|000100
+  A|4|1|5
+  Z|Kraft=5/64; status=feasible_incomplete; slack=59/64; codes=A:00000,B:000100,C:00001
+Answer: Kraft=5/64; status=feasible_incomplete; slack=59/64; codes=A:00000,B:000100,C:00001
 ```
 
 ## Graduate

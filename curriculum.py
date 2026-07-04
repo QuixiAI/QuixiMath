@@ -470,6 +470,7 @@ CURRICULUM = {
     "ArithmeticCodingGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "HammingCodeGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "CRCGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "KraftInequalityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

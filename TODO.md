@@ -170,7 +170,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Chemistry Computations
 
 ### Information Theory & Coding
-- [ ] Kraft inequality and code-length feasibility · `KraftInequalityGenerator` · college · d3
 
 ### Machine Learning by Hand
 Poetic bonus: the model learns to compute its own building blocks on paper.
