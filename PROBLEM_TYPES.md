@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**439 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**440 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10687,4 +10687,57 @@ Steps:
   D|1527/8192|2|1527/16384
   Z|interval=[763/8192,191/2048); code=1527/16384
 Answer: interval=[763/8192,191/2048); code=1527/16384
+```
+
+### Gradient Step — `GradientStepGenerator`  ·  graduate · difficulty 4
+
+One gradient-descent step on linear-regression MSE loss.
+
+**Variants:** `gradient_step_three_sample`, `gradient_step_two_sample`
+
+```
+Problem: For linear model y_hat = w0 + w1*x with samples [(3,6), (0,0), (-3,-7)], start at w=(0,-1). Use MSE L=(1/n) sum (y_hat-y)^2 and learning rate eta=1/7. Compute one gradient-descent update.
+Steps:
+  MSE_SETUP|model y_hat=w0+w1*x|samples=[(3,6), (0,0), (-3,-7)]|w=(0,-1), eta=1/7
+  MSE_FORMULA|L=(1/n) sum r_i^2|grad=(2/n) sum r_i*[1,x_i]
+  M|-1|3|-3
+  A|0|-3|-3
+  S|-3|6|-9
+  E|-9|2|81
+  A|0|81|81
+  A|0|-9|-9
+  M|-9|3|-27
+  A|0|-27|-27
+  MSE_SAMPLE|i=1|pred=-3|r=-9
+  M|-1|0|0
+  A|0|0|0
+  S|0|0|0
+  E|0|2|0
+  A|81|0|81
+  A|-9|0|-9
+  M|0|0|0
+  A|-27|0|-27
+  MSE_SAMPLE|i=2|pred=0|r=0
+  M|-1|-3|3
+  A|0|3|3
+  S|3|-7|10
+  E|10|2|100
+  A|81|100|181
+  A|-9|10|1
+  M|10|-3|-30
+  A|-27|-30|-57
+  MSE_SAMPLE|i=3|pred=3|r=10
+  D|181|3|181/3
+  M|2|1|2
+  D|2|3|2/3
+  M|2|-57|-114
+  D|-114|3|-38
+  MSE_GRADIENT|g0=2/3|g1=-38
+  M|1/7|2/3|2/21
+  S|0|2/21|-2/21
+  M|1/7|-38|-38/7
+  S|-1|-38/7|31/7
+  GD_UPDATE|w_old=(0,-1)|eta=1/7|w_new=(-2/21,31/7)
+  Z|loss=181/3; gradient=(2/3,-38); w_new=(-2/21,31/7)
+Answer: loss=181/3; gradient=(2/3,-38); w_new=(-2/21,31/7)
 ```

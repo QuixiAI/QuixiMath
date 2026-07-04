@@ -471,6 +471,7 @@ CURRICULUM = {
     "HammingCodeGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "CRCGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "KraftInequalityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "GradientStepGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
