@@ -93,7 +93,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Geometry & Measurement
 
 ### Trigonometry
-- [ ] Sum/difference, double- and half-angle evaluations · `TrigIdentityEvalGenerator` · high · d5
 - [ ] Verify trig identities — canonical transformation path (needs A0) · `TrigIdentityVerifyGenerator` · high · d5
 - [ ] Solve trig equations — linear and quadratic-form · `TrigEquationGenerator` · high · d5
 - [ ] Law of Sines / Law of Cosines — SSA ambiguous case stays excluded · `TriangleSolveGenerator` · high · d5
