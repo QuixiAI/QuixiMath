@@ -118,6 +118,7 @@ from generators.conic_standard_form_generator import ConicStandardFormGenerator
 from generators.nets_surface_area_generator import NetsSurfaceAreaGenerator
 from generators.regular_polygon_area_generator import RegularPolygonAreaGenerator
 from generators.similar_triangles_generator import SimilarTrianglesGenerator
+from generators.geometric_mean_generator import GeometricMeanGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -395,6 +396,7 @@ ALL_GENERATORS = [
     NetsSurfaceAreaGenerator(),
     RegularPolygonAreaGenerator(),
     SimilarTrianglesGenerator(),
+    GeometricMeanGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
