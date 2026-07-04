@@ -104,6 +104,7 @@ from generators.synthetic_division_generator import SyntheticDivisionGenerator
 from generators.horner_evaluation_generator import HornerEvaluationGenerator
 from generators.remainder_factor_theorem_generator import RemainderFactorTheoremGenerator
 from generators.rational_root_generator import RationalRootGenerator
+from generators.polynomial_zeros_generator import PolynomialZerosGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -367,6 +368,7 @@ ALL_GENERATORS = [
     HornerEvaluationGenerator(),
     RemainderFactorTheoremGenerator(),
     RationalRootGenerator(),
+    PolynomialZerosGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
