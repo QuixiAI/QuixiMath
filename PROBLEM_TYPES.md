@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**373 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**374 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8948,4 +8948,32 @@ Steps:
   CHECK|lambda_hat=9/59>0|valid rate parameter
   Z|xbar=59/9; lambda_hat=9/59
 Answer: xbar=59/9; lambda_hat=9/59
+```
+
+### Bayesian Update — `BayesianUpdateGenerator`  ·  graduate · difficulty 4
+
+Mechanical conjugate Bayesian parameter updates.
+
+**Variants:** `bayesian_update_beta_binomial`, `bayesian_update_normal_normal`
+
+```
+Problem: For data [-7,0,8,7,4,1] from Normal(mu, sigma^2=9) with prior mu~Normal(-1, tau^2=4), compute the conjugate posterior mean and variance.
+Steps:
+  BAYES_UPDATE_SETUP|normal_normal|prior=Normal(-1,4)|sigma^2=9
+  BAYES_UPDATE_SETUP|data|[-7,0,8,7,4,1]
+  COUNT|n|6
+  SUM|sum x_i|-7 + 0 + 8 + 7 + 4 + 1|13
+  PRIOR_PRECISION|1/tau^2
+  D|1|4|1/4
+  DATA_PRECISION|n/sigma^2
+  D|6|9|2/3
+  POST_PRECISION|prior precision + data precision
+  A|1/4|2/3|11/12
+  D|-1|4|-1/4
+  D|13|9|13/9
+  A|-1/4|13/9|43/36
+  D|43/36|11/12|43/33
+  D|1|11/12|12/11
+  Z|posterior=Normal(mean=43/33, variance=12/11)
+Answer: posterior=Normal(mean=43/33, variance=12/11)
 ```

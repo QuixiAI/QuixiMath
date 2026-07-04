@@ -405,6 +405,7 @@ CURRICULUM = {
     "RVTransformGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "MLEGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MethodOfMomentsGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "BayesianUpdateGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

@@ -340,6 +340,7 @@ from generators.mgf_generator import MGFGenerator
 from generators.rv_transform_generator import RVTransformGenerator
 from generators.mle_generator import MLEGenerator
 from generators.method_of_moments_generator import MethodOfMomentsGenerator
+from generators.bayesian_update_generator import BayesianUpdateGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -851,6 +852,7 @@ ALL_GENERATORS = [
     RVTransformGenerator(),
     MLEGenerator(),
     MethodOfMomentsGenerator(),
+    BayesianUpdateGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
