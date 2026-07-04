@@ -148,7 +148,6 @@ The symmetry machinery of particle physics, done as explicit matrix work.
 ### Particle Physics Arithmetic
 The daily hand-computation of the field — kinematics, bookkeeping, and
 algebra checks. Constants and logs provided per Principle 5.
-- [ ] Running coupling — one-loop RG evolution of α(μ) from α(μ₀) and the beta coefficient · `RunningCouplingGenerator` · graduate · d4
 
 ### Numerical Methods
 - [ ] Bisection — interval-halving table with sign checks · `BisectionGenerator` · college · d2

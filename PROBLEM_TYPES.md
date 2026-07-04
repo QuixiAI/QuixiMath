@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**359 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**360 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8542,4 +8542,24 @@ Steps:
   A|0|48|48
   Z|integral = 48
 Answer: integral = 48
+```
+
+### Running Coupling — `RunningCouplingGenerator`  ·  graduate · difficulty 4
+
+One-loop running coupling in reciprocal form.
+
+**Variants:** `running_coupling_evolve`
+
+```
+Problem: At one loop, use 1/alpha(mu)=1/alpha0+beta*L with L=ln(mu/mu0) supplied. Given alpha0=2/29, beta=7, and L=1, compute alpha(mu).
+Steps:
+  RG_SETUP|one_loop|alpha0=2/29|beta=7,L=1
+  D|1|2/29|29/2
+  M|7|1|7
+  A|29/2|7|43/2
+  D|1|43/2|2/43
+  M|2/43|43/2|1
+  CHECK|reciprocal|alpha_mu*inv_alpha_mu|1
+  Z|alpha(mu) = 2/43
+Answer: alpha(mu) = 2/43
 ```
