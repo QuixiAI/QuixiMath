@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**268 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**269 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5708,4 +5708,39 @@ Steps:
   CHECK|U*Sigma*V^T|[[30, 13], [13, 30]]|matches A
   Z|U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
 Answer: U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
+```
+
+### Series Solution — `SeriesSolutionGenerator`  ·  graduate · difficulty 4
+
+Power-series solutions of differential equations by coefficient matching.
+
+**Variants:** `series_solution_first_order_exp`
+
+```
+Problem: Find the power-series solution through x^5 for y' = y with y(0) = 5880.
+Steps:
+  ODE_SETUP|y' = y, y(0) = 5880|power series through x^5
+  SERIES_ASSUME|y|sum a_n x^n
+  DERIV_SERIES|y'|sum (n+1)a_(n+1)x^n
+  REWRITE|y|sum a_n x^n
+  COEFF_MATCH|x^n|(n+1)a_(n+1) = a_n
+  RECURRENCE|a_(n+1)|a_n/(n+1)
+  INITIAL_COEFF|a_0|5880
+  M|1|5880|5880
+  D|5880|1|5880
+  COEFF|a_1|5880
+  M|1|5880|5880
+  D|5880|2|2940
+  COEFF|a_2|2940
+  M|1|2940|2940
+  D|2940|3|980
+  COEFF|a_3|980
+  M|1|980|980
+  D|980|4|245
+  COEFF|a_4|245
+  M|1|245|245
+  D|245|5|49
+  COEFF|a_5|49
+  Z|y = 5880 + 5880x + 2940x^2 + 980x^3 + 245x^4 + 49x^5 + O(x^6)
+Answer: y = 5880 + 5880x + 2940x^2 + 980x^3 + 245x^4 + 49x^5 + O(x^6)
 ```

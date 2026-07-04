@@ -119,7 +119,6 @@ bind extra hard at this level:
 ### Linear Algebra (beyond the small-matrix K-12 items)
 
 ### Differential Equations
-- [ ] Power-series solutions — derive the coefficient recurrence · `SeriesSolutionGenerator` · graduate · d4
 - [ ] Equilibria and stability of autonomous ODEs — sign analysis of f(y) · `StabilityGenerator` · college · d3
 
 ### Discrete Math & Combinatorics
