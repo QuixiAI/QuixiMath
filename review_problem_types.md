@@ -8,8 +8,6 @@ is complete (fixes applied if needed).
 
 - [ ] StandardFormConversionGenerator — Standard Form Conversion (high · d4)
 - [ ] ParallelPerpendicularLineGenerator — Parallel Perpendicular Line (high · d5)
-- [ ] SystemsSubstitutionGenerator — Systems Substitution (high · d5)
-- [ ] SystemsEliminationGenerator — Systems Elimination (high · d5)
 - [ ] PolynomialAddSubGenerator — Polynomial Add Sub (high · d4)
 - [ ] MonomialMultDivGenerator — Monomial Mult Div (high · d4)
 - [ ] FactorGCFGenerator — Factor GCF (high · d4)
