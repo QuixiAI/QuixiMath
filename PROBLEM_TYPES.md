@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**216 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**217 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4451,6 +4451,24 @@ Steps:
   D|1/9|2|1/18
   Z|1/18
 Answer: 1/18
+```
+
+### ZScore — `ZScoreGenerator`  ·  high · difficulty 4
+
+Z-scores and standardization: convert a raw value to its z-score, recover a raw value from a z-score, compare standings across two distributions, and flag unusual values with the |z| > 2 rule. All z-scores are exact terminating decimals by construction.
+
+**Variants:** `z_score_compare`, `z_score_raw_from_z`, `z_score_standardize`, `z_score_unusual`
+
+```
+Problem: A distribution has mean 45 and standard deviation 8. Using the |z| > 2 rule, is the value 37 unusual? (answer usual or unusual)
+Steps:
+  NORM_SETUP|X ~ N(45, 8)|is x = 37 unusual?
+  ZSCORE_FORMULA|z = (x - μ)/σ
+  S|37|45|-8
+  D|-8|8|-1
+  CHECK|abs(z) > 2 rule|abs(-1) ≤ 2|usual
+  Z|usual
+Answer: usual
 ```
 
 ### Normal Table — `NormalTableGenerator`  ·  high · difficulty 4
