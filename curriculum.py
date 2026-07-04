@@ -480,6 +480,7 @@ CURRICULUM = {
     "KNNGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "ClassifierMetricsGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MatrixCalculusGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "MatrixNormGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

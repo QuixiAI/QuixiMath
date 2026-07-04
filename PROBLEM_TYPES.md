@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**448 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**449 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8825,6 +8825,29 @@ Steps:
   D|25/54|26/27|25/52
   Z|precision=1/2; recall=25/54; F1=25/52
 Answer: precision=1/2; recall=25/54; F1=25/52
+```
+
+### Matrix Norm — `MatrixNormGenerator`  ·  college · difficulty 3
+
+Vector and matrix norms with exact square roots.
+
+**Variants:** `matrix_norm_frobenius_norm`, `matrix_norm_spectral_condition`, `matrix_norm_vector_norms`
+
+```
+Problem: For matrix A=[[1,-1], [-3,5]], compute the Frobenius norm.
+Steps:
+  NORM_SETUP|A=[[1,-1], [-3,5]]|Frobenius norm
+  E|1|2|1
+  A|0|1|1
+  E|-1|2|1
+  A|1|1|2
+  E|-3|2|9
+  A|2|9|11
+  E|5|2|25
+  A|11|25|36
+  ROOT|sqrt(36)|6
+  Z|Frobenius=6
+Answer: Frobenius=6
 ```
 
 ## Graduate

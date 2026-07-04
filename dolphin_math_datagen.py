@@ -415,6 +415,7 @@ from generators.kmeans_step_generator import KMeansStepGenerator
 from generators.knn_generator import KNNGenerator
 from generators.classifier_metrics_generator import ClassifierMetricsGenerator
 from generators.matrix_calculus_generator import MatrixCalculusGenerator
+from generators.matrix_norm_generator import MatrixNormGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1001,6 +1002,7 @@ ALL_GENERATORS = [
     KNNGenerator(),
     ClassifierMetricsGenerator(),
     MatrixCalculusGenerator(),
+    MatrixNormGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
