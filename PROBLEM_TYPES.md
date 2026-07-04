@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**457 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**458 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11646,4 +11646,41 @@ Steps:
   PREDICT|x*|-9/10
   Z|alpha=(-37/20,7/30); prediction=-9/10
 Answer: alpha=(-37/20,7/30); prediction=-9/10
+```
+
+### SVMMargin — `SVMMarginGenerator`  ·  graduate · difficulty 4
+
+Linear SVM decision-function and margin-width arithmetic.
+
+**Variants:** `svm_margin_linear`
+
+```
+Problem: For a linear SVM with support vectors x1=(7,0), y1=1, alpha1=1; x2=(0,-24), y2=1, alpha2=1; bias b=1, compute f(x) at x=(-1,2) and margin width 2/norm(w).
+Steps:
+  SVM_SETUP|x1=(7,0),y1=1,alpha1=1|x2=(0,-24),y2=1,alpha2=1|b=1,x=(-1,2)
+  M|1|1|1
+  M|1|7|7
+  M|1|0|0
+  SUPPORT_TERM|1|(7,0)
+  M|1|1|1
+  M|1|0|0
+  M|1|-24|-24
+  SUPPORT_TERM|2|(0,-24)
+  A|7|0|7
+  A|0|-24|-24
+  WEIGHT_VECTOR|w|(7,-24)
+  M|7|-1|-7
+  M|-24|2|-48
+  A|-7|-48|-55
+  A|-55|1|-54
+  DECISION|f(x)|-54
+  CHECK|f(x) >= 0|-54 >= 0|class=-1
+  E|7|2|49
+  E|-24|2|576
+  A|49|576|625
+  ROOT|sqrt(625)|25
+  D|2|25|2/25
+  MARGIN|2/norm(w)|2/25
+  Z|w=(7,-24); f(x)=-54; class=-1; margin_width=2/25
+Answer: w=(7,-24); f(x)=-54; class=-1; margin_width=2/25
 ```
