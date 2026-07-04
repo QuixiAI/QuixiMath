@@ -135,6 +135,7 @@ CURRICULUM = {
     "AngleMeasureGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitCircleGenerator": {"grade_level": HIGH, "difficulty": 4},
     "SinusoidFeaturesGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "TrigSixFunctionsGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
