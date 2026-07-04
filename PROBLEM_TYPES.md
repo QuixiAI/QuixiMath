@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**232 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**233 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1536,6 +1536,24 @@ Steps:
   UNIT_ATTACH|117|watts|117 watts
   Z|117 watts
 Answer: 117 watts
+```
+
+### Base Conversion — `BaseConversionGenerator`  ·  middle · difficulty 3
+
+Binary and hexadecimal conversions by place value and repeated division, plus 8-bit two's complement representation for negative integers.
+
+**Variants:** `base_conversion_binary_to_decimal`, `base_conversion_decimal_to_binary`, `base_conversion_decimal_to_hex`, `base_conversion_hex_to_decimal`, `base_conversion_twos_complement`
+
+```
+Problem: Convert decimal 3120 to hexadecimal.
+Steps:
+  BASE_SETUP|3120_10|hexadecimal
+  DIVMOD|3120|16|195|r=0
+  DIVMOD|195|16|12|r=3
+  DIVMOD|12|16|0|r=12
+  REVERSE|0,3,C|C30
+  Z|C30
+Answer: C30
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3

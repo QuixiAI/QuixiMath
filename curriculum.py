@@ -241,6 +241,7 @@ CURRICULUM = {
     "FinanceGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "KinematicsGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "PhysicsFormulaGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "BaseConversionGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 
     # ===== HIGH SCHOOL =====
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},

@@ -199,6 +199,7 @@ from generators.geometric_distribution_generator import GeometricDistributionGen
 from generators.finance_generator import FinanceGenerator
 from generators.kinematics_generator import KinematicsGenerator
 from generators.physics_formula_generator import PhysicsFormulaGenerator
+from generators.base_conversion_generator import BaseConversionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -409,6 +410,7 @@ ALL_GENERATORS = [
     FinanceGenerator(),
     KinematicsGenerator(),
     PhysicsFormulaGenerator(),
+    BaseConversionGenerator(),
 
     # ===== HIGH SCHOOL =====
 
