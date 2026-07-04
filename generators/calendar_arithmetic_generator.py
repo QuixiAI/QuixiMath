@@ -68,9 +68,10 @@ class CalendarArithmeticGenerator(ProblemGenerator):
         raw = start_idx + days
         end_idx = raw % 7
         answer = WEEKDAYS[end_idx]
+        day_word = "day" if days == 1 else "days"
         steps = [
             step("CAL_SETUP", start.isoformat(),
-                 f"{WEEKDAYS[start_idx]}, offset {days} days", "weekday"),
+                 f"{WEEKDAYS[start_idx]}, offset {days} {day_word}", "weekday"),
             step("A", start_idx, days, raw),
             step("MOD_REDUCE", raw, "mod 7", end_idx),
             step("WEEKDAY_SCAN", f"index {end_idx}", answer),
@@ -78,7 +79,7 @@ class CalendarArithmeticGenerator(ProblemGenerator):
         ]
         problem = (
             f"{start.isoformat()} is a {WEEKDAYS[start_idx]}. What weekday "
-            f"is it after {days} days?"
+            f"is it after {days} {day_word}?"
         )
         return "weekday_after", problem, steps, answer
 

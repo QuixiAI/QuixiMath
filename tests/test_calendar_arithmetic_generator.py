@@ -29,7 +29,7 @@ def oracle_answer(example):
 
     m = re.search(
         r"(\d{4}-\d{2}-\d{2}) is a \w+\. What weekday is it after "
-        r"(\d+) days",
+        r"(\d+) days?",
         problem,
     )
     if m:

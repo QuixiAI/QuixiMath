@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ManualSquareRootGenerator — Manual Square Root (middle · d4)
-- [ ] CalendarArithmeticGenerator — Calendar Arithmetic (middle · d3)
 - [ ] PascalTriangleGenerator — Pascal Triangle (middle · d3)
 - [ ] NetsSurfaceAreaGenerator — Nets Surface Area (middle · d4)
 - [ ] TaxicabGeometryGenerator — Taxicab Geometry (middle · d3)
