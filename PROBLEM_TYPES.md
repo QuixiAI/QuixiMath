@@ -1976,15 +1976,14 @@ Generates various types of percentage problems with detailed division steps.
 Problem: 9 is what percent of 10?
 Steps:
   SETUP_PERCENT_EQ|percent_dec = 9 / 10
-  DEC_SHIFT|9/10|9/10|0
   DIV_SETUP|9|10
   D|90|10|9
   M|9|10|90
   S|90|90|0
-  PLACE_DP_Q|9|1
-  DEC_TO_PERCENT|0.9|90.00%
-  Z|90.00%
-Answer: 90.00%
+  PLACE_DP_Q|09|1|0.9
+  DEC_TO_PERCENT|0.9|90%
+  Z|90%
+Answer: 90%
 ```
 
 ### Literal Equation — `LiteralEquationGenerator`  ·  high · difficulty 4

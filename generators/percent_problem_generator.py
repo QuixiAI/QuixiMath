@@ -11,42 +11,39 @@ from helpers import step, jid, DELIM # Import DELIM
 # DEC_TO_PERCENT: Convert decimal result back to percent (decimal_val, percent_str) - Only for find_percent
 # --- Plus division steps (DEC_SHIFT, DIV_SETUP, B, D, M, S, PLACE_DP_Q) used internally ---
 
+def plain(value):
+    """Decimal -> minimal plain string (no exponent, no trailing zeros)."""
+    value = value.normalize()
+    if value.as_tuple().exponent > 0:
+        value = value.quantize(Decimal(1))
+    return str(value)
+
+
 class PercentProblemGenerator(ProblemGenerator):
     """Generates various types of percentage problems with detailed division steps."""
 
     def _generate_division_steps(self, dividend_str, divisor_str):
         """
         Generates detailed long division steps for dividend_str / divisor_str.
-        Returns a list of steps and the calculated quotient string (no decimal).
+        Returns a list of steps and the exact quotient string.
         """
         division_steps = []
-        a_str, b_str = dividend_str, divisor_str
+        a_dec, b_dec = Decimal(dividend_str), Decimal(divisor_str)
 
-        # 1. Shift Decimals (Copied from DecimalDivGenerator)
-        a_dp = len(a_str.split(".")[1]) if '.' in a_str else 0
-        b_dp = len(b_str.split(".")[1]) if '.' in b_str else 0
+        # 1. Shift decimals: multiply BOTH by 10^(divisor decimals) so the
+        # divisor becomes an integer and the ratio is unchanged; skip the
+        # no-op step when the divisor is already an integer
+        b_dp = len(divisor_str.split(".")[1]) if '.' in divisor_str else 0
         shift_places = b_dp
-
-        a_i_str = a_str.replace(".", "")
-        b_i_str = b_str.replace(".", "")
-
-        if not b_i_str: # Handle cases like dividing by '0.5' -> b_i_str becomes '5'
-            b_i_str = '0' # Avoid error, though division by zero shouldn't happen here
-
-        # Calculate new dividend string after shift
-        if a_dp >= shift_places:
-            new_a_str = a_i_str[:a_dp - shift_places + len(a_i_str) - a_dp] + '.' + a_i_str[a_dp - shift_places + len(a_i_str) - a_dp:]
-        else: # Need to add trailing zeros
-            new_a_str = a_i_str + '0' * (shift_places - a_dp) + '.'
-        new_a_str = new_a_str.rstrip('.') # Remove trailing dot if it ended up there
-        new_b_str = b_i_str # Divisor becomes integer
-
-        division_steps.append(step("DEC_SHIFT", f"{a_str}/{b_str}", f"{new_a_str}/{new_b_str}", shift_places))
+        scale = Decimal(10) ** shift_places
+        new_a_str = plain(a_dec * scale)
+        divisor_ld = int(b_dec * scale)
+        if divisor_ld == 0: return [], "DivByZero" # Avoid division by zero
+        if shift_places:
+            division_steps.append(step("DEC_SHIFT", f"{dividend_str}/{divisor_str}", f"{new_a_str}/{divisor_ld}", shift_places))
 
         # Prepare for long division
         dividend_str_ld = new_a_str.replace('.', '')
-        divisor_ld = int(new_b_str) if new_b_str else 0 # Handle potential empty string
-        if divisor_ld == 0: return [], "DivByZero" # Avoid division by zero
 
         dividend_dp_pos = new_a_str.find('.')
         if dividend_dp_pos == -1: dividend_dp_pos = len(new_a_str)
@@ -109,17 +106,19 @@ class PercentProblemGenerator(ProblemGenerator):
              if len(q_str.replace('.','')) > len(dividend_str_ld) + 6: # Precision limit
                  break
 
-        # Handle final zero explicitly ONLY if the loop didn't already add it
-        # The loop condition `processed_digits < len(dividend_digits) or rem > 0`
-        # should handle most cases, including bringing down trailing zeros.
-        # Let's remove the extra explicit handling for now as it might be causing the double '0'.
-
-        # 3. Place Decimal Point Step (Always add this step after division)
+        # 3. Place Decimal Point Step: the raw quotient digits are exactly
+        # the answer's digits; the point goes after its integer digits
         if not q_str: q_str = "0" # Ensure quotient isn't empty
-        # Args: quotient_digits_string, num_digits_before_dp_in_shifted_dividend
-        division_steps.append(step("PLACE_DP_Q", q_str, dividend_dp_pos))
+        quotient_str = plain(a_dec / b_dec)
+        answer_digits = quotient_str.replace('.', '')
+        int_digit_count = (quotient_str.index('.')
+                           if '.' in quotient_str else len(quotient_str))
+        assert int(q_str) == int(answer_digits), \
+            f"quotient digits {q_str} disagree with {quotient_str}"
+        division_steps.append(step("PLACE_DP_Q", answer_digits,
+                                   int_digit_count, quotient_str))
 
-        return division_steps, q_str # Return steps and quotient digits string
+        return division_steps, quotient_str
 
     def generate(self) -> dict:
         problem_type = random.choice(['find_part', 'find_percent', 'find_whole'])
@@ -141,7 +140,7 @@ class PercentProblemGenerator(ProblemGenerator):
             # This step is high-level, but the core operation is multiplication,
             # which has its own detailed generator (DecimalMultGenerator).
             # For simplicity here, we keep this high-level step.
-            part_str = str(part.quantize(Decimal('1.') if part == part.to_integral_value() else Decimal('0.01')))
+            part_str = plain(part)
             steps.append(step("PERCENT_CALC_PART", str(percent_dec), whole, part_str))
             final_answer_str = part_str
 
@@ -163,12 +162,11 @@ class PercentProblemGenerator(ProblemGenerator):
 
             steps.append(step("SETUP_PERCENT_EQ", f"percent_dec = {part} / {whole}"))
             # Generate division steps
-            division_steps, _ = self._generate_division_steps(str(part), str(whole))
+            division_steps, quotient_str = self._generate_division_steps(str(part), str(whole))
             steps.extend(division_steps)
-            # Convert the final decimal result to percent
-            # Format percent with two decimals without scientific notation
-            percent_str = f"{calculated_percent_val.quantize(Decimal('0.01'))}%"
-            steps.append(step("DEC_TO_PERCENT", str(calculated_percent_dec), percent_str))
+            # Convert the final decimal result to percent, minimal digits
+            percent_str = f"{plain(calculated_percent_val)}%"
+            steps.append(step("DEC_TO_PERCENT", quotient_str, percent_str))
             final_answer_str = percent_str
 
 

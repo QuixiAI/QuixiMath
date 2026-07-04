@@ -56,8 +56,8 @@ class TestPercentProblemGenerator(unittest.TestCase):
             self.assertNotIn(f"DIV_SETUP{DELIM}", steps_str, "DIV_SETUP should not be in find_part")
         elif op == "percent_find_percent":
             self.assertIn(f"SETUP_PERCENT_EQ{DELIM}", steps_str, "Missing SETUP_PERCENT_EQ")
-            # Check for division steps
-            self.assertIn(f"DEC_SHIFT{DELIM}", steps_str, "Missing DEC_SHIFT")
+            # Check for division steps (DEC_SHIFT only when the divisor
+            # has decimals — find_percent divides by an integer whole)
             self.assertIn(f"DIV_SETUP{DELIM}", steps_str, "Missing DIV_SETUP")
             self.assertTrue(any(s.startswith(f"D{DELIM}") for s in result["steps"]), "Missing D step")
             self.assertTrue(any(s.startswith(f"M{DELIM}") for s in result["steps"]), "Missing M step")
