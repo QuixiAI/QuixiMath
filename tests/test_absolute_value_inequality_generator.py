@@ -44,7 +44,7 @@ class TestAbsoluteValueInequalityGenerator(unittest.TestCase):
             with patch('random.choice', side_effect=['>', 3]):
                 problem = self.gen.generate()
                 self.assertIn("ABS_INEQ_SPLIT|OR case", problem['steps'][1])
-                self.assertIn("OR", problem['final_answer'])
+                self.assertIn(" or ", problem['final_answer'])
 
 if __name__ == '__main__':
     unittest.main()

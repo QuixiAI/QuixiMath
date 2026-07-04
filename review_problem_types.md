@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] AbsoluteValueInequalityGenerator — Absolute Value Inequality (high · d5)
 - [ ] CompoundInequalityGenerator — Compound Inequality (high · d4)
 - [ ] SlopeTwoPointsGenerator — Slope Two Points (high · d4)
 - [ ] SlopeInterceptFormGenerator — Slope Intercept Form (high · d4)

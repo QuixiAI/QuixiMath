@@ -2028,14 +2028,14 @@ Generates absolute value inequalities: |ax + b| < c, |ax + b| > c, etc.
 **Variants:** `absolute_value_ineq`
 
 ```
-Problem: Solve: |x - 2| >= 17
+Problem: Solve: |x - 2| ≥ 17
 Steps:
-  ABS_INEQ_SETUP||x - 2| >= 17
-  ABS_INEQ_SPLIT|OR case|x - 2 >= 17 OR x - 2 <= -17
-  ABS_INEQ_PART|Part 1|x - 2 >= 17 -> x >= 19
-  ABS_INEQ_PART|Part 2|x - 2 <= -17 -> x <= -15
-  Z|x >= 19 OR x <= -15
-Answer: x >= 19 OR x <= -15
+  ABS_INEQ_SETUP|abs(x - 2) ≥ 17
+  ABS_INEQ_SPLIT|OR case|x - 2 ≥ 17 or x - 2 ≤ -17
+  ABS_INEQ_PART|Part 1|x - 2 ≥ 17 -> x ≥ 19
+  ABS_INEQ_PART|Part 2|x - 2 ≤ -17 -> x ≤ -15
+  Z|x ≥ 19 or x ≤ -15
+Answer: x ≥ 19 or x ≤ -15
 ```
 
 ### Compound Inequality — `CompoundInequalityGenerator`  ·  high · difficulty 4

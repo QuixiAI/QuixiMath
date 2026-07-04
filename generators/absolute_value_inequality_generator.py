@@ -1,6 +1,17 @@
 import random
+from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+# display symbols per A0: < > ≤ ≥
+SYM = {'<': '<', '<=': '≤', '>': '>', '>=': '≥'}
+
+
+def frac_str(num, den):
+    """num/den reduced to lowest terms (6/4 -> 3/2, 6/3 -> 2)."""
+    value = Fraction(num, den)
+    return (str(value.numerator) if value.denominator == 1
+            else f"{value.numerator}/{value.denominator}")
 
 class AbsoluteValueInequalityGenerator(ProblemGenerator):
     """
@@ -52,9 +63,11 @@ class AbsoluteValueInequalityGenerator(ProblemGenerator):
             else:
                 inner = f"{a}x - {abs(b)}"
                 
-        problem_str = f"|{inner}| {op} {c}"
+        sym = SYM[op]
+        problem_str = f"|{inner}| {sym} {c}"
         steps = []
-        steps.append(step("ABS_INEQ_SETUP", problem_str))
+        # pipe-safety: step fields must not contain raw '|' — use abs()
+        steps.append(step("ABS_INEQ_SETUP", f"abs({inner}) {sym} {c}"))
         
         # Handle special cases with c <= 0
         if c < 0:
@@ -87,7 +100,7 @@ class AbsoluteValueInequalityGenerator(ProblemGenerator):
         
         if is_and:
             # -c < ax + b < c
-            steps.append(step("ABS_INEQ_SPLIT", "AND case", f"-{c} {op} {inner} {op} {c}"))
+            steps.append(step("ABS_INEQ_SPLIT", "AND case", f"-{c} {sym} {inner} {sym} {c}"))
             
             # Solve compound: -c < ax + b < c
             # Step 1: subtract b
@@ -103,17 +116,16 @@ class AbsoluteValueInequalityGenerator(ProblemGenerator):
                 else:
                     left += val_b
                     right += val_b
-                steps.append(step("INEQ_OP_ALL", op_b, val_b, f"{left} {op} {a}x {op} {right}"))
+                steps.append(step("INEQ_OP_ALL", op_b, val_b, f"{left} {sym} {a}x {sym} {right}"))
                 
             # Step 2: divide by a (a is positive here)
             if a != 1:
-                # We'll stick to fraction notation if not integer
-                l_str = str(left // a) if left % a == 0 else f"{left}/{a}"
-                r_str = str(right // a) if right % a == 0 else f"{right}/{a}"
-                steps.append(step("INEQ_OP_ALL", "divide", a, f"{l_str} {op} x {op} {r_str}"))
-                ans = f"{l_str} {op} x {op} {r_str}"
+                l_str = frac_str(left, a)
+                r_str = frac_str(right, a)
+                steps.append(step("INEQ_OP_ALL", "divide", a, f"{l_str} {sym} x {sym} {r_str}"))
+                ans = f"{l_str} {sym} x {sym} {r_str}"
             else:
-                ans = f"{left} {op} x {op} {right}"
+                ans = f"{left} {sym} x {sym} {right}"
                 
             steps.append(step("Z", ans))
             return self._pack(problem_str, steps, ans)
@@ -123,22 +135,22 @@ class AbsoluteValueInequalityGenerator(ProblemGenerator):
             # Be careful with direction flips if we multiply/divide by neg (a is pos here so safe)
             
             # Relation 1: inner > c (keep op)
-            rel1 = f"{inner} {op} {c}"
+            rel1 = f"{inner} {sym} {c}"
             # Relation 2: inner < -c (flip op)
             op_flip = '<' if op == '>' else '<='
-            rel2 = f"{inner} {op_flip} -{c}"
-            
-            steps.append(step("ABS_INEQ_SPLIT", "OR case", f"{rel1} OR {rel2}"))
-            
+            rel2 = f"{inner} {SYM[op_flip]} -{c}"
+
+            steps.append(step("ABS_INEQ_SPLIT", "OR case", f"{rel1} or {rel2}"))
+
             # Solve Part 1
             sol1 = self._solve_simple_ineq(a, b, c, op)
             steps.append(step("ABS_INEQ_PART", "Part 1", f"{rel1} -> {sol1}"))
-            
+
             # Solve Part 2
             sol2 = self._solve_simple_ineq(a, b, -c, op_flip)
             steps.append(step("ABS_INEQ_PART", "Part 2", f"{rel2} -> {sol2}"))
-            
-            ans = f"{sol1} OR {sol2}"
+
+            ans = f"{sol1} or {sol2}"
             steps.append(step("Z", ans))
             return self._pack(problem_str, steps, ans)
 
@@ -148,23 +160,17 @@ class AbsoluteValueInequalityGenerator(ProblemGenerator):
         if b != 0:
             if b > 0: curr -= b
             else: curr += abs(b)
-            
+
+        sym = SYM[op]
         if a != 1:
-            if curr % a == 0:
-                val = curr // a
-                return f"x {op} {val}"
-            else:
-                return f"x {op} {curr}/{a}"
-        else:
-            return f"x {op} {curr}"
+            return f"x {sym} {frac_str(curr, a)}"
+        return f"x {sym} {curr}"
 
     def _solve_linear_eq(self, a, b, rhs):
         # ax + b = rhs -> x = ...
         curr = rhs - b
         if a != 1:
-            if curr % a == 0:
-                return f"x = {curr // a}"
-            return f"x = {curr}/{a}"
+            return f"x = {frac_str(curr, a)}"
         return f"x = {curr}"
 
     def _pack(self, prob, steps, ans):
