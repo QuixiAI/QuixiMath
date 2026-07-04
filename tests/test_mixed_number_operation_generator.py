@@ -41,12 +41,8 @@ class TestMixedNumberOperationGenerator(unittest.TestCase):
 
     def _compute_expected(self, problem_str, op_symbol):
         left_part, right_part = problem_str.split(f" {op_symbol} ")
-        w1, rest1 = left_part.strip().split(" ", 1)
-        n1, d1 = rest1.split("/")
-        w2, rest2 = right_part.strip().split(" ", 1)
-        n2, d2 = rest2.split("/")
-        frac1 = Fraction(int(w1) * int(d1) + int(n1), int(d1))
-        frac2 = Fraction(int(w2) * int(d2) + int(n2), int(d2))
+        frac1 = self._parse_value(left_part)
+        frac2 = self._parse_value(right_part)
         if op_symbol == '+':
             return frac1 + frac2
         if op_symbol == '-':
@@ -99,6 +95,22 @@ class TestMixedNumberOperationGenerator(unittest.TestCase):
             res = gen.generate()
         expected = self._compute_expected(res["problem"], '-')
         self.assertGreaterEqual(expected, 0)
+
+    def test_oracle_recomputes_answer_from_problem_text(self):
+        """A9 oracle: parse operands, apply the op exactly, and check
+        rendering: no '0 n/d' operands, at least one mixed operand."""
+        for sym in ['+', '-', '*', '/']:
+            gen = MixedNumberOperationGenerator(sym)
+            for _ in range(400):
+                res = gen.generate()
+                expected = self._compute_expected(res["problem"], sym)
+                self.assertEqual(self._parse_value(res["final_answer"]),
+                                 expected, res["problem"])
+                left, right = res["problem"].split(f" {sym} ")
+                self.assertFalse(left.startswith("0 "), res["problem"])
+                self.assertFalse(right.startswith("0 "), res["problem"])
+                self.assertTrue(" " in left or " " in right,
+                                res["problem"])
 
 
 if __name__ == "__main__":

@@ -9,6 +9,13 @@ def to_improper(whole: int, num: int, den: int):
     return whole * den + num, den
 
 
+def mixed_text(whole: int, num: int, den: int) -> str:
+    """Human rendering: a zero whole part is not written (7/12, not 0 7/12)."""
+    if whole == 0:
+        return f"{num}/{den}"
+    return f"{whole} {num}/{den}"
+
+
 def to_mixed(num: int, den: int):
     whole = num // den
     rem = num % den
@@ -46,6 +53,9 @@ class MixedNumberOperationGenerator(ProblemGenerator):
     def generate(self) -> dict:
         w1, n1, d1 = self._pick_mixed()
         w2, n2, d2 = self._pick_mixed()
+        # Keep the skill mixed-number shaped: at least one true mixed operand
+        if w1 == 0 and w2 == 0:
+            w1 = random.randint(1, 5)
 
         # For subtraction, ensure first >= second to avoid negatives for now
         if self.op_symbol == '-':
@@ -54,14 +64,18 @@ class MixedNumberOperationGenerator(ProblemGenerator):
             if frac1 < frac2:
                 w1, n1, d1, w2, n2, d2 = w2, n2, d2, w1, n1, d1
 
-        problem = f"{w1} {n1}/{d1} {self.op_symbol} {w2} {n2}/{d2}"
+        text1 = mixed_text(w1, n1, d1)
+        text2 = mixed_text(w2, n2, d2)
+        problem = f"{text1} {self.op_symbol} {text2}"
         steps = []
 
-        # Convert to improper
+        # Convert to improper (skip the no-op when there is no whole part)
         imp1_num, imp1_den = to_improper(w1, n1, d1)
         imp2_num, imp2_den = to_improper(w2, n2, d2)
-        steps.append(step("MIX_IMPROPER", f"{w1} {n1}/{d1}", f"{imp1_num}/{imp1_den}"))
-        steps.append(step("MIX_IMPROPER", f"{w2} {n2}/{d2}", f"{imp2_num}/{imp2_den}"))
+        if w1 != 0:
+            steps.append(step("MIX_IMPROPER", text1, f"{imp1_num}/{imp1_den}"))
+        if w2 != 0:
+            steps.append(step("MIX_IMPROPER", text2, f"{imp2_num}/{imp2_den}"))
 
         if self.op_symbol in ['+', '-']:
             lcd = lcm(imp1_den, imp2_den)
