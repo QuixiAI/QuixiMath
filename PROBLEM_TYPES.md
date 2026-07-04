@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**463 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**464 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8974,6 +8974,25 @@ Steps:
   CHAIN_DERIV|dy/dx|5/4
   Z|z=0; a=1/2; a_prime=1/4; y=3/2; dy_dx=5/4
 Answer: z=0; a=1/2; a_prime=1/4; y=3/2; dy_dx=5/4
+```
+
+### Positional Encoding — `PositionalEncodingGenerator`  ·  college · difficulty 3
+
+Sinusoidal positional encoding at exact nice angles.
+
+**Variants:** `positional_encoding_2d`
+
+```
+Problem: At position p=216, the sinusoidal encoding angle is theta=3pi/4. Compute the d=2 positional encoding PE=(sin(theta), cos(theta)).
+Steps:
+  PE_SETUP|position=216|d=2|theta=3pi/4
+  ANGLE|theta|3pi/4
+  SIN|3pi/4|sqrt(2)/2
+  PE_ENTRY|0|sqrt(2)/2
+  COS|3pi/4|-sqrt(2)/2
+  PE_ENTRY|1|-sqrt(2)/2
+  Z|PE=(sqrt(2)/2,-sqrt(2)/2)
+Answer: PE=(sqrt(2)/2,-sqrt(2)/2)
 ```
 
 ## Graduate

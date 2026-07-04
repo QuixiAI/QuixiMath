@@ -182,7 +182,6 @@ Poetic bonus: the model learns to compute its own building blocks on paper.
 The model hand-computes its own forward pass. Softmax stays exact by
 construction: choose logits as ln of rationals (Principle 5), so the weights
 come out as exact fractions.
-- [ ] Sinusoidal positional encodings at nice angles · `PositionalEncodingGenerator` · college · d3
 - [ ] Parameter counting — attention + MLP + embeddings per layer, the ≈12·d²·L back-of-envelope; LoRA counting r(d_in + d_out) vs full fine-tuning · `ParamCountGenerator` · college · d3
 - [ ] FLOPs & memory arithmetic — matmul FLOPs 2mnk through a forward pass; KV-cache bytes = 2·L·h·d_k·seq·precision · `FLOPsMemoryGenerator` · college · d4
 - [ ] Scaling-law arithmetic — C ≈ 6ND, Chinchilla-optimal tokens ≈ 20× params, tokens/s from FLOPs budgets · `ScalingLawGenerator` · college · d3
