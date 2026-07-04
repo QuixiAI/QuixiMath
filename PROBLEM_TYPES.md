@@ -627,13 +627,11 @@ Single-event probability with uniform outcomes.
 **Variants:** `probability_simple`
 
 ```
-Problem: If an event has 7 favorable outcomes out of 9 equally likely outcomes, what is P?
+Problem: If an event has 13 favorable outcomes out of 15 equally likely outcomes, what is P?
 Steps:
-  PROB_SETUP|7|9
-  D|7|9|0.78
-  F|7/9|0.78
-  Z|0.78
-Answer: 0.78
+  PROB_SETUP|13|15
+  Z|13/15
+Answer: 13/15
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1

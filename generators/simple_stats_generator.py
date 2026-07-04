@@ -42,7 +42,7 @@ class SimpleStatsGenerator(ProblemGenerator):
             mid = n // 2
             if n % 2 == 1:
                 median = sorted_data[mid]
-                steps.append(step("MEDIAN_PICK", sorted_data[mid], "", median))
+                steps.append(step("MEDIAN_PICK", median))
             else:
                 pair = (sorted_data[mid - 1], sorted_data[mid])
                 steps.append(step("MEDIAN_PAIR", pair[0], pair[1]))

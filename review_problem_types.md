@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] SimpleStatsGenerator — Simple Stats (elementary · d2)
-- [ ] SimpleProbabilityGenerator — Simple Probability (elementary · d1)
 - [ ] GraphInterpretGenerator — Graph Interpret (elementary · d1)
 - [ ] CompositeArithmeticGenerator — Composite Arithmetic (elementary · d4)
 - [ ] IntegerOperationsGenerator — Integer Operations (middle · d3)
