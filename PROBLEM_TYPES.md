@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**422 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**423 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8178,6 +8178,29 @@ Steps:
   ROOT|sqrt(1369)|37
   Z|E=37
 Answer: E=37
+```
+
+### Doppler — `DopplerGenerator`  ·  college · difficulty 3
+
+Acoustic and relativistic Doppler shifts with exact arithmetic.
+
+**Variants:** `doppler_acoustic_toward`, `doppler_relativistic_approach`
+
+```
+Problem: A light source approaches with beta=63/65 and emits f=141 Hz. Use the relativistic Doppler formula to find f_obs.
+Steps:
+  DOPPLER_SETUP|relativistic_approach|f=141|beta=63/65
+  DOPPLER_FORMULA|f_obs=f*sqrt((1+beta)/(1-beta))
+  E|8|2|64
+  S|64|1|63
+  A|64|1|65
+  A|1|63/65|128/65
+  S|1|63/65|2/65
+  D|128/65|2/65|64
+  ROOT|sqrt(64)|8
+  M|141|8|1128
+  Z|f_obs=1128 Hz
+Answer: f_obs=1128 Hz
 ```
 
 ## Graduate

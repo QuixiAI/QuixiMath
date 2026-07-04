@@ -454,6 +454,7 @@ CURRICULUM = {
     "SpecialRelativityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RelativisticEnergyGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "MinkowskiIntervalGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "DopplerGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
