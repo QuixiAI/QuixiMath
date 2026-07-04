@@ -166,7 +166,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Quantum Mechanics
 
 ### Physics — Relativity, Waves & Optics
-- [ ] Interference — double slit, diffraction gratings, thin films · `InterferenceGenerator` · college · d3
 - [ ] Standing waves — harmonics on strings and pipes · `StandingWaveGenerator` · college · d2
 
 ### Chemistry Computations

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**424 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**425 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8220,6 +8220,23 @@ Steps:
   D|1|27/1040|1040/27
   Z|d_i=1040/27 cm
 Answer: d_i=1040/27 cm
+```
+
+### Interference — `InterferenceGenerator`  ·  college · difficulty 3
+
+Exact wave-interference arithmetic for slits, gratings, and thin films.
+
+**Variants:** `interference_diffraction_grating`, `interference_double_slit`, `interference_thin_film`
+
+```
+Problem: A diffraction grating has spacing d=24 m. For order m=4 and wavelength lambda=2 m, find sin(theta).
+Steps:
+  INTERFERENCE_SETUP|diffraction_grating|m=4, lambda=2|d=24
+  INTERFERENCE_FORMULA|d*sin(theta)=m*lambda
+  M|4|2|8
+  D|8|24|1/3
+  Z|sin(theta)=1/3
+Answer: sin(theta)=1/3
 ```
 
 ## Graduate

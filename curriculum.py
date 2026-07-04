@@ -456,6 +456,7 @@ CURRICULUM = {
     "MinkowskiIntervalGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "DopplerGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "OpticsGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "InterferenceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
