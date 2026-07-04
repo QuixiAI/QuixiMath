@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**380 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**381 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7549,6 +7549,51 @@ Steps:
   D|212/729|2|106/729
   Z|x_3=-2/27, y_3=7/27, f(x_3,y_3)=106/729
 Answer: x_3=-2/27, y_3=7/27, f(x_3,y_3)=106/729
+```
+
+### Game Theory — `GameTheoryGenerator`  ·  college · difficulty 4
+
+Mixed equilibrium for zero-sum 2x2 games.
+
+**Variants:** `game_theory_zero_sum_2x2`
+
+```
+Problem: For the zero-sum 2x2 payoff matrix [[3,11],[13,10]] for the row player, compute expected payoffs, the mixed-strategy equilibrium, and the game value.
+Steps:
+  GAME_SETUP|payoffs=(3,11;13,10)|row player maximizes, column player minimizes
+  MIX_FORMULA|q=(d-b)/(a-b-c+d)|p=(d-c)/(a-b-c+d)
+  S|10|11|-1
+  S|10|13|-3
+  S|3|11|-8
+  A|-8|-3|-11
+  D|-1|-11|1/11
+  D|-3|-11|3/11
+  EXPECTED_PAYOFF|row1 against q
+  M|1/11|3|3/11
+  S|1|1/11|10/11
+  M|10/11|11|10
+  A|3/11|10|113/11
+  EXPECTED_PAYOFF|row2 against q
+  M|1/11|13|13/11
+  M|10/11|10|100/11
+  A|13/11|100/11|113/11
+  EXPECTED_PAYOFF|col1 against p
+  M|3/11|3|9/11
+  S|1|3/11|8/11
+  M|8/11|13|104/11
+  A|9/11|104/11|113/11
+  EXPECTED_PAYOFF|col2 against p
+  M|3/11|11|3
+  M|8/11|10|80/11
+  A|3|80/11|113/11
+  VALUE_FORMULA|v=(ad-bc)/(a-b-c+d)
+  M|3|10|30
+  M|11|13|143
+  S|30|143|-113
+  D|-113|-11|113/11
+  CHECK|row payoffs=113/11|column payoffs=113/11
+  Z|row mix=(3/11,8/11); column mix=(1/11,10/11); value=113/11
+Answer: row mix=(3/11,8/11); column mix=(1/11,10/11); value=113/11
 ```
 
 ## Graduate
