@@ -316,6 +316,7 @@ CURRICULUM = {
     "GraphTraversalGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "EulerCircuitGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DPTableGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "AlgorithmTraceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**284 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**285 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6163,6 +6163,42 @@ Steps:
   DP_ROW|i=3|1, 1, 2, 2, 3, 4, 5, 6
   Z|ways = 6
 Answer: ways = 6
+```
+
+### Algorithm Trace — `AlgorithmTraceGenerator`  ·  college · difficulty 3
+
+Deterministic algorithm state traces after a fixed number of steps.
+
+**Variants:** `algorithm_trace_binary_search`, `algorithm_trace_insertion_sort`, `algorithm_trace_merge_sort`
+
+```
+Problem: Trace insertion sort on values 3, 17, 33, 32, 26, 20 for 4 passes. What is the array after those passes?
+Steps:
+  ALG_SETUP|insertion sort|passes 4|values 3, 17, 33, 32, 26, 20
+  INSERT_KEY|pass 1|17|index 1
+  COMPARE|arr[0]=3|key 17|stop
+  INSERT_PLACE|index 1|3, 17, 33, 32, 26, 20
+  ARRAY_STATE|pass 1|3, 17, 33, 32, 26, 20
+  INSERT_KEY|pass 2|33|index 2
+  COMPARE|arr[1]=17|key 33|stop
+  INSERT_PLACE|index 2|3, 17, 33, 32, 26, 20
+  ARRAY_STATE|pass 2|3, 17, 33, 32, 26, 20
+  INSERT_KEY|pass 3|32|index 3
+  COMPARE|arr[2]=33|key 32|shift
+  SHIFT|2->3|3, 17, 33, 33, 26, 20
+  COMPARE|arr[1]=17|key 32|stop
+  INSERT_PLACE|index 2|3, 17, 32, 33, 26, 20
+  ARRAY_STATE|pass 3|3, 17, 32, 33, 26, 20
+  INSERT_KEY|pass 4|26|index 4
+  COMPARE|arr[3]=33|key 26|shift
+  SHIFT|3->4|3, 17, 32, 33, 33, 20
+  COMPARE|arr[2]=32|key 26|shift
+  SHIFT|2->3|3, 17, 32, 32, 33, 20
+  COMPARE|arr[1]=17|key 26|stop
+  INSERT_PLACE|index 2|3, 17, 26, 32, 33, 20
+  ARRAY_STATE|pass 4|3, 17, 26, 32, 33, 20
+  Z|array = [3, 17, 26, 32, 33, 20]
+Answer: array = [3, 17, 26, 32, 33, 20]
 ```
 
 ## Graduate
