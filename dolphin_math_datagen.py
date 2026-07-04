@@ -120,6 +120,7 @@ from generators.regular_polygon_area_generator import RegularPolygonAreaGenerato
 from generators.similar_triangles_generator import SimilarTrianglesGenerator
 from generators.geometric_mean_generator import GeometricMeanGenerator
 from generators.distance_formula_generator import DistanceFormulaGenerator
+from generators.midpoint_generator import MidpointGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -399,6 +400,7 @@ ALL_GENERATORS = [
     SimilarTrianglesGenerator(),
     GeometricMeanGenerator(),
     DistanceFormulaGenerator(),
+    MidpointGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
