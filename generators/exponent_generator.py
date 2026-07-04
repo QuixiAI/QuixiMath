@@ -523,14 +523,13 @@ class RootsAndRadicalsGenerator(ProblemGenerator):
             raise ValueError(f"Invalid problem_type: {problem_type}. Must be one of {valid_types} or None.")
         self.problem_type = problem_type
 
-    # Perfect squares up to 225 (15^2)
-    PERFECT_SQUARES = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225]
-    SQUARE_ROOTS = {1: 1, 4: 2, 9: 3, 16: 4, 25: 5, 36: 6, 49: 7, 64: 8, 81: 9,
-                    100: 10, 121: 11, 144: 12, 169: 13, 196: 14, 225: 15}
+    # Perfect squares up to 625 (25^2)
+    PERFECT_SQUARES = [k * k for k in range(1, 26)]
+    SQUARE_ROOTS = {k * k: k for k in range(1, 26)}
 
-    # Perfect cubes up to 1000 (10^3)
-    PERFECT_CUBES = [1, 8, 27, 64, 125, 216, 343, 512, 729, 1000]
-    CUBE_ROOTS = {1: 1, 8: 2, 27: 3, 64: 4, 125: 5, 216: 6, 343: 7, 512: 8, 729: 9, 1000: 10}
+    # Perfect cubes up to 3375 (15^3)
+    PERFECT_CUBES = [k ** 3 for k in range(1, 16)]
+    CUBE_ROOTS = {k ** 3: k for k in range(1, 16)}
 
     def generate(self) -> dict:
         """Generate a roots/radicals problem."""
@@ -588,11 +587,11 @@ class RootsAndRadicalsGenerator(ProblemGenerator):
     def _generate_simplify_square(self) -> dict:
         """Generate √n where n = a²·b (simplifies to a√b)."""
         # Pick a perfect square factor (not 1)
-        perfect_factor = random.choice([4, 9, 16, 25, 36, 49])
+        perfect_factor = random.choice([4, 9, 16, 25, 36, 49, 64, 81, 100])
         root_of_factor = self.SQUARE_ROOTS[perfect_factor]
 
-        # Pick a small non-perfect square remaining factor
-        remaining = random.choice([2, 3, 5, 6, 7, 10, 11, 13])
+        # Pick a small square-free remaining factor
+        remaining = random.choice([2, 3, 5, 6, 7, 10, 11, 13, 14, 15])
 
         n = perfect_factor * remaining
         answer = f"{root_of_factor}√{remaining}"

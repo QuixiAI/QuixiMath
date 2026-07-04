@@ -1106,13 +1106,13 @@ Generates square root, cube root, and radical simplification problems.
 **Variants:** `cube_root_perfect`, `simplify_radical`, `square_root_perfect`
 
 ```
-Problem: Evaluate: ∛512
+Problem: Evaluate: ∛2744
 Steps:
-  ROOT_SETUP|∛512
-  ROOT_IDENTIFY|512|perfect_cube|8
-  ROOT_EXTRACT|8
-  Z|8
-Answer: 8
+  ROOT_SETUP|∛2744
+  ROOT_IDENTIFY|2744|perfect_cube|14
+  ROOT_EXTRACT|14
+  Z|14
+Answer: 14
 ```
 
 ### Angle Relationships — `AngleRelationshipsGenerator`  ·  middle · difficulty 4
