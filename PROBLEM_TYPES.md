@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**339 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**340 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8090,4 +8090,39 @@ Steps:
   CHECK|J^2|361/8I|verified
   Z|J^2 = 361/8I = [[361/8, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
 Answer: J^2 = 361/8I = [[361/8, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
+```
+
+### Index Gymnastics — `IndexGymnasticsGenerator`  ·  graduate · difficulty 4
+
+Levi-Civita contraction arithmetic: sum_i eps_ijk eps_ilm = delta_jl delta_km - delta_jm delta_kl.
+
+**Variants:** `index_gymnastics_levi_civita`
+
+```
+Problem: Evaluate c * sum_i eps_i21 eps_i23 with c=2 for j=2, k=1, l=2, m=3 in 3D, and verify the Kronecker-delta identity.
+Steps:
+  INDEX_SETUP|c=2|j=2, k=1|l=2, m=3
+  IDENTITY|sum_i eps_ijk eps_ilm|delta_jl delta_km - delta_jm delta_kl
+  EPSILON_VALUE|eps_121|0
+  EPSILON_VALUE|eps_123|1
+  M|0|1|0
+  EPSILON_VALUE|eps_221|0
+  EPSILON_VALUE|eps_223|0
+  M|0|0|0
+  EPSILON_VALUE|eps_321|-1
+  EPSILON_VALUE|eps_323|0
+  M|-1|0|0
+  A|0|0|0
+  A|0|0|0
+  DELTA_VALUE|delta_22|1
+  DELTA_VALUE|delta_13|0
+  DELTA_VALUE|delta_23|0
+  DELTA_VALUE|delta_12|0
+  M|1|0|0
+  M|0|0|0
+  S|0|0|0
+  CHECK|epsilon contraction|0|identity
+  M|2|0|0
+  Z|2*sum_i eps_i21 eps_i23 = 0
+Answer: 2*sum_i eps_i21 eps_i23 = 0
 ```

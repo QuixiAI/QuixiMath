@@ -371,6 +371,7 @@ CURRICULUM = {
     "StructureConstantGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PauliAlgebraGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "CasimirGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "IndexGymnasticsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
