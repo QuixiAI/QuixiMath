@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] FactorTrinomialGenerator — Factor Trinomial (high · d4)
 - [ ] FactorSpecialFormsGenerator — Factor Special Forms (high · d4)
 - [ ] FactorGroupingGenerator — Factor Grouping (high · d5)
 - [ ] QuadraticFactoringGenerator — Quadratic Factoring (high · d5)
