@@ -212,6 +212,7 @@ from generators.multivar_chain_rule_generator import MultivarChainRuleGenerator
 from generators.hessian_classify_generator import HessianClassifyGenerator
 from generators.lagrange_multiplier_generator import LagrangeMultiplierGenerator
 from generators.double_integral_generator import DoubleIntegralGenerator
+from generators.triple_integral_generator import TripleIntegralGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -595,6 +596,7 @@ ALL_GENERATORS = [
     HessianClassifyGenerator(),
     LagrangeMultiplierGenerator(),
     DoubleIntegralGenerator(),
+    TripleIntegralGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

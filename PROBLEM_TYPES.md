@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**245 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**246 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5114,4 +5114,27 @@ Steps:
   OUTER_EVAL|y=0..40|2*5*8^2/2|320
   Z|reversed y:0..40, x:y/5..8; value 320
 Answer: reversed y:0..40, x:y/5..8; value 320
+```
+
+### Triple Integral — `TripleIntegralGenerator`  ·  college · difficulty 4
+
+Triple integrals in cylindrical and spherical coordinates.
+
+**Variants:** `triple_integral_cylindrical`, `triple_integral_spherical`
+
+```
+Problem: Convert to spherical and evaluate the triple integral of 1 over the ball x^2 + y^2 + z^2 <= 64.
+Steps:
+  TRIPLE_SETUP|integrand 1|ball radius 8|spherical
+  SPHERICAL_CONVERT|1 dV|rho^2*sin(phi) drho dphi dtheta
+  SPHERICAL_BOUNDS|rho|0..8
+  SPHERICAL_BOUNDS|phi|0..pi
+  SPHERICAL_BOUNDS|theta|0..2*pi
+  INNER_ANTIDERIV|drho|rho^3/3
+  INNER_EVAL|rho=0..8|8^3/3|512/3
+  MIDDLE_EVAL|phi=0..pi|int sin(phi) dphi = 2|2
+  ANGLE_EVAL|theta=0..2*pi|2*pi
+  TRIPLE_EVAL|rho_part * phi_part * angle|512/3*2*2*pi|2048/3*pi
+  Z|value 2048/3*pi
+Answer: value 2048/3*pi
 ```

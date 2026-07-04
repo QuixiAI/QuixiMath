@@ -277,6 +277,7 @@ CURRICULUM = {
     "HessianClassifyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "LagrangeMultiplierGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "DoubleIntegralGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "TripleIntegralGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 
