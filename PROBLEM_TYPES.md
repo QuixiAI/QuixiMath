@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**374 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**375 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7407,6 +7407,27 @@ Steps:
   D|115/1089|230/1089|1/2
   Z|P_X(0)=10/33, P_X(1)=23/33; P_Y(0)=10/33, P_Y(1)=23/33; P(Y=1 given X=1)=28/33; independent=no; covariance=115/1089; correlation=1/2
 Answer: P_X(0)=10/33, P_X(1)=23/33; P_Y(0)=10/33, P_Y(1)=23/33; P(Y=1 given X=1)=28/33; independent=no; covariance=115/1089; correlation=1/2
+```
+
+### Markov Chain — `MarkovChainGenerator`  ·  college · difficulty 4
+
+Markov chain transition, steady-state, and absorbing-chain calculations.
+
+**Variants:** `markov_chain_absorbing`, `markov_chain_n_step`, `markov_chain_steady_state`
+
+```
+Problem: For a two-state Markov chain with P01=1/9 and P10=5/7, find the steady-state distribution.
+Steps:
+  MARKOV_SETUP|two_state|P00=8/9, P01=1/9|P10=5/7, P11=2/7
+  STEADY_EQUATION|pi0*pi01=pi1*pi10|pi0+pi1=1
+  A|1/9|5/7|52/63
+  D|5/7|52/63|45/52
+  D|1/9|52/63|7/52
+  M|45/52|1/9|5/52
+  M|7/52|5/7|5/52
+  CHECK|flow01=5/52|flow10=5/52
+  Z|pi0=45/52, pi1=7/52
+Answer: pi0=45/52, pi1=7/52
 ```
 
 ## Graduate
