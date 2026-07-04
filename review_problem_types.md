@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ModularArithmeticGenerator — Modular Arithmetic (middle · d4)
 - [ ] ManualSquareRootGenerator — Manual Square Root (middle · d4)
 - [ ] CalendarArithmeticGenerator — Calendar Arithmetic (middle · d3)
 - [ ] PascalTriangleGenerator — Pascal Triangle (middle · d3)
