@@ -366,20 +366,27 @@ class MeanAbsoluteDeviationGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         """Generate a MAD calculation problem."""
-        size = random.randint(5, 7)  # Keep small for reasonable calculations
+        # Redraw until the mean is an integer AND the absolute-deviation
+        # sum divides evenly: the MAD is exact, never a rounded 11.71
+        while True:
+            size = random.randint(5, 7)  # Keep small for reasonable calculations
 
-        # Generate values that give a clean mean
-        mean_target = random.randint(20, 50)
-        total = mean_target * size
+            # Generate values that give a clean mean
+            mean_target = random.randint(20, 50)
+            total = mean_target * size
 
-        values = []
-        remaining = total
-        for i in range(size - 1):
-            val = random.randint(mean_target - 15, mean_target + 15)
-            values.append(val)
-            remaining -= val
+            values = []
+            remaining = total
+            for i in range(size - 1):
+                val = random.randint(mean_target - 15, mean_target + 15)
+                values.append(val)
+                remaining -= val
 
-        values.append(remaining)
+            values.append(remaining)
+            if remaining < 0:
+                continue
+            if sum(abs(v - mean_target) for v in values) % size == 0:
+                break
         random.shuffle(values)
 
         values_str = ", ".join(str(v) for v in values)

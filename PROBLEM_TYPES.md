@@ -1404,25 +1404,25 @@ Generates Mean Absolute Deviation (MAD) problems.
 **Variants:** `mean_absolute_deviation`
 
 ```
-Problem: Find the Mean Absolute Deviation (MAD) of the following data set: 57, 30, 42, 39, 37, 59
+Problem: Find the Mean Absolute Deviation (MAD) of the following data set: 13, 53, 62, 51, 59, 56
 Steps:
-  STAT_SETUP|57, 30, 42, 39, 37, 59
-  STAT_MEAN|264 / 6|44
-  STAT_DEVIATION|57|44|13
+  STAT_SETUP|13, 53, 62, 51, 59, 56
+  STAT_MEAN|294 / 6|49
+  STAT_DEVIATION|13|49|-36
+  STAT_ABS_DEV|-36|36
+  STAT_DEVIATION|53|49|4
+  STAT_ABS_DEV|4|4
+  STAT_DEVIATION|62|49|13
   STAT_ABS_DEV|13|13
-  STAT_DEVIATION|30|44|-14
-  STAT_ABS_DEV|-14|14
-  STAT_DEVIATION|42|44|-2
-  STAT_ABS_DEV|-2|2
-  STAT_DEVIATION|39|44|-5
-  STAT_ABS_DEV|-5|5
-  STAT_DEVIATION|37|44|-7
-  STAT_ABS_DEV|-7|7
-  STAT_DEVIATION|59|44|15
-  STAT_ABS_DEV|15|15
-  STAT_MAD|56|6|9.33
-  Z|9.33
-Answer: 9.33
+  STAT_DEVIATION|51|49|2
+  STAT_ABS_DEV|2|2
+  STAT_DEVIATION|59|49|10
+  STAT_ABS_DEV|10|10
+  STAT_DEVIATION|56|49|7
+  STAT_ABS_DEV|7|7
+  STAT_MAD|72|6|12
+  Z|12
+Answer: 12
 ```
 
 ### Compound Probability Independent — `CompoundProbabilityIndependentGenerator`  ·  middle · difficulty 4

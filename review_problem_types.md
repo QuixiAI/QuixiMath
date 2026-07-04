@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] MeanAbsoluteDeviationGenerator — Mean Absolute Deviation (middle · d4)
 - [ ] CompoundProbabilityIndependentGenerator — Compound Probability Independent (middle · d4)
 - [ ] CompoundProbabilityDependentGenerator — Compound Probability Dependent (middle · d4)
 - [ ] GeometricProbabilityGenerator — Geometric Probability (middle · d4)
