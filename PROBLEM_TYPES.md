@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**358 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**359 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8516,4 +8516,30 @@ Steps:
   CHECK|trace theorem|computed=0|expected=0
   Z|Tr(gamma3*gamma1) = 0
 Answer: Tr(gamma3*gamma1) = 0
+```
+
+### Grassmann — `GrassmannGenerator`  ·  graduate · difficulty 4
+
+One-generator Grassmann arithmetic with theta^2 = 0.
+
+**Variants:** `grassmann_exponential`, `grassmann_integrate`, `grassmann_multiply`, `grassmann_multiply_integrate`
+
+```
+Problem: Let theta^2=0 with Berezin rules int dtheta 1=0 and int dtheta theta=1. Compute int dtheta [(x)*(y)] for x=5 - 8theta and y=-1 + 8theta.
+Steps:
+  GRASSMANN_SETUP|multiply_integrate|x=5 - 8theta|y=-1 + 8theta
+  M|5|-1|-5
+  M|5|8|40
+  M|-8|-1|8
+  M|-8|8|-64
+  NILPOTENT|theta^2=0|-64theta^2|0
+  A|40|8|48
+  GRASSMANN_RESULT|constant=-5|theta=48|-5 + 48theta
+  BEREZIN_RULE|int dtheta 1|0
+  BEREZIN_RULE|int dtheta theta|1
+  M|-5|0|0
+  M|48|1|48
+  A|0|48|48
+  Z|integral = 48
+Answer: integral = 48
 ```

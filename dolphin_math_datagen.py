@@ -325,6 +325,7 @@ from generators.quark_composition_generator import QuarkCompositionGenerator
 from generators.branching_ratio_generator import BranchingRatioGenerator
 from generators.cross_section_generator import CrossSectionGenerator
 from generators.gamma_matrix_generator import GammaMatrixGenerator
+from generators.grassmann_generator import GrassmannGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -821,6 +822,7 @@ ALL_GENERATORS = [
     BranchingRatioGenerator(),
     CrossSectionGenerator(),
     GammaMatrixGenerator(),
+    GrassmannGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

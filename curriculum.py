@@ -390,6 +390,7 @@ CURRICULUM = {
     "BranchingRatioGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "CrossSectionGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "GammaMatrixGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "GrassmannGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

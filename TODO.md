@@ -148,7 +148,6 @@ The symmetry machinery of particle physics, done as explicit matrix work.
 ### Particle Physics Arithmetic
 The daily hand-computation of the field — kinematics, bookkeeping, and
 algebra checks. Constants and logs provided per Principle 5.
-- [ ] Grassmann numbers — θ² = 0 makes every series terminate: expand, multiply, Berezin-integrate (∫dθ θ = 1); the algebra of fermions, utterly mechanical · `GrassmannGenerator` · graduate · d4
 - [ ] Running coupling — one-loop RG evolution of α(μ) from α(μ₀) and the beta coefficient · `RunningCouplingGenerator` · graduate · d4
 
 ### Numerical Methods
