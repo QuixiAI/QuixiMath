@@ -125,7 +125,6 @@ bind extra hard at this level:
 ### Graph Theory & Algorithms
 
 ### Number Theory & Cryptography
-- [ ] Extended Euclid — Bézout coefficients with the back-substitution table · `ExtendedEuclidGenerator` · college · d3
 - [ ] Modular inverses; linear congruences · `ModularInverseGenerator` · college · d3
 - [ ] Chinese Remainder Theorem · `CRTGenerator` · college · d4
 - [ ] Fast modular exponentiation — square-and-multiply trace · `ModExpGenerator` · college · d3

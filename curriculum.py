@@ -318,6 +318,7 @@ CURRICULUM = {
     "DPTableGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "AlgorithmTraceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DFASimulationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ExtendedEuclidGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**286 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**287 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6242,6 +6242,67 @@ Steps:
   CHECK|q1 in accepting states|accepted
   Z|accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
 Answer: accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
+```
+
+### Extended Euclid — `ExtendedEuclidGenerator`  ·  college · difficulty 3
+
+Extended Euclidean algorithm with explicit Bezout coefficient rows.
+
+**Variants:** `extended_euclid`
+
+```
+Problem: Use the extended Euclidean algorithm to find gcd(444, 366) and coefficients x,y with 444x + 366y = gcd.
+Steps:
+  EXT_GCD_SETUP|444|366
+  BACK_SUB_ROW|r=444|x=1|y=0
+  BACK_SUB_ROW|r=366|x=0|y=1
+  EUCLID_DIV|444|366|1|78
+  M|1|366|366
+  S|444|366|78
+  M|1|0|0
+  S|1|0|1
+  M|1|1|1
+  S|0|1|-1
+  BACK_SUB_ROW|r=78|x=1|y=-1
+  EUCLID_DIV|366|78|4|54
+  M|4|78|312
+  S|366|312|54
+  M|4|1|4
+  S|0|4|-4
+  M|4|-1|-4
+  S|1|-4|5
+  BACK_SUB_ROW|r=54|x=-4|y=5
+  EUCLID_DIV|78|54|1|24
+  M|1|54|54
+  S|78|54|24
+  M|1|-4|-4
+  S|1|-4|5
+  M|1|5|5
+  S|-1|5|-6
+  BACK_SUB_ROW|r=24|x=5|y=-6
+  EUCLID_DIV|54|24|2|6
+  M|2|24|48
+  S|54|48|6
+  M|2|5|10
+  S|-4|10|-14
+  M|2|-6|-12
+  S|5|-12|17
+  BACK_SUB_ROW|r=6|x=-14|y=17
+  EUCLID_DIV|24|6|4|0
+  M|4|6|24
+  S|24|24|0
+  M|4|-14|-56
+  S|5|-56|61
+  M|4|17|68
+  S|-6|68|-74
+  BACK_SUB_ROW|r=0|x=61|y=-74
+  M|444|-14|-6216
+  M|366|17|6222
+  A|-6216|6222|6
+  BEZOUT_CHECK|444*-14 + 366*17|6
+  CHECK|gcd is last nonzero remainder|6
+  Z|gcd = 6; x = -14; y = 17
+Answer: gcd = 6; x = -14; y = 17
 ```
 
 ## Graduate

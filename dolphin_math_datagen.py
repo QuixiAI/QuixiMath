@@ -253,6 +253,7 @@ from generators.euler_circuit_generator import EulerCircuitGenerator
 from generators.dp_table_generator import DPTableGenerator
 from generators.algorithm_trace_generator import AlgorithmTraceGenerator
 from generators.dfa_simulation_generator import DFASimulationGenerator
+from generators.extended_euclid_generator import ExtendedEuclidGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -677,6 +678,7 @@ ALL_GENERATORS = [
     DPTableGenerator(),
     AlgorithmTraceGenerator(),
     DFASimulationGenerator(),
+    ExtendedEuclidGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
