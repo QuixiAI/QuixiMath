@@ -490,6 +490,7 @@ CURRICULUM = {
     "KernelValidityGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "KernelRidgeGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "SVMMarginGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "KernelPerceptronGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

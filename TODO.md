@@ -177,7 +177,6 @@ Poetic bonus: the model learns to compute its own building blocks on paper.
 ### Matrix Calculus & ML Linear Algebra
 
 ### Kernel Methods
-- [ ] Kernel perceptron — updates in α-space over a small dataset · `KernelPerceptronGenerator` · graduate · d4
 
 ### Transformer & LLM Arithmetic
 The model hand-computes its own forward pass. Softmax stays exact by

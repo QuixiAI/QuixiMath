@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**458 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**459 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11683,4 +11683,86 @@ Steps:
   MARGIN|2/norm(w)|2/25
   Z|w=(7,-24); f(x)=-54; class=-1; margin_width=2/25
 Answer: w=(7,-24); f(x)=-54; class=-1; margin_width=2/25
+```
+
+### Kernel Perceptron — `KernelPerceptronGenerator`  ·  graduate · difficulty 4
+
+One epoch of kernel perceptron updates in alpha-space.
+
+**Variants:** `kernel_perceptron_one_epoch`
+
+```
+Problem: Run one epoch of the kernel perceptron with linear kernel K(x,z)=xz on data [(7,-1), (-1,1), (6,1)], starting alpha=(0,0,0). Use update alpha_i += 1 when y_i score_i <= 0.
+Steps:
+  KP_SETUP|kernel=linear|data=[(7,-1), (-1,1), (6,1)]|alpha0=(0,0,0)
+  KP_EXAMPLE|1|x=7,y=-1|alpha=(0,0,0)
+  M|7|7|49
+  KERNEL_VALUE|1,1|49
+  M|0|-1|0
+  M|0|49|0
+  KP_TERM|j=1|0
+  M|-1|7|-7
+  KERNEL_VALUE|2,1|-7
+  M|0|1|0
+  M|0|-7|0
+  KP_TERM|j=2|0
+  M|6|7|42
+  KERNEL_VALUE|3,1|42
+  M|0|1|0
+  M|0|42|0
+  KP_TERM|j=3|0
+  A|0|0|0
+  A|0|0|0
+  DECISION|score_1|0
+  M|-1|0|0
+  CHECK|y*score <= 0|0 <= 0|update=true
+  A|0|1|1
+  UPDATE|alpha1|1
+  KP_EXAMPLE|2|x=-1,y=1|alpha=(1,0,0)
+  M|7|-1|-7
+  KERNEL_VALUE|1,2|-7
+  M|1|-1|-1
+  M|-1|-7|7
+  KP_TERM|j=1|7
+  M|-1|-1|1
+  KERNEL_VALUE|2,2|1
+  M|0|1|0
+  M|0|1|0
+  KP_TERM|j=2|0
+  M|6|-1|-6
+  KERNEL_VALUE|3,2|-6
+  M|0|1|0
+  M|0|-6|0
+  KP_TERM|j=3|0
+  A|7|0|7
+  A|7|0|7
+  DECISION|score_2|7
+  M|1|7|7
+  CHECK|y*score <= 0|7 <= 0|update=false
+  UPDATE|alpha2|0
+  KP_EXAMPLE|3|x=6,y=1|alpha=(1,0,0)
+  M|7|6|42
+  KERNEL_VALUE|1,3|42
+  M|1|-1|-1
+  M|-1|42|-42
+  KP_TERM|j=1|-42
+  M|-1|6|-6
+  KERNEL_VALUE|2,3|-6
+  M|0|1|0
+  M|0|-6|0
+  KP_TERM|j=2|0
+  M|6|6|36
+  KERNEL_VALUE|3,3|36
+  M|0|1|0
+  M|0|36|0
+  KP_TERM|j=3|0
+  A|-42|0|-42
+  A|-42|0|-42
+  DECISION|score_3|-42
+  M|1|-42|-42
+  CHECK|y*score <= 0|-42 <= 0|update=true
+  A|0|1|1
+  UPDATE|alpha3|1
+  Z|alpha=(1,0,1); updates=2
+Answer: alpha=(1,0,1); updates=2
 ```
