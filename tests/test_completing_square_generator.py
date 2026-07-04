@@ -15,10 +15,11 @@ from helpers import DELIM
 def parse_quadratic(expr, var):
     """'x^2 + 6x - 7' -> (b, c)."""
     m = re.fullmatch(
-        rf"{var}\^2 ([+-]) (\d*){var} ([+-]) (\d+)", expr)
+        rf"{var}\^2 ([+-]) (\d*){var}(?: ([+-]) (\d+))?", expr)
     assert m, expr
     b = int(m.group(2) or 1) * (1 if m.group(1) == "+" else -1)
-    c = int(m.group(4)) * (1 if m.group(3) == "+" else -1)
+    c = (0 if m.group(3) is None
+         else int(m.group(4)) * (1 if m.group(3) == "+" else -1))
     return b, c
 
 

@@ -62,8 +62,8 @@ class CompletingSquareGenerator(ProblemGenerator):
         if mode == "vertex":
             c = random.randint(-9, 9)
             v = c - hh
-            c_txt = f"+ {c}" if c >= 0 else f"- {-c}"
-            original = f"y = {var}^2 {b_txt} {c_txt}"
+            c_txt = "" if c == 0 else (f"+ {c}" if c > 0 else f"- {-c}")
+            original = f"y = {var}^2 {b_txt} {c_txt}".rstrip()
             v_txt = f"+ {v}" if v > 0 else f"- {-v}" if v < 0 else ""
             vertex_form = f"y = {self._pst(var, h)} {v_txt}".rstrip()
             steps = [
@@ -92,8 +92,9 @@ class CompletingSquareGenerator(ProblemGenerator):
             k = random.choice(SQUARE_FREE)
             irrational = True
         c = hh - k
-        c_txt = f"+ {c}" if c >= 0 else f"- {-c}"
-        original = f"{var}^2 {b_txt} {c_txt} = 0"
+        c_txt = "" if c == 0 else (f"+ {c}" if c > 0 else f"- {-c}")
+        original = (f"{var}^2 {b_txt} {c_txt} = 0" if c_txt
+                    else f"{var}^2 {b_txt} = 0")
         moved = f"{var}^2 {b_txt} = {-c}"
         pst_eq = f"{self._pst(var, h)} = {k}"
 

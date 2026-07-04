@@ -6,9 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] QuadraticFactoringGenerator — Quadratic Factoring (high · d5)
-- [ ] QuadraticSquareRootGenerator — Quadratic Square Root (high · d4)
-- [ ] CompletingSquareGenerator — Completing Square (high · d5)
 - [ ] DiscriminantGenerator — Discriminant (high · d4)
 - [ ] RadicalVariableSimplifyGenerator — Radical Variable Simplify (high · d4)
 - [ ] RadicalAddSubGenerator — Radical Add Sub (high · d4)
