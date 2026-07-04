@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**444 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**445 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8665,6 +8665,92 @@ Steps:
   CHECK|Spam vs Ham|49/18432 < 2548/18225|predict=Ham
   Z|class=Ham; P_Spam_given_x=2025/108521; P_Ham_given_x=106496/108521
 Answer: class=Ham; P_Spam_given_x=2025/108521; P_Ham_given_x=106496/108521
+```
+
+### KMeans Step — `KMeansStepGenerator`  ·  college · difficulty 3
+
+One complete k-means assignment/update iteration for two 2D centroids.
+
+**Variants:** `kmeans_one_iteration`
+
+```
+Problem: Run one k-means iteration with points P1=(-2,-5), P2=(0,5), P3=(0,2), P4=(-1,2) and starting centroids C1=(5,2), C2=(4,-4). Use squared Euclidean distance for assignment, then update each centroid to its cluster mean.
+Steps:
+  KMEANS_SETUP|points=P1=(-2,-5), P2=(0,5), P3=(0,2), P4=(-1,2)|centroids=C1=(5,2), C2=(4,-4)
+  S|-2|5|-7
+  E|-7|2|49
+  S|-5|2|-7
+  E|-7|2|49
+  A|49|49|98
+  DIST2|P1|C1|98
+  S|-2|4|-6
+  E|-6|2|36
+  S|-5|-4|-1
+  E|-1|2|1
+  A|36|1|37
+  DIST2|P1|C2|37
+  CHECK|P1|d2(C1)=98 > d2(C2)=37|assign=C2
+  ASSIGN|P1|C2
+  S|0|5|-5
+  E|-5|2|25
+  S|5|2|3
+  E|3|2|9
+  A|25|9|34
+  DIST2|P2|C1|34
+  S|0|4|-4
+  E|-4|2|16
+  S|5|-4|9
+  E|9|2|81
+  A|16|81|97
+  DIST2|P2|C2|97
+  CHECK|P2|d2(C1)=34 < d2(C2)=97|assign=C1
+  ASSIGN|P2|C1
+  S|0|5|-5
+  E|-5|2|25
+  S|2|2|0
+  E|0|2|0
+  A|25|0|25
+  DIST2|P3|C1|25
+  S|0|4|-4
+  E|-4|2|16
+  S|2|-4|6
+  E|6|2|36
+  A|16|36|52
+  DIST2|P3|C2|52
+  CHECK|P3|d2(C1)=25 < d2(C2)=52|assign=C1
+  ASSIGN|P3|C1
+  S|-1|5|-6
+  E|-6|2|36
+  S|2|2|0
+  E|0|2|0
+  A|36|0|36
+  DIST2|P4|C1|36
+  S|-1|4|-5
+  E|-5|2|25
+  S|2|-4|6
+  E|6|2|36
+  A|25|36|61
+  DIST2|P4|C2|61
+  CHECK|P4|d2(C1)=36 < d2(C2)=61|assign=C1
+  ASSIGN|P4|C1
+  CLUSTER_MEMBERS|C1|P2,P3,P4
+  A|0|0|0
+  A|0|5|5
+  A|0|0|0
+  A|5|2|7
+  A|0|-1|-1
+  A|7|2|9
+  D|-1|3|-1/3
+  D|9|3|3
+  CENTROID_UPDATE|C1|(-1/3,3)
+  CLUSTER_MEMBERS|C2|P1
+  A|0|-2|-2
+  A|0|-5|-5
+  D|-2|1|-2
+  D|-5|1|-5
+  CENTROID_UPDATE|C2|(-2,-5)
+  Z|assignments=P1:C2,P2:C1,P3:C1,P4:C1; C1_new=(-1/3,3); C2_new=(-2,-5)
+Answer: assignments=P1:C2,P2:C1,P3:C1,P4:C1; C1_new=(-1/3,3); C2_new=(-2,-5)
 ```
 
 ## Graduate

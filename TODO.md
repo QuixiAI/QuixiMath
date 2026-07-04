@@ -173,7 +173,6 @@ algebra checks. Constants and logs provided per Principle 5.
 
 ### Machine Learning by Hand
 Poetic bonus: the model learns to compute its own building blocks on paper.
-- [ ] k-means — one full assign/update iteration · `KMeansStepGenerator` · college · d3
 - [ ] k-NN classification with an explicit distance table · `KNNGenerator` · college · d2
 - [ ] Confusion-matrix metrics — precision, recall, F1 · `ClassifierMetricsGenerator` · college · d2
 
