@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GCFGenerator — GCF (elementary · d2)
-- [ ] LCMGenerator — LCM (elementary · d2)
 - [ ] OrderOfOperationsGenerator — Order Of Operations (elementary · d3)
 - [ ] PlaceValueRoundingGenerator — Place Value Rounding (elementary · d1)
 - [ ] NumberComparisonGenerator — Number Comparison (elementary · d1)

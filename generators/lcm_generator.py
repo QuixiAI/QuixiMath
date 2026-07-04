@@ -21,7 +21,11 @@ class LCMGenerator(ProblemGenerator):
         gcd = x
         steps.append(step("GCD_RESULT", gcd))
 
-        lcm_val = abs(a * b) // gcd if gcd else 0
+        # LCM = (a*b)/gcd with the product and quotient shown explicitly
+        product = a * b
+        lcm_val = product // gcd
+        steps.append(step("M", a, b, product))
+        steps.append(step("D", product, gcd, lcm_val))
         steps.append(step("LCM_FROM_GCD", f"{a}*{b}", gcd, lcm_val))
         steps.append(step("Z", str(lcm_val)))
 
