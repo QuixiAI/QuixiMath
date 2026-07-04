@@ -399,6 +399,7 @@ from generators.ph_calculation_generator import PHCalculationGenerator
 from generators.gas_stoichiometry_generator import GasStoichiometryGenerator
 from generators.entropy_generator import EntropyGenerator
 from generators.mutual_information_generator import MutualInformationGenerator
+from generators.kl_divergence_generator import KLDivergenceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -969,6 +970,7 @@ ALL_GENERATORS = [
     GasStoichiometryGenerator(),
     EntropyGenerator(),
     MutualInformationGenerator(),
+    KLDivergenceGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

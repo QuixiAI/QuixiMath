@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**432 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**433 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10399,4 +10399,31 @@ Steps:
   RAPIDITY_SUM|collinear boosts|-7/6
   Z|eta_total=-7/6
 Answer: eta_total=-7/6
+```
+
+### KLDivergence — `KLDivergenceGenerator`  ·  graduate · difficulty 4
+
+KL divergence for small distributions with exact power-of-two ratios.
+
+**Variants:** `kl_divergence_binary_forward`, `kl_divergence_binary_reverse`, `kl_divergence_ternary_forward`, `kl_divergence_ternary_reverse`
+
+```
+Problem: For distributions P=[64/255,1/2,127/510] and Q=[1/510,1/2,127/255], compute D_KL(Q to P) in bits.
+Steps:
+  KL_SETUP|P=[64/255,1/2,127/510]|Q=[1/510,1/2,127/255]|direction=Q to P
+  KL_FORMULA|D=sum source_i*log2(source_i/target_i)
+  D|1/510|64/255|1/128
+  LOG2_RATIO|i=0|ratio=1/128|log=-7
+  M|1/510|-7|-7/510
+  A|0|-7/510|-7/510
+  D|1/2|1/2|1
+  LOG2_RATIO|i=1|ratio=1|log=0
+  M|1/2|0|0
+  A|-7/510|0|-7/510
+  D|127/255|127/510|2
+  LOG2_RATIO|i=2|ratio=2|log=1
+  M|127/255|1|127/255
+  A|-7/510|127/255|247/510
+  Z|D_KL(Q to P)=247/510 bits
+Answer: D_KL(Q to P)=247/510 bits
 ```

@@ -464,6 +464,7 @@ CURRICULUM = {
     "GasStoichiometryGenerator": {"grade_level": HIGH, "difficulty": 4},
     "EntropyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "MutualInformationGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "KLDivergenceGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
