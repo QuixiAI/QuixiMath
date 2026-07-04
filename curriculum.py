@@ -274,6 +274,7 @@ CURRICULUM = {
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "HessianClassifyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

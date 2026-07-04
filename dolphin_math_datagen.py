@@ -209,6 +209,7 @@ from generators.fermi_estimation_generator import FermiEstimationGenerator
 from generators.partial_derivative_generator import PartialDerivativeGenerator
 from generators.gradient_generator import GradientGenerator
 from generators.multivar_chain_rule_generator import MultivarChainRuleGenerator
+from generators.hessian_classify_generator import HessianClassifyGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -589,6 +590,7 @@ ALL_GENERATORS = [
     PartialDerivativeGenerator(),
     GradientGenerator(),
     MultivarChainRuleGenerator(),
+    HessianClassifyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

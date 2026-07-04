@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**242 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**243 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5044,4 +5044,31 @@ Steps:
   CHAIN_SUM|f_x*x_s + f_y*y_s|90*3 + 15*4|330
   Z|330
 Answer: 330
+```
+
+### Hessian Classify — `HessianClassifyGenerator`  ·  college · difficulty 3
+
+Critical points of quadratic two-variable functions classified by the second-partials / Hessian determinant test.
+
+**Variants:** `hessian_classify_local_max`, `hessian_classify_local_min`, `hessian_classify_saddle`
+
+```
+Problem: For f(x,y) = -2*x^2 - 5*y^2 + 16*x + 30*y, find the critical point and classify it using the Hessian test.
+Steps:
+  HESSIAN_SETUP|f(x,y) = -2*x^2 - 5*y^2 + 16*x + 30*y|find and classify the critical point
+  PARTIAL_RESULT|f_x|-4*x + 16
+  PARTIAL_RESULT|f_y|-10*y + 30
+  CRIT_EQS|f_x = 0|-4*x + 16 = 0
+  CRIT_EQS|f_y = 0|-10*y + 30 = 0
+  CRIT_SOLVE|det|(-4)*(-10) - 0^2|40
+  CRIT_SOLVE|x|160/40|4
+  CRIT_SOLVE|y|120/40|3
+  CHECK|gradient at (4, 3)|f_x = 0, f_y = 0|critical point
+  SECOND_PARTIAL|f_xx|-4
+  SECOND_PARTIAL|f_xy|0
+  SECOND_PARTIAL|f_yy|-10
+  HESSIAN_DET|D = f_xx*f_yy - f_xy^2|(-4)*(-10) - 0^2|40
+  HESSIAN_TEST|D = 40|f_xx = -4|local maximum
+  Z|critical point (4, 3): local maximum
+Answer: critical point (4, 3): local maximum
 ```
