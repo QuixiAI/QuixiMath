@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**329 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**330 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7854,4 +7854,25 @@ Steps:
   POLY_SCALE|x^3 - 3x/5|5/2|(5x^3 - 3x)/2
   Z|P_3(x) = (5x^3 - 3x)/2
 Answer: P_3(x) = (5x^3 - 3x)/2
+```
+
+### Partial Trace — `PartialTraceGenerator`  ·  graduate · difficulty 4
+
+Reduced density matrices by tracing out qubit B for two canonical two-qubit states.
+
+**Variants:** `partial_trace_bell_phi_plus`, `partial_trace_product_plus_zero`
+
+```
+Problem: Trace out qubit B for product state plus0 = (ket00 + ket10)/sqrt(2).
+Steps:
+  DENSITY_SETUP|state=plus0|psi=(ket00 + ket10)/sqrt(2)
+  OUTER_PRODUCT|rho=1/2(ket00bra00+ket00bra10+ket10bra00+ket10bra10)
+  PARTIAL_TRACE|ket00bra00|ket0bra0
+  PARTIAL_TRACE|ket00bra10|ket0bra1
+  PARTIAL_TRACE|ket10bra00|ket1bra0
+  PARTIAL_TRACE|ket10bra10|ket1bra1
+  REDUCED_DENSITY|rho_A=[[1/2,1/2],[1/2,1/2]]
+  CHECK|Tr(rho_A^2)|1|pure separable
+  Z|rho_A = [[1/2,1/2],[1/2,1/2]]; entangled no
+Answer: rho_A = [[1/2,1/2],[1/2,1/2]]; entangled no
 ```
