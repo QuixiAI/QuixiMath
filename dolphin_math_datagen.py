@@ -290,6 +290,7 @@ from generators.fundamental_form_generator import FundamentalFormGenerator
 from generators.christoffel_generator import ChristoffelGenerator
 from generators.gaussian_curvature_generator import GaussianCurvatureGenerator
 from generators.gauss_bonnet_generator import GaussBonnetGenerator
+from generators.metric_arc_length_generator import MetricArcLengthGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -751,6 +752,7 @@ ALL_GENERATORS = [
     ChristoffelGenerator(),
     GaussianCurvatureGenerator(),
     GaussBonnetGenerator(),
+    MetricArcLengthGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

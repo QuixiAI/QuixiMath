@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**323 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**324 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7727,4 +7727,23 @@ Steps:
   CHECK|integral K dA|0|2pi chi = 0
   Z|verified: integral K dA = 0 = 2pi chi
 Answer: verified: integral K dA = 0 = 2pi chi
+```
+
+### Metric Arc Length — `MetricArcLengthGenerator`  ·  graduate · difficulty 4
+
+Arc length from a metric along simple polar-coordinate paths.
+
+**Variants:** `metric_arc_length_circle`, `metric_arc_length_radial`
+
+```
+Problem: In polar coordinates with metric ds^2=dr^2+r^2 dtheta^2, find the length of the path r=26 from theta=0 to theta=pi/2.
+Steps:
+  METRIC_ARC_SETUP|polar metric|ds^2=dr^2+r^2 dtheta^2|r=26, theta:0->pi/2
+  METRIC_RESTRICT|dr=0|ds^2=r^2 dtheta^2
+  E|26|2|676
+  ROOT|676|26
+  INTEGRAL_SETUP|L = integral from 0 to pi/2 of 26 dtheta
+  M|26|1/2|13
+  Z|length = 13pi
+Answer: length = 13pi
 ```
