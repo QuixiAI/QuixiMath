@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**415 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**416 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10011,4 +10011,27 @@ Steps:
   EIGEN_CHECK|sigma_x psi|-1*psi|lambda=-1
   Z|sigma_x psi=-1*psi; lambda=-1
 Answer: sigma_x psi=-1*psi; lambda=-1
+```
+
+### Commutator — `CommutatorGenerator`  ·  graduate · difficulty 4
+
+Operator commutators applied to monomial test functions.
+
+**Variants:** `commutator_d_x`, `commutator_d_x_squared`, `commutator_x_p`
+
+```
+Problem: For test function f(x)=x^14, compute [D,x^2]f where D=d/dx.
+Steps:
+  COMM_SETUP|[D,x^2]f|f=x^14|D=d/dx
+  COMM_FORMULA|[A,B]f=A(Bf)-B(Af)
+  APPLY_OPERATOR|x^2 f|x^16
+  A|14|2|16
+  POWER_RULE|x^16|16*x^15
+  POWER_RULE|x^14|14*x^13
+  APPLY_OPERATOR|x^2 Df|14*x^15
+  S|16|14|2
+  COMM_RESULT|[D,x^2]f|2*x^15
+  CHECK|identity|[D,x^2]=2x|matches 2x f
+  Z|[D,x^2]f=2*x^15
+Answer: [D,x^2]f=2*x^15
 ```

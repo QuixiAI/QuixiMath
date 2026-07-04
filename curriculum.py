@@ -447,6 +447,7 @@ CURRICULUM = {
     "ParticleInBoxGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "WavefunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "SpinHalfGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "CommutatorGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
