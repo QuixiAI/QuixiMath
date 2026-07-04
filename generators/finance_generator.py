@@ -68,7 +68,7 @@ class FinanceGenerator(ProblemGenerator):
         ]
         problem = (
             f"An account starts with ${principal} and earns simple interest "
-            f"at {rate_pct}% per year for {years} years. Find the interest "
+            f"at {rate_pct}% per year for {years} year{'s' if years != 1 else ''}. Find the interest "
             "and ending balance."
         )
         return "simple_interest", problem, steps, answer

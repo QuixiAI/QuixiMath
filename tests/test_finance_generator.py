@@ -19,7 +19,7 @@ def oracle_answer(example):
     problem = example["problem"]
     m = re.search(
         r"starts with \$(\d+) and earns simple interest at (\d+)% per "
-        r"year for (\d+) years",
+        r"year for (\d+) years?",
         problem,
     )
     if m:
