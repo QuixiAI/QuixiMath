@@ -299,12 +299,13 @@ Generates prime factorization using repeated division (factor tree style).
 **Variants:** `prime_factorization`
 
 ```
-Problem: Prime factorize 122
+Problem: Prime factorize 418
 Steps:
-  PF_STEP|122|2|61
-  PF_PRIME|61
-  Z|2 × 61
-Answer: 2 × 61
+  PF_STEP|418|2|209
+  PF_STEP|209|11|19
+  PF_PRIME|19
+  Z|2 × 11 × 19
+Answer: 2 × 11 × 19
 ```
 
 ### GCF — `GCFGenerator`  ·  elementary · difficulty 2

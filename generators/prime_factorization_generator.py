@@ -7,7 +7,7 @@ class PrimeFactorizationGenerator(ProblemGenerator):
     """Generates prime factorization using repeated division (factor tree style)."""
 
     def generate(self) -> dict:
-        n = random.randint(24, 180)
+        n = random.randint(24, 600)
         original = n
         steps = []
         factors = []
