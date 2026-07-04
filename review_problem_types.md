@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] LinearFractionalGenerator — Linear Fractional (middle · d4)
 - [ ] SpecialSolutionEquationGenerator — Special Solution Equation (middle · d4)
 - [ ] ExponentEvaluationGenerator — Exponent Evaluation (middle · d3)
 - [ ] ExponentRulesGenerator — Exponent Rules (middle · d4)

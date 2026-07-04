@@ -74,7 +74,8 @@ class LinearFractionalGenerator(ProblemGenerator):
             steps.append(step("INEQ_OP_BOTH" if is_ineq else "EQ_OP_BOTH",
                               verb, abs(B), f"{A}x", C - B))
             mid = f"{A}x {rel} {C - B}" if is_ineq else f"{A}x = {C - B}"
-            steps.append(step("EQ_SIMPLIFY", mid))
+            steps.append(step("INEQ_SIMPLIFY" if is_ineq else "EQ_SIMPLIFY",
+                              mid))
 
         steps.append(step("INEQ_OP_BOTH" if is_ineq else "EQ_OP_BOTH",
                           "divide", A, "x", x0))
