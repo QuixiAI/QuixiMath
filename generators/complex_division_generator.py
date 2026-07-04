@@ -62,6 +62,8 @@ class ComplexDivisionGenerator(ProblemGenerator):
         im = Fraction(num_im, den)
         answer = cxf(re, im)
 
+        # 1-coefficients drop the digit: i^2, -i^2 (never 1i^2 / -1i^2)
+        isq_txt = "" if l_v == 1 else "-" if l_v == -1 else str(l_v)
         wa = f"({a})" if a < 0 else str(a)
         wc = f"({c})" if c < 0 else str(c)
         steps = [
@@ -74,8 +76,8 @@ class ComplexDivisionGenerator(ProblemGenerator):
             step("FOIL_O", f"Outer: {wa} * {wrap_i(-d)}", cx(0, o_v)),
             step("FOIL_I", f"Inner: {wrap_i(b)} * {wc}", cx(0, i_v)),
             step("FOIL_L", f"Last: {wrap_i(b)} * {wrap_i(-d)}",
-                 f"{l_v}i^2"),
-            step("I_SQUARE", f"{l_v}i^2", -l_v),
+                 f"{isq_txt}i^2"),
+            step("I_SQUARE", f"{isq_txt}i^2", -l_v),
             step("A", f_v, -l_v, num_re),
             step("A", o_v, i_v, num_im),
             step("EVAL", "numerator", cx(num_re, num_im)),

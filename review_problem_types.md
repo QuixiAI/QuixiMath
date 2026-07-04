@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ComplexNumberOpsGenerator — Complex Number Ops (high · d4)
-- [ ] ComplexDivisionGenerator — Complex Division (high · d5)
 - [ ] ComplexQuadraticGenerator — Complex Quadratic (high · d5)
 - [ ] PolynomialLongDivisionGenerator — Polynomial Long Division (high · d5)
 - [ ] SyntheticDivisionGenerator — Synthetic Division (high · d4)
