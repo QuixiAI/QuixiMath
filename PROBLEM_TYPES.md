@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**324 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**325 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7746,4 +7746,24 @@ Steps:
   M|26|1/2|13
   Z|length = 13pi
 Answer: length = 13pi
+```
+
+### Function Inner Product — `FunctionInnerProductGenerator`  ·  graduate · difficulty 3
+
+Function-space inner products for the sin/cos family on [0, 2pi].
+
+**Variants:** `function_inner_product_cross_family`, `function_inner_product_same_family`
+
+```
+Problem: Compute the inner product of sin(49x) and cos(27x) on [0,2pi].
+Steps:
+  INNER_PRODUCT_SETUP|interval=[0,2pi]|f=sin(49x)|g=cos(27x)
+  IDENTITY|sin(49x)*cos(27x)|1/2(sin(76x) + sin(22x))
+  INTEGRAL|integral sin(76x) on [0,2pi]|0
+  INTEGRAL|integral sin(22x) on [0,2pi]|0
+  A|0|0|0
+  D|0|2|0
+  CHECK|sin-cos family|orthogonal
+  Z|inner product = 0
+Answer: inner product = 0
 ```

@@ -139,7 +139,6 @@ arithmetic. Nice angles (30°/45°/60°/90°) keep everything exact per Principl
 ### Hilbert Spaces & Quantum Information
 Where linear algebra becomes physics. Everything here is finite-dimensional
 matrix arithmetic or explicit integration — no functional analysis proofs.
-- [ ] Function-space inner products — ⟨f,g⟩ = ∫f·g; orthogonality checks for the sin/cos family · `FunctionInnerProductGenerator` · graduate · d3
 - [ ] Gram-Schmidt on {1, x, x², …} — construct the first Legendre polynomials by hand · `LegendreConstructionGenerator` · graduate · d4
 - [ ] Hermitian & unitary verification — compute A†, check A = A† and U†U = I, confirm real eigenvalues (composes with `EigenvalueGenerator`) · `HermitianCheckGenerator` · college · d3
 - [ ] Kronecker/tensor products — build 4×4 operators from 2×2 ⊗ 2×2; apply to product states · `TensorProductGenerator` · college · d3
