@@ -166,7 +166,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Quantum Mechanics
 
 ### Physics — Relativity, Waves & Optics
-- [ ] Standing waves — harmonics on strings and pipes · `StandingWaveGenerator` · college · d2
 
 ### Chemistry Computations
 - [ ] Stoichiometry — balance equations, mole-mass-volume chains, limiting reagent · `StoichiometryGenerator` · high · d4

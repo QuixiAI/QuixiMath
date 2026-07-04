@@ -392,6 +392,7 @@ from generators.minkowski_interval_generator import MinkowskiIntervalGenerator
 from generators.doppler_generator import DopplerGenerator
 from generators.optics_generator import OpticsGenerator
 from generators.interference_generator import InterferenceGenerator
+from generators.standing_wave_generator import StandingWaveGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -955,6 +956,7 @@ ALL_GENERATORS = [
     DopplerGenerator(),
     OpticsGenerator(),
     InterferenceGenerator(),
+    StandingWaveGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**425 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**426 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8237,6 +8237,25 @@ Steps:
   D|8|24|1/3
   Z|sin(theta)=1/3
 Answer: sin(theta)=1/3
+```
+
+### Standing Wave — `StandingWaveGenerator`  ·  college · difficulty 2
+
+Exact standing-wave harmonic arithmetic for strings and pipes.
+
+**Variants:** `standing_wave_closed_pipe`, `standing_wave_open_pipe`, `standing_wave_string_harmonic`
+
+```
+Problem: An open-open pipe has length L=14 m and sound speed v=30 m/s. Find wavelength lambda and frequency f for harmonic n=5.
+Steps:
+  STANDING_SETUP|open_pipe|n=5|L=14, v=30
+  STANDING_BOUNDARY|open-open pipe allows n=1,2,3,...
+  STANDING_FORMULA|lambda=2L/n, f=v/lambda
+  M|2|14|28
+  D|28|5|28/5
+  D|30|28/5|75/14
+  Z|lambda=28/5 m; f=75/14 Hz
+Answer: lambda=28/5 m; f=75/14 Hz
 ```
 
 ## Graduate
