@@ -335,6 +335,7 @@ from generators.finite_difference_generator import FiniteDifferenceGenerator
 from generators.runge_kutta_generator import RungeKuttaGenerator
 from generators.continuous_distribution_generator import ContinuousDistributionGenerator
 from generators.named_distribution_generator import NamedDistributionGenerator
+from generators.joint_distribution_generator import JointDistributionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -841,6 +842,7 @@ ALL_GENERATORS = [
     RungeKuttaGenerator(),
     ContinuousDistributionGenerator(),
     NamedDistributionGenerator(),
+    JointDistributionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

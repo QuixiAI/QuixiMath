@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**368 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**369 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7369,6 +7369,44 @@ Steps:
   LOOKUP_SUPPLIED|Phi(1)|8413/10000
   Z|P(X<0) = 8413/10000
 Answer: P(X<0) = 8413/10000
+```
+
+### Joint Distribution — `JointDistributionGenerator`  ·  college · difficulty 4
+
+Binary joint distributions with marginals, conditionals, independence, covariance, and exact correlation.
+
+**Variants:** `joint_distribution_binary`
+
+```
+Problem: For binary variables X,Y with P(X=0,Y=0)=215/1089, P(X=0,Y=1)=115/1089, P(X=1,Y=0)=115/1089, and P(X=1,Y=1)=644/1089, compute the marginals, P(Y=1 given X=1), independence, covariance, and correlation.
+Steps:
+  JOINT_SETUP|X,Y in {0,1}|p00=215/1089, p01=115/1089|p10=115/1089, p11=644/1089
+  MARGINAL|P(X=0)=p00+p01
+  A|215/1089|115/1089|10/33
+  MARGINAL|P(X=1)=p10+p11
+  A|115/1089|644/1089|23/33
+  MARGINAL|P(Y=0)=p00+p10
+  A|215/1089|115/1089|10/33
+  MARGINAL|P(Y=1)=p01+p11
+  A|115/1089|644/1089|23/33
+  COND_FORMULA|P(Y=1 given X=1)=P(X=1,Y=1)/P(X=1)
+  D|644/1089|23/33|28/33
+  INDEP_FORMULA|independent iff P11=P(X=1)P(Y=1)
+  M|23/33|23/33|529/1089
+  INDEP_CHECK|P11=644/1089|product=529/1089|no
+  EXPECTATION|E[X]=23/33|E[Y]=23/33|E[XY]=644/1089
+  COV_FORMULA|Cov=E[XY]-E[X]E[Y]
+  S|644/1089|529/1089|115/1089
+  S|1|23/33|10/33
+  M|23/33|10/33|230/1089
+  S|1|23/33|10/33
+  M|23/33|10/33|230/1089
+  CORR_FORMULA|rho=Cov/sqrt(VarX*VarY)
+  M|230/1089|230/1089|52900/1185921
+  ROOT|sqrt(52900/1185921)|230/1089
+  D|115/1089|230/1089|1/2
+  Z|P_X(0)=10/33, P_X(1)=23/33; P_Y(0)=10/33, P_Y(1)=23/33; P(Y=1 given X=1)=28/33; independent=no; covariance=115/1089; correlation=1/2
+Answer: P_X(0)=10/33, P_X(1)=23/33; P_Y(0)=10/33, P_Y(1)=23/33; P(Y=1 given X=1)=28/33; independent=no; covariance=115/1089; correlation=1/2
 ```
 
 ## Graduate

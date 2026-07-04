@@ -400,6 +400,7 @@ CURRICULUM = {
     "RungeKuttaGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "ContinuousDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "NamedDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "JointDistributionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

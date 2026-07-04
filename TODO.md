@@ -152,7 +152,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Numerical Methods
 
 ### Probability Theory & Mathematical Statistics
-- [ ] Joint distributions — marginals, conditionals, independence check, covariance/correlation · `JointDistributionGenerator` · college · d4
 - [ ] Moment generating functions — derive, differentiate for moments · `MGFGenerator` · graduate · d4
 - [ ] Transformations of random variables — CDF method and Jacobian · `RVTransformGenerator` · graduate · d5
 - [ ] Maximum likelihood — write log-likelihood, differentiate, solve (Bernoulli, exponential, normal μ) · `MLEGenerator` · graduate · d4
