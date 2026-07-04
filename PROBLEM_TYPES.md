@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**308 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**309 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6887,6 +6887,25 @@ Steps:
   ESCAPE_CHECK|n=1|norm2=17/2|escaped
   Z|escaped at step 1
 Answer: escaped at step 1
+```
+
+### Cauchy Riemann — `CauchyRiemannGenerator`  ·  college · difficulty 3
+
+Cauchy-Riemann verification and harmonic conjugates for polynomial real/imaginary parts.
+
+**Variants:** `cauchy_riemann_harmonic_conjugate`, `cauchy_riemann_verify`
+
+```
+Problem: For a=3, b=-5, c=-1, let u=a(x^2-y^2)+b*x-c*y. Find a harmonic conjugate v with constant 0.
+Steps:
+  HARMONIC_SETUP|u=3x^2 - 3y^2 - 5x + y
+  PARTIAL|u_x|6x - 5
+  PARTIAL|u_y|-6y + 1
+  INTEGRATE|v_y = u_x|v=6xy - x - 5y + phi(x)
+  PARTIAL|v_x|6y - 1
+  CHECK|v_x = -u_y|yes
+  Z|v = 6xy - x - 5y
+Answer: v = 6xy - x - 5y
 ```
 
 ## Graduate
