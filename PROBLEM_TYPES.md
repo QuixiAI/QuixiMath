@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**217 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**218 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1619,6 +1619,22 @@ Steps:
   D|70|4|35/2
   Z|35/2
 Answer: 35/2
+```
+
+### Frequency Table — `FrequencyTableGenerator`  ·  middle · difficulty 3
+
+Reading frequency tables and histograms: total the counts, find the mode, compute an exact relative frequency, read a cumulative count, and count values above a histogram threshold. Every table is embedded in the problem text so the answer is recomputable from it alone.
+
+**Variants:** `frequency_table_above`, `frequency_table_cumulative`, `frequency_table_mode`, `frequency_table_relative`, `frequency_table_total`
+
+```
+Problem: A histogram of scores has these bin counts — 70-79: 5, 80-89: 9, 90-99: 8, 100-109: 7. What is the cumulative count of scores through the 90-99 bin?
+Steps:
+  FREQ_SETUP|histogram — 70-79: 5, 80-89: 9, 90-99: 8, 100-109: 7|cumulative count up to 90-99
+  A|5|9|14
+  A|14|8|22
+  Z|22
+Answer: 22
 ```
 
 ### Error Spotting — `ErrorSpottingGenerator`  ·  middle · difficulty 4
