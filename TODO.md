@@ -95,7 +95,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Trigonometry
 
 ### Vectors & Matrices
-- [ ] Row reduction / Gaussian elimination — superb tabular scratchpad material · `RowReductionGenerator` · high · d5
 
 ### Limits
 - [ ] Limit evaluation — direct substitution, factor/cancel, rationalize, one-sided, at infinity via degree comparison · `LimitEvaluationGenerator` · high · d4
@@ -403,7 +402,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Physics — Electromagnetism & Circuits
 - [ ] Coulomb superposition — fields and potentials of point-charge sets · `ElectrostaticsGenerator` · college · d3
 - [ ] Gauss's law for symmetric distributions · `GaussLawGenerator` · college · d4
-- [ ] DC circuits — series/parallel reduction; Kirchhoff mesh equations as linear systems (composes with `RowReductionGenerator` skills) · `CircuitAnalysisGenerator` · college · d4
 - [ ] RC/RL transients — time constants, exponential answers in exact form · `TransientCircuitGenerator` · college · d4
 - [ ] AC circuits — complex impedance, phasors, resonance (composes with complex arithmetic) · `ACCircuitGenerator` · graduate · d4
 - [ ] Magnetic forces; Biot-Savart and Ampère standard cases · `MagnetismGenerator` · college · d4
