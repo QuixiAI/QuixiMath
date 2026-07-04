@@ -371,12 +371,12 @@ Rounds whole numbers or decimals to a specified place with digit inspection step
 **Variants:** `round_to_10`, `round_to_100`, `round_to_1000`, `round_to_hundredth`, `round_to_tenth`
 
 ```
-Problem: Round 98.6 to the nearest hundredth
+Problem: Round 6.487 to the nearest hundredth
 Steps:
-  ROUND_CHECK|0|0|<5
-  ROUND_RESULT|98.60|98.60
-  Z|98.60
-Answer: 98.60
+  ROUND_CHECK|8|7|>=5
+  ROUND_RESULT|6.487|6.49
+  Z|6.49
+Answer: 6.49
 ```
 
 ### Number Comparison — `NumberComparisonGenerator`  ·  elementary · difficulty 1
@@ -388,7 +388,8 @@ Compares whole numbers or decimals by place value.
 ```
 Problem: Compare: 757.9 ? 420.59
 Steps:
-  ALIGN_NUM|757.9|420.59
+  ALIGN_NUM|757.90|420.59
+  CMP_DIGIT|pos_0|7|4|>
   CMP_NUM|757.9|420.59|>
   Z|757.9 > 420.59
 Answer: 757.9 > 420.59

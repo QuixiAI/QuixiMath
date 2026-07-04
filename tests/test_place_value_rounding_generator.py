@@ -28,5 +28,26 @@ class TestPlaceValueRoundingGenerator(unittest.TestCase):
             self.fail("Final answer not numeric")
 
 
+    def test_oracle_half_up_rounding(self):
+        """A9 oracle: recompute with explicit half-up Decimal rounding —
+        catches float/banker's-rounding regressions on tie digits."""
+        import re
+        from decimal import Decimal, ROUND_HALF_UP
+        gen = PlaceValueRoundingGenerator()
+        quanta = {"10": Decimal(10), "100": Decimal(100),
+                  "1000": Decimal(1000), "tenth": Decimal("0.1"),
+                  "hundredth": Decimal("0.01")}
+        for _ in range(500):
+            res = gen.generate()
+            value, target = re.match(
+                r"Round ([\d.]+) to the nearest (\w+)", res["problem"]).groups()
+            q = quanta[target]
+            expected = (Decimal(value) / q).quantize(
+                Decimal(1), rounding=ROUND_HALF_UP) * q
+            self.assertEqual(Decimal(res["final_answer"]), expected,
+                             res["problem"])
+            self.assertNotRegex(res["final_answer"], r"\.\d*0$")
+
+
 if __name__ == "__main__":
     unittest.main()

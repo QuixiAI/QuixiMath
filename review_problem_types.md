@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] PlaceValueRoundingGenerator — Place Value Rounding (elementary · d1)
-- [ ] NumberComparisonGenerator — Number Comparison (elementary · d1)
 - [ ] DivisibilityClassificationGenerator — Divisibility Classification (elementary · d2)
 - [ ] GeometryAreaPerimeterGenerator — Geometry Area Perimeter (elementary · d3)
 - [ ] PolygonPerimeterGenerator — Polygon Perimeter (elementary · d2)
