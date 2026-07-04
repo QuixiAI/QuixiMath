@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**244 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**245 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5096,4 +5096,22 @@ Steps:
   CHECK|boundary|product is 0 at x = 0 or y = 0|interior maximum
   Z|maximum at (8, 4); value 256
 Answer: maximum at (8, 4); value 256
+```
+
+### Double Integral — `DoubleIntegralGenerator`  ·  college · difficulty 3
+
+Double integrals with iterated rectangular bounds, triangular order reversal, and polar conversion.
+
+**Variants:** `double_integral_polar_sector`, `double_integral_rectangle_iterated`, `double_integral_reverse_triangle`
+
+```
+Problem: Reverse the order and evaluate int_x=0..8 int_y=0..5*x 2 dy dx.
+Steps:
+  DOUBLE_SETUP|integrand 2|x:0..8|y:0..5*x
+  REGION_REWRITE|0 <= y <= 40|y/5 <= x <= 8
+  INNER_ANTIDERIV|dx|2*x
+  INNER_EVAL|x=y/5..8|2*(8 - y/5)
+  OUTER_EVAL|y=0..40|2*5*8^2/2|320
+  Z|reversed y:0..40, x:y/5..8; value 320
+Answer: reversed y:0..40, x:y/5..8; value 320
 ```
