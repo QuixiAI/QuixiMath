@@ -356,6 +356,7 @@ from generators.z_transform_generator import ZTransformGenerator
 from generators.signal_arithmetic_generator import SignalArithmeticGenerator
 from generators.transfer_function_generator import TransferFunctionGenerator
 from generators.routh_hurwitz_generator import RouthHurwitzGenerator
+from generators.projectile_motion_generator import ProjectileMotionGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -883,6 +884,7 @@ ALL_GENERATORS = [
     SignalArithmeticGenerator(),
     TransferFunctionGenerator(),
     RouthHurwitzGenerator(),
+    ProjectileMotionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**389 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**390 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7713,6 +7713,30 @@ Steps:
   CHECK|positive is gain, negative is loss|10 dB
   Z|G=10 dB
 Answer: G=10 dB
+```
+
+### Projectile Motion — `ProjectileMotionGenerator`  ·  college · difficulty 2
+
+Projectile motion from velocity components with g=10 m/s^2.
+
+**Variants:** `projectile_motion_components`
+
+```
+Problem: A projectile is launched from ground level with horizontal velocity 59 m/s and vertical velocity 29 m/s. Use g=10 m/s^2 to compute time of flight, range, and maximum height.
+Steps:
+  PROJECTILE_SETUP|vx=59|vy=29|g=10
+  FORMULA|t_up=vy/g
+  D|29|10|29/10
+  FORMULA|T=2*t_up
+  M|2|29/10|29/5
+  FORMULA|range=vx*T
+  M|59|29/5|1711/5
+  FORMULA|h_max=vy^2/(2g)
+  E|29|2|841
+  M|2|10|20
+  D|841|20|841/20
+  Z|time=29/5 s; range=1711/5 m; max height=841/20 m
+Answer: time=29/5 s; range=1711/5 m; max height=841/20 m
 ```
 
 ## Graduate
