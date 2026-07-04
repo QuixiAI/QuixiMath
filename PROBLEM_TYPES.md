@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**462 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**463 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8945,6 +8945,35 @@ Steps:
   SCALE_SHIFT|2|5
   Z|mean=2; variance=49; normalized=(-1,1); y=(2,5)
 Answer: mean=2; variance=49; normalized=(-1,1); y=(2,5)
+```
+
+### Activation — `ActivationGenerator`  ·  college · difficulty 3
+
+Activation values, derivatives, and two-layer scalar chain rule.
+
+**Variants:** `activation_chain_gelu`, `activation_chain_relu`, `activation_chain_sigmoid`
+
+```
+Problem: For the two-layer scalar model y=w2*a(w1*x+b1)+b2 with x=2, w1=-5, b1=10, w2=-1, b2=2, use sigmoid activation with provided exp(-z)=1. Compute activation value, activation derivative, y, and dy/dx.
+Steps:
+  ACT_SETUP|activation=sigmoid|x=2|w1=-5,b1=10,w2=-1,b2=2
+  M|-5|2|-10
+  A|-10|10|0
+  EXP_VALUE|exp(-z)|1
+  A|1|1|2
+  D|1|2|1/2
+  S|1|1/2|1/2
+  M|1/2|1/2|1/4
+  ACT_VALUE|sigmoid|0|1/2
+  ACT_DERIV|sigmoid|0|1/4
+  M|-1|1/2|-1/2
+  A|-1/2|2|3/2
+  MODEL_OUTPUT|3/2
+  M|-1|1/4|-1/4
+  M|-1/4|-5|5/4
+  CHAIN_DERIV|dy/dx|5/4
+  Z|z=0; a=1/2; a_prime=1/4; y=3/2; dy_dx=5/4
+Answer: z=0; a=1/2; a_prime=1/4; y=3/2; dy_dx=5/4
 ```
 
 ## Graduate

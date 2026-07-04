@@ -429,6 +429,7 @@ from generators.kernel_perceptron_generator import KernelPerceptronGenerator
 from generators.attention_generator import AttentionGenerator
 from generators.softmax_gradient_generator import SoftmaxGradientGenerator
 from generators.layer_norm_generator import LayerNormGenerator
+from generators.activation_generator import ActivationGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1029,6 +1030,7 @@ ALL_GENERATORS = [
     AttentionGenerator(),
     SoftmaxGradientGenerator(),
     LayerNormGenerator(),
+    ActivationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

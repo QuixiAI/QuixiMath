@@ -494,6 +494,7 @@ CURRICULUM = {
     "AttentionGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "SoftmaxGradientGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "LayerNormGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ActivationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
