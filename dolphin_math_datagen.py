@@ -332,6 +332,7 @@ from generators.newton_raphson_generator import NewtonRaphsonGenerator
 from generators.fixed_point_generator import FixedPointGenerator
 from generators.interpolation_generator import InterpolationGenerator
 from generators.finite_difference_generator import FiniteDifferenceGenerator
+from generators.runge_kutta_generator import RungeKuttaGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -835,6 +836,7 @@ ALL_GENERATORS = [
     FixedPointGenerator(),
     InterpolationGenerator(),
     FiniteDifferenceGenerator(),
+    RungeKuttaGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

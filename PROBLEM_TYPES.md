@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**365 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**366 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7278,6 +7278,46 @@ Steps:
   D|28|4|7
   Z|forward f'(-1) = 7
 Answer: forward f'(-1) = 7
+```
+
+### Runge Kutta — `RungeKuttaGenerator`  ·  college · difficulty 4
+
+One-step RK2 midpoint and classical RK4 tables for dy/dx = ax + by.
+
+**Variants:** `runge_kutta_rk2`, `runge_kutta_rk4`
+
+```
+Problem: Use RK4 with step size h = 1/4 to approximate y(1/4) for dy/dx = x - 2y with y(0) = 5.
+Steps:
+  ODE_SETUP|dy/dx = x - 2y, y(0) = 5|RK4, h = 1/4
+  D|1/4|2|1/8
+  RK_STAGE|k1|x=0|y=5
+  EVAL|f(0,5)|(0) - 2(5) = -10
+  A|0|1/8|1/8
+  M|1/8|-10|-5/4
+  S|5|5/4|15/4
+  RK_STAGE|k2|x=1/8|y=15/4
+  EVAL|f(1/8,15/4)|(1/8) - 2(15/4) = -59/8
+  M|1/8|-59/8|-59/64
+  S|5|59/64|261/64
+  RK_STAGE|k3|x=1/8|y=261/64
+  EVAL|f(1/8,261/64)|(1/8) - 2(261/64) = -257/32
+  A|0|1/4|1/4
+  M|1/4|-257/32|-257/128
+  S|5|257/128|383/128
+  RK_STAGE|k4|x=1/4|y=383/128
+  EVAL|f(1/4,383/128)|(1/4) - 2(383/128) = -367/64
+  M|2|-59/8|-59/4
+  M|2|-257/32|-257/16
+  A|-10|-59/4|-99/4
+  A|-99/4|-257/16|-653/16
+  A|-653/16|-367/64|-2979/64
+  RK_COMBINE|k1+2k2+2k3+k4|-2979/64
+  D|1/4|6|1/24
+  M|1/24|-2979/64|-993/512
+  S|5|993/512|1567/512
+  Z|1567/512
+Answer: 1567/512
 ```
 
 ## Graduate

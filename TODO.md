@@ -150,7 +150,6 @@ The daily hand-computation of the field — kinematics, bookkeeping, and
 algebra checks. Constants and logs provided per Principle 5.
 
 ### Numerical Methods
-- [ ] Runge-Kutta single steps — RK2/RK4 stage tables (extends `EulerMethodGenerator`) · `RungeKuttaGenerator` · college · d4
 
 ### Probability Theory & Mathematical Statistics
 - [ ] Continuous distributions — normalize a pdf, then P(a<X<b), mean, variance by integration · `ContinuousDistributionGenerator` · college · d3
