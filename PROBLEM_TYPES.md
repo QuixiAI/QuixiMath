@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**316 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**317 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6976,6 +6976,27 @@ Steps:
   CHECK|cosh^2 x - sinh^2 x|1|identity holds
   Z|sinh x = 629/540, cosh x = 829/540, tanh x = 629/829
 Answer: sinh x = 629/540, cosh x = 829/540, tanh x = 629/829
+```
+
+### Angle Defect — `AngleDefectGenerator`  ·  college · difficulty 3
+
+Hyperbolic triangle area from angle defect: area = (180 degrees - A - B - C) in radians times R^2.
+
+**Variants:** `hyperbolic_angle_defect_area`
+
+```
+Problem: A hyperbolic triangle with curvature radius 14 has angles 60 deg, 15 deg, and 45 deg. Use the angle defect formula to find its exact area in terms of pi.
+Steps:
+  ANGLE_DEFECT_SETUP|R=14|angles=60,15,45
+  THEOREM|hyperbolic angle defect|area = (180 deg - (A+B+C))/180 * pi * R^2
+  A|60|15|75
+  A|75|45|120
+  S|180|120|60
+  D|60|180|1/3
+  E|14|2|196
+  M|1/3|196|196/3
+  Z|area = 196pi/3
+Answer: area = 196pi/3
 ```
 
 ## Graduate

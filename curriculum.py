@@ -348,6 +348,7 @@ CURRICULUM = {
     "SphericalExcessGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "SphericalTriangleGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "HyperbolicFunctionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "AngleDefectGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
