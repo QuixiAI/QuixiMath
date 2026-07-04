@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**230 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**231 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1500,6 +1500,24 @@ Steps:
   A|2660|1140|3800
   Z|needs $1900.00; savings $760.00; fun $1140.00
 Answer: needs $1900.00; savings $760.00; fun $1140.00
+```
+
+### Kinematics — `KinematicsGenerator`  ·  middle · difficulty 4
+
+Basic kinematics formula chains with consistent units: distance from d = vt, speed from v = d/t, time from t = d/v, and acceleration from a = (v_f - v_i)/t.
+
+**Variants:** `kinematics_acceleration`, `kinematics_distance`, `kinematics_speed`, `kinematics_time`
+
+```
+Problem: A cart's velocity changes from 1 meters per second to 41 meters per second in 8 seconds. Find the acceleration.
+Steps:
+  KIN_SETUP|v_i = 1 m/s|v_f = 41 m/s, t = 8 s|acceleration
+  KIN_FORMULA|a = (v_f - v_i)/t
+  S|41|1|40
+  D|40|8|5
+  UNIT_ATTACH|5|m/s^2|5 m/s^2
+  Z|5 m/s^2
+Answer: 5 m/s^2
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3
