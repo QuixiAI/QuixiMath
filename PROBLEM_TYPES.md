@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**451 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**452 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8870,6 +8870,45 @@ Steps:
   CHECK|all leading minors positive|false
   Z|not_positive_definite
 Answer: not_positive_definite
+```
+
+### Embedding Similarity — `EmbeddingSimilarityGenerator`  ·  college · difficulty 3
+
+Embedding cosine similarities, distance matrices, and analogy arithmetic.
+
+**Variants:** `embedding_similarity_analogy_arithmetic`, `embedding_similarity_cosine_distance_matrix`
+
+```
+Problem: Given embeddings man=(2,-4), woman=(4,-4), king=(2,-7), and candidates queen=(4,-7), prince=(0,-7), duchess=(5,-5), compute king - man + woman and choose the nearest candidate by squared distance.
+Steps:
+  ANALOGY_SETUP|man=(2,-4)|woman=(4,-4)|king=(2,-7)
+  S|2|2|0
+  A|0|4|4
+  S|-7|-4|-3
+  A|-3|-4|-7
+  ANALOGY_VECTOR|king-man+woman|(4,-7)
+  S|4|4|0
+  E|0|2|0
+  S|-7|-7|0
+  E|0|2|0
+  A|0|0|0
+  DIST2|queen|0
+  S|4|0|4
+  E|4|2|16
+  S|-7|-7|0
+  E|0|2|0
+  A|16|0|16
+  DIST2|prince|16
+  S|4|5|-1
+  E|-1|2|1
+  S|-7|-5|-2
+  E|-2|2|4
+  A|1|4|5
+  DIST2|duchess|5
+  CHECK|nearest distance|duchess:5,prince:16,queen:0|nearest=queen
+  NEAREST|queen|(4,-7)
+  Z|target=(4,-7); nearest=queen
+Answer: target=(4,-7); nearest=queen
 ```
 
 ## Graduate

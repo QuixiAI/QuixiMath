@@ -483,6 +483,7 @@ CURRICULUM = {
     "MatrixNormGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PositiveDefiniteGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PCAGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "EmbeddingSimilarityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
