@@ -321,6 +321,7 @@ ALL_GENERATORS = [
     PercentWordProblemGenerator(distractor=True),
     RepeatingDecimalGenerator(),
     ProportionWordProblemGenerator(),
+    ProportionWordProblemGenerator(distractor=True),
 
     # --- Data & Statistics (Elementary) ---
     SimpleStatsGenerator(),

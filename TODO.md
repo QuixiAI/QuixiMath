@@ -52,11 +52,6 @@ These principles are what make the data worth training on:
 
 Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.md "Answer Format Conventions" and "Verification & Trial-and-Error Vocabulary", and the A9 oracle rule in AGENTS.md.)
 
-- [ ] **A4. Phrasing banks** — multiple NL templates per word-problem
-      generator; more phrasings also grow the dedup space.
-- [ ] **A6. Distractor word problems** — include an irrelevant quantity; the
-      scratchpad's first step selects the relevant data (humans cross things
-      out). Variant flag on existing word-problem generators.
 
 ---
 

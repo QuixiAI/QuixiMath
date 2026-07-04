@@ -593,19 +593,19 @@ Answer: 0.777778 (repeating)
 
 ### Proportion Word Problem — `ProportionWordProblemGenerator`  ·  elementary · difficulty 3
 
-Generates proportion word problems with units (rates like mi/hr, $/lb, etc.) and solves via cross-multiplication.
+Proportion word problems (rates like mi/hr, $/lb, cups/serving) solved by cross-multiplication. Supports several phrasings per scenario (A4) and an optional distractor quantity the scratchpad must first filter out (A6). Rates are integers by construction, so every answer is exact.
 
-**Variants:** `proportion_word_problem`
+**Variants:** `proportion_word_problem`, `proportion_word_problem_distractor`
 
 ```
-Problem: Complete the ratio: 7 corresponds to 1. What corresponds to 6?
+Problem: A ratio table pairs input 3 with output 3. What output goes with input 10?
 Steps:
-  PROP_SETUP|7/1 = x/6
-  M|7|6|42
-  EQ_SETUP|x = 42/1
-  D|42|1|42.0
-  Z|42.0
-Answer: 42.0
+  PROP_SETUP|3/3 = x/10
+  M|3|10|30
+  EQ_SETUP|x = 30/3
+  D|30|3|10
+  Z|10
+Answer: 10
 ```
 
 ### Simple Stats — `SimpleStatsGenerator`  ·  elementary · difficulty 2
