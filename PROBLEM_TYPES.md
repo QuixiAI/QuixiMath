@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**240 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**241 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5001,4 +5001,23 @@ Steps:
   PARTIAL_RESULT|f_yy|48*x^4*y^2
   Z|48*x^4*y^2
 Answer: 48*x^4*y^2
+```
+
+### Gradient — `GradientGenerator`  ·  college · difficulty 2
+
+Gradient, directional derivative, and tangent plane computations for quadratic functions f(x,y).
+
+**Variants:** `gradient_directional`, `gradient_gradient`, `gradient_tangent`
+
+```
+Problem: For f(x,y) = 4*x^2 + y^2 + 2*x + y, find the directional derivative at (3, 2) in direction u = (-3/5, 4/5).
+Steps:
+  GRAD_SETUP|f(x,y) = 4*x^2 + y^2 + 2*x + y|point (3, 2)|directional
+  PARTIAL_RESULT|f_x|8*x + 2
+  PARTIAL_RESULT|f_y|2*y + 1
+  EVAL_PARTIAL|f_x|8*3 + 2|26
+  EVAL_PARTIAL|f_y|2*2 + 1|5
+  DOT|(26, 5) · (-3/5, 4/5)|26*(-3/5) + 5*4/5|-11.6
+  Z|-11.6
+Answer: -11.6
 ```

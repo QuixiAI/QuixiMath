@@ -115,7 +115,6 @@ bind extra hard at this level:
 - **A8 first.** These items use the `college` and `graduate` grade levels.
 
 ### Multivariable Calculus
-- [ ] Gradient, directional derivatives, tangent planes · `GradientGenerator` · college · d2
 - [ ] Multivariable chain rule; total differential · `MultivarChainRuleGenerator` · college · d3
 - [ ] Critical points via the second-partials (Hessian) test · `HessianClassifyGenerator` · college · d3
 - [ ] Lagrange multipliers — one constraint · `LagrangeMultiplierGenerator` · college · d4
