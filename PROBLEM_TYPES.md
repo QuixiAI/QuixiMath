@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**412 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**413 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8096,6 +8096,31 @@ Steps:
   D|54|3|18
   Z|lambda=18 m
 Answer: lambda=18 m
+```
+
+### Particle In Box — `ParticleInBoxGenerator`  ·  college · difficulty 3
+
+One-dimensional particle-in-a-box energies and transition wavelengths.
+
+**Variants:** `particle_in_box_energy_level`, `particle_in_box_transition_wavelength`
+
+```
+Problem: A particle in a 1D box transitions from n=5 to n=4. Use h=5, c=17, mass m=8, and length L=7 to find the emitted photon wavelength.
+Steps:
+  BOX_SETUP|transition_wavelength|n_low=4, n_high=5|h=5, c=17
+  BOX_SETUP|m=8, L=7
+  BOX_FORMULA|lambda=8*m*L^2*c/((n_high^2-n_low^2)*h)
+  E|4|2|16
+  E|5|2|25
+  S|25|16|9
+  E|7|2|49
+  M|8|8|64
+  M|64|49|3136
+  M|3136|17|53312
+  M|9|5|45
+  D|53312|45|53312/45
+  Z|lambda=53312/45 m
+Answer: lambda=53312/45 m
 ```
 
 ## Graduate

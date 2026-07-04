@@ -444,6 +444,7 @@ CURRICULUM = {
     "PartitionFunctionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BlackbodyGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "QuantumFormulaGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ParticleInBoxGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
