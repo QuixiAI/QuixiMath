@@ -429,6 +429,7 @@ CURRICULUM = {
     "StaticsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RotationalDynamicsGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "SHMGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "LagrangianGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

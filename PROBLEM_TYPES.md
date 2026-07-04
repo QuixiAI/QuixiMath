@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**397 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**398 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9637,4 +9637,31 @@ Steps:
   CHECK|first column=[1,25,669/25,6]|stable
   Z|first column=[1,25,669/25,6]; stable
 Answer: first column=[1,25,669/25,6]; stable
+```
+
+### Lagrangian — `LagrangianGenerator`  ·  graduate · difficulty 4
+
+Build L = T - V and apply the Euler-Lagrange equation.
+
+**Variants:** `lagrangian_atwood`, `lagrangian_mass_spring`, `lagrangian_pendulum`
+
+```
+Problem: For a simple pendulum with mass m=7, length L=1, and g=10, write L=T-V and apply the Euler-Lagrange equation to find thetaddot.
+Steps:
+  LAG_SETUP|pendulum|m=7, L=1|g=10, q=theta
+  ENERGY_TERM|T=1/2*m*L^2*thetadot^2
+  E|1|2|1
+  M|7|1|7
+  ENERGY_TERM|V=m*g*L*(1-cos(theta))
+  M|7|10|70
+  M|70|1|70
+  LAGRANGIAN|L=T-V
+  PARTIAL|dL/dthetadot|m*L^2*thetadot
+  TIME_DERIV|d/dt(m*L^2*thetadot)|m*L^2*thetaddot
+  PARTIAL|dL/dtheta|-m*g*L*sin(theta)
+  EL_EQUATION|mL^2*thetaddot+mgL*sin(theta)=0
+  D|70|7|10
+  EL_SOLVE|thetaddot|-10*sin(theta)
+  Z|thetaddot=-10*sin(theta)
+Answer: thetaddot=-10*sin(theta)
 ```

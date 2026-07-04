@@ -364,6 +364,7 @@ from generators.orbital_mechanics_generator import OrbitalMechanicsGenerator
 from generators.statics_generator import StaticsGenerator
 from generators.rotational_dynamics_generator import RotationalDynamicsGenerator
 from generators.shm_generator import SHMGenerator
+from generators.lagrangian_generator import LagrangianGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -899,6 +900,7 @@ ALL_GENERATORS = [
     StaticsGenerator(),
     RotationalDynamicsGenerator(),
     SHMGenerator(),
+    LagrangianGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
