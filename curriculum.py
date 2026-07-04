@@ -492,6 +492,7 @@ CURRICULUM = {
     "SVMMarginGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "KernelPerceptronGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "AttentionGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "SoftmaxGradientGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

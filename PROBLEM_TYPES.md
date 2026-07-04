@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**460 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**461 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11891,4 +11891,43 @@ Steps:
   ATTN_OUTPUT|3|[[3,2/3]]
   Z|attention=[[3,2/3], [3,2/3], [3,2/3]]
 Answer: attention=[[3,2/3], [3,2/3], [3,2/3]]
+```
+
+### Softmax Gradient — `SoftmaxGradientGenerator`  ·  graduate · difficulty 4
+
+Exact softmax, log-softmax, cross-entropy, and p-y gradient.
+
+**Variants:** `softmax_gradient_exact`
+
+```
+Problem: Given logits z=(2*ln(7),2*ln(1),2*ln(3)) with temperature T=2 and target class 3, compute the temperature-scaled softmax, log-softmax, cross-entropy, and gradient p-y.
+Steps:
+  SOFTMAX_SETUP|z=(2*ln(7),2*ln(1),2*ln(3))|T=2|target=3
+  TEMP_SCALE|z1/T|ln(7)
+  SOFTMAX_EXP|1|7
+  TEMP_SCALE|z2/T|ln(1)
+  SOFTMAX_EXP|2|1
+  TEMP_SCALE|z3/T|ln(3)
+  SOFTMAX_EXP|3|3
+  A|0|7|7
+  A|7|1|8
+  A|8|3|11
+  D|7|11|7/11
+  SOFTMAX_PROB|1|7/11
+  LOG_SOFTMAX|1|ln(7/11)
+  D|1|11|1/11
+  SOFTMAX_PROB|2|1/11
+  LOG_SOFTMAX|2|ln(1/11)
+  D|3|11|3/11
+  SOFTMAX_PROB|3|3/11
+  LOG_SOFTMAX|3|ln(3/11)
+  CROSS_ENTROPY|target=3|ln(11/3)
+  S|7/11|0|7/11
+  GRAD|1|7/11
+  S|1/11|0|1/11
+  GRAD|2|1/11
+  S|3/11|1|-8/11
+  GRAD|3|-8/11
+  Z|p=(7/11,1/11,3/11); log_softmax=(ln(7/11),ln(1/11),ln(3/11)); CE=ln(11/3); grad=(7/11,1/11,-8/11)
+Answer: p=(7/11,1/11,3/11); log_softmax=(ln(7/11),ln(1/11),ln(3/11)); CE=ln(11/3); grad=(7/11,1/11,-8/11)
 ```
