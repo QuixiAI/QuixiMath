@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**382 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**383 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7594,6 +7594,54 @@ Steps:
   CHECK|row payoffs=113/11|column payoffs=113/11
   Z|row mix=(3/11,8/11); column mix=(1/11,10/11); value=113/11
 Answer: row mix=(3/11,8/11); column mix=(1/11,10/11); value=113/11
+```
+
+### Convolution — `ConvolutionGenerator`  ·  college · difficulty 3
+
+Discrete convolution of short finite sequences.
+
+**Variants:** `discrete_convolution`
+
+```
+Problem: Compute the discrete convolution of x=[0,4,8,7] and h=[6,4,7,5].
+Steps:
+  CONV_SETUP|x=[0,4,8,7]|h=[6,4,7,5]
+  CONV_WINDOW|n=0|x0*h0
+  M|0|6|0
+  CONV_SUM|n=0|0
+  CONV_WINDOW|n=1|x0*h1 + x1*h0
+  M|0|4|0
+  M|4|6|24
+  A|0|24|24
+  CONV_WINDOW|n=2|x0*h2 + x1*h1 + x2*h0
+  M|0|7|0
+  M|4|4|16
+  M|8|6|48
+  A|0|16|16
+  A|16|48|64
+  CONV_WINDOW|n=3|x0*h3 + x1*h2 + x2*h1 + x3*h0
+  M|0|5|0
+  M|4|7|28
+  M|8|4|32
+  M|7|6|42
+  A|0|28|28
+  A|28|32|60
+  A|60|42|102
+  CONV_WINDOW|n=4|x1*h3 + x2*h2 + x3*h1
+  M|4|5|20
+  M|8|7|56
+  M|7|4|28
+  A|20|56|76
+  A|76|28|104
+  CONV_WINDOW|n=5|x2*h3 + x3*h2
+  M|8|5|40
+  M|7|7|49
+  A|40|49|89
+  CONV_WINDOW|n=6|x3*h3
+  M|7|5|35
+  CONV_SUM|n=6|35
+  Z|y=[0,24,64,102,104,89,35]
+Answer: y=[0,24,64,102,104,89,35]
 ```
 
 ## Graduate
