@@ -421,6 +421,7 @@ from generators.pca_generator import PCAGenerator
 from generators.embedding_similarity_generator import EmbeddingSimilarityGenerator
 from generators.low_rank_approx_generator import LowRankApproxGenerator
 from generators.kernel_evaluation_generator import KernelEvaluationGenerator
+from generators.feature_map_generator import FeatureMapGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1013,6 +1014,7 @@ ALL_GENERATORS = [
     EmbeddingSimilarityGenerator(),
     LowRankApproxGenerator(),
     KernelEvaluationGenerator(),
+    FeatureMapGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

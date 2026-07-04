@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**454 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**455 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11537,4 +11537,36 @@ Steps:
   KERNEL_VALUE|C,C|1
   Z|K=[[1,exp(-4),exp(-25)], [exp(-4),1,exp(-13)], [exp(-25),exp(-13),1]]
 Answer: K=[[1,exp(-4),exp(-25)], [exp(-4),1,exp(-13)], [exp(-25),exp(-13),1]]
+```
+
+### Feature Map — `FeatureMapGenerator`  ·  graduate · difficulty 4
+
+Verify a polynomial kernel by expanding an explicit feature-map dot product.
+
+**Variants:** `feature_map_polynomial_verify`
+
+```
+Problem: For the polynomial kernel K(x,z)=(xz + 2)^2 with feature map phi(t)=(t^2, 2t, 2), verify K(x,z) for x=4 and z=7 by expanding phi(x) dot phi(z).
+Steps:
+  FEATURE_MAP_SETUP|K(x,z)=(xz+2)^2|phi(t)=(t^2,2t,2)|x=4,z=7
+  E|4|2|16
+  M|2|4|8
+  FEATURE_VECTOR|phi(x)|(16,8,2)
+  E|7|2|49
+  M|2|7|14
+  FEATURE_VECTOR|phi(z)|(49,14,2)
+  M|16|49|784
+  M|8|14|112
+  M|2|2|4
+  A|784|112|896
+  A|896|4|900
+  DOT|phi(x),phi(z)|900
+  M|4|7|28
+  A|28|2|30
+  KERNEL_BASE|x,z|xz+2=28+2|30
+  E|30|2|900
+  KERNEL_VALUE|x,z|900
+  CHECK|feature dot equals kernel|900=900|verified=true
+  Z|phi_x=(16,8,2); phi_z=(49,14,2); dot=900; K=900; verified=true
+Answer: phi_x=(16,8,2); phi_z=(49,14,2); dot=900; K=900; verified=true
 ```

@@ -486,6 +486,7 @@ CURRICULUM = {
     "EmbeddingSimilarityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "LowRankApproxGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "KernelEvaluationGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "FeatureMapGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 
