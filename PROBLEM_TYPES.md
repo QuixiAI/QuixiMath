@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**353 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**354 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7065,6 +7065,45 @@ Steps:
   MEASURE_PROB|computational basis|P(11)=1|all other outcomes 0
   Z|state = ket11; P(11) = 1
 Answer: state = ket11; P(11) = 1
+```
+
+### Conservation Law — `ConservationLawGenerator`  ·  college · difficulty 3
+
+Charge, baryon number, and lepton-family bookkeeping for reactions.
+
+**Variants:** `conservation_law_allowed`, `conservation_law_forbidden`
+
+```
+Problem: Audit conservation of Q, B, Le, Lmu for reaction p + gamma -> e+ + pi0 + gamma. Quantum numbers: p(Q=1,B=1,Le=0,Lmu=0); gamma(Q=0,B=0,Le=0,Lmu=0); e+(Q=1,B=0,Le=-1,Lmu=0); pi0(Q=0,B=0,Le=0,Lmu=0).
+Steps:
+  CONSERVATION_SETUP|p + gamma -> e+ + pi0 + gamma|check=Q,B,Le,Lmu
+  PARTICLE_TABLE|p(Q=1,B=1,Le=0,Lmu=0); gamma(Q=0,B=0,Le=0,Lmu=0); e+(Q=1,B=0,Le=-1,Lmu=0); pi0(Q=0,B=0,Le=0,Lmu=0)
+  QN_ADD|Q|left|0 + p(1)|1
+  QN_ADD|Q|left|1 + gamma(0)|1
+  QN_ADD|Q|right|0 + e+(1)|1
+  QN_ADD|Q|right|1 + pi0(0)|1
+  QN_ADD|Q|right|1 + gamma(0)|1
+  CONSERVE_CHECK|Q|left=1,right=1|conserved
+  QN_ADD|B|left|0 + p(1)|1
+  QN_ADD|B|left|1 + gamma(0)|1
+  QN_ADD|B|right|0 + e+(0)|0
+  QN_ADD|B|right|0 + pi0(0)|0
+  QN_ADD|B|right|0 + gamma(0)|0
+  CONSERVE_CHECK|B|left=1,right=0|violated
+  QN_ADD|Le|left|0 + p(0)|0
+  QN_ADD|Le|left|0 + gamma(0)|0
+  QN_ADD|Le|right|0 + e+(-1)|-1
+  QN_ADD|Le|right|-1 + pi0(0)|-1
+  QN_ADD|Le|right|-1 + gamma(0)|-1
+  CONSERVE_CHECK|Le|left=0,right=-1|violated
+  QN_ADD|Lmu|left|0 + p(0)|0
+  QN_ADD|Lmu|left|0 + gamma(0)|0
+  QN_ADD|Lmu|right|0 + e+(0)|0
+  QN_ADD|Lmu|right|0 + pi0(0)|0
+  QN_ADD|Lmu|right|0 + gamma(0)|0
+  CONSERVE_CHECK|Lmu|left=0,right=0|conserved
+  Z|forbidden - B changes by -1; Le changes by -1
+Answer: forbidden - B changes by -1; Le changes by -1
 ```
 
 ## Graduate
