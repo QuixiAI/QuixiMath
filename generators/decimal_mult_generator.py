@@ -25,7 +25,12 @@ class DecimalMultGenerator(ProblemGenerator):
 
         # Calculate exact result using Decimal for final answer
         res_decimal = Decimal(a_str) * Decimal(b_str)
-        final_answer_str = str(res_decimal.normalize())
+        res_norm = res_decimal.normalize()
+        # normalize() renders round values in scientific notation (150 -> 1.5E+2);
+        # requantize to keep plain digits
+        if res_norm.as_tuple().exponent > 0:
+            res_norm = res_norm.quantize(Decimal(1))
+        final_answer_str = str(res_norm)
         if final_answer_str.startswith('.'): final_answer_str = '0' + final_answer_str
         elif final_answer_str.startswith('-.'): final_answer_str = '-0' + final_answer_str[1:]
 

@@ -80,5 +80,18 @@ class TestDecimalMultGenerator(unittest.TestCase):
             except ValueError:
                 self.fail(f"Final answer '{result['final_answer']}' is not a valid number string.")
 
+    def test_oracle_and_answer_format(self):
+        """A9 oracle: recompute the product from the problem text; answers
+        must be plain minimal decimals (no 1.5E+2, no trailing zeros)."""
+        from decimal import Decimal
+        for _ in range(500):
+            result = self.generator.generate()
+            answer = result["final_answer"]
+            p1, p2 = result["problem"].split(" * ")
+            self.assertEqual(Decimal(answer), Decimal(p1) * Decimal(p2),
+                             result["problem"])
+            self.assertNotRegex(answer, r"[eE]", result["problem"])
+            self.assertNotRegex(answer, r"\.\d*0$", result["problem"])
+
 if __name__ == '__main__':
     unittest.main()
