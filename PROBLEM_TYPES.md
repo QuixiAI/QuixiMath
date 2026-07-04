@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**280 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**281 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5966,6 +5966,50 @@ Steps:
   DIST_TABLE|visited E, D, A, B, C|A=5, B=6, C=7, D=2, E=0
   Z|distances = A:5, B:6, C:7, D:2, E:0
 Answer: distances = A:5, B:6, C:7, D:2, E:0
+```
+
+### MST — `MSTGenerator`  ·  college · difficulty 4
+
+Minimum spanning tree traces by Kruskal and Prim.
+
+**Variants:** `mst_kruskal`, `mst_prim`
+
+```
+Problem: Find a minimum spanning tree for the weighted undirected graph with vertices A, B, C, D, E and edges AB=2, AC=7, AD=17, AE=16, BC=9, BD=21, BE=13, CD=12, CE=10 using Prim's algorithm starting at A.
+Steps:
+  MST_SETUP|weighted undirected graph|vertices A, B, C, D, E
+  EDGE_WEIGHT|AB|2
+  EDGE_WEIGHT|AC|7
+  EDGE_WEIGHT|AD|17
+  EDGE_WEIGHT|AE|16
+  EDGE_WEIGHT|BC|9
+  EDGE_WEIGHT|BD|21
+  EDGE_WEIGHT|BE|13
+  EDGE_WEIGHT|CD|12
+  EDGE_WEIGHT|CE|10
+  PRIM_START|A
+  PRIM_CANDIDATES|visited A|AB=2, AC=7, AE=16, AD=17
+  EDGE_CHOOSE|AB|weight 2|add B
+  A|0|2|2
+  MST_ADD|AB|total 2
+  MST_SET|AB
+  PRIM_CANDIDATES|visited A, B|AC=7, BC=9, BE=13, AE=16, AD=17, BD=21
+  EDGE_CHOOSE|AC|weight 7|add C
+  A|2|7|9
+  MST_ADD|AC|total 9
+  MST_SET|AB, AC
+  PRIM_CANDIDATES|visited A, B, C|CE=10, CD=12, BE=13, AE=16, AD=17, BD=21
+  EDGE_CHOOSE|CE|weight 10|add E
+  A|9|10|19
+  MST_ADD|CE|total 19
+  MST_SET|AB, AC, CE
+  PRIM_CANDIDATES|visited A, B, C, E|CD=12, AD=17, BD=21
+  EDGE_CHOOSE|CD|weight 12|add D
+  A|19|12|31
+  MST_ADD|CD|total 31
+  MST_SET|AB, AC, CD, CE
+  Z|MST weight = 31; edges = AB, AC, CD, CE
+Answer: MST weight = 31; edges = AB, AC, CD, CE
 ```
 
 ## Graduate
