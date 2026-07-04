@@ -386,6 +386,7 @@ CURRICULUM = {
     "NaturalUnitsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "InvariantMassGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ConservationLawGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "QuarkCompositionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

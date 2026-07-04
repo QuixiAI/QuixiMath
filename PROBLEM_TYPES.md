@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**354 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**355 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7104,6 +7104,26 @@ Steps:
   CONSERVE_CHECK|Lmu|left=0,right=0|conserved
   Z|forbidden - B changes by -1; Le changes by -1
 Answer: forbidden - B changes by -1; Le changes by -1
+```
+
+### Quark Composition — `QuarkCompositionGenerator`  ·  college · difficulty 3
+
+Hadron electric charge from quark constituents.
+
+**Variants:** `quark_composition_antibaryon`, `quark_composition_baryon`, `quark_composition_meson`
+
+```
+Problem: Given quark charges u=2/3, d=-1/3, s=-1/3, c=2/3, b=-1/3 and antiquarks have opposite charge, compute the electric charge of an antibaryon with constituents anti_c anti_u anti_s.
+Steps:
+  QUARK_SETUP|antibaryon|anti_c anti_u anti_s|u=2/3,d=-1/3,s=-1/3,c=2/3,b=-1/3; anti=-charge
+  QUARK_CHARGE|anti_c|-2/3
+  A|0|-2/3|-2/3
+  QUARK_CHARGE|anti_u|-2/3
+  A|-2/3|-2/3|-4/3
+  QUARK_CHARGE|anti_s|1/3
+  A|-4/3|1/3|-1
+  Z|Q = -1
+Answer: Q = -1
 ```
 
 ## Graduate
