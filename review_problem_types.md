@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] DecimalAddSubGenerator — Decimal Add Sub (elementary · d3)
 - [ ] DecimalMultGenerator — Decimal Mult (elementary · d3)
 - [ ] DecimalDivGenerator — Decimal Div (elementary · d3)
 - [ ] FractionOpGenerator — Fraction Op (elementary · d3)

@@ -66,7 +66,12 @@ class DecimalAddSubGenerator(ProblemGenerator):
         # Calculate exact result using Decimal
         a_dec, b_dec = Decimal(a_str), Decimal(b_str)
         result_dec = a_dec + b_dec if self.op_symbol == '+' else a_dec - b_dec
-        final_answer_str = str(result_dec.normalize())
+        result_norm = result_dec.normalize()
+        # normalize() renders round values in scientific notation (70 -> 7E+1);
+        # requantize to keep plain digits
+        if result_norm.as_tuple().exponent > 0:
+            result_norm = result_norm.quantize(Decimal(1))
+        final_answer_str = str(result_norm)
         if final_answer_str.startswith('.'): final_answer_str = '0' + final_answer_str
         elif final_answer_str.startswith('-.'): final_answer_str = '-0' + final_answer_str[1:]
 

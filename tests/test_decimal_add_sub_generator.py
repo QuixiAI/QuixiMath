@@ -103,6 +103,24 @@ class TestDecimalAddSubGenerator(unittest.TestCase):
 
         self.assertTrue(found_borrow_case, "No subtraction example requiring borrowing was generated in tests.")
 
+    def test_oracle_and_answer_format(self):
+        """A9 oracle: recompute from the problem text; answers must be
+        plain minimal decimals (no scientific notation like 7E+1, no
+        trailing zeros, no negatives)."""
+        from decimal import Decimal
+        for sym in ('+', '-'):
+            gen = DecimalAddSubGenerator(sym)
+            for _ in range(500):
+                result = gen.generate()
+                answer = result["final_answer"]
+                p1, p2 = result["problem"].split(f" {sym} ")
+                expected = (Decimal(p1) + Decimal(p2) if sym == '+'
+                            else Decimal(p1) - Decimal(p2))
+                self.assertEqual(Decimal(answer), expected, result["problem"])
+                self.assertNotRegex(answer, r"[eE]", result["problem"])
+                self.assertNotRegex(answer, r"\.\d*0$", result["problem"])
+                self.assertFalse(answer.startswith("-"), result["problem"])
+
 
 if __name__ == '__main__':
     unittest.main()
