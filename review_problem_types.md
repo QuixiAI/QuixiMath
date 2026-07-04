@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] DiscriminantGenerator — Discriminant (high · d4)
 - [ ] RadicalVariableSimplifyGenerator — Radical Variable Simplify (high · d4)
 - [ ] RadicalAddSubGenerator — Radical Add Sub (high · d4)
 - [ ] RadicalMultiplyGenerator — Radical Multiply (high · d4)
