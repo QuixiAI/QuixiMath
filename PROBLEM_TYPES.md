@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**221 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**222 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4542,6 +4542,26 @@ Steps:
   CEIL|151.29|152
   Z|152
 Answer: 152
+```
+
+### Hypothesis Test — `HypothesisTestGenerator`  ·  high · difficulty 5
+
+Two-sided significance tests — a one-proportion z-test and a one-sample t-test — with the critical value given in the problem (Principle 5). The null proportion is 0.5 and n is a perfect square, and the t-test's standard error is constructed to divide evenly, so every test statistic is an exact terminating decimal.
+
+**Variants:** `hypothesis_test_prop_z_decision`, `hypothesis_test_prop_z_stat`, `hypothesis_test_t_decision`, `hypothesis_test_t_stat`
+
+```
+Problem: In a two-sided one-sample t-test of H0: μ = 85, a sample of size 25 has mean x̄ = 89 and standard deviation s = 10. Using a critical value of 2.576, state the conclusion (reject H0 or fail to reject H0).
+Steps:
+  HT_SETUP|H0: μ = 85; Ha: μ ≠ 85|n = 25, x̄ = 89, s = 10, critical value = 2.576
+  TEST_STAT_FORMULA|t = (x̄ - μ0)/(s/√n)
+  ROOT|√25|5
+  D|10|5|2
+  S|89|85|4
+  D|4|2|2
+  CHECK|abs(stat) vs critical value|2 ≤ 2.576|fail to reject H0
+  Z|fail to reject H0
+Answer: fail to reject H0
 ```
 
 ### Normal Table — `NormalTableGenerator`  ·  high · difficulty 4

@@ -84,7 +84,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Calculus — Series (BC)
 
 ### Statistics
-- [ ] Hypothesis tests — one-proportion z, one-sample t (critical values provided) · `HypothesisTestGenerator` · high · d5
 - [ ] Chi-square — goodness of fit and independence, with expected-count tables · `ChiSquareGenerator` · high · d5
 
 ### Probability
