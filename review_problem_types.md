@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] NetsSurfaceAreaGenerator — Nets Surface Area (middle · d4)
-- [ ] TaxicabGeometryGenerator — Taxicab Geometry (middle · d3)
 - [ ] EulerCharacteristicGenerator — Euler Characteristic (middle · d3)
 - [ ] FiveNumberSummaryGenerator — Five Number Summary (middle · d3)
 - [ ] StandardDeviationGenerator — Standard Deviation (middle · d4)
