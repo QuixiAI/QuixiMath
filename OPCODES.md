@@ -4,7 +4,7 @@
 
 The scratchpad vocabulary belongs to the model and evolves organically: generators may introduce new op-codes freely, and this legend is *descriptive*, not prescriptive. Steps are pipe-delimited strings (`CODE|field|field|...`, at most 4 payload fields) built with `helpers.step()`; the final step of every problem is `Z|<final_answer>`.
 
-1446 distinct op-codes observed.
+1443 distinct op-codes observed.
 
 | Code | Payload fields | Example | Used by |
 |---|---|---|---|
@@ -22,10 +22,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `ABS_SETUP` | 1 | `ABS_SETUP\|\|x - 7\| = 12` | absolute_value_equation_generator.py |
 | `ABS_SPLIT` | 2, 3 | `ABS_SPLIT\|Two cases\|x - 7 = 12\|x - 7 = -12` | absolute_value_equation_generator.py |
 | `ABS_VAL` | 2 | `ABS_VAL\|16\|16` | taxicab_geometry_generator.py |
-| `AB_ADD_DGT` | 3 | `AB_ADD_DGT\|col_0\|0+1+0\|1` | abacus_addition_generator.py |
-| `AB_CARRY` | 3 | `AB_CARRY\|col_1\|1\|col_2` | abacus_addition_generator.py |
-| `AB_CARRY_FINAL` | 1 | `AB_CARRY_FINAL\|1` | abacus_addition_generator.py |
-| `AB_INFO` | 1 | `AB_INFO\|Adding 4581 column by column` | abacus_addition_generator.py |
+| `AB_ADD` | 3 | `AB_ADD\|+4000\|5230\|9230` | abacus_addition_generator.py |
 | `AB_SET` | 1 | `AB_SET\|5230` | abacus_addition_generator.py |
 | `ACCEPT` | 2 | `ACCEPT\|(5, -9)\|product -45 ✓, sum -4 ✓` | factor_trinomial_generator.py, log_conversion_generator.py, log_equation_generator.py, optimization_generator.py, radical_equation_generator.py, rational_equation_generator.py, rational_root_generator.py |
 | `ACT_DERIV` | 3 | `ACT_DERIV\|gelu\|0\|1/2` | activation_generator.py |

@@ -3,7 +3,20 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 class AbacusAdditionGenerator(ProblemGenerator):
-    """Generates addition problems solved using abacus-like steps."""
+    """Generates addition problems solved abacus-style: left to right,
+    adding one place value of the addend at a time to a running total.
+
+    This is the genuine soroban strategy (most-significant digit first,
+    running total updated after every move), deliberately distinct from
+    MultiDigitAdditionGenerator's right-to-left column algorithm — the
+    same "a + b" problem with a different valid scratchpad.
+
+    Op-codes used:
+    - AB_SET: place the first number on the abacus
+    - AB_ADD: add one place-value component; payload is
+      (component, previous_total, new_total)
+    - Z: final answer
+    """
 
     def generate(self) -> dict:
         operation = "abacus_addition"
@@ -16,35 +29,17 @@ class AbacusAdditionGenerator(ProblemGenerator):
         steps = []
         steps.append(step("AB_SET", num1)) # Set the first number
 
-        s1, s2 = str(num1), str(num2)
-        max_len = max(len(s1), len(s2))
-        s1, s2 = s1.zfill(max_len), s2.zfill(max_len)
-        # current_state = list(map(int, list(s1))) # Not actually needed for steps
-        carry = 0
-
-        steps.append(step("AB_INFO", f"Adding {num2} column by column"))
-
-        for i in range(max_len - 1, -1, -1):
-            # d1 = current_state[i] # Not needed
-            d1_actual = int(s1[i]) # Get digit from original string
-            d2 = int(s2[i])
-            col_sum = d1_actual + d2 + carry
-            # new_digit = col_sum % 10 # Not needed for steps
-            new_carry = col_sum // 10
-
-            # Combine d1, d2, carry into one string to fit the 5-arg limit for step()
-            add_details = f"{d1_actual}+{d2}+{carry}"
-            steps.append(step("AB_ADD_DGT", f"col_{max_len-1-i}", add_details, col_sum)) # Show column addition: col_name, details, sum
-
-            if new_carry > 0:
-                steps.append(step("AB_CARRY", f"col_{max_len-1-i}", new_carry, f"col_{max_len-i}")) # Indicate carry
-                carry = new_carry
-            else:
-                carry = 0
-
-        # Handle final carry if any
-        if carry > 0:
-            steps.append(step("AB_CARRY_FINAL", carry))
+        # Add num2 one place value at a time, most significant first
+        total = num1
+        s2 = str(num2)
+        for i, digit_char in enumerate(s2):
+            digit = int(digit_char)
+            component = digit * 10 ** (len(s2) - 1 - i)
+            if component == 0:
+                continue
+            new_total = total + component
+            steps.append(step("AB_ADD", f"+{component}", total, new_total))
+            total = new_total
 
         steps.append(step("Z", final_answer_str)) # Final answer step
 

@@ -68,9 +68,37 @@ class TestAbacusAdditionGenerator(unittest.TestCase):
 
             # Check for specific abacus steps
             has_set_step = any(s.startswith(f"AB_SET{DELIM}") for s in result["steps"])
-            has_add_dgt_step = any(s.startswith(f"AB_ADD_DGT{DELIM}") for s in result["steps"])
+            has_add_step = any(s.startswith(f"AB_ADD{DELIM}") for s in result["steps"])
             self.assertTrue(has_set_step, "Missing AB_SET step")
-            self.assertTrue(has_add_dgt_step, "Missing AB_ADD_DGT step")
+            self.assertTrue(has_add_step, "Missing AB_ADD step")
+
+    def test_oracle_running_total_trace(self):
+        """A9 oracle: the AB_ADD chain must start at the first addend,
+        add place-value components of the second addend left to right,
+        and end at the true sum."""
+        for _ in range(300):
+            result = self.generator.generate()
+            num1_text, num2_text = result["problem"].split(" + ")
+            num1, num2 = int(num1_text), int(num2_text)
+            self.assertEqual(result["final_answer"], str(num1 + num2))
+
+            total = num1
+            components = []
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "AB_SET":
+                    self.assertEqual(int(fields[1]), num1)
+                elif fields[0] == "AB_ADD":
+                    component = int(fields[1])
+                    self.assertEqual(int(fields[2]), total, raw)
+                    self.assertEqual(int(fields[3]), total + component, raw)
+                    total += component
+                    components.append(component)
+            self.assertEqual(total, num1 + num2)
+            self.assertEqual(sum(components), num2)
+            # left to right: strictly decreasing place values
+            self.assertEqual(components,
+                             sorted(components, reverse=True))
 
 
 if __name__ == '__main__':

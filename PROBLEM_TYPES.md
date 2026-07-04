@@ -90,7 +90,7 @@ Answer: 5017875424
 
 ### Abacus Addition — `AbacusAdditionGenerator`  ·  elementary · difficulty 2
 
-Generates addition problems solved using abacus-like steps.
+Generates addition problems solved abacus-style: left to right, adding one place value of the addend at a time to a running total.
 
 **Variants:** `abacus_addition`
 
@@ -98,14 +98,8 @@ Generates addition problems solved using abacus-like steps.
 Problem: 6321 + 6900
 Steps:
   AB_SET|6321
-  AB_INFO|Adding 6900 column by column
-  AB_ADD_DGT|col_0|1+0+0|1
-  AB_ADD_DGT|col_1|2+0+0|2
-  AB_ADD_DGT|col_2|3+9+0|12
-  AB_CARRY|col_2|1|col_3
-  AB_ADD_DGT|col_3|6+6+1|13
-  AB_CARRY|col_3|1|col_4
-  AB_CARRY_FINAL|1
+  AB_ADD|+6000|6321|12321
+  AB_ADD|+900|12321|13221
   Z|13221
 Answer: 13221
 ```
