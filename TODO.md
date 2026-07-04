@@ -85,7 +85,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Complex Numbers
 
 ### Polynomials & Rational Functions
-- [ ] Rational function features — vertical/horizontal asymptotes and holes via factoring and degree comparison · `RationalFunctionFeaturesGenerator` · high · d4
 
 ### Exponentials & Logarithms
 - [ ] Exponential models — growth/decay, depreciation, half-life, A = Pe^rt · `ExponentialModelGenerator` · high · d4
