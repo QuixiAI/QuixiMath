@@ -374,6 +374,7 @@ CURRICULUM = {
     "IndexGymnasticsGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BCHGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "YoungTableauxGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ClebschGordanGenerator": {"grade_level": GRADUATE, "difficulty": 5},
 }
 
 

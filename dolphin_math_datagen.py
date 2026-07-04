@@ -309,6 +309,7 @@ from generators.casimir_generator import CasimirGenerator
 from generators.index_gymnastics_generator import IndexGymnasticsGenerator
 from generators.bch_generator import BCHGenerator
 from generators.young_tableaux_generator import YoungTableauxGenerator
+from generators.clebsch_gordan_generator import ClebschGordanGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -789,6 +790,7 @@ ALL_GENERATORS = [
     IndexGymnasticsGenerator(),
     BCHGenerator(),
     YoungTableauxGenerator(),
+    ClebschGordanGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

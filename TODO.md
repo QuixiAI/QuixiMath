@@ -142,7 +142,6 @@ matrix arithmetic or explicit integration — no functional analysis proofs.
 
 ### Lie Groups & Symmetry (computational)
 The symmetry machinery of particle physics, done as explicit matrix work.
-- [ ] Clebsch-Gordan coefficients — ½⊗½ and 1⊗½ built by ladder operators plus orthogonality; the classic tabular grind · `ClebschGordanGenerator` · graduate · d5
 
 ### Tensors & General Relativity (computational)
 - [ ] Einstein summation — numeric contractions AᵢⱼBⱼₖ, traces, symmetrization bookkeeping · `EinsteinSummationGenerator` · graduate · d3

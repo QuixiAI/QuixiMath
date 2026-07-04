@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**342 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**343 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8172,4 +8172,24 @@ Steps:
   CHECK|dimension balance|24=24|ok
   Z|8 x 3 = 15 + 6bar + 3
 Answer: 8 x 3 = 15 + 6bar + 3
+```
+
+### Clebsch Gordan — `ClebschGordanGenerator`  ·  graduate · difficulty 5
+
+Exact Clebsch-Gordan table entries for 1/2 x 1/2 and 1 x 1/2.
+
+**Variants:** `clebsch_gordan_coefficient`, `clebsch_gordan_probability`, `clebsch_gordan_state`
+
+```
+Problem: For Clebsch-Gordan coupling j1=1, j2=1/2 with phase=-, find the coefficient of ket(-1,+) for total J=3/2, M=3/2.
+Steps:
+  CG_SETUP|j1=1|j2=1/2|phase=-
+  TARGET_STATE|J=3/2|M=3/2
+  LADDER_RULE|J_- = J1_- + J2_-|lower from highest weights
+  NORMALIZE|1|1
+  CG_STATE|J=3/2, M=3/2|-ket(1,+)
+  CHECK|normalization|1|ok
+  CG_COEFF|ket(-1,+)|0
+  Z|coefficient of ket(-1,+) = 0
+Answer: coefficient of ket(-1,+) = 0
 ```
