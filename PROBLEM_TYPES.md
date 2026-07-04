@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**312 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**313 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6906,6 +6906,29 @@ Steps:
   CHECK|v_x = -u_y|yes
   Z|v = 6xy - x - 5y
 Answer: v = 6xy - x - 5y
+```
+
+### Great Circle — `GreatCircleGenerator`  ·  college · difficulty 3
+
+Great-circle distances from latitude and longitude using the spherical law of cosines with all needed trig/arccos values supplied.
+
+**Variants:** `great_circle_distance`
+
+```
+Problem: On a sphere of radius 18, point A is at latitude 90 deg, longitude -150 deg, and point B is at latitude 30 deg, longitude -90 deg. The longitude difference is 60 deg. Given sin(lat1)=1, sin(lat2)=1/2, cos(lat1)=0, cos(lat2)=sqrt(3)/2, cos(delta)=1/2, and arccos(1/2)=pi/3, find the great-circle distance.
+Steps:
+  GREAT_CIRCLE_SETUP|R=18|A=(90,-150)|B=(30,-90)
+  SPHERICAL_COSINES|cos(c)=sin(lat1)sin(lat2)+cos(lat1)cos(lat2)cos(dlon)
+  TRIG_VALUE|sin(lat1)=1|sin(lat2)=1/2|cos(dlon)=1/2
+  TRIG_VALUE|cos(lat1)=0|cos(lat2)=sqrt(3)/2
+  M|1|1/2|1/2
+  M|0|sqrt(3)/2|0
+  M|0|1/2|0
+  A|1/2|0|1/2
+  ARCCOS|cos(c)=1/2|c=pi/3
+  M|18|pi/3|6pi
+  Z|distance = 6pi
+Answer: distance = 6pi
 ```
 
 ## Graduate

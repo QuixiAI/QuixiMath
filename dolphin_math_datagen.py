@@ -279,6 +279,7 @@ from generators.cauchy_riemann_generator import CauchyRiemannGenerator
 from generators.residue_generator import ResidueGenerator
 from generators.contour_integral_generator import ContourIntegralGenerator
 from generators.laurent_series_generator import LaurentSeriesGenerator
+from generators.great_circle_generator import GreatCircleGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -729,6 +730,7 @@ ALL_GENERATORS = [
     ResidueGenerator(),
     ContourIntegralGenerator(),
     LaurentSeriesGenerator(),
+    GreatCircleGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
