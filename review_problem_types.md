@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] FunctionOperationsGenerator — Function Operations (high · d4)
 - [ ] FunctionCompositionGenerator — Function Composition (high · d4)
 - [ ] DomainRangeGenerator — Domain Range (high · d4)
 - [ ] InverseFunctionGenerator — Inverse Function (high · d4)
