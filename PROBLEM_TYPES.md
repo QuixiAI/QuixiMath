@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**474 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**475 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12294,4 +12294,34 @@ Steps:
   PERPLEXITY|exp(CE)|128
   Z|total_nll=99*ln(128); CE=ln(128); perplexity=128
 Answer: total_nll=99*ln(128); CE=ln(128); perplexity=128
+```
+
+### Portfolio — `PortfolioGenerator`  ·  graduate · difficulty 4
+
+Two-asset portfolio expected return and variance with covariance.
+
+**Variants:** `portfolio_two_asset`
+
+```
+Problem: A portfolio invests weight wA=0.75 in asset A and wB=0.25 in asset B. Asset A has expected return 10% and variance 0.01; asset B has expected return 11% and variance 0.04; covariance is 0.01. Compute portfolio expected return and variance.
+Steps:
+  PORT_SETUP|wA=0.75,wB=0.25|rA=10%,rB=11%|varA=0.01,varB=0.04,cov=0.01
+  PERCENT_TO_DEC|10%|0.1
+  PERCENT_TO_DEC|11%|0.11
+  PORT_FORMULA|E=wA*rA+wB*rB|Var=wA^2*varA+wB^2*varB+2*wA*wB*cov
+  M|0.75|0.1|0.075
+  M|0.25|0.11|0.0275
+  A|0.075|0.0275|0.1025
+  E|0.75|2|0.5625
+  M|0.5625|0.01|0.005625
+  E|0.25|2|0.0625
+  M|0.0625|0.04|0.0025
+  M|2|0.75|1.5
+  M|1.5|0.25|0.375
+  M|0.375|0.01|0.00375
+  A|0.005625|0.0025|0.008125
+  A|0.008125|0.00375|0.011875
+  PORT_RESULT|expected_return=0.1025|variance=0.011875
+  Z|expected_return=0.1025; variance=0.011875
+Answer: expected_return=0.1025; variance=0.011875
 ```

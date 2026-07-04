@@ -506,6 +506,7 @@ CURRICULUM = {
     "AnnuityGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "BondPricingGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "NPVIRRGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "PortfolioGenerator": {"grade_level": GRADUATE, "difficulty": 4},
 }
 
 

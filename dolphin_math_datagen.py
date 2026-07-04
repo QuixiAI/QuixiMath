@@ -441,6 +441,7 @@ from generators.quantization_generator import QuantizationGenerator
 from generators.annuity_generator import AnnuityGenerator
 from generators.bond_pricing_generator import BondPricingGenerator
 from generators.npv_irr_generator import NPVIRRGenerator
+from generators.portfolio_generator import PortfolioGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -1053,6 +1054,7 @@ ALL_GENERATORS = [
     AnnuityGenerator(),
     BondPricingGenerator(),
     NPVIRRGenerator(),
+    PortfolioGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
