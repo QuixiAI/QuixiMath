@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**466 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**467 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9037,6 +9037,28 @@ Steps:
   MEMORY_UNIT|MiB|40
   Z|bytes=41943040; MiB=40
 Answer: bytes=41943040; MiB=40
+```
+
+### Scaling Law — `ScalingLawGenerator`  ·  college · difficulty 3
+
+Scaling-law arithmetic for model size, tokens, compute, and throughput.
+
+**Variants:** `scaling_law_compute`
+
+```
+Problem: For scaling-law arithmetic with N=6700000000 parameters, D=10000000000 tokens, and training budget F=10000000000000000 FLOPs/s, compute C=6ND, Chinchilla-optimal tokens 20N, and tokens/s=F/(6N).
+Steps:
+  SCALING_SETUP|N=6700000000|D=10000000000|F=10000000000000000
+  M|6700000000|10000000000|67000000000000000000
+  M|6|67000000000000000000|402000000000000000000
+  SCALING_COMPUTE|6ND|402000000000000000000
+  M|20|6700000000|134000000000
+  CHINCHILLA|20N|134000000000
+  M|6|6700000000|40200000000
+  D|10000000000000000|40200000000|50000000/201
+  THROUGHPUT|tokens_per_second|50000000/201
+  Z|C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
+Answer: C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
 ```
 
 ## Graduate
