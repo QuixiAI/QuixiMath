@@ -401,6 +401,7 @@ from generators.entropy_generator import EntropyGenerator
 from generators.mutual_information_generator import MutualInformationGenerator
 from generators.kl_divergence_generator import KLDivergenceGenerator
 from generators.channel_capacity_generator import ChannelCapacityGenerator
+from generators.huffman_coding_generator import HuffmanCodingGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -973,6 +974,7 @@ ALL_GENERATORS = [
     MutualInformationGenerator(),
     KLDivergenceGenerator(),
     ChannelCapacityGenerator(),
+    HuffmanCodingGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

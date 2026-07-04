@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**434 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**435 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8421,6 +8421,103 @@ Steps:
   S|3|2|1
   Z|H(X,Y)=2 bits; H(Y given X)=1 bit; I(X;Y)=1 bit
 Answer: H(X,Y)=2 bits; H(Y given X)=1 bit; I(X;Y)=1 bit
+```
+
+### Huffman Coding — `HuffmanCodingGenerator`  ·  college · difficulty 4
+
+Huffman tree construction with expected length, entropy, and Kraft check.
+
+**Variants:** `huffman_coding`
+
+```
+Problem: Build a Huffman code for symbols with probabilities A=1/16, B=1/2, C=1/32, D=1/64, E=1/64, F=1/4, G=1/16, H=1/16. Report code lengths, expected length L, entropy H, and Kraft sum.
+Steps:
+  HUFFMAN_SETUP|A=1/16, B=1/2, C=1/32, D=1/64, E=1/64, F=1/4, G=1/16, H=1/16
+  HUFFMAN_MERGE|D:1/64 + E:1/64|DE:1/32
+  HUFFMAN_MERGE|C:1/32 + DE:1/32|CDE:1/16
+  HUFFMAN_MERGE|A:1/16 + CDE:1/16|ACDE:1/8
+  HUFFMAN_MERGE|G:1/16 + H:1/16|GH:1/8
+  HUFFMAN_MERGE|ACDE:1/8 + GH:1/8|ACDEGH:1/4
+  HUFFMAN_MERGE|ACDEGH:1/4 + F:1/4|ACDEFGH:1/2
+  HUFFMAN_MERGE|ACDEFGH:1/2 + B:1/2|ABCDEFGH:1
+  CODE_LENGTH|A|l=4
+  CODE_LENGTH|B|l=1
+  CODE_LENGTH|C|l=5
+  CODE_LENGTH|D|l=6
+  CODE_LENGTH|E|l=6
+  CODE_LENGTH|F|l=2
+  CODE_LENGTH|G|l=4
+  CODE_LENGTH|H|l=4
+  HUFFMAN_FORMULA|L=sum p_i*l_i
+  M|1/16|4|1/4
+  A|0|1/4|1/4
+  M|1/2|1|1/2
+  A|1/4|1/2|3/4
+  M|1/32|5|5/32
+  A|3/4|5/32|29/32
+  M|1/64|6|3/32
+  A|29/32|3/32|1
+  M|1/64|6|3/32
+  A|1|3/32|35/32
+  M|1/4|2|1/2
+  A|35/32|1/2|51/32
+  M|1/16|4|1/4
+  A|51/32|1/4|59/32
+  M|1/16|4|1/4
+  A|59/32|1/4|67/32
+  ENTROPY_SETUP|H|-sum p log2(p)
+  LOG2|1/16|-4
+  M|1/16|4|1/4
+  A|0|1/4|1/4
+  LOG2|1/2|-1
+  M|1/2|1|1/2
+  A|1/4|1/2|3/4
+  LOG2|1/32|-5
+  M|1/32|5|5/32
+  A|3/4|5/32|29/32
+  LOG2|1/64|-6
+  M|1/64|6|3/32
+  A|29/32|3/32|1
+  LOG2|1/64|-6
+  M|1/64|6|3/32
+  A|1|3/32|35/32
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|35/32|1/2|51/32
+  LOG2|1/16|-4
+  M|1/16|4|1/4
+  A|51/32|1/4|59/32
+  LOG2|1/16|-4
+  M|1/16|4|1/4
+  A|59/32|1/4|67/32
+  KRAFT_FORMULA|sum 2^-l_i
+  E|2|4|16
+  D|1|16|1/16
+  A|0|1/16|1/16
+  E|2|1|2
+  D|1|2|1/2
+  A|1/16|1/2|9/16
+  E|2|5|32
+  D|1|32|1/32
+  A|9/16|1/32|19/32
+  E|2|6|64
+  D|1|64|1/64
+  A|19/32|1/64|39/64
+  E|2|6|64
+  D|1|64|1/64
+  A|39/64|1/64|5/8
+  E|2|2|4
+  D|1|4|1/4
+  A|5/8|1/4|7/8
+  E|2|4|16
+  D|1|16|1/16
+  A|7/8|1/16|15/16
+  E|2|4|16
+  D|1|16|1/16
+  A|15/16|1/16|1
+  KRAFT_CHECK|sum=1|complete
+  Z|lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
+Answer: lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
 ```
 
 ## Graduate
