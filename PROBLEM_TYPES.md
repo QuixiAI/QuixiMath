@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**435 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**436 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10544,4 +10544,66 @@ Steps:
   S|1|0.99942|0.00058
   Z|C=0.00058 bits/use
 Answer: C=0.00058 bits/use
+```
+
+### Arithmetic Coding — `ArithmeticCodingGenerator`  ·  graduate · difficulty 5
+
+Arithmetic coding interval narrowing with exact rational endpoints.
+
+**Variants:** `arithmetic_coding`
+
+```
+Problem: Arithmetic-code message ACDDCD using symbol probabilities A=1/8, B=3/8, C=1/4, D=1/4. Find the final interval and midpoint code.
+Steps:
+  ARITH_SETUP|A=1/8, B=3/8, C=1/4, D=1/4|message=ACDDCD
+  CUM_INTERVAL|A|[0,1/8)
+  CUM_INTERVAL|B|[1/8,1/2)
+  CUM_INTERVAL|C|[1/2,3/4)
+  CUM_INTERVAL|D|[3/4,1)
+  ARITH_SYMBOL|A|cum=[0,1/8)
+  S|1|0|1
+  M|1|0|0
+  A|0|0|0
+  M|1|1/8|1/8
+  A|0|1/8|1/8
+  ARITH_INTERVAL|[0,1/8)
+  ARITH_SYMBOL|C|cum=[1/2,3/4)
+  S|1/8|0|1/8
+  M|1/8|1/2|1/16
+  A|0|1/16|1/16
+  M|1/8|3/4|3/32
+  A|0|3/32|3/32
+  ARITH_INTERVAL|[1/16,3/32)
+  ARITH_SYMBOL|D|cum=[3/4,1)
+  S|3/32|1/16|1/32
+  M|1/32|3/4|3/128
+  A|1/16|3/128|11/128
+  M|1/32|1|1/32
+  A|1/16|1/32|3/32
+  ARITH_INTERVAL|[11/128,3/32)
+  ARITH_SYMBOL|D|cum=[3/4,1)
+  S|3/32|11/128|1/128
+  M|1/128|3/4|3/512
+  A|11/128|3/512|47/512
+  M|1/128|1|1/128
+  A|11/128|1/128|3/32
+  ARITH_INTERVAL|[47/512,3/32)
+  ARITH_SYMBOL|C|cum=[1/2,3/4)
+  S|3/32|47/512|1/512
+  M|1/512|1/2|1/1024
+  A|47/512|1/1024|95/1024
+  M|1/512|3/4|3/2048
+  A|47/512|3/2048|191/2048
+  ARITH_INTERVAL|[95/1024,191/2048)
+  ARITH_SYMBOL|D|cum=[3/4,1)
+  S|191/2048|95/1024|1/2048
+  M|1/2048|3/4|3/8192
+  A|95/1024|3/8192|763/8192
+  M|1/2048|1|1/2048
+  A|95/1024|1/2048|191/2048
+  ARITH_INTERVAL|[763/8192,191/2048)
+  A|763/8192|191/2048|1527/8192
+  D|1527/8192|2|1527/16384
+  Z|interval=[763/8192,191/2048); code=1527/16384
+Answer: interval=[763/8192,191/2048); code=1527/16384
 ```

@@ -170,7 +170,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Chemistry Computations
 
 ### Information Theory & Coding
-- [ ] Arithmetic coding — interval-narrowing trace · `ArithmeticCodingGenerator` · graduate · d5
 - [ ] Hamming(7,4) — encode, compute syndrome, correct single errors · `HammingCodeGenerator` · college · d4
 - [ ] CRC — polynomial long division over GF(2), long division's binary cousin · `CRCGenerator` · college · d4
 - [ ] Kraft inequality and code-length feasibility · `KraftInequalityGenerator` · college · d3
