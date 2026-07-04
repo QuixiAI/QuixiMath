@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**271 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**272 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5694,6 +5694,40 @@ Steps:
   POWER_SET_RESULT|{{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
   Z|P(S) = {{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
 Answer: P(S) = {{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
+```
+
+### Relation Check — `RelationCheckGenerator`  ·  college · difficulty 2
+
+Relation property checks on small finite sets.
+
+**Variants:** `relation_check_property_check`
+
+```
+Problem: For A = {1, 2, 3, 4} and R = {(1, 3), (2, 3), (3, 4), (4, 3)}, determine whether R is reflexive, symmetric, antisymmetric, and transitive.
+Steps:
+  REL_SETUP|A = {1, 2, 3, 4}|R = {(1, 3), (2, 3), (3, 4), (4, 3)}
+  REFLEXIVE_CHECK|(1, 1)|missing
+  REFLEXIVE_CHECK|(2, 2)|missing
+  REFLEXIVE_CHECK|(3, 3)|missing
+  REFLEXIVE_CHECK|(4, 4)|missing
+  PROPERTY_RESULT|reflexive|no
+  SYMMETRIC_CHECK|(1, 3)|reverse (3, 1)|missing
+  SYMMETRIC_CHECK|(2, 3)|reverse (3, 2)|missing
+  SYMMETRIC_CHECK|(3, 4)|reverse (4, 3)|present
+  SYMMETRIC_CHECK|(4, 3)|reverse (3, 4)|present
+  PROPERTY_RESULT|symmetric|no
+  ANTISYM_CHECK|(1, 3)|reverse (3, 1)|ok
+  ANTISYM_CHECK|(2, 3)|reverse (3, 2)|ok
+  ANTISYM_CHECK|(3, 4)|reverse (4, 3)|violation
+  ANTISYM_CHECK|(4, 3)|reverse (3, 4)|violation
+  PROPERTY_RESULT|antisymmetric|no
+  TRANSITIVE_CHECK|(1, 3) and (3, 4)|need (1, 4)|missing
+  TRANSITIVE_CHECK|(2, 3) and (3, 4)|need (2, 4)|missing
+  TRANSITIVE_CHECK|(3, 4) and (4, 3)|need (3, 3)|missing
+  TRANSITIVE_CHECK|(4, 3) and (3, 4)|need (4, 4)|missing
+  PROPERTY_RESULT|transitive|no
+  Z|reflexive no; symmetric no; antisymmetric no; transitive no
+Answer: reflexive no; symmetric no; antisymmetric no; transitive no
 ```
 
 ## Graduate

@@ -303,6 +303,7 @@ CURRICULUM = {
     "SeriesSolutionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "StabilityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "SetOperationsGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "RelationCheckGenerator": {"grade_level": COLLEGE, "difficulty": 2},
 }
 
 
