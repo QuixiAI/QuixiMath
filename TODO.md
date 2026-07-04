@@ -64,10 +64,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 - [ ] **A6. Distractor word problems** — include an irrelevant quantity; the
       scratchpad's first step selects the relevant data (humans cross things
       out). Variant flag on existing word-problem generators.
-- [ ] **A7. Backlog checker** — `tools/check_backlog.py`: flag any ClassName
-      in this file already registered in `ALL_GENERATORS` (its line should
-      have been deleted). Keeps this file honest the way `--check` keeps
-      OPCODES.md honest.
 - [ ] **A8. Extend grade levels** — add `college` and `graduate` to
       `curriculum.GRADE_LEVELS` (constants + validation + docs; small change).
       Difficulty tiers read *relative to the band*: a `college · d2` item is

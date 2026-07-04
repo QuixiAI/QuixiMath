@@ -22,6 +22,7 @@
 - Tests (all): `python -m unittest discover tests` (or `uv run pytest tests` with the dev group installed).
 - Tests (focused): `python -m unittest tests.test_quadratic_generator`.
 - Op-code legend: `python tools/gen_opcode_legend.py` regenerates `OPCODES.md`; `--check` verifies freshness.
+- Backlog check: `python tools/check_backlog.py` fails if a shipped (registered) generator still has an unchecked TODO.md line — delete the item's line when it ships.
 
 ## Coding Style & Naming Conventions
 - Python 3.9+; 4-space indentation; prefer explicit, side-effect-free helpers.
