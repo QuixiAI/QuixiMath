@@ -334,6 +334,7 @@ CURRICULUM = {
     "CosetGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "FiniteFieldGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "QuaternionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "EulerFormulaGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

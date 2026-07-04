@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**302 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**303 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6766,6 +6766,27 @@ Steps:
   PARITY|transpositions 2|even
   Z|composition = [5, 4, 3, 2, 1]; cycles = (1 5)(2 4); order = 2; parity = even
 Answer: composition = [5, 4, 3, 2, 1]; cycles = (1 5)(2 4); order = 2; parity = even
+```
+
+### Euler Formula — `EulerFormulaGenerator`  ·  college · difficulty 3
+
+Euler's formula conversions among rectangular, polar, and exponential complex forms, including Euler's identity.
+
+**Variants:** `euler_formula_identity`, `euler_formula_polar_to_forms`, `euler_formula_rect_to_forms`
+
+```
+Problem: Convert z = 2 cis(270 deg) to rectangular and exponential form.
+Steps:
+  EULER_SETUP|polar to rectangular/exponential|r=2|theta=270 deg
+  EULER_FORMULA|e^(i theta)=cos theta+i sin theta
+  TABLE_LOOKUP|cos 270 deg|0
+  TABLE_LOOKUP|sin 270 deg|-1
+  SCALE_EXACT|2*cos|0
+  SCALE_EXACT|2*sin|-2
+  RECT_FORM|-2i
+  EXP_FORM|2 e^(i*3pi/2)
+  Z|rectangular = -2i; exponential = 2 e^(i*3pi/2)
+Answer: rectangular = -2i; exponential = 2 e^(i*3pi/2)
 ```
 
 ## Graduate

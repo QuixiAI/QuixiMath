@@ -129,7 +129,6 @@ bind extra hard at this level:
 ### Abstract Algebra (computational side only)
 
 ### Complex Analysis (computational)
-- [ ] Euler's formula — rectangular ↔ polar ↔ exponential form conversions, Euler's identity as the d1 case · `EulerFormulaGenerator` · college · d3
 - [ ] Polar form, De Moivre, nth roots of unity · `DeMoivreGenerator` · college · d3
 - [ ] nth roots of *arbitrary* complex numbers — modulus root + argument fan (variant of `DeMoivreGenerator`) · college · d4
 - [ ] Complex logarithms and complex powers — principal values, multivaluedness as explicit +2πik bookkeeping; the i^i = e^(−π/2) showstopper · `ComplexLogGenerator` · graduate · d4
