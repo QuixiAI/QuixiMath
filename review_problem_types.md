@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] UnitConversionGenerator — Unit Conversion (elementary · d2)
-- [ ] MultiStepUnitConversionGenerator — Multi Step Unit Conversion (elementary · d3)
 - [ ] RateConversionGenerator — Rate Conversion (elementary · d3)
 - [ ] TemperatureConversionGenerator — Temperature Conversion (elementary · d3)
 - [ ] DimensionalAnalysisGenerator — Dimensional Analysis (elementary · d3)

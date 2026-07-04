@@ -470,16 +470,16 @@ Answer: 1680
 
 Performs one-step unit conversions with factor-label style steps.
 
-**Variants:** `convert_dollar_to_cent`, `convert_ft_to_in`, `convert_hr_to_min`, `convert_kg_to_g`, `convert_km_to_m`, `convert_lb_to_oz`, `convert_m_to_cm`, `convert_min_to_sec`
+**Variants:** `convert_cent_to_dollar`, `convert_cm_to_m`, `convert_dollar_to_cent`, `convert_ft_to_in`, `convert_g_to_kg`, `convert_hr_to_min`, `convert_in_to_ft`, `convert_kg_to_g`, `convert_lb_to_oz`, `convert_m_to_cm`, `convert_m_to_km`, `convert_min_to_hr`, `convert_min_to_sec`, `convert_oz_to_lb`, `convert_sec_to_min`
 
 ```
-Problem: Convert 3 dollar to cent
+Problem: Convert 33 dollar to cent
 Steps:
   CONV_FACTOR|1 dollar|100 cent
-  M|3|100|300
-  CONV_RESULT|3 dollar|300 cent
-  Z|300 cent
-Answer: 300 cent
+  M|33|100|3300
+  CONV_RESULT|33 dollar|3300 cent
+  Z|3300 cent
+Answer: 3300 cent
 ```
 
 ### Multi Step Unit Conversion — `MultiStepUnitConversionGenerator`  ·  elementary · difficulty 3
@@ -489,17 +489,17 @@ Performs multi-step conversions for area (square units) and volume (cubic units)
 **Variants:** `convert_area`, `convert_volume`
 
 ```
-Problem: Convert 2 km^3 to m^3
+Problem: Convert 66 km^3 to m^3
 Steps:
   CONV_FACTOR|1 km|1000 m
-  M|2|1000|2000
+  M|66|1000|66000
   CONV_FACTOR|1 km|1000 m
-  M|2000|1000|2000000
+  M|66000|1000|66000000
   CONV_FACTOR|1 km|1000 m
-  M|2000000|1000|2000000000
-  CONV_RESULT|2 km^3|2000000000 m^3
-  Z|2000000000 m^3
-Answer: 2000000000 m^3
+  M|66000000|1000|66000000000
+  CONV_RESULT|66 km^3|66000000000 m^3
+  Z|66000000000 m^3
+Answer: 66000000000 m^3
 ```
 
 ### Rate Conversion — `RateConversionGenerator`  ·  elementary · difficulty 3

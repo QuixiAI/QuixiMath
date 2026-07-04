@@ -9,7 +9,11 @@ MONEY = [("dollar", "cent", 100)]
 
 
 class UnitConversionGenerator(ProblemGenerator):
-    """Performs one-step unit conversions with factor-label style steps."""
+    """Performs one-step unit conversions with factor-label style steps.
+
+    Both directions are generated: big->small multiplies, small->big
+    divides (values constructed to divide exactly).
+    """
 
     def generate(self) -> dict:
         category = random.choice(["length", "weight", "time", "money"])
@@ -22,18 +26,34 @@ class UnitConversionGenerator(ProblemGenerator):
         else:
             from_u, to_u, factor = random.choice(MONEY)
 
-        value = random.randint(1, 50)
-        problem = f"Convert {value} {from_u} to {to_u}"
         steps = []
-        steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
-        steps.append(step("M", value, factor, value * factor))
-        steps.append(step("CONV_RESULT", f"{value} {from_u}", f"{value * factor} {to_u}"))
-        steps.append(step("Z", f"{value * factor} {to_u}"))
+        if random.random() < 0.5:
+            # big -> small: multiply
+            value = random.randint(1, 50)
+            result = value * factor
+            problem = f"Convert {value} {from_u} to {to_u}"
+            steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
+            steps.append(step("M", value, factor, result))
+            steps.append(step("CONV_RESULT", f"{value} {from_u}", f"{result} {to_u}"))
+            final_answer = f"{result} {to_u}"
+            operation = f"convert_{from_u}_to_{to_u}"
+        else:
+            # small -> big: divide (constructed to divide exactly)
+            result = random.randint(1, 50)
+            value = result * factor
+            problem = f"Convert {value} {to_u} to {from_u}"
+            steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
+            steps.append(step("D", value, factor, result))
+            steps.append(step("CONV_RESULT", f"{value} {to_u}", f"{result} {from_u}"))
+            final_answer = f"{result} {from_u}"
+            operation = f"convert_{to_u}_to_{from_u}"
+
+        steps.append(step("Z", final_answer))
 
         return dict(
             problem_id=jid(),
-            operation=f"convert_{from_u}_to_{to_u}",
+            operation=operation,
             problem=problem,
             steps=steps,
-            final_answer=f"{value * factor} {to_u}",
+            final_answer=final_answer,
         )

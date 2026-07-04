@@ -17,20 +17,33 @@ class MultiStepUnitConversionGenerator(ProblemGenerator):
         dimension = random.choice(["area", "volume"])
         power = 2 if dimension == "area" else 3
 
-        value = random.randint(1, 20)
-        problem = f"Convert {value} {from_u}^{power} to {to_u}^{power}"
-
         steps = []
-        running = value
-        # Multiply by the base factor once per dimension to mirror factor-label steps
-        for _ in range(power):
-            steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
-            new_running = running * factor
-            steps.append(step("M", running, factor, new_running))
-            running = new_running
+        if random.random() < 0.5:
+            # big -> small: multiply once per dimension
+            value = random.randint(1, 99)
+            problem = f"Convert {value} {from_u}^{power} to {to_u}^{power}"
+            running = value
+            for _ in range(power):
+                steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
+                new_running = running * factor
+                steps.append(step("M", running, factor, new_running))
+                running = new_running
+            final_answer = f"{running} {to_u}^{power}"
+            steps.append(step("CONV_RESULT", f"{value} {from_u}^{power}", final_answer))
+        else:
+            # small -> big: divide once per dimension (exact by construction)
+            result = random.randint(1, 99)
+            value = result * factor ** power
+            problem = f"Convert {value} {to_u}^{power} to {from_u}^{power}"
+            running = value
+            for _ in range(power):
+                steps.append(step("CONV_FACTOR", f"1 {from_u}", f"{factor} {to_u}"))
+                new_running = running // factor
+                steps.append(step("D", running, factor, new_running))
+                running = new_running
+            final_answer = f"{running} {from_u}^{power}"
+            steps.append(step("CONV_RESULT", f"{value} {to_u}^{power}", final_answer))
 
-        final_answer = f"{running} {to_u}^{power}"
-        steps.append(step("CONV_RESULT", f"{value} {from_u}^{power}", final_answer))
         steps.append(step("Z", final_answer))
 
         return dict(
