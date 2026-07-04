@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**262 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**263 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5479,6 +5479,32 @@ Steps:
   CHECK|M_y != N_x|-1 != 4|not exact
   Z|not exact because M_y = -1 and N_x = 4
 Answer: not exact because M_y = -1 and N_x = 4
+```
+
+### ODESubstitution — `ODESubstitutionGenerator`  ·  college · difficulty 4
+
+First-order ODE substitutions.
+
+**Variants:** `ode_substitution_bernoulli`, `ode_substitution_homogeneous`
+
+```
+Problem: Solve dy/dx = y/x + 2 with y(1) = -5 using y = vx (x > 0).
+Steps:
+  ODE_SETUP|dy/dx = y/x + 2, y(1) = -5|homogeneous substitution
+  SUBSTITUTION|y = vx|dy/dx = v + x dv/dx
+  SUBST|y/x = v|v + x dv/dx = v + 2
+  REWRITE|x dv/dx = 2
+  SEPARATE|dv = 2 dx/x
+  INTEG_RULE|both sides|∫ dv = ∫ 2 dx/x
+  ANTIDERIV|dv|v
+  ANTIDERIV|2 dx/x|2 ln(x) + C
+  REWRITE|v = 2 ln(x) + C
+  BACK_SUB|v = y/x|y/x = 2 ln(x) + C
+  EVAL|ln(1)|0
+  SUBST|x=1|y=-5|-5 = C
+  SOLVE_Y|y/x = 2 ln(x) - 5|y = x(2 ln(x) - 5)
+  Z|y = x(2 ln(x) - 5)
+Answer: y = x(2 ln(x) - 5)
 ```
 
 ## Graduate
