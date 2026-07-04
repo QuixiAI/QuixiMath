@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**340 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**341 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8125,4 +8125,28 @@ Steps:
   M|2|0|0
   Z|2*sum_i eps_i21 eps_i23 = 0
 Answer: 2*sum_i eps_i21 eps_i23 = 0
+```
+
+### BCH — `BCHGenerator`  ·  graduate · difficulty 5
+
+Baker-Campbell-Hausdorff for nilpotent 3x3 elementary matrices.
+
+**Variants:** `bch_nilpotent_second_order`
+
+```
+Problem: For nilpotent 3x3 matrices A=2E23 and B=-5E12, where Eij has a 1 in row i and column j, use BCH to second order to compute log(e^A e^B).
+Steps:
+  BCH_SETUP|A=2E23|B=-5E12|order=2
+  MATRIX_EXP|e^A|I + A|[[1, 0, 0], [0, 1, 2], [0, 0, 1]]
+  MATRIX_EXP|e^B|I + B|[[1, -5, 0], [0, 1, 0], [0, 0, 1]]
+  MATRIX_PRODUCT|e^A e^B|[[1, -5, 0], [0, 1, 2], [0, 0, 1]]
+  MATRIX_PRODUCT|AB|[[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+  MATRIX_PRODUCT|BA|[[0, 0, -10], [0, 0, 0], [0, 0, 0]]
+  MATRIX_SUB|AB - BA|[[0, 0, 10], [0, 0, 0], [0, 0, 0]]
+  MATRIX_SCALE|1/2[A,B]|[[0, 0, 5], [0, 0, 0], [0, 0, 0]]
+  MATRIX_ADD|A+B|[[0, -5, 0], [0, 0, 2], [0, 0, 0]]
+  BCH_FORM|A+B+1/2[A,B]|[[0, -5, 5], [0, 0, 2], [0, 0, 0]]
+  CHECK|[A,[A,B]] and [B,[A,B]]|0|truncates
+  Z|log(e^A e^B) = [[0, -5, 5], [0, 0, 2], [0, 0, 0]]
+Answer: log(e^A e^B) = [[0, -5, 5], [0, 0, 2], [0, 0, 0]]
 ```
