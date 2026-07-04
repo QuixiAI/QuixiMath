@@ -178,6 +178,7 @@ from generators.logistic_growth_generator import LogisticGrowthGenerator
 from generators.parametric_calculus_generator import ParametricCalculusGenerator
 from generators.arc_length_generator import ArcLengthGenerator
 from generators.series_convergence_generator import SeriesConvergenceGenerator
+from generators.power_series_generator import PowerSeriesGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -515,6 +516,7 @@ ALL_GENERATORS = [
     ParametricCalculusGenerator(),
     ArcLengthGenerator(),
     SeriesConvergenceGenerator(),
+    PowerSeriesGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
