@@ -62,16 +62,30 @@ class TestQuadraticGenerator(unittest.TestCase):
             self.assertIn("=", result["problem"])
             self.assertIn("x^2", result["problem"]) # Check for x squared term
 
-            # Check if final answer looks reasonable (x=val1, x=val2)
-            self.assertIn("x=", result["final_answer"])
-            self.assertIn(",", result["final_answer"])
-            roots = result["final_answer"].split(',')
-            self.assertEqual(len(roots), 2)
-            try:
-                int(roots[0].split('=')[1])
-                int(roots[1].split('=')[1])
-            except (ValueError, IndexError):
-                 self.fail(f"Final answer roots '{result['final_answer']}' are not in expected format 'x=int, x=int'.")
+            # A0 convention: 'x = r1 or x = r2', roots ascending
+            import re
+            m = re.fullmatch(r"x = (-?\d+) or x = (-?\d+)",
+                             result["final_answer"])
+            self.assertIsNotNone(m, result["final_answer"])
+            r_low, r_high = int(m.group(1)), int(m.group(2))
+            self.assertLess(r_low, r_high)
+
+            # Oracle: both roots satisfy the parsed equation exactly
+            pm = re.fullmatch(
+                r"Solve (-?\d*)x\^2([+-]\d*)?x?([+-]\d+)? = 0",
+                result["problem"].replace(" ", " "))
+            coeffs = re.fullmatch(
+                r"(-?\d*)x\^2(?:([+-]\d*)x)?([+-]\d+)? = 0",
+                result["problem"].replace("Solve ", ""))
+            self.assertIsNotNone(coeffs, result["problem"])
+            a_txt, b_txt, c_txt = coeffs.groups()
+            a = int(a_txt) if a_txt not in ("", "-") else (-1 if a_txt == "-" else 1)
+            b = (0 if b_txt is None
+                 else 1 if b_txt == "+" else -1 if b_txt == "-" else int(b_txt))
+            c = 0 if c_txt is None else int(c_txt)
+            for root in (r_low, r_high):
+                self.assertEqual(a * root * root + b * root + c, 0,
+                                 result["problem"])
 
 
 if __name__ == '__main__':

@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] QuadraticGenerator — Quadratic (high · d5)
 - [ ] PercentProblemGenerator — Percent Problem (high · d4)
 - [ ] LiteralEquationGenerator — Literal Equation (high · d4)
 - [ ] AbsoluteValueEquationGenerator — Absolute Value Equation (high · d5)

@@ -1962,8 +1962,8 @@ Steps:
   ROOT|36|6
   Q1|6|6|2|6
   Q2|6|6|2|0
-  Z|x=6, x=0
-Answer: x=6, x=0
+  Z|x = 0 or x = 6
+Answer: x = 0 or x = 6
 ```
 
 ### Percent Problem — `PercentProblemGenerator`  ·  high · difficulty 4

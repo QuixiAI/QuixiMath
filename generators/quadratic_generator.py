@@ -40,9 +40,10 @@ class QuadraticGenerator(ProblemGenerator):
 
         root1 = root1_num // denom
         root2 = root2_num // denom
-        # Order roots consistently (e.g., larger first)
+        # Q1 is the plus branch (larger root for a > 0)
         root1, root2 = max(root1, root2), min(root1, root2)
-        final_answer_str = f"x={root1}, x={root2}"
+        # A0 convention: multiple roots ascending, joined with ' or '
+        final_answer_str = f"x = {root2} or x = {root1}"
 
         # Formatting logic to use ^2 instead of ²
         expr_terms = []
