@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**294 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**295 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6625,6 +6625,31 @@ Steps:
   CHECK|decrypted message|43
   Z|n = 667; phi = 616; d = 145; ciphertext = 214; decrypted = 43
 Answer: n = 667; phi = 616; d = 145; ciphertext = 214; decrypted = 43
+```
+
+### Diffie Hellman — `DiffieHellmanGenerator`  ·  college · difficulty 3
+
+Diffie-Hellman key exchange over a small prime field.
+
+**Variants:** `diffie_hellman`
+
+```
+Problem: For Diffie-Hellman with prime p=41, generator g=30, Alice secret a=4, and Bob secret b=18, compute both public keys and the shared secret.
+Steps:
+  DH_SETUP|p=41|g=30
+  DH_SECRET|Alice|4
+  DH_SECRET|Bob|18
+  MOD_POWER|30^4|mod 41|4
+  DH_PUBLIC|Alice|4
+  MOD_POWER|30^18|mod 41|21
+  DH_PUBLIC|Bob|21
+  MOD_POWER|21^4|mod 41|18
+  DH_SHARED|Alice|18
+  MOD_POWER|4^18|mod 41|18
+  DH_SHARED|Bob|18
+  CHECK|shared secrets match|18
+  Z|Alice public = 4; Bob public = 21; shared secret = 18
+Answer: Alice public = 4; Bob public = 21; shared secret = 18
 ```
 
 ## Graduate

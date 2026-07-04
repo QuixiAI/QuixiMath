@@ -261,6 +261,7 @@ from generators.totient_generator import TotientGenerator
 from generators.continued_fraction_generator import ContinuedFractionGenerator
 from generators.quadratic_residue_generator import QuadraticResidueGenerator
 from generators.rsa_generator import RSAGenerator
+from generators.diffie_hellman_generator import DiffieHellmanGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -693,6 +694,7 @@ ALL_GENERATORS = [
     ContinuedFractionGenerator(),
     QuadraticResidueGenerator(),
     RSAGenerator(),
+    DiffieHellmanGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

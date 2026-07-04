@@ -125,7 +125,6 @@ bind extra hard at this level:
 ### Graph Theory & Algorithms
 
 ### Number Theory & Cryptography
-- [ ] Diffie-Hellman small-modulus exchange · `DiffieHellmanGenerator` · college · d3
 - [ ] Miller-Rabin primality steps with given witnesses · `PrimalityTestGenerator` · graduate · d4
 
 ### Abstract Algebra (computational side only)

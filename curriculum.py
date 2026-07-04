@@ -326,6 +326,7 @@ CURRICULUM = {
     "ContinuedFractionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "QuadraticResidueGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "RSAGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "DiffieHellmanGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
