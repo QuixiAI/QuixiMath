@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] RadicalEquationGenerator — Radical Equation (high · d5)
 - [ ] RationalExprSimplifyGenerator — Rational Expr Simplify (high · d4)
 - [ ] RationalExprMultDivGenerator — Rational Expr Mult Div (high · d5)
 - [ ] RationalExprAddSubGenerator — Rational Expr Add Sub (high · d5)
