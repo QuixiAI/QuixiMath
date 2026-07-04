@@ -114,6 +114,7 @@ from generators.log_equation_generator import LogEquationGenerator
 from generators.parabola_features_generator import ParabolaFeaturesGenerator
 from generators.ellipse_features_generator import EllipseFeaturesGenerator
 from generators.hyperbola_features_generator import HyperbolaFeaturesGenerator
+from generators.conic_standard_form_generator import ConicStandardFormGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -387,6 +388,7 @@ ALL_GENERATORS = [
     ParabolaFeaturesGenerator(),
     EllipseFeaturesGenerator(),
     HyperbolaFeaturesGenerator(),
+    ConicStandardFormGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),

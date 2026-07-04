@@ -89,7 +89,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Exponentials & Logarithms
 
 ### Conic Sections
-- [ ] General form → standard form by completing the square · `ConicStandardFormGenerator` · high · d5
 
 ### Geometry & Measurement
 - [ ] Nets → surface area — net given textually as a list of faces with dimensions · `NetsSurfaceAreaGenerator` · middle · d4
