@@ -87,7 +87,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Polynomials & Rational Functions
 
 ### Exponentials & Logarithms
-- [ ] Solve log equations — with domain check for extraneous solutions (A1) · `LogEquationGenerator` · high · d5
 
 ### Conic Sections
 - [ ] Parabola — vertex, focus, directrix from standard form · `ParabolaFeaturesGenerator` · high · d5

@@ -111,6 +111,7 @@ CURRICULUM = {
     "LogConversionGenerator": {"grade_level": HIGH, "difficulty": 4},
     "LogPropertiesGenerator": {"grade_level": HIGH, "difficulty": 4},
     "ExponentialEquationGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "LogEquationGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
