@@ -394,6 +394,7 @@ CURRICULUM = {
     "RunningCouplingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "BisectionGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "NewtonRaphsonGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "FixedPointGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

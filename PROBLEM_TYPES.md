@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**362 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**363 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7200,6 +7200,35 @@ Steps:
   NEWTON_UPDATE|3|x_2=449/60|x_3=403201/53880
   Z|x_3 = 403201/53880
 Answer: x_3 = 403201/53880
+```
+
+### Fixed Point — `FixedPointGenerator`  ·  college · difficulty 3
+
+Fixed-point iteration for affine contractions g(x)=a*x+b.
+
+**Variants:** `fixed_point_affine`
+
+```
+Problem: Use fixed-point iteration x=g(x) with g(x)=2/9*x-7/3 from x0=3/4 for 4 iterations. First check abs(g')<1.
+Steps:
+  FIXED_POINT_SETUP|g(x)=2/9*x-7/3|x0=3/4|iterations=4
+  DERIVATIVE|g'(x)|2/9
+  ABS|2/9|2/9
+  COMPARE|2/9|< 1|converges
+  M|2/9|3/4|1/6
+  A|1/6|-7/3|-13/6
+  FIXED_POINT_UPDATE|1|x_0=3/4|x_1=-13/6
+  M|2/9|-13/6|-13/27
+  A|-13/27|-7/3|-76/27
+  FIXED_POINT_UPDATE|2|x_1=-13/6|x_2=-76/27
+  M|2/9|-76/27|-152/243
+  A|-152/243|-7/3|-719/243
+  FIXED_POINT_UPDATE|3|x_2=-76/27|x_3=-719/243
+  M|2/9|-719/243|-1438/2187
+  A|-1438/2187|-7/3|-6541/2187
+  FIXED_POINT_UPDATE|4|x_3=-719/243|x_4=-6541/2187
+  Z|x_4 = -6541/2187
+Answer: x_4 = -6541/2187
 ```
 
 ## Graduate
