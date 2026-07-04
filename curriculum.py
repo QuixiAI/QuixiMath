@@ -458,6 +458,7 @@ CURRICULUM = {
     "OpticsGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "InterferenceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "StandingWaveGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "StoichiometryGenerator": {"grade_level": HIGH, "difficulty": 4},
 }
 
 

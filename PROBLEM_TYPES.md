@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**426 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**427 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4979,6 +4979,26 @@ Steps:
   POLY_DIV_SPLIT|(3x^5) / (3x^2) + (9x^4) / (3x^2)
   Z|1x^3 + 3x^2
 Answer: 1x^3 + 3x^2
+```
+
+### Stoichiometry — `StoichiometryGenerator`  ·  high · difficulty 4
+
+Balanced-equation and stoichiometric conversion practice.
+
+**Variants:** `stoichiometry_balance_equation`, `stoichiometry_limiting_reagent`, `stoichiometry_mass_to_mass`, `stoichiometry_mass_to_volume`
+
+```
+Problem: Given balanced equation N2 + 3 H2 -> 2 NH3, initial amounts are N2=1 mol and H2=5 mol. Find the limiting reactant and maximum NH3 produced.
+Steps:
+  STOICH_SETUP|limiting_reagent|N2 + 3 H2 -> 2 NH3|given=N2=1 mol, H2=5 mol
+  STOICH_RATIO|N2->NH3|2/1=2
+  M|1|2|2
+  STOICH_RATIO|H2->NH3|2/3=2/3
+  M|5|2/3|10/3
+  LIMIT_CHECK|NH3 from N2=2 mol|NH3 from H2=10/3 mol
+  LIMITING_REAGENT|N2|NH3=2 mol
+  Z|limiting=N2; NH3=2 mol
+Answer: limiting=N2; NH3=2 mol
 ```
 
 ## College
