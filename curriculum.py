@@ -375,6 +375,7 @@ CURRICULUM = {
     "BCHGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "YoungTableauxGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ClebschGordanGenerator": {"grade_level": GRADUATE, "difficulty": 5},
+    "EinsteinSummationGenerator": {"grade_level": GRADUATE, "difficulty": 3},
 }
 
 

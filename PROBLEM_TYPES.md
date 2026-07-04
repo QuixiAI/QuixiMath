@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**343 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**344 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8192,4 +8192,23 @@ Steps:
   CG_COEFF|ket(-1,+)|0
   Z|coefficient of ket(-1,+) = 0
 Answer: coefficient of ket(-1,+) = 0
+```
+
+### Einstein Summation — `EinsteinSummationGenerator`  ·  graduate · difficulty 3
+
+Numeric Einstein-summation bookkeeping for contractions and symmetrizing.
+
+**Variants:** `einstein_summation_contraction`, `einstein_summation_symmetrize`, `einstein_summation_trace`
+
+```
+Problem: Given T_ij=[[6, 0, -6], [-2, 2, 1], [0, 6, -2]], compute the contraction T_ii.
+Steps:
+  EINSTEIN_SETUP|trace|T_ij=[[6, 0, -6], [-2, 2, 1], [0, 6, -2]]
+  TRACE_ENTRY|T_11|6
+  TRACE_ENTRY|T_22|2
+  TRACE_ENTRY|T_33|-2
+  A|6|2|8
+  A|8|-2|6
+  Z|T_ii = 6
+Answer: T_ii = 6
 ```
