@@ -56,12 +56,13 @@ SCENARIOS = {
     },
 }
 
+# (template, low, high): ranges keep the sentence plausible (no 17 AM)
 DISTRACTORS = [
-    "The trip started at {} AM.",
-    "There are {} people in the car.",
-    "The recipe book has {} pages.",
-    "The store is {} blocks away.",
-    "The table has {} rows already filled in.",
+    ("The trip started at {} AM.", 5, 11),
+    ("There are {} people in the car.", 2, 6),
+    ("The recipe book has {} pages.", 20, 60),
+    ("The store is {} blocks away.", 2, 15),
+    ("The table has {} rows already filled in.", 2, 9),
 ]
 
 
@@ -103,8 +104,12 @@ class ProportionWordProblemGenerator(ProblemGenerator):
         problem = prompt.format(k1=k1, k2=k2, q=q)
         steps = []
         if self.distractor:
-            d_sentence = random.choice(DISTRACTORS)
-            d_val = random.randint(2, 30)
+            d_sentence, d_lo, d_hi = random.choice(DISTRACTORS)
+            d_val = random.randint(d_lo, d_hi)
+            # the distractor must not collide with a relevant number, or
+            # the SELECT_RELEVANT filter becomes ambiguous
+            while d_val in (k1, k2, q):
+                d_val = random.randint(d_lo, d_hi)
             problem = f"{problem} {d_sentence.format(d_val)}"
             steps.append(step("SELECT_RELEVANT",
                               f"ratio {k1}/{k2}, query {q}",
