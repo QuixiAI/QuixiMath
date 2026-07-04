@@ -2,7 +2,7 @@ import random
 from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid
-from generators.exponential_model_generator import dec
+from generators.exponential_model_generator import dec, money
 
 # A4: several natural-language phrasings per scenario. Keyed by the
 # arithmetic type so the solving steps stay identical while the
@@ -38,15 +38,23 @@ PHRASINGS = {
 }
 
 ADDITIVE = ("increase", "markup", "tax")
+MONEY_OPS = ("markup", "discount", "tax")
 
-# A6: irrelevant facts to plant. Each number plays no role in the
-# computation.
-DISTRACTORS = [
-    "The store has been open for {} years.",
-    "There are {} other items on the shelf.",
-    "The receipt is {} inches long.",
-    "The cashier has worked there for {} months.",
-    "The store closes at {} PM.",
+# A6: irrelevant facts to plant, with plausible value ranges so the
+# sentence stays sensible (no 'closes at 28 PM'). Each number plays no
+# role in the computation. Store-themed lines go with money scenarios;
+# neutral lines with plain increase/decrease.
+STORE_DISTRACTORS = [
+    ("The store has been open for {} years.", 2, 30),
+    ("There are {} other items on the shelf.", 2, 40),
+    ("The receipt is {} inches long.", 4, 14),
+    ("The cashier has worked there for {} months.", 2, 36),
+    ("The store closes at {} PM.", 5, 11),
+]
+NEUTRAL_DISTRACTORS = [
+    ("The measurement was recorded {} days ago.", 2, 30),
+    ("The data sheet has {} rows.", 5, 40),
+    ("The experiment ran for {} minutes.", 5, 55),
 ]
 
 
@@ -81,8 +89,10 @@ class PercentWordProblemGenerator(ProblemGenerator):
 
         steps = []
         if self.distractor:
-            d_sentence = random.choice(DISTRACTORS)
-            d_val = random.randint(2, 40)
+            pool = (STORE_DISTRACTORS if op_type in MONEY_OPS
+                    else NEUTRAL_DISTRACTORS)
+            d_sentence, d_lo, d_hi = random.choice(pool)
+            d_val = random.randint(d_lo, d_hi)
             problem = f"{problem} {d_sentence.format(d_val)}"
             steps.append(step("SELECT_RELEVANT",
                               f"base = {base}, rate = {pct}%",
@@ -99,9 +109,13 @@ class PercentWordProblemGenerator(ProblemGenerator):
             new_total = base - change
             steps.append(step("S", base, dec(change), dec(new_total)))
 
-        final_answer = (str(new_total.numerator)
-                        if new_total.denominator == 1
-                        else dec(new_total))
+        if op_type in MONEY_OPS:
+            # dollar amounts follow the money convention: $119.70
+            final_answer = money(new_total)
+        else:
+            final_answer = (str(new_total.numerator)
+                            if new_total.denominator == 1
+                            else dec(new_total))
         steps.append(step("Z", final_answer))
 
         operation = ("percent_word_problem_distractor"

@@ -564,8 +564,8 @@ Steps:
   PERCENT_TO_DEC|5%|0.05
   M|86|0.05|4.3
   S|86|4.3|81.7
-  Z|81.7
-Answer: 81.7
+  Z|$81.70
+Answer: $81.70
 ```
 
 ### Repeating Decimal — `RepeatingDecimalGenerator`  ·  elementary · difficulty 3

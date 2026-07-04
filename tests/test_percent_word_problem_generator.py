@@ -12,7 +12,7 @@ if repo_root not in sys.path:
 from generators.percent_word_problem_generator import (
     PercentWordProblemGenerator,
 )
-from generators.exponential_model_generator import dec
+from generators.exponential_model_generator import dec, money
 from helpers import DELIM
 
 SUBTRACTIVE = ("decrease", "shrink", "discount", " off", "sale price")
@@ -23,7 +23,8 @@ def oracle_answer(problem):
 
     Every core phrasing ends with '?'; any distractor is appended
     after as a declarative sentence, so the numbers before the first
-    '?' are exactly the rate and the base.
+    '?' are exactly the rate and the base. Dollar problems answer in
+    the $X.YY money convention.
     """
     core = problem[: problem.index("?") + 1]
     pct = int(re.search(r"(\d+)%", core).group(1))
@@ -37,6 +38,8 @@ def oracle_answer(problem):
         total = base - change
     else:
         total = base + change
+    if "$" in core:
+        return money(total)
     return (str(total.numerator) if total.denominator == 1
             else dec(total))
 
