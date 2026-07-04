@@ -284,6 +284,7 @@ from generators.spherical_excess_generator import SphericalExcessGenerator
 from generators.spherical_triangle_generator import SphericalTriangleGenerator
 from generators.hyperbolic_function_generator import HyperbolicFunctionGenerator
 from generators.angle_defect_generator import AngleDefectGenerator
+from generators.hyperbolic_distance_generator import HyperbolicDistanceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -739,6 +740,7 @@ ALL_GENERATORS = [
     SphericalTriangleGenerator(),
     HyperbolicFunctionGenerator(),
     AngleDefectGenerator(),
+    HyperbolicDistanceGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

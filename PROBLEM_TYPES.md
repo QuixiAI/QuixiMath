@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**317 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**318 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7603,4 +7603,23 @@ Steps:
   D|1/2|1/2|1
   Z|sin(B) = 1
 Answer: sin(B) = 1
+```
+
+### Hyperbolic Distance — `HyperbolicDistanceGenerator`  ·  graduate · difficulty 4
+
+Poincare half-plane and disk distances in exact logarithmic form.
+
+**Variants:** `hyperbolic_distance_disk_radial`, `hyperbolic_distance_half_plane`
+
+```
+Problem: In the Poincare disk, P=(0,0) and Q=(5/29,0) lie on a diameter. Use d=ln((1+r)/(1-r)) to find the hyperbolic distance.
+Steps:
+  HYPERBOLIC_DISTANCE_SETUP|disk|P=(0,0)|Q=(5/29,0)
+  FORMULA|radial disk distance = ln((1+r)/(1-r))
+  A|1|5/29|34/29
+  S|1|5/29|24/29
+  D|34/29|24/29|17/12
+  LOG_EVAL|17/12|ln(17/12)
+  Z|distance = ln(17/12)
+Answer: distance = ln(17/12)
 ```

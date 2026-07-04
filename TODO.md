@@ -133,7 +133,6 @@ bind extra hard at this level:
 ### Spherical & Non-Euclidean Geometry
 Angle sums that refuse to be 180° — mind-bending results from ordinary
 arithmetic. Nice angles (30°/45°/60°/90°) keep everything exact per Principle 5.
-- [ ] Poincaré half-plane/disk distances — metric formula with ln values provided or exact · `HyperbolicDistanceGenerator` · graduate · d4
 - [ ] Stereographic projection — plane ↔ Riemann sphere point mapping both directions · `StereographicGenerator` · graduate · d4
 
 ### Differential Geometry & Topology (computational)
