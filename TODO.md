@@ -99,7 +99,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Limits
 
 ### Calculus — Derivatives
-- [ ] Power rule with sums and constants · `DerivativePowerRuleGenerator` · high · d4
 - [ ] Product & quotient rules · `DerivativeProductQuotientGenerator` · high · d5
 - [ ] Chain rule, incl. nested compositions · `ChainRuleGenerator` · high · d5
 - [ ] Trig, exponential, and log derivatives · `DerivativeTranscendentalGenerator` · high · d5
