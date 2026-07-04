@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] VolumePrismGenerator — Volume Prism (middle · d4)
-- [ ] VolumeCylinderGenerator — Volume Cylinder (middle · d4)
 - [ ] SurfaceAreaPrismGenerator — Surface Area Prism (middle · d4)
 - [ ] SurfaceAreaCylinderGenerator — Surface Area Cylinder (middle · d4)
 - [ ] RoundSolidsGenerator — Round Solids (middle · d4)

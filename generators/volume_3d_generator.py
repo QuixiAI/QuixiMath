@@ -130,8 +130,9 @@ class VolumeCylinderGenerator(ProblemGenerator):
         give_diameter = random.choice([True, False])
 
         if give_diameter:
-            diameter = random.randint(4, 16)
-            radius = diameter / 2
+            # even diameter -> integer radius (no 7.0 float renders)
+            diameter = 2 * random.randint(2, 12)
+            radius = diameter // 2
             height = random.randint(5, 20)
             problem = f"Find the volume of a cylinder with diameter {diameter} units and height {height} units."
         else:
