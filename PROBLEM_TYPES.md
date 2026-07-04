@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**315 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**316 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6950,6 +6950,32 @@ Steps:
   M|1/3|196|196/3
   Z|area = 196pi/3
 Answer: area = 196pi/3
+```
+
+### Hyperbolic Function — `HyperbolicFunctionGenerator`  ·  college · difficulty 3
+
+Evaluate sinh, cosh, and tanh from supplied exact e^x and e^-x values, then verify cosh^2(x) - sinh^2(x) = 1.
+
+**Variants:** `hyperbolic_function_eval`
+
+```
+Problem: Given e^x = 27/10 and e^(-x) = 10/27, compute sinh x, cosh x, and tanh x.
+Steps:
+  HYPERBOLIC_SETUP|e^x=27/10|e^(-x)=10/27
+  FORMULA|sinh x = (e^x - e^(-x))/2
+  S|27/10|10/27|629/270
+  D|629/270|2|629/540
+  FORMULA|cosh x = (e^x + e^(-x))/2
+  A|27/10|10/27|829/270
+  D|829/270|2|829/540
+  FORMULA|tanh x = sinh x / cosh x
+  D|629/540|829/540|629/829
+  E|829/540|2|687241/291600
+  E|629/540|2|395641/291600
+  S|687241/291600|395641/291600|1
+  CHECK|cosh^2 x - sinh^2 x|1|identity holds
+  Z|sinh x = 629/540, cosh x = 829/540, tanh x = 629/829
+Answer: sinh x = 629/540, cosh x = 829/540, tanh x = 629/829
 ```
 
 ## Graduate

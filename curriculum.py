@@ -347,6 +347,7 @@ CURRICULUM = {
     "GreatCircleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "SphericalExcessGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "SphericalTriangleGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "HyperbolicFunctionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
