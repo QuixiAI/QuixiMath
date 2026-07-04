@@ -233,7 +233,7 @@ class CompoundProbabilityDependentGenerator(ProblemGenerator):
         steps_list.append(step("PROB_DESCRIBE", f"Draw without replacement: {color1} then {color2}"))
         steps_list.append(step("PROB_IDENTIFY", f"P(first {color1})", str(p1)))
         steps_list.append(step("PROB_DEPENDENT", "Drawing without replacement means dependent events"))
-        steps_list.append(step("PROB_CONDITIONAL", f"P({color2}|first was {color1})", str(p2)))
+        steps_list.append(step("PROB_CONDITIONAL", f"P({color2} given first was {color1})", str(p2)))
         steps_list.append(step("PROB_MULTIPLY", str(p1), str(p2), str(result)))
 
         final_answer = str(result)
@@ -268,7 +268,7 @@ class CompoundProbabilityDependentGenerator(ProblemGenerator):
         steps_list.append(step("PROB_DESCRIBE", f"Draw two {suit} cards without replacement"))
         steps_list.append(step("PROB_IDENTIFY", f"P(first {suit})", f"{p1} = 13/52"))
         steps_list.append(step("PROB_DEPENDENT", "Drawing without replacement means dependent events"))
-        steps_list.append(step("PROB_CONDITIONAL", f"P(second {suit}|first was {suit})", f"{p2} = 12/51"))
+        steps_list.append(step("PROB_CONDITIONAL", f"P(second {suit} given first was {suit})", f"{p2} = 12/51"))
         steps_list.append(step("PROB_MULTIPLY", "13/52", "12/51", str(result)))
 
         # Simplify

@@ -1455,7 +1455,7 @@ Steps:
   PROB_DESCRIBE|Draw two spades cards without replacement
   PROB_IDENTIFY|P(first spades)|1/4 = 13/52
   PROB_DEPENDENT|Drawing without replacement means dependent events
-  PROB_CONDITIONAL|P(second spades|first was spades)|4/17 = 12/51
+  PROB_CONDITIONAL|P(second spades given first was spades)|4/17 = 12/51
   PROB_MULTIPLY|13/52|12/51|1/17
   Z|1/17
 Answer: 1/17
