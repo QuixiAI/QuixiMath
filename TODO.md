@@ -93,7 +93,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Geometry & Measurement
 
 ### Trigonometry
-- [ ] Special right triangles — 30-60-90 and 45-45-90 · `SpecialRightTriangleGenerator` · high · d4
 - [ ] Degrees ↔ radians; coterminal and reference angles · `AngleMeasureGenerator` · high · d4
 - [ ] Unit circle exact values; inverse trig evaluation · `UnitCircleGenerator` · high · d4
 - [ ] Amplitude, period, phase shift from equation · `SinusoidFeaturesGenerator` · high · d4
