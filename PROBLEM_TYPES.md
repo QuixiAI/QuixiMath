@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**443 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**444 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -10962,4 +10962,83 @@ Steps:
   UPDATE|c|3/4
   Z|y_hat=1; loss=25/2; W1_new=[[-5/4,3/4], [9/4,9/4]]; b1_new=(-5/4,9/4); v_new=(-3/2,-19/4); c_new=3/4
 Answer: y_hat=1; loss=25/2; W1_new=[[-5/4,3/4], [9/4,9/4]]; b1_new=(-5/4,9/4); v_new=(-3/2,-19/4); c_new=3/4
+```
+
+### Information Gain — `InformationGainGenerator`  ·  graduate · difficulty 4
+
+Decision-tree information gain from supplied entropy log constants.
+
+**Variants:** `information_gain_best_split`
+
+```
+Problem: A dataset has 16 examples with pos=7 and neg=9. Candidate splits are texture: left pos=4, neg=4; right pos=3, neg=5 and source: left pos=7, neg=1; right pos=0, neg=8. Use self-info values I(p)=-log2(p): 1/8=3, 3/8=1.415, 7/16=1.193, 1/2=1, 9/16=0.83, 5/8=0.678, 7/8=0.193, 1=0. Compute information gain for each split and choose the better split.
+Steps:
+  IG_SETUP|parent pos=7, neg=9|total=16|splits=texture,source
+  INFO_TABLE|1/8=3, 3/8=1.415, 7/16=1.193, 1/2=1, 9/16=0.83, 5/8=0.678, 7/8=0.193, 1=0
+  ENTROPY_SETUP|parent|counts=7,9|total=16
+  D|7|16|7/16
+  INFO_VALUE|p=7/16|I=1.193
+  M|7/16|1.193|0.5219375
+  A|0|0.5219375|0.5219375
+  D|9|16|9/16
+  INFO_VALUE|p=9/16|I=0.83
+  M|9/16|0.83|0.466875
+  A|0.5219375|0.466875|0.9888125
+  ENTROPY_VALUE|parent|0.9888125
+  SPLIT_SETUP|texture|left pos=4, neg=4|right pos=3, neg=5
+  ENTROPY_SETUP|texture_left|counts=4,4|total=8
+  D|4|8|1/2
+  INFO_VALUE|p=1/2|I=1
+  M|1/2|1|0.5
+  A|0|0.5|0.5
+  D|4|8|1/2
+  INFO_VALUE|p=1/2|I=1
+  M|1/2|1|0.5
+  A|0.5|0.5|1
+  ENTROPY_VALUE|texture_left|1
+  D|8|16|1/2
+  M|1/2|1|0.5
+  ENTROPY_SETUP|texture_right|counts=3,5|total=8
+  D|3|8|3/8
+  INFO_VALUE|p=3/8|I=1.415
+  M|3/8|1.415|0.530625
+  A|0|0.530625|0.530625
+  D|5|8|5/8
+  INFO_VALUE|p=5/8|I=0.678
+  M|5/8|0.678|0.42375
+  A|0.530625|0.42375|0.954375
+  ENTROPY_VALUE|texture_right|0.954375
+  D|8|16|1/2
+  M|1/2|0.954375|0.4771875
+  A|0.5|0.4771875|0.9771875
+  S|0.9888125|0.9771875|0.011625
+  INFO_GAIN|texture|0.011625
+  SPLIT_SETUP|source|left pos=7, neg=1|right pos=0, neg=8
+  ENTROPY_SETUP|source_left|counts=7,1|total=8
+  D|7|8|7/8
+  INFO_VALUE|p=7/8|I=0.193
+  M|7/8|0.193|0.168875
+  A|0|0.168875|0.168875
+  D|1|8|1/8
+  INFO_VALUE|p=1/8|I=3
+  M|1/8|3|0.375
+  A|0.168875|0.375|0.543875
+  ENTROPY_VALUE|source_left|0.543875
+  D|8|16|1/2
+  M|1/2|0.543875|0.2719375
+  ENTROPY_SETUP|source_right|counts=0,8|total=8
+  ENTROPY_ZERO|source_right|count=0
+  D|8|8|1
+  INFO_VALUE|p=1|I=0
+  M|1|0|0
+  A|0|0|0
+  ENTROPY_VALUE|source_right|0
+  D|8|16|1/2
+  M|1/2|0|0
+  A|0.2719375|0|0.2719375
+  S|0.9888125|0.2719375|0.716875
+  INFO_GAIN|source|0.716875
+  CHECK|texture vs source|0.011625 < 0.716875|choose=source
+  Z|best=source; gain_texture=0.011625; gain_source=0.716875
+Answer: best=source; gain_texture=0.011625; gain_source=0.716875
 ```
