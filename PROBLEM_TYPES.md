@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**257 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**258 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5416,4 +5416,27 @@ Steps:
   CHECK|u2·u3|0|orthogonal
   Z|orthogonal basis [[2, 1, 0], [-2, 4, 0], [0, 0, -1]]
 Answer: orthogonal basis [[2, 1, 0], [-2, 4, 0], [0, 0, -1]]
+```
+
+### Least Squares — `LeastSquaresGenerator`  ·  college · difficulty 4
+
+Least-squares line fitting by normal equations. Centered x-values make X^T X diagonal, and residuals are constructed orthogonal to the columns of X so the fitted line, projection, and residual are exact integers.
+
+**Variants:** `least_squares_four_point_line`, `least_squares_three_point_line`
+
+```
+Problem: Use normal equations to find the least-squares line y = a + bx for points [(-3, 26), (-1, 22), (1, 16), (3, 8)].
+Steps:
+  LS_SETUP|points [(-3, 26), (-1, 22), (1, 16), (3, 8)]|model y = a + bx
+  DESIGN_MATRIX|X = [[1, -3], [1, -1], [1, 1], [1, 3]]|y = [26, 22, 16, 8]
+  NORMAL_EQ|X^T X|[[4, 0], [0, 20]]
+  NORMAL_EQ|X^T y|[72, -60]
+  D|72|4|18
+  D|-60|20|-3
+  LS_LINE|a = 18, b = -3|ŷ = 18 - 3x
+  PROJECTION|X*beta|[27, 21, 15, 9]
+  RESIDUAL|y - X*beta|[-1, 1, 1, -1]
+  CHECK|X^T residual|[0, 0]|orthogonal
+  Z|ŷ = 18 - 3x; projection [27, 21, 15, 9]; residual [-1, 1, 1, -1]
+Answer: ŷ = 18 - 3x; projection [27, 21, 15, 9]; residual [-1, 1, 1, -1]
 ```

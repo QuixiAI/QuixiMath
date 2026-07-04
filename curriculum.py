@@ -289,6 +289,7 @@ CURRICULUM = {
     "EigenvalueGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DiagonalizationGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "GramSchmidtGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "LeastSquaresGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 
