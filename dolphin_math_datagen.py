@@ -242,6 +242,7 @@ from generators.relation_check_generator import RelationCheckGenerator
 from generators.inclusion_exclusion_generator import InclusionExclusionGenerator
 from generators.stars_and_bars_generator import StarsAndBarsGenerator
 from generators.derangement_generator import DerangementGenerator
+from generators.recurrence_generator import RecurrenceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -655,6 +656,7 @@ ALL_GENERATORS = [
     InclusionExclusionGenerator(),
     StarsAndBarsGenerator(),
     DerangementGenerator(),
+    RecurrenceGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

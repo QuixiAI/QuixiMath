@@ -307,6 +307,7 @@ CURRICULUM = {
     "InclusionExclusionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "StarsAndBarsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DerangementGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "RecurrenceGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

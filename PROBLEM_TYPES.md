@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**275 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**276 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -5821,6 +5821,45 @@ Steps:
   DERANGE_VALUE|D_10|1334961
   Z|D_10 = 1334961
 Answer: D_10 = 1334961
+```
+
+### Recurrence — `RecurrenceGenerator`  ·  college · difficulty 4
+
+Linear recurrences solved by characteristic roots.
+
+**Variants:** `recurrence_constant`, `recurrence_homogeneous`
+
+```
+Problem: For n >= 2, a_n = 2 a_(n-1) + 8 a_(n-2) - 36, with a_0 = 0 and a_1 = -6. Use the characteristic-root method to find a_8.
+Steps:
+  REC_SETUP|a_n = 2 a_(n-1) + 8 a_(n-2) - 36|a_0 = 0, a_1 = -6
+  CHAR_POLY|lambda^2 - (2)lambda - (8) = 0|(lambda - (4))(lambda - (-2)) = 0
+  CHAR_ROOTS|lambda = 4, -2|distinct
+  PARTICULAR_TRY|a_n = K|constant forcing
+  A|2|8|10
+  S|1|10|-9
+  D|-36|-9|4
+  PARTICULAR_CHECK|K = 4|2K + 8K - 36 = K
+  S|0|4|-4
+  S|-6|4|-10
+  SHIFT|b_n = a_n - K|b_0 = -4, b_1 = -10
+  GENERAL|a_n|C1(4)^n + C2(-2)^n + 4
+  INITIAL_EQ|C1 + C2|-4
+  INITIAL_EQ|4C1 - 2C2|-10
+  M|-2|-4|8
+  S|-10|8|-18
+  S|4|-2|6
+  D|-18|6|-3
+  S|-4|-3|-1
+  CONST_SOLVE|C1 = -3|C2 = -1
+  POW|(4)^8|65536
+  M|-3|65536|-196608
+  POW|(-2)^8|256
+  M|-1|256|-256
+  A|-196608|-256|-196864
+  A|-196864|4|-196860
+  Z|a_8 = -196860
+Answer: a_8 = -196860
 ```
 
 ## Graduate
