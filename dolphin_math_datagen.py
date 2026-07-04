@@ -161,6 +161,7 @@ from generators.related_rates_generator import RelatedRatesGenerator
 from generators.linear_approx_generator import LinearApproxGenerator
 from generators.lhopital_generator import LHopitalGenerator
 from generators.curve_analysis_generator import CurveAnalysisGenerator
+from generators.optimization_generator import OptimizationGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -481,6 +482,7 @@ ALL_GENERATORS = [
     LinearApproxGenerator(),
     LHopitalGenerator(),
     CurveAnalysisGenerator(),
+    OptimizationGenerator(),
 
     # --- Critic formats (see DESIGN.md "Derived Record Formats") ---
     ErrorSpottingGenerator(),
