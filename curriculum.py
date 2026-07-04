@@ -128,6 +128,7 @@ CURRICULUM = {
     "CircleAngleGenerator": {"grade_level": HIGH, "difficulty": 4},
     "CircleEquationGenerator": {"grade_level": HIGH, "difficulty": 5},
     "TaxicabGeometryGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "EulerCharacteristicGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
