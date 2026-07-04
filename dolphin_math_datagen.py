@@ -359,6 +359,7 @@ from generators.routh_hurwitz_generator import RouthHurwitzGenerator
 from generators.projectile_motion_generator import ProjectileMotionGenerator
 from generators.newtons_laws_generator import NewtonsLawsGenerator
 from generators.collision_generator import CollisionGenerator
+from generators.energy_conservation_generator import EnergyConservationGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -889,6 +890,7 @@ ALL_GENERATORS = [
     ProjectileMotionGenerator(),
     NewtonsLawsGenerator(),
     CollisionGenerator(),
+    EnergyConservationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

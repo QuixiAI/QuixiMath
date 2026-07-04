@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**392 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**393 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7791,6 +7791,27 @@ Steps:
   D|260|28|65/7
   Z|v1=-103/7 m/s; v2=65/7 m/s
 Answer: v1=-103/7 m/s; v2=65/7 m/s
+```
+
+### Energy Conservation — `EnergyConservationGenerator`  ·  college · difficulty 2
+
+Work-energy theorem and mechanical energy conservation.
+
+**Variants:** `energy_conservation_gravity_drop`, `energy_conservation_work_energy`
+
+```
+Problem: A 25 kg object is dropped from height 245 m. Use g=10 m/s^2 and energy conservation to find impact speed and initial potential energy.
+Steps:
+  ENERGY_SETUP|gravity_drop|m=25|h=245, g=10
+  ENERGY_FORMULA|mgh=1/2*m*v^2
+  M|25|10|250
+  M|250|245|61250
+  ENERGY_FORMULA|v^2=2gh
+  M|2|10|20
+  M|20|245|4900
+  ROOT|4900|70
+  Z|impact speed=70 m/s; potential energy=61250 J
+Answer: impact speed=70 m/s; potential energy=61250 J
 ```
 
 ## Graduate
