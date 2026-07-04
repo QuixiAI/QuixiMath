@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**229 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**230 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1477,6 +1477,29 @@ Steps:
   CHECK|45 <= 108|probability is at most 1
   Z|5/12
 Answer: 5/12
+```
+
+### Finance — `FinanceGenerator`  ·  middle · difficulty 4
+
+Everyday financial arithmetic: simple interest, annual compounding, loan payment breakdowns, and budget percentage splits. Amounts are constructed so dollar-and-cent answers are exact.
+
+**Variants:** `finance_budget_split`, `finance_compound_interest`, `finance_loan_payment`, `finance_simple_interest`
+
+```
+Problem: A monthly income of $3800 is split into needs 50%, savings 20%, and fun 30%. Find the dollar amount for each category.
+Steps:
+  FIN_SETUP|income = 3800|needs 50%, savings 20%, fun 30%|budget amounts
+  FIN_FORMULA|category amount = income * category percent
+  PERCENT_TO_DEC|50%|0.5
+  M|3800|0.5|1900
+  PERCENT_TO_DEC|20%|0.2
+  M|3800|0.2|760
+  PERCENT_TO_DEC|30%|0.3
+  M|3800|0.3|1140
+  A|1900|760|2660
+  A|2660|1140|3800
+  Z|needs $1900.00; savings $760.00; fun $1140.00
+Answer: needs $1900.00; savings $760.00; fun $1140.00
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3

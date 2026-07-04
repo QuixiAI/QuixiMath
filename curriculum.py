@@ -238,6 +238,7 @@ CURRICULUM = {
     "CompoundProbabilityIndependentGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "CompoundProbabilityDependentGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "GeometricProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "FinanceGenerator": {"grade_level": MIDDLE, "difficulty": 4},
 
     # ===== HIGH SCHOOL =====
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},

@@ -88,7 +88,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Probability
 
 ### Applied & Cross-Disciplinary
-- [ ] Simple & compound interest; loan payment breakdown; budgeting splits · `FinanceGenerator` · middle · d4
 - [ ] Kinematics — d = vt, v = d/t, a = Δv/Δt with unit-consistent setups · `KinematicsGenerator` · middle · d4
 - [ ] Work/energy/power — W = Fd, P = W/t with conversions · `PhysicsFormulaGenerator` · middle · d4
 - [ ] Binary/hex conversions; two's complement representation · `BaseConversionGenerator` · middle · d3

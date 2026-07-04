@@ -196,6 +196,7 @@ from generators.probability_addition_rule_generator import ProbabilityAdditionRu
 from generators.conditional_probability_generator import ConditionalProbabilityGenerator
 from generators.geometric_probability_generator import GeometricProbabilityGenerator
 from generators.geometric_distribution_generator import GeometricDistributionGenerator
+from generators.finance_generator import FinanceGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -403,6 +404,7 @@ ALL_GENERATORS = [
     CompoundProbabilityIndependentGenerator(),
     CompoundProbabilityDependentGenerator(),
     GeometricProbabilityGenerator(),
+    FinanceGenerator(),
 
     # ===== HIGH SCHOOL =====
 
