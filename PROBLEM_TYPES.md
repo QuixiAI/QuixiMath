@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**236 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**237 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1628,6 +1628,24 @@ Steps:
   CHECK|267 + 8|275|multiple of 11
   Z|8
 Answer: 8
+```
+
+### Manual Square Root — `ManualSquareRootGenerator`  ·  middle · difficulty 4
+
+By-hand square root procedures: the classic digit-by-digit paired-groups algorithm for perfect squares, and one divide-and-average iteration.
+
+**Variants:** `manual_square_root_digit_by_digit`, `manual_square_root_divide_average`
+
+```
+Problem: Use one divide-and-average step to estimate sqrt(408) starting from x0 = 30. What is the next estimate?
+Steps:
+  SQRT_SETUP|N = 408|x0 = 30
+  D|408|30|13.6
+  A|30|13.6|43.6
+  D|43.6|2|21.8
+  CHECK|divide-and-average|(x + N/x)/2|21.8
+  Z|21.8
+Answer: 21.8
 ```
 
 ### Pascal Triangle — `PascalTriangleGenerator`  ·  middle · difficulty 3
