@@ -6,8 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] FactorSpecialFormsGenerator — Factor Special Forms (high · d4)
-- [ ] FactorGroupingGenerator — Factor Grouping (high · d5)
 - [ ] QuadraticFactoringGenerator — Quadratic Factoring (high · d5)
 - [ ] QuadraticSquareRootGenerator — Quadratic Square Root (high · d4)
 - [ ] CompletingSquareGenerator — Completing Square (high · d5)
