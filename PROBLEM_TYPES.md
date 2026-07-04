@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**282 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**283 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6050,6 +6050,60 @@ Steps:
   DFS_EDGE|B->E|skip visited
   Z|DFS order = B, A, E, C, D
 Answer: DFS order = B, A, E, C, D
+```
+
+### Euler Circuit — `EulerCircuitGenerator`  ·  college · difficulty 3
+
+Euler path and circuit construction with degree-parity checks.
+
+**Variants:** `euler_circuit`, `euler_path`
+
+```
+Problem: Use Hierholzer's algorithm to find an Euler path in the connected undirected graph with vertices A, B, C, D, E and edges AB, AC, AD, AE, BD, BE, CD. Start at B; when extending the current walk, choose the alphabetically first unused neighbor.
+Steps:
+  GRAPH_SETUP|connected undirected graph|vertices A, B, C, D, E
+  EDGE_LIST|AB, AC, AD, AE, BD, BE, CD
+  CHECK|connected|yes
+  EDGE_COUNT|unused|7
+  ADJ_LIST|A|B, C, D, E
+  DEGREE|A|4
+  ADJ_LIST|B|A, D, E
+  DEGREE|B|3
+  ADJ_LIST|C|A, D
+  DEGREE|C|2
+  ADJ_LIST|D|A, B, C
+  DEGREE|D|3
+  ADJ_LIST|E|A, B
+  DEGREE|E|2
+  ODD_VERTICES|B, D|2
+  CHECK|degree parity|2 odd vertices -> Euler path
+  EULER_START|B|alphabetically first odd vertex
+  EULER_STACK|initial|B
+  EULER_TRAVERSE|B->A|AB|stack B-A
+  S|7|1|6
+  EULER_TRAVERSE|A->C|AC|stack B-A-C
+  S|6|1|5
+  EULER_TRAVERSE|C->D|CD|stack B-A-C-D
+  S|5|1|4
+  EULER_TRAVERSE|D->A|AD|stack B-A-C-D-A
+  S|4|1|3
+  EULER_TRAVERSE|A->E|AE|stack B-A-C-D-A-E
+  S|3|1|2
+  EULER_TRAVERSE|E->B|BE|stack B-A-C-D-A-E-B
+  S|2|1|1
+  EULER_TRAVERSE|B->D|BD|stack B-A-C-D-A-E-B-D
+  S|1|1|0
+  EULER_BACKTRACK|D|route suffix D|stack B-A-C-D-A-E-B
+  EULER_BACKTRACK|B|route suffix D-B|stack B-A-C-D-A-E
+  EULER_BACKTRACK|E|route suffix D-B-E|stack B-A-C-D-A
+  EULER_BACKTRACK|A|route suffix D-B-E-A|stack B-A-C-D
+  EULER_BACKTRACK|D|route suffix D-B-E-A-D|stack B-A-C
+  EULER_BACKTRACK|C|route suffix D-B-E-A-D-C|stack B-A
+  EULER_BACKTRACK|A|route suffix D-B-E-A-D-C-A|stack B
+  EULER_BACKTRACK|B|route suffix D-B-E-A-D-C-A-B|stack empty
+  EULER_ROUTE|B-A-C-D-A-E-B-D|uses 7 edges
+  Z|Euler path = B-A-C-D-A-E-B-D
+Answer: Euler path = B-A-C-D-A-E-B-D
 ```
 
 ## Graduate
