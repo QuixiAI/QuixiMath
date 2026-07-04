@@ -344,6 +344,7 @@ from generators.bayesian_update_generator import BayesianUpdateGenerator
 from generators.markov_chain_generator import MarkovChainGenerator
 from generators.order_statistics_generator import OrderStatisticsGenerator
 from generators.simplex_generator import SimplexGenerator
+from generators.lp_corner_generator import LPCornerGenerator
 from generators.error_spotting_generator import ErrorSpottingGenerator
 from generators.fill_in_step_generator import FillInStepGenerator
 from generators.normal_table_generator import NormalTableGenerator
@@ -859,6 +860,7 @@ ALL_GENERATORS = [
     MarkovChainGenerator(),
     OrderStatisticsGenerator(),
     SimplexGenerator(),
+    LPCornerGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

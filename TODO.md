@@ -154,7 +154,6 @@ algebra checks. Constants and logs provided per Principle 5.
 ### Probability Theory & Mathematical Statistics
 
 ### Optimization & Operations Research
-- [ ] LP corner-point method — find vertices via 2×2 solves, evaluate objective · `LPCornerGenerator` · college · d3
 - [ ] Gradient descent iterations on quadratic bowls · `GradientDescentGenerator` · college · d3
 - [ ] Transportation problem — northwest-corner start, stepping-stone improvement · `TransportationGenerator` · graduate · d4
 - [ ] 2×2 games — expected payoffs, mixed-strategy equilibrium, minimax · `GameTheoryGenerator` · college · d4

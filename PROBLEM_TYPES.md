@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**377 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**378 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7460,6 +7460,53 @@ Steps:
   CHECK|reduced costs for x,y are 0|optimal tableau
   Z|x=14, y=15, max z=86
 Answer: x=14, y=15, max z=86
+```
+
+### LPCorner — `LPCornerGenerator`  ·  college · difficulty 3
+
+Corner-point method for a two-variable linear program.
+
+**Variants:** `lp_corner_point`
+
+```
+Problem: Use the corner-point method to maximize z = 5x + 9y subject to 0 <= x <= 15, 0 <= y <= 16, and x + y <= 17.
+Steps:
+  LP_CORNER_SETUP|max z=5x+9y|0<=x<=15, 0<=y<=16|x+y<=17
+  VERTEX_SOLVE|x=0|y=0
+  VERTEX|(0,0)
+  VERTEX_SOLVE|x=15|y=0
+  VERTEX|(15,0)
+  VERTEX_SOLVE|x=15|x+y=17
+  S|17|15|2
+  VERTEX|(15,2)
+  VERTEX_SOLVE|y=16|x+y=17
+  S|17|16|1
+  VERTEX|(1,16)
+  VERTEX_SOLVE|x=0|y=16
+  VERTEX|(0,16)
+  OBJECTIVE|at (0,0)
+  M|5|0|0
+  M|9|0|0
+  A|0|0|0
+  OBJECTIVE|at (15,0)
+  M|5|15|75
+  M|9|0|0
+  A|75|0|75
+  OBJECTIVE|at (15,2)
+  M|5|15|75
+  M|9|2|18
+  A|75|18|93
+  OBJECTIVE|at (1,16)
+  M|5|1|5
+  M|9|16|144
+  A|5|144|149
+  OBJECTIVE|at (0,16)
+  M|5|0|0
+  M|9|16|144
+  A|0|144|144
+  CHECK|max value 149|at (1,16)
+  Z|optimal vertex=(1,16), max z=149
+Answer: optimal vertex=(1,16), max z=149
 ```
 
 ## Graduate
