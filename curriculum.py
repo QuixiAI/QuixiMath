@@ -156,6 +156,7 @@ CURRICULUM = {
     "ChainRuleGenerator": {"grade_level": HIGH, "difficulty": 5},
     "DerivativeTranscendentalGenerator": {"grade_level": HIGH, "difficulty": 5},
     "ImplicitDiffGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "LogDiffHigherOrderGenerator": {"grade_level": HIGH, "difficulty": 5},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "NormalTableGenerator": {"grade_level": HIGH, "difficulty": 4},
     "UnitRateFromTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
