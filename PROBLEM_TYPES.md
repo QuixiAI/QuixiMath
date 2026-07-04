@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**431 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**432 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8349,6 +8349,78 @@ Steps:
   S|0|-14|14
   Z|I=14 bits
 Answer: I=14 bits
+```
+
+### Mutual Information — `MutualInformationGenerator`  ·  college · difficulty 4
+
+Joint entropy, conditional entropy, and mutual information from joint tables.
+
+**Variants:** `mutual_information_all_measures`, `mutual_information_conditional_entropy`, `mutual_information_joint_entropy`, `mutual_information_mutual_information`
+
+```
+Problem: For joint distribution P(X,Y) with rows X=0..1 and columns Y=0..3: rows=[[1/4,0,1/4,0];[0,1/4,0,1/4]]. Find H(X,Y), H(Y given X), and I(X;Y).
+Steps:
+  MI_SETUP|rows=[[1/4,0,1/4,0];[0,1/4,0,1/4]]|task=H(X,Y), H(Y given X), and I(X;Y)
+  MARGINAL|P(X=0)=row0 sum
+  A|1/4|0|1/4
+  A|1/4|1/4|1/2
+  A|1/2|0|1/2
+  MARGINAL|P(X=1)=row1 sum
+  A|0|1/4|1/4
+  A|1/4|0|1/4
+  A|1/4|1/4|1/2
+  MARGINAL|P(Y=0)=col0 sum
+  A|1/4|0|1/4
+  MARGINAL|P(Y=1)=col1 sum
+  A|0|1/4|1/4
+  MARGINAL|P(Y=2)=col2 sum
+  A|1/4|0|1/4
+  MARGINAL|P(Y=3)=col3 sum
+  A|0|1/4|1/4
+  ENTROPY_SETUP|H(X)|-sum p log2(p)
+  LOG2|1/2|-1
+  M|1/2|1|1/2
+  A|0|1/2|1/2
+  LOG2|1/2|-1
+  M|1/2|1|1/2
+  A|1/2|1/2|1
+  ENTROPY_SETUP|H(Y)|-sum p log2(p)
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|0|1/2|1/2
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|1/2|1/2|1
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|1|1/2|3/2
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|3/2|1/2|2
+  ENTROPY_SETUP|H(X,Y)|-sum p log2(p)
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|0|1/2|1/2
+  ENTROPY_SKIP|H(X,Y)|p=0
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|1/2|1/2|1
+  ENTROPY_SKIP|H(X,Y)|p=0
+  ENTROPY_SKIP|H(X,Y)|p=0
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|1|1/2|3/2
+  ENTROPY_SKIP|H(X,Y)|p=0
+  LOG2|1/4|-2
+  M|1/4|2|1/2
+  A|3/2|1/2|2
+  COND_ENTROPY|H(Y given X)=H(X,Y)-H(X)
+  S|2|1|1
+  MI_FORMULA|I=H(X)+H(Y)-H(X,Y)
+  A|1|2|3
+  S|3|2|1
+  Z|H(X,Y)=2 bits; H(Y given X)=1 bit; I(X;Y)=1 bit
+Answer: H(X,Y)=2 bits; H(Y given X)=1 bit; I(X;Y)=1 bit
 ```
 
 ## Graduate
