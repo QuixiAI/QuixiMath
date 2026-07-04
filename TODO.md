@@ -91,7 +91,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Conic Sections
 
 ### Geometry & Measurement
-- [ ] Central & inscribed angle relationships · `CircleAngleGenerator` · high · d4
 - [ ] Equation of a circle — standard form; general → standard via completing the square · `CircleEquationGenerator` · high · d5
 - [ ] Taxicab & Chebyshev metrics — distances, "circles" that come out as diamonds and squares; mind-bending with middle-school arithmetic · `TaxicabGeometryGenerator` · middle · d3
 - [ ] Euler characteristic — V − E + F for polyhedra; sphere-family solids give 2, the torus gives 0 · `EulerCharacteristicGenerator` · middle · d3
