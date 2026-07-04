@@ -6,10 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] RationalExprSimplifyGenerator — Rational Expr Simplify (high · d4)
-- [ ] RationalExprMultDivGenerator — Rational Expr Mult Div (high · d5)
-- [ ] RationalExprAddSubGenerator — Rational Expr Add Sub (high · d5)
-- [ ] RationalEquationGenerator — Rational Equation (high · d5)
 - [ ] FunctionEvaluationGenerator — Function Evaluation (high · d3)
 - [ ] FunctionTableGenerator — Function Table (high · d3)
 - [ ] PiecewiseEvaluationGenerator — Piecewise Evaluation (high · d4)
