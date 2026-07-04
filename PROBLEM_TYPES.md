@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**394 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**395 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7831,6 +7831,27 @@ Steps:
   D|324|100|81/25
   Z|F_g=81/25 N
 Answer: F_g=81/25 N
+```
+
+### Statics — `StaticsGenerator`  ·  college · difficulty 3
+
+Static equilibrium for levers and simply supported beams.
+
+**Variants:** `statics_lever_balance`, `statics_supported_beam`
+
+```
+Problem: A simply supported beam is 17 m long with supports at A and B. A 86 N point load acts 2 m from support A. Find reactions RA and RB.
+Steps:
+  STATICS_SETUP|supported_beam|W=86, L=17|x=2
+  STATICS_FORMULA|sum_tau_left=0 => RB*L=W*x
+  M|86|2|172
+  D|172|17|172/17
+  STATICS_FORMULA|sum_Fy=0 => RA+RB=W
+  S|86|172/17|1290/17
+  A|1290/17|172/17|86
+  CHECK|vertical forces|86|load 86
+  Z|RA=1290/17 N; RB=172/17 N
+Answer: RA=1290/17 N; RB=172/17 N
 ```
 
 ## Graduate

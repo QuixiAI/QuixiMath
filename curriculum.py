@@ -426,6 +426,7 @@ CURRICULUM = {
     "CollisionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "EnergyConservationGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "OrbitalMechanicsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "StaticsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
