@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**456 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**457 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11594,4 +11594,56 @@ Steps:
   KERNEL_VALIDITY|psd=false
   Z|PSD=false; minors=(7,1,-29)
 Answer: PSD=false; minors=(7,1,-29)
+```
+
+### Kernel Ridge — `KernelRidgeGenerator`  ·  graduate · difficulty 4
+
+Kernel ridge regression with a linear kernel on two training points.
+
+**Variants:** `kernel_ridge_linear_2point`
+
+```
+Problem: For kernel ridge regression with linear kernel K(x,z)=xz, training data [(1,-6), (6,-2)], lambda=3, and x*=2, solve (K + lambda I) alpha = y and predict f(x*).
+Steps:
+  KRR_SETUP|kernel=linear|data=[(1,-6), (6,-2)]|lambda=3,x*=2
+  M|1|1|1
+  KERNEL_VALUE|1,1|1
+  M|1|6|6
+  KERNEL_VALUE|1,2|6
+  M|6|1|6
+  KERNEL_VALUE|2,1|6
+  M|6|6|36
+  KERNEL_VALUE|2,2|36
+  RIDGE_ENTRY|K|[[1,6], [6,36]]
+  A|1|3|4
+  RIDGE_ENTRY|1,1|4
+  RIDGE_ENTRY|1,2|6
+  RIDGE_ENTRY|2,1|6
+  A|36|3|39
+  RIDGE_ENTRY|2,2|39
+  RIDGE_ENTRY|K+lambdaI|[[4,6], [6,39]]
+  M|4|39|156
+  M|6|6|36
+  S|156|36|120
+  DET|K+lambdaI|120
+  M|39|-6|-234
+  M|6|-2|-12
+  S|-234|-12|-222
+  D|-222|120|-37/20
+  ALPHA|alpha1|-37/20
+  M|4|-2|-8
+  M|6|-6|-36
+  S|-8|-36|28
+  D|28|120|7/30
+  ALPHA|alpha2|7/30
+  M|2|1|2
+  KERNEL_VALUE|x*,1|2
+  M|2|6|12
+  KERNEL_VALUE|x*,2|12
+  M|2|-37/20|-37/10
+  M|12|7/30|14/5
+  A|-37/10|14/5|-9/10
+  PREDICT|x*|-9/10
+  Z|alpha=(-37/20,7/30); prediction=-9/10
+Answer: alpha=(-37/20,7/30); prediction=-9/10
 ```

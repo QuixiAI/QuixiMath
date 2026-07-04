@@ -177,7 +177,6 @@ Poetic bonus: the model learns to compute its own building blocks on paper.
 ### Matrix Calculus & ML Linear Algebra
 
 ### Kernel Methods
-- [ ] Kernel ridge regression on 2-3 points — solve (K + λI)α = y, predict a new point · `KernelRidgeGenerator` · graduate · d4
 - [ ] SVM margin arithmetic — decision function from given support vectors and α's; margin width 2/‖w‖ · `SVMMarginGenerator` · graduate · d4
 - [ ] Kernel perceptron — updates in α-space over a small dataset · `KernelPerceptronGenerator` · graduate · d4
 
