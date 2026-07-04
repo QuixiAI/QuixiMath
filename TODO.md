@@ -83,7 +83,6 @@ Not new skills — multipliers on everything. (A0-A2 and A9 shipped: see DESIGN.
 ### Sequences & Series
 
 ### Complex Numbers
-- [ ] Divide complex numbers via conjugates · `ComplexDivisionGenerator` · high · d5
 - [ ] Complex solutions to quadratics (negative discriminant) — variant of `QuadraticGenerator` · high · d5
 
 ### Polynomials & Rational Functions
