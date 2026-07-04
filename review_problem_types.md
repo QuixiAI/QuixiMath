@@ -6,7 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] LiteralEquationGenerator — Literal Equation (high · d4)
 - [ ] AbsoluteValueEquationGenerator — Absolute Value Equation (high · d5)
 - [ ] AbsoluteValueInequalityGenerator — Absolute Value Inequality (high · d5)
 - [ ] CompoundInequalityGenerator — Compound Inequality (high · d4)
