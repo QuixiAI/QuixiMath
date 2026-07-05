@@ -10,6 +10,17 @@ TRIPLES = [(3, 4, 5), (4, 3, 5), (5, 12, 13), (12, 5, 13),
            (20, 21, 29), (21, 20, 29)]
 
 
+def random_triple():
+    m = random.randint(2, 320)
+    n = random.randint(1, m - 1)
+    a = m * m - n * n
+    b = 2 * m * n
+    c = m * m + n * n
+    if random.random() < 0.5:
+        a, b = b, a
+    return abs(a), abs(b), c
+
+
 class ProjectorGenerator(ProblemGenerator):
     """
     Verify projector idempotence and completeness relations.
@@ -32,7 +43,9 @@ class ProjectorGenerator(ProblemGenerator):
         self.variant = variant
 
     def generate(self) -> dict:
-        variant = self.variant or random.choice(self.VARIANTS)
+        variant = self.variant or random.choices(
+            self.VARIANTS, weights=[9, 1]
+        )[0]
         if variant == "plus_projector":
             problem, steps, answer = self._generate_plus()
         else:
@@ -48,7 +61,7 @@ class ProjectorGenerator(ProblemGenerator):
 
     def _generate_plus(self):
         # projector onto the exact unit vector v = (a/c, b/c)
-        a, b, c = random.choice(TRIPLES)
+        a, b, c = random_triple()
         aa = Fraction(a * a, c * c)
         ab = Fraction(a * b, c * c)
         bb = Fraction(b * b, c * c)

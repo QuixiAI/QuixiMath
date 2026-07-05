@@ -13,6 +13,16 @@ DISTRIBUTIONS = [
 ]
 
 
+def random_dyadic_distribution():
+    values = [Fraction(1)]
+    for _ in range(random.randint(1, 14)):
+        idx = random.randrange(len(values))
+        value = values.pop(idx)
+        values.extend([value / 2, value / 2])
+    random.shuffle(values)
+    return values
+
+
 def fraction_text(value):
     return str(Fraction(value))
 
@@ -37,8 +47,7 @@ class VonNeumannEntropyGenerator(ProblemGenerator):
     """
 
     def generate(self) -> dict:
-        eigenvalues = list(random.choice(DISTRIBUTIONS))
-        random.shuffle(eigenvalues)
+        eigenvalues = random_dyadic_distribution()
         steps = [
             step("ENTROPY_SETUP", f"eigenvalues={list_text(eigenvalues)}",
                  "S=-sum lambda log2(lambda)"),

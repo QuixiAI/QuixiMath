@@ -78,7 +78,7 @@ class TrigIdentityEvalGenerator(ProblemGenerator):
                           f"a sum or difference identity.", steps, answer)
 
     def _double(self):
-        a, b, c = random.choice(TRIPLES)
+        a, b, c = self._random_triple()
         if random.random() < 0.5:
             a, b = b, a
         q = random.randint(1, 4)
@@ -113,7 +113,7 @@ class TrigIdentityEvalGenerator(ProblemGenerator):
                           steps, answer)
 
     def _half(self):
-        a, b, c = random.choice(TRIPLES)
+        a, b, c = self._random_triple()
         if random.random() < 0.5:
             a, b = b, a
         cos_t = Fraction(c * c - 2 * a * a, c * c)  # cos θ = 1 - 2(a/c)²
@@ -140,6 +140,17 @@ class TrigIdentityEvalGenerator(ProblemGenerator):
                           f"Given cos θ = {cos_t} with 0° < θ < 180°, "
                           f"find sin(θ/2) and cos(θ/2). (θ/2 is in the "
                           f"first quadrant.)", steps, answer)
+
+    @staticmethod
+    def _random_triple():
+        m = random.randint(2, 220)
+        n = random.randint(1, m - 1)
+        a = m * m - n * n
+        b = 2 * m * n
+        c = m * m + n * n
+        if random.random() < 0.5:
+            a, b = b, a
+        return abs(a), abs(b), c
 
     @staticmethod
     def _pack(op, problem, steps, answer):

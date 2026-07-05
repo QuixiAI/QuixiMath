@@ -12,8 +12,8 @@ if repo_root not in sys.path:
 from generators.trig_equation_generator import TrigEquationGenerator
 from helpers import DELIM
 
-SPECIAL = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270,
-           300, 315, 330]
+SPECIAL_BASE = [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240,
+                270, 300, 315, 330]
 
 
 def radical_to_float(txt):
@@ -46,9 +46,10 @@ def eq_residual(eq_text, deg):
 def oracle_check(example):
     """Every claimed solution satisfies the equation; every special
     angle that satisfies it is claimed (completeness)."""
-    m = re.fullmatch(r"Solve (.+) for 0° ≤ x < 360°\.",
+    m = re.fullmatch(r"Solve (.+) for 0° ≤ x < (\d+)°\.",
                      example["problem"])
     eq = m.group(1)
+    upper = int(m.group(2))
     if "= 0" not in eq:
         eq += " - 0"  # 'tan x = 0' form
         eq = eq.replace(" = 0 - 0", " = 0")
@@ -57,8 +58,12 @@ def oracle_check(example):
     claimed = sorted(int(v) for v in
                      re.findall(r"(\d+)°", example["final_answer"]))
     true_sols = []
-    for d in SPECIAL:
+    special = [base + 360 * j for j in range(upper // 360)
+               for base in SPECIAL_BASE]
+    for d in special:
         if d in (90, 270) and "tan" in eq:
+            continue
+        if "tan" in eq and d % 180 == 90:
             continue
         if abs(eq_residual(eq, d)) < 1e-9:
             true_sols.append(d)

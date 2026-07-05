@@ -35,6 +35,12 @@ section (don't fork it) when a new tier introduces new answer shapes.
 - **Single solutions:** bare value `7`. **Inequalities:** `x ≤ 9` (relation
   symbols < > ≤ ≥). **Systems:** `x=-2, y=-3`. **Special solutions:**
   `No solution`, `All real numbers`.
+- **Interval notation:** use `(-∞, -3) ∪ [2, 5)` with reduced rational
+  endpoints; infinities are always open and excluded points such as rational
+  function poles stay open even when the inequality is non-strict.
+- **Asymptotic bounds:** use `Θ(...)` with a composite method/case label when
+  the label is part of the skill, e.g. `case 1; Θ(n^2)` or
+  `subtract; Θ(n^5)`.
 - **Factored forms** (Algebra 1 tier): ASCII signs inside factors,
   GCF first, binomial factors ordered by ascending constant term:
   `3(x - 4)(x + 2)`.

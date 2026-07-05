@@ -39,7 +39,7 @@ class IntegrationByPartsGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        c = random.choice([v for v in range(-5, 6) if v != 0])
+        c = random.choice([v for v in range(-250, 251) if v != 0])
 
         if variant == "x_exp":
             neg = random.random() < 0.4

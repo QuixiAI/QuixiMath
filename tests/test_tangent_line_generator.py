@@ -21,16 +21,31 @@ from helpers import DELIM
 
 
 def oracle_answer(example):
-    m = re.fullmatch(r"Find the equation of the (tangent|normal) line "
-                     r"to f\(x\) = (.+) at x = (-?\d+)\.",
-                     example["problem"])
-    assert m, example["problem"]
-    kind, f_txt, a = m.group(1), m.group(2), int(m.group(3))
+    kind, f_txt, a = parse_problem(example["problem"])
     coefs = parse_poly(f_txt, "x")
     fa = poly_value(coefs, a)
     fp = sum(c * p * a ** (p - 1) for p, c in coefs.items() if p >= 1)
     slope = Fraction(fp) if kind == "tangent" else Fraction(-1, fp)
     return line_txt(slope, fa - slope * a)
+
+
+def parse_problem(problem):
+    patterns = [
+        r"Find the equation of the (tangent|normal) line to f\(x\) = (.+) at x = (-?\d+)\.",
+        r"At x = (-?\d+), find the (tangent|normal) line for f\(x\) = (.+)\.",
+        r"For f\(x\) = (.+), determine the (tangent|normal) line at x = (-?\d+)\.",
+        r"What is the (tangent|normal) line to the curve y = (.+) when x = (-?\d+)\?",
+    ]
+    for idx, pattern in enumerate(patterns):
+        m = re.fullmatch(pattern, problem)
+        if not m:
+            continue
+        if idx == 1:
+            return m.group(2), m.group(3), int(m.group(1))
+        if idx == 2:
+            return m.group(2), m.group(1), int(m.group(3))
+        return m.group(1), m.group(2), int(m.group(3))
+    raise AssertionError(problem)
 
 
 class TestTangentLineGenerator(unittest.TestCase):
@@ -55,11 +70,8 @@ class TestTangentLineGenerator(unittest.TestCase):
     def test_line_passes_through_the_point(self):
         for _ in range(300):
             result = self.gen.generate()
-            m = re.fullmatch(r"Find the equation of the (?:\w+) line to "
-                             r"f\(x\) = (.+) at x = (-?\d+)\.",
-                             result["problem"])
-            coefs = parse_poly(m.group(1), "x")
-            a = int(m.group(2))
+            _, f_txt, a = parse_problem(result["problem"])
+            coefs = parse_poly(f_txt, "x")
             fa = poly_value(coefs, a)
             slope, k = parse_line(result["final_answer"])
             self.assertEqual(slope * a + k, fa,
@@ -69,11 +81,9 @@ class TestTangentLineGenerator(unittest.TestCase):
         gen = TangentLineGenerator("normal")
         for _ in range(200):
             result = gen.generate()
-            m = re.fullmatch(r"Find the equation of the normal line to "
-                             r"f\(x\) = (.+) at x = (-?\d+)\.",
-                             result["problem"])
-            coefs = parse_poly(m.group(1), "x")
-            a = int(m.group(2))
+            kind, f_txt, a = parse_problem(result["problem"])
+            self.assertEqual(kind, "normal")
+            coefs = parse_poly(f_txt, "x")
             fp = sum(c * p * a ** (p - 1)
                      for p, c in coefs.items() if p >= 1)
             slope, _ = parse_line(result["final_answer"])

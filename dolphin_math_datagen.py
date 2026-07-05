@@ -172,6 +172,7 @@ from generators.solid_revolution_generator import SolidRevolutionGenerator
 from generators.separable_ode_generator import SeparableODEGenerator
 from generators.integration_by_parts_generator import IntegrationByPartsGenerator
 from generators.partial_fractions_generator import PartialFractionsGenerator
+from generators.telescoping_generator import TelescopingGenerator
 from generators.improper_integral_generator import ImproperIntegralGenerator
 from generators.euler_method_generator import EulerMethodGenerator
 from generators.logistic_growth_generator import LogisticGrowthGenerator
@@ -189,6 +190,7 @@ from generators.regression_generator import RegressionGenerator
 from generators.expected_value_generator import ExpectedValueGenerator
 from generators.confidence_interval_generator import ConfidenceIntervalGenerator
 from generators.hypothesis_test_generator import HypothesisTestGenerator
+from generators.two_sample_test_generator import TwoSampleTestGenerator
 from generators.chi_square_generator import ChiSquareGenerator
 from generators.permutation_combination_generator import PermutationCombinationGenerator
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
@@ -224,6 +226,7 @@ from generators.subspace_basis_generator import SubspaceBasisGenerator
 from generators.eigenvalue_generator import EigenvalueGenerator
 from generators.diagonalization_generator import DiagonalizationGenerator
 from generators.gram_schmidt_generator import GramSchmidtGenerator
+from generators.qr_decomposition_generator import QRDecompositionGenerator
 from generators.least_squares_generator import LeastSquaresGenerator
 from generators.matrix_exponential_generator import MatrixExponentialGenerator
 from generators.svd_generator import SVDGenerator
@@ -243,6 +246,9 @@ from generators.inclusion_exclusion_generator import InclusionExclusionGenerator
 from generators.stars_and_bars_generator import StarsAndBarsGenerator
 from generators.derangement_generator import DerangementGenerator
 from generators.recurrence_generator import RecurrenceGenerator
+from generators.master_theorem_generator import MasterTheoremGenerator
+from generators.induction_verify_generator import InductionVerifyGenerator
+from generators.counting_classics_generator import CountingClassicsGenerator
 from generators.generating_function_generator import GeneratingFunctionGenerator
 from generators.boolean_algebra_generator import BooleanAlgebraGenerator
 from generators.graph_counting_generator import GraphCountingGenerator
@@ -352,6 +358,7 @@ from generators.or_formula_generator import ORFormulaGenerator
 from generators.convolution_generator import ConvolutionGenerator
 from generators.dft_generator import DFTGenerator
 from generators.fourier_series_generator import FourierSeriesGenerator
+from generators.separable_pde_generator import SeparablePDEGenerator
 from generators.z_transform_generator import ZTransformGenerator
 from generators.signal_arithmetic_generator import SignalArithmeticGenerator
 from generators.transfer_function_generator import TransferFunctionGenerator
@@ -397,6 +404,7 @@ from generators.stoichiometry_generator import StoichiometryGenerator
 from generators.solution_chem_generator import SolutionChemGenerator
 from generators.ph_calculation_generator import PHCalculationGenerator
 from generators.gas_stoichiometry_generator import GasStoichiometryGenerator
+from generators.equilibrium_ice_generator import EquilibriumICEGenerator
 from generators.entropy_generator import EntropyGenerator
 from generators.mutual_information_generator import MutualInformationGenerator
 from generators.kl_divergence_generator import KLDivergenceGenerator
@@ -417,6 +425,7 @@ from generators.classifier_metrics_generator import ClassifierMetricsGenerator
 from generators.matrix_calculus_generator import MatrixCalculusGenerator
 from generators.matrix_norm_generator import MatrixNormGenerator
 from generators.positive_definite_generator import PositiveDefiniteGenerator
+from generators.cholesky_generator import CholeskyGenerator
 from generators.pca_generator import PCAGenerator
 from generators.embedding_similarity_generator import EmbeddingSimilarityGenerator
 from generators.low_rank_approx_generator import LowRankApproxGenerator
@@ -455,6 +464,7 @@ from generators.literal_equation_generator import LiteralEquationGenerator
 from generators.absolute_value_equation_generator import AbsoluteValueEquationGenerator
 from generators.absolute_value_inequality_generator import AbsoluteValueInequalityGenerator
 from generators.compound_inequality_generator import CompoundInequalityGenerator
+from generators.polynomial_inequality_generator import PolynomialInequalityGenerator
 from generators.slope_two_points_generator import SlopeTwoPointsGenerator
 from generators.slope_intercept_form_generator import SlopeInterceptFormGenerator
 from generators.equation_from_two_points_generator import EquationFromTwoPointsGenerator
@@ -669,6 +679,7 @@ ALL_GENERATORS = [
     AbsoluteValueEquationGenerator(),
     AbsoluteValueInequalityGenerator(),
     CompoundInequalityGenerator(),
+    PolynomialInequalityGenerator(),
     SlopeTwoPointsGenerator(),
     SlopeInterceptFormGenerator(),
     EquationFromTwoPointsGenerator(),
@@ -786,6 +797,7 @@ ALL_GENERATORS = [
     SeparableODEGenerator(),
     IntegrationByPartsGenerator(),
     PartialFractionsGenerator(),
+    TelescopingGenerator(),
     ImproperIntegralGenerator(),
     EulerMethodGenerator(),
     LogisticGrowthGenerator(),
@@ -803,6 +815,7 @@ ALL_GENERATORS = [
     ExpectedValueGenerator(),
     ConfidenceIntervalGenerator(),
     HypothesisTestGenerator(),
+    TwoSampleTestGenerator(),
     ChiSquareGenerator(),
     PermutationCombinationGenerator(),
     BinomialProbabilityGenerator(),
@@ -838,6 +851,7 @@ ALL_GENERATORS = [
     EigenvalueGenerator(),
     DiagonalizationGenerator(),
     GramSchmidtGenerator(),
+    QRDecompositionGenerator(),
     LeastSquaresGenerator(),
     MatrixExponentialGenerator(),
     SVDGenerator(),
@@ -857,6 +871,9 @@ ALL_GENERATORS = [
     StarsAndBarsGenerator(),
     DerangementGenerator(),
     RecurrenceGenerator(),
+    MasterTheoremGenerator(),
+    InductionVerifyGenerator(),
+    CountingClassicsGenerator(),
     GeneratingFunctionGenerator(),
     BooleanAlgebraGenerator(),
     GraphCountingGenerator(),
@@ -966,6 +983,7 @@ ALL_GENERATORS = [
     ConvolutionGenerator(),
     DFTGenerator(),
     FourierSeriesGenerator(),
+    SeparablePDEGenerator(),
     ZTransformGenerator(),
     SignalArithmeticGenerator(),
     TransferFunctionGenerator(),
@@ -1011,6 +1029,7 @@ ALL_GENERATORS = [
     SolutionChemGenerator(),
     PHCalculationGenerator(),
     GasStoichiometryGenerator(),
+    EquilibriumICEGenerator(),
     EntropyGenerator(),
     MutualInformationGenerator(),
     KLDivergenceGenerator(),
@@ -1031,6 +1050,7 @@ ALL_GENERATORS = [
     MatrixCalculusGenerator(),
     MatrixNormGenerator(),
     PositiveDefiniteGenerator(),
+    CholeskyGenerator(),
     PCAGenerator(),
     EmbeddingSimilarityGenerator(),
     LowRankApproxGenerator(),

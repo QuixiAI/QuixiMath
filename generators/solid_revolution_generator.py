@@ -36,8 +36,8 @@ class SolidRevolutionGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "disk":
-            k = random.randint(1, 3)
-            a = random.randint(1, 4)
+            k = random.randint(1, 50)
+            a = random.randint(1, 50)
             body = "x" if k == 1 else f"{k}x"
             vol = Fraction(k * k * a ** 3, 3)
             F = lambda x: Fraction(k * k * x ** 3, 3)
@@ -61,7 +61,7 @@ class SolidRevolutionGenerator(ProblemGenerator):
                        f"y = {body} on [0, {a}] is rotated about the "
                        f"x-axis. Give an exact answer in terms of π.")
         elif variant == "washer":
-            k = random.randint(1, 4)
+            k = random.randint(1, 600)
             body_o = "x" if k == 1 else f"{k}x"
             body_i = "x^2" if k == 1 else f"{k}x^2"
             vol = Fraction(2 * k * k, 15)
@@ -90,7 +90,7 @@ class SolidRevolutionGenerator(ProblemGenerator):
                        f"rotated about the x-axis. Give an exact "
                        f"answer in terms of π.")
         elif variant == "shell":
-            a = random.randint(2, 6)
+            a = random.randint(2, 600)
             steps = [
                 step("VOLUME_SETUP",
                      f"region under y = x({a} - x) on [0, {a}], "
@@ -115,7 +115,7 @@ class SolidRevolutionGenerator(ProblemGenerator):
                        f"is rotated about the y-axis. Give an exact "
                        f"answer in terms of π.")
         else:
-            c = random.randint(2, 6)
+            c = random.randint(2, 600)
             vol = Fraction(c ** 3, 3)
             steps = [
                 step("VOLUME_SETUP",

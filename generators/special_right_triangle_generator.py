@@ -36,7 +36,7 @@ class SpecialRightTriangleGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "45_from_leg":
-            s = random.randint(2, 14)
+            s = random.randint(2, 300)
             steps = [
                 step("TRI_SETUP", f"45-45-90 triangle, leg = {s}",
                      "hypotenuse"),
@@ -48,7 +48,7 @@ class SpecialRightTriangleGenerator(ProblemGenerator):
             problem = (f"A 45-45-90 triangle has legs of length {s}. "
                        f"Find the hypotenuse. Give an exact answer.")
         elif variant == "45_from_hyp":
-            k = random.randint(2, 10)
+            k = random.randint(2, 300)
             h = 2 * k
             steps = [
                 step("TRI_SETUP", f"45-45-90 triangle, hypotenuse = {h}",
@@ -66,7 +66,7 @@ class SpecialRightTriangleGenerator(ProblemGenerator):
                        f"the length of each leg. Give an exact answer.")
             return self._pack(variant, problem, steps, answer)
         elif variant == "30_from_short":
-            s = random.randint(2, 12)
+            s = random.randint(2, 300)
             steps = [
                 step("TRI_SETUP", f"30-60-90 triangle, shorter leg = {s}",
                      "longer leg and hypotenuse"),
@@ -80,7 +80,7 @@ class SpecialRightTriangleGenerator(ProblemGenerator):
                        f"Find the longer leg and the hypotenuse. Give "
                        f"exact answers.")
         elif variant == "30_from_hyp":
-            s = random.randint(2, 12)
+            s = random.randint(2, 300)
             h = 2 * s
             steps = [
                 step("TRI_SETUP", f"30-60-90 triangle, hypotenuse = {h}",
@@ -94,7 +94,7 @@ class SpecialRightTriangleGenerator(ProblemGenerator):
             problem = (f"The hypotenuse of a 30-60-90 triangle is {h}. "
                        f"Find both legs. Give exact answers.")
         else:
-            k = random.randint(2, 12)
+            k = random.randint(2, 300)
             steps = [
                 step("TRI_SETUP",
                      f"30-60-90 triangle, longer leg = {k}√3",

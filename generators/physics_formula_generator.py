@@ -48,8 +48,11 @@ class PhysicsFormulaGenerator(ProblemGenerator):
             step("Z", answer),
         ]
         problem = (
-            f"A force of {force} newtons moves an object {distance} "
-            "meters. Find the work done."
+            random.choice([
+                f"A force of {force} newtons moves an object {distance} meters. Find the work done.",
+                f"During a lab, a force of {force} newtons moves an object {distance} meters. How much work is done?",
+                f"If a constant force of {force} newtons moves an object {distance} meters, compute the work.",
+            ])
         )
         return "work", problem, steps, answer
 
@@ -67,8 +70,11 @@ class PhysicsFormulaGenerator(ProblemGenerator):
             step("Z", answer),
         ]
         problem = (
-            f"{work} joules of work move an object {distance} meters. "
-            "Find the force."
+            random.choice([
+                f"{work} joules of work move an object {distance} meters. Find the force.",
+                f"A crate gains {work} joules of work move an object {distance} meters. Find the force.",
+                f"In a work calculation, {work} joules of work move an object {distance} meters. What force was applied?",
+            ])
         )
         return "force", problem, steps, answer
 
@@ -86,8 +92,11 @@ class PhysicsFormulaGenerator(ProblemGenerator):
             step("Z", answer),
         ]
         problem = (
-            f"A machine does {work} joules of work in {time} seconds. "
-            "Find the power."
+            random.choice([
+                f"A machine does {work} joules of work in {time} seconds. Find the power.",
+                f"During a test, a machine does {work} joules of work in {time} seconds. Compute the power.",
+                f"If a motor does {work} joules of work in {time} seconds, what is the power?",
+            ])
         )
         return "power_seconds", problem, steps, answer
 
@@ -108,8 +117,11 @@ class PhysicsFormulaGenerator(ProblemGenerator):
             step("Z", answer),
         ]
         problem = (
-            f"A machine does {work} joules of work in {minutes} {minute_unit}. "
-            "Find the power in watts."
+            random.choice([
+                f"A machine does {work} joules of work in {minutes} {minute_unit}. Find the power in watts.",
+                f"During a longer run, a machine does {work} joules of work in {minutes} {minute_unit}. Compute the power in watts.",
+                f"If a pump does {work} joules of work in {minutes} {minute_unit}, find the power in watts.",
+            ])
         )
         return "power_minutes", problem, steps, answer
 
@@ -130,8 +142,11 @@ class PhysicsFormulaGenerator(ProblemGenerator):
             step("Z", answer),
         ]
         problem = (
-            f"A device runs at {power} watts for {minutes} {minute_unit}. "
-            "How much energy does it use in joules?"
+            random.choice([
+                f"A device runs at {power} watts for {minutes} {minute_unit}. How much energy does it use in joules?",
+                f"An appliance runs at {power} watts for {minutes} {minute_unit}. Find the energy used in joules.",
+                f"If a tool runs at {power} watts for {minutes} {minute_unit}, how much energy is used in joules?",
+            ])
         )
         return "energy", problem, steps, answer
 

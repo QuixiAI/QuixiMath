@@ -22,6 +22,16 @@ def line_txt(m, k):
     return f"{head} + {k}" if k > 0 else f"{head} - {-k}"
 
 
+def problem_txt(kind, f_txt, a_pt):
+    templates = [
+        f"Find the equation of the {kind} line to f(x) = {f_txt} at x = {a_pt}.",
+        f"At x = {a_pt}, find the {kind} line for f(x) = {f_txt}.",
+        f"For f(x) = {f_txt}, determine the {kind} line at x = {a_pt}.",
+        f"What is the {kind} line to the curve y = {f_txt} when x = {a_pt}?",
+    ]
+    return random.choice(templates)
+
+
 class TangentLineGenerator(ProblemGenerator):
     """
     Tangent and normal lines to a quadratic at a lattice point:
@@ -103,8 +113,7 @@ class TangentLineGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation=f"{variant}_line",
-            problem=(f"Find the equation of the {variant} line to "
-                     f"f(x) = {f_txt} at x = {a_pt}."),
+            problem=problem_txt(variant, f_txt, a_pt),
             steps=steps,
             final_answer=answer,
         )

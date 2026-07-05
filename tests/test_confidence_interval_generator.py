@@ -34,11 +34,11 @@ def oracle_check(example):
             sigma = num(r"σ = (\d+)", p)
             n = math.ceil((z * sigma / E) ** 2)
         return ans == str(n)
-    if "margin of error for a confidence interval for the proportion" in p:
+    if "proportion" in p and "margin of error" in p:
         n = int(num(r"sample of size (\d+)", p))
         E = z * (Fraction(1, 2) / math.isqrt(n))
         return ans == dec(E)
-    if "margin of error for a confidence interval for the mean" in p:
+    if "margin of error" in p and "mean" in p:
         n = int(num(r"sample of size (\d+)", p))
         sigma = num(r"σ = (\d+)", p)
         return ans == dec(z * sigma / math.isqrt(n))

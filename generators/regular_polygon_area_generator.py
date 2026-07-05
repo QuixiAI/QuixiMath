@@ -25,7 +25,7 @@ class RegularPolygonAreaGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         n = random.randint(5, 10)
-        s = random.randint(4, 14)
+        s = random.randint(4, 300)
         true_a = s / (2 * math.tan(math.pi / n))
         a = Fraction(round(true_a * 2), 2)  # nearest half, exact
         P = n * s

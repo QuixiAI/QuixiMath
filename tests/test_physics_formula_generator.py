@@ -33,7 +33,7 @@ def oracle_answer(example):
         return f"{work // distance} newtons"
 
     m = re.search(
-        r"machine does (\d+) joules of work in (\d+) seconds",
+        r"(?:machine|motor) does (\d+) joules of work in (\d+) seconds",
         problem,
     )
     if m:
@@ -41,14 +41,14 @@ def oracle_answer(example):
         return f"{work // seconds} watts"
 
     m = re.search(
-        r"machine does (\d+) joules of work in (\d+) minutes?",
+        r"(?:machine|pump) does (\d+) joules of work in (\d+) minutes?",
         problem,
     )
     if m:
         work, minutes = (int(v) for v in m.groups())
         return f"{work // (minutes * 60)} watts"
 
-    m = re.search(r"device runs at (\d+) watts for (\d+) minutes?", problem)
+    m = re.search(r"(?:device|appliance|tool) runs at (\d+) watts for (\d+) minutes?", problem)
     power, minutes = (int(v) for v in m.groups())
     return f"{power * minutes * 60} joules"
 

@@ -31,10 +31,12 @@ class LHopitalGenerator(ProblemGenerator):
         self.variant = variant
 
     def generate(self) -> dict:
-        variant = self.variant or random.choice(self.VARIANTS)
+        variant = self.variant or random.choices(
+            self.VARIANTS, weights=[7, 1, 1, 1]
+        )[0]
 
         if variant == "rational":
-            r, s = random.sample([v for v in range(-6, 7) if v != 0], 2)
+            r, s = random.sample([v for v in range(-50, 51) if v != 0], 2)
             B, C = -(r + s), r * s
             num = poly_txt([1, B, C], "x")
             den = binomial("x", -r)
@@ -59,7 +61,7 @@ class LHopitalGenerator(ProblemGenerator):
             ]
             answer = str(val)
         elif variant == "sin":
-            k = random.randint(2, 7)
+            k = random.randint(2, 40)
             limit_txt = f"lim x→0 of sin({k}x)/x"
             steps = [
                 step("LIMIT_SETUP", limit_txt, "L'Hôpital's rule"),
@@ -75,7 +77,7 @@ class LHopitalGenerator(ProblemGenerator):
             answer = str(k)
         elif variant == "exp_log":
             if random.random() < 0.6:
-                k = random.randint(2, 7)
+                k = random.randint(2, 40)
                 limit_txt = f"lim x→0 of (e^({k}x) - 1)/x"
                 steps = [
                     step("LIMIT_SETUP", limit_txt, "L'Hôpital's rule"),
@@ -106,7 +108,7 @@ class LHopitalGenerator(ProblemGenerator):
                 ]
                 answer = "1"
         else:
-            k = random.randint(2, 6)
+            k = random.randint(2, 40)
             val = Fraction(k * k, 2)
             limit_txt = f"lim x→0 of (1 - cos({k}x))/x^2"
             steps = [

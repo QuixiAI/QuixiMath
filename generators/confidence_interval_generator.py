@@ -71,10 +71,11 @@ class ConfidenceIntervalGenerator(ProblemGenerator):
             ]
             if variant == "mean_margin":
                 answer = dec(E)
-                problem = (f"A sample of size {n} has population "
-                           f"standard deviation σ = {sigma}. Using "
-                           f"z* = {z}, find the margin of error for a "
-                           f"confidence interval for the mean.")
+                problem = random.choice([
+                    f"A sample of size {n} has population standard deviation σ = {sigma}. Using z* = {z}, find the margin of error for a confidence interval for the mean.",
+                    f"For a mean confidence interval, a sample of size {n} has population standard deviation σ = {sigma}. Using z* = {z}, find the margin of error.",
+                    f"Using z* = {z}, find the margin of error for a confidence interval for the mean when a sample of size {n} has σ = {sigma}.",
+                ])
             else:
                 xbar = random.randint(20, 200)
                 lo, hi = xbar - E, xbar + E
@@ -85,10 +86,11 @@ class ConfidenceIntervalGenerator(ProblemGenerator):
                     step("REWRITE", f"({dec(lo)}, {dec(hi)})"),
                 ]
                 answer = f"({dec(lo)}, {dec(hi)})"
-                problem = (f"A sample of size {n} has mean x̄ = {xbar} "
-                           f"and population standard deviation "
-                           f"σ = {sigma}. Using z* = {z}, find the "
-                           f"confidence interval for the mean.")
+                problem = random.choice([
+                    f"A sample of size {n} has mean x̄ = {xbar} and population standard deviation σ = {sigma}. Using z* = {z}, find the confidence interval for the mean.",
+                    f"Using z* = {z}, find the confidence interval for the mean for a sample of size {n} with x̄ = {xbar} and σ = {sigma}.",
+                    f"A study reports x̄ = {xbar}, σ = {sigma}, and a sample of size {n}. Using z* = {z}, find the confidence interval for the mean.",
+                ])
         elif variant == "prop_margin":
             n = random.choice(SQUARE_N)
             root = int(math.isqrt(n))
@@ -107,10 +109,11 @@ class ConfidenceIntervalGenerator(ProblemGenerator):
                 step("M", z, dec(se_root), dec(E)),
             ]
             answer = dec(E)
-            problem = (f"A sample of size {n} has sample proportion "
-                       f"p̂ = 0.5. Using z* = {z}, find the margin of "
-                       f"error for a confidence interval for the "
-                       f"proportion.")
+            problem = random.choice([
+                f"A sample of size {n} has sample proportion p̂ = 0.5. Using z* = {z}, find the margin of error for a confidence interval for the proportion.",
+                f"Using z* = {z}, find the margin of error for a confidence interval for the proportion when a sample of size {n} has p̂ = 0.5.",
+                f"In a proportion study, a sample of size {n} has p̂ = 0.5. Using z* = {z}, find the margin of error for a confidence interval for the proportion.",
+            ])
         elif variant == "sample_size_mean":
             sigma = random.randint(2, 30)
             E = random.choice(MARGINS)
@@ -130,10 +133,11 @@ class ConfidenceIntervalGenerator(ProblemGenerator):
                 step("CEIL", dec(sq), n),
             ]
             answer = str(n)
-            problem = (f"You want a margin of error of {E} for a "
-                       f"confidence interval for the mean, with "
-                       f"population standard deviation σ = {sigma}. "
-                       f"Using z* = {z}, find the minimum sample size.")
+            problem = random.choice([
+                f"You want a margin of error of {E} for a confidence interval for the mean, with population standard deviation σ = {sigma}. Using z* = {z}, find the minimum sample size.",
+                f"Using z* = {z}, find the minimum sample size for a mean confidence interval with margin of error of {E} and σ = {sigma}.",
+                f"A planned mean confidence interval needs margin of error of {E}, with σ = {sigma}. Using z* = {z}, find the minimum sample size.",
+            ])
         else:
             phat = Fraction(random.choice([2, 3, 4, 5, 6, 7, 8]), 10)
             E = random.choice(PROP_MARGINS)
@@ -155,10 +159,11 @@ class ConfidenceIntervalGenerator(ProblemGenerator):
                 step("CEIL", dec(val), n),
             ]
             answer = str(n)
-            problem = (f"You want a margin of error of {E} for a "
-                       f"confidence interval for a proportion, with "
-                       f"estimated p̂ = {dec(phat)}. Using z* = {z}, "
-                       f"find the minimum sample size.")
+            problem = random.choice([
+                f"You want a margin of error of {E} for a confidence interval for a proportion, with estimated p̂ = {dec(phat)}. Using z* = {z}, find the minimum sample size.",
+                f"Using z* = {z}, find the minimum sample size for a proportion confidence interval with margin of error of {E} and estimated p̂ = {dec(phat)}.",
+                f"A planned proportion interval uses estimated p̂ = {dec(phat)} and margin of error of {E}. Using z* = {z}, find the minimum sample size.",
+            ])
         steps.append(step("Z", answer))
 
         return dict(

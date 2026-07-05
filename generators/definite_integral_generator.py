@@ -5,6 +5,22 @@ from helpers import step, jid
 from generators.derivative_power_rule_generator import poly_pow, term_pow
 
 
+def ftc_problem(a, b, f_txt):
+    return random.choice([
+        f"Evaluate ∫ from {a} to {b} of ({f_txt}) dx using the Fundamental Theorem of Calculus.",
+        f"Use the Fundamental Theorem of Calculus to evaluate ∫ from {a} to {b} of ({f_txt}) dx.",
+        f"Compute the definite integral ∫ from {a} to {b} of ({f_txt}) dx.",
+    ])
+
+
+def average_problem(a, b, f_txt):
+    return random.choice([
+        f"Find the average value of f(x) = {f_txt} on [{a}, {b}].",
+        f"Compute the average value of f(x) = {f_txt} over [{a}, {b}].",
+        f"On [{a}, {b}], find the average value of f(x) = {f_txt}.",
+    ])
+
+
 class DefiniteIntegralGenerator(ProblemGenerator):
     """
     Definite integrals by the FTC, and average value: antiderivative
@@ -77,16 +93,14 @@ class DefiniteIntegralGenerator(ProblemGenerator):
 
         if variant == "ftc":
             answer = str(integral)
-            problem = (f"Evaluate ∫ from {a} to {b} of ({f_txt}) dx "
-                       f"using the Fundamental Theorem of Calculus.")
+            problem = ftc_problem(a, b, f_txt)
         else:
             width = b - a
             avg = Fraction(integral, width)
             steps.append(step("S", b, a, width))
             steps.append(step("D", integral, width, avg))
             answer = str(avg)
-            problem = (f"Find the average value of f(x) = {f_txt} on "
-                       f"[{a}, {b}].")
+            problem = average_problem(a, b, f_txt)
         steps.append(step("Z", answer))
 
         return dict(

@@ -58,9 +58,10 @@ class TrigEquationGenerator(ProblemGenerator):
         self.variant = variant
 
     @staticmethod
-    def _place_steps(steps, fn, v):
+    def _place_steps(steps, fn, v, cycles=1):
         """TABLE_LOOKUP + SIGN_RULE + SOLUTIONS for fn(x) = v."""
-        sols = SOLUTIONS[fn][v]
+        base_sols = SOLUTIONS[fn][v]
+        sols = [d + 360 * j for j in range(cycles) for d in base_sols]
         ref = v.lstrip("-")
         if v not in ("0", "1", "-1") or fn == "tan" and v != "0":
             if ref in ("1", "√3", "√3/3") and fn == "tan" or fn != "tan":
@@ -79,6 +80,8 @@ class TrigEquationGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        cycles = random.randint(1, 40)
+        upper = 360 * cycles
 
         if variant == "linear":
             fn = random.choice(["sin", "cos", "tan"])
@@ -88,7 +91,7 @@ class TrigEquationGenerator(ProblemGenerator):
                 sign = "+" if v.startswith("-") else "-"
                 eq = f"tan x {sign} {k} = 0" if v != "0" \
                     else "tan x = 0"
-                steps = [step("EQ_SETUP", eq, "solve on [0°, 360°)")]
+                steps = [step("EQ_SETUP", eq, f"solve on [0°, {upper}°)")]
                 if v != "0":
                     steps.append(step("EQ_OP_BOTH",
                                       "add" if sign == "-" else "subtract",
@@ -100,7 +103,7 @@ class TrigEquationGenerator(ProblemGenerator):
                 sign = "+" if v.startswith("-") else "-"
                 eq = f"2 {fn} x {sign} {k} = 0"
                 steps = [
-                    step("EQ_SETUP", eq, "solve on [0°, 360°)"),
+                    step("EQ_SETUP", eq, f"solve on [0°, {upper}°)"),
                     step("EQ_OP_BOTH",
                          "add" if sign == "-" else "subtract", k,
                          f"2 {fn} x",
@@ -108,10 +111,10 @@ class TrigEquationGenerator(ProblemGenerator):
                     step("EQ_OP_BOTH", "divide", 2, f"{fn} x", v),
                     step("EVAL", f"{fn} x", v),
                 ]
-            sols = self._place_steps(steps, fn, v)
+            sols = self._place_steps(steps, fn, v, cycles)
             answer = "x = " + ", ".join(f"{d}°" for d in sorted(sols))
             steps.append(step("Z", answer))
-            problem = f"Solve {eq} for 0° ≤ x < 360°."
+            problem = f"Solve {eq} for 0° ≤ x < {upper}°."
             return self._pack("trig_equation_linear", problem, steps,
                               answer)
 
@@ -129,7 +132,7 @@ class TrigEquationGenerator(ProblemGenerator):
 
         factored = ftxt.replace("U", f"{fn} x")
         steps = [
-            step("EQ_SETUP", eq, "solve on [0°, 360°)"),
+            step("EQ_SETUP", eq, f"solve on [0°, {upper}°)"),
             step("SUBST", "u", f"{fn} x",
                  f"{a if a > 1 else ''}u^2 "
                  f"{'+' if b > 0 else '-'} "
@@ -142,10 +145,10 @@ class TrigEquationGenerator(ProblemGenerator):
         ]
         all_sols = []
         for r in roots:
-            all_sols.extend(self._place_steps(steps, fn, r))
+            all_sols.extend(self._place_steps(steps, fn, r, cycles))
         answer = "x = " + ", ".join(f"{d}°" for d in sorted(all_sols))
         steps.append(step("Z", answer))
-        problem = f"Solve {eq} for 0° ≤ x < 360°."
+        problem = f"Solve {eq} for 0° ≤ x < {upper}°."
         return self._pack("trig_equation_quadratic", problem, steps,
                           answer)
 

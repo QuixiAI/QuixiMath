@@ -35,7 +35,7 @@ class OptimizationGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "barn_fence":
-            P = 4 * random.randint(10, 60)
+            P = 4 * random.randint(10, 1000)
             x = P // 4
             other = P - 2 * x
             area = x * other
@@ -58,7 +58,7 @@ class OptimizationGenerator(ProblemGenerator):
                        f"forms one side). What dimensions maximize the "
                        f"area, and what is that area?")
         elif variant == "box":
-            W = 6 * random.randint(1, 5)
+            W = 6 * random.randint(1, 800)
             xs = W // 6
             side = W - 2 * xs
             vol = xs * side * side
@@ -93,7 +93,7 @@ class OptimizationGenerator(ProblemGenerator):
                        f"corners and folding. What x maximizes the "
                        f"volume, and what is that volume?")
         else:
-            S = 3 * random.randint(2, 12)
+            S = 3 * random.randint(2, 1000)
             y = 2 * S // 3
             x = S - y
             best = x * y * y

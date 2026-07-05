@@ -34,8 +34,8 @@ class SeparableODEGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "exponential":
-            k = random.choice([v for v in range(-5, 6) if v != 0])
-            y0 = random.choice([2, 3, 4, 5, 7, 10])
+            k = random.choice([v for v in range(-10, 11) if v != 0])
+            y0 = random.randint(2, 200)
             kt = "t" if k == 1 else "-t" if k == -1 else f"{k}t"
             answer = f"y = {y0}e^({kt})"
             steps = [
@@ -51,7 +51,7 @@ class SeparableODEGenerator(ProblemGenerator):
             ]
             problem = f"Solve dy/dt = {k}y with y(0) = {y0}."
         elif variant == "find_k":
-            T = random.choice([2, 3, 4, 5, 8, 10, 12])
+            T = random.randint(2, 240)
             double = random.random() < 0.6
             word = "doubles" if double else "halves"
             answer = (f"k = ln(2)/{T}" if double
@@ -71,7 +71,7 @@ class SeparableODEGenerator(ProblemGenerator):
             problem = (f"A quantity satisfies dy/dt = ky and {word} "
                        f"every {T} hours. Find k exactly.")
         elif variant == "power":
-            c = random.choice([1, 2, 3, 4])
+            c = random.randint(1, 120)
             answer = f"y = ∛(x^3 + {c ** 3})"
             steps = [
                 step("ODE_SETUP", f"dy/dx = x^2/y^2, y(0) = {c}",
@@ -88,7 +88,7 @@ class SeparableODEGenerator(ProblemGenerator):
             ]
             problem = f"Solve dy/dx = x^2/y^2 with y(0) = {c}."
         else:
-            a = random.choice([1, 2, 3, 4, 5])
+            a = random.randint(1, 120)
             ax = "x" if a == 1 else f"{a}x"
             answer = f"y = {a}/(1 - {ax})"
             steps = [

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**476 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**486 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1528,7 +1528,7 @@ Work, force, power, and energy formula chains with unit-consistent arithmetic. M
 **Variants:** `physics_formula_energy`, `physics_formula_force`, `physics_formula_power_minutes`, `physics_formula_power_seconds`, `physics_formula_work`
 
 ```
-Problem: A machine does 7020 joules of work in 1 minute. Find the power in watts.
+Problem: During a longer run, a machine does 7020 joules of work in 1 minute. Compute the power in watts.
 Steps:
   PHYS_SETUP|W = 7020 joules|t = 1 minute|power
   UNIT_CONVERT|1 minute|60 seconds
@@ -2052,6 +2052,29 @@ Steps:
   COMP_INEQ_PART|Part 2|3x - 9 > 9 -> x > 6
   Z|x < -6 or x > 6
 Answer: x < -6 or x > 6
+```
+
+### Polynomial Inequality — `PolynomialInequalityGenerator`  ·  high · difficulty 5
+
+Polynomial and rational inequalities solved by sign charts.
+
+**Variants:** `polynomial_inequality_cubic`, `polynomial_inequality_expanded_quadratic`, `polynomial_inequality_factored_quadratic`, `polynomial_inequality_rational`
+
+```
+Problem: Solve (x + 7)/x ≥ 0. Give the answer in interval notation.
+Steps:
+  INEQ_SETUP|(x + 7)/x ≥ 0
+  ZERO_PRODUCT|(x + 7) = 0|x = -7
+  CHECK|x = 0|x = 0|excluded pole
+  SIGN_CHART|critical values|-7, 0
+  TRY|(-∞, -7)|x = -8
+  ACCEPT|(-∞, -7)|(x + 7)/x ≥ 0 is accept
+  TRY|(-7, 0)|x = -7/2
+  REJECT|(-7, 0)|(x + 7)/x ≥ 0 is reject
+  TRY|(0, ∞)|x = 1
+  ACCEPT|(0, ∞)|(x + 7)/x ≥ 0 is accept
+  Z|(-∞, -7] ∪ (0, ∞)
+Answer: (-∞, -7] ∪ (0, ∞)
 ```
 
 ### Slope Two Points — `SlopeTwoPointsGenerator`  ·  high · difficulty 4
@@ -3374,16 +3397,16 @@ Area of a regular polygon from its apothem: A = (1/2)·a·P. The perimeter is co
 **Variants:** `regular_polygon_area`
 
 ```
-Problem: A regular octagon has side length 10 and apothem 12. Find its area.
+Problem: A regular octagon has side length 219 and apothem 264.5. Find its area.
 Steps:
-  POLY_SETUP|regular octagon: n = 8, side 10, apothem 12|area
+  POLY_SETUP|regular octagon: n = 8, side 219, apothem 264.5|area
   POLY_FORMULA|A = (1/2)·a·P
-  M|8|10|80
-  EVAL|P|80
-  M|12|80|960
-  D|960|2|480
-  Z|480 square units
-Answer: 480 square units
+  M|8|219|1752
+  EVAL|P|1752
+  M|264.5|1752|463404
+  D|463404|2|231702
+  Z|231702 square units
+Answer: 231702 square units
 ```
 
 ### Similar Triangles — `SimilarTrianglesGenerator`  ·  high · difficulty 4
@@ -3609,14 +3632,14 @@ Answer: 4
 **Variants:** `special_right_triangle_30_from_hyp`, `special_right_triangle_30_from_long`, `special_right_triangle_30_from_short`, `special_right_triangle_45_from_hyp`, `special_right_triangle_45_from_leg`
 
 ```
-Problem: The hypotenuse of a 30-60-90 triangle is 16. Find both legs. Give exact answers.
+Problem: The hypotenuse of a 30-60-90 triangle is 434. Find both legs. Give exact answers.
 Steps:
-  TRI_SETUP|30-60-90 triangle, hypotenuse = 16|both legs
+  TRI_SETUP|30-60-90 triangle, hypotenuse = 434|both legs
   THEOREM|30-60-90 ratios|short : long : hypotenuse = 1 : √3 : 2
-  D|16|2|8
-  REWRITE|longer leg = 8√3
-  Z|shorter leg = 8; longer leg = 8√3
-Answer: shorter leg = 8; longer leg = 8√3
+  D|434|2|217
+  REWRITE|longer leg = 217√3
+  Z|shorter leg = 217; longer leg = 217√3
+Answer: shorter leg = 217; longer leg = 217√3
 ```
 
 ### Angle Measure — `AngleMeasureGenerator`  ·  high · difficulty 4
@@ -3706,23 +3729,23 @@ Exact evaluations through identities.
 **Variants:** `trig_identity_double`, `trig_identity_half`, `trig_identity_sum_diff`
 
 ```
-Problem: Given sin θ = -24/25 with θ in quadrant IV, find sin 2θ and cos 2θ.
+Problem: Given sin θ = -1323/1565 with θ in quadrant IV, find sin 2θ and cos 2θ.
 Steps:
-  TRIG_SETUP|sin θ = -24/25, θ in quadrant IV|sin 2θ and cos 2θ
-  THEOREM|Pythagorean identity|cos θ = ±7/25
+  TRIG_SETUP|sin θ = -1323/1565, θ in quadrant IV|sin 2θ and cos 2θ
+  THEOREM|Pythagorean identity|cos θ = ±836/1565
   SIGN_RULE|cos, quadrant IV|positive
-  EVAL|cos θ|7/25
+  EVAL|cos θ|836/1565
   THEOREM|double angle|sin 2θ = 2 sin θ cos θ
-  M|2|-24/25|-48/25
-  M|-48/25|7/25|-336/625
-  EVAL|sin 2θ|-336/625
+  M|2|-1323/1565|-2646/1565
+  M|-2646/1565|836/1565|-2212056/2449225
+  EVAL|sin 2θ|-2212056/2449225
   THEOREM|double angle|cos 2θ = 1 - 2 sin^2 θ
-  E|-24/25|2|576/625
-  M|2|576/625|1152/625
-  S|1|1152/625|-527/625
-  EVAL|cos 2θ|-527/625
-  Z|sin 2θ = -336/625; cos 2θ = -527/625
-Answer: sin 2θ = -336/625; cos 2θ = -527/625
+  E|-1323/1565|2|1750329/2449225
+  M|2|1750329/2449225|3500658/2449225
+  S|1|3500658/2449225|-1051433/2449225
+  EVAL|cos 2θ|-1051433/2449225
+  Z|sin 2θ = -2212056/2449225; cos 2θ = -1051433/2449225
+Answer: sin 2θ = -2212056/2449225; cos 2θ = -1051433/2449225
 ```
 
 ### Trig Identity Verify — `TrigIdentityVerifyGenerator`  ·  high · difficulty 5
@@ -3753,18 +3776,17 @@ Trig equations over [0°, 360°).
 **Variants:** `trig_equation_linear`, `trig_equation_quadratic`
 
 ```
-Problem: Solve 2cos^2 x - cos x - 1 = 0 for 0° ≤ x < 360°.
+Problem: Solve 2sin^2 x - 3 sin x + 1 = 0 for 0° ≤ x < 9720°.
 Steps:
-  EQ_SETUP|2cos^2 x - cos x - 1 = 0|solve on [0°, 360°)
-  SUBST|u|cos x|2u^2 - u - 1 = 0
-  REWRITE|(2cos x + 1)(cos x - 1) = 0
-  ZERO_PRODUCT|(2cos x + 1)(cos x - 1) = 0|cos x = -1/2 or cos x = 1
-  TABLE_LOOKUP|cos reference for 1/2|60°
-  SIGN_RULE|cos negative|quadrants II and III
-  SOLUTIONS|cos x = -1/2|120°, 240°
-  SOLUTIONS|cos x = 1|0°
-  Z|x = 0°, 120°, 240°
-Answer: x = 0°, 120°, 240°
+  EQ_SETUP|2sin^2 x - 3 sin x + 1 = 0|solve on [0°, 9720°)
+  SUBST|u|sin x|2u^2 - 3u + 1 = 0
+  REWRITE|(2sin x - 1)(sin x - 1) = 0
+  ZERO_PRODUCT|(2sin x - 1)(sin x - 1) = 0|sin x = 1/2 or sin x = 1
+  TABLE_LOOKUP|sin reference for 1/2|30°
+  SOLUTIONS|sin x = 1/2|30°, 150°, 390°, 510°, 750°, 870°, 1110°, 1230°, 1470°, 1590°, 1830°, 1950°, 2190°, 2310°, 2550°, 2670°, 2910°, 3030°, 3270°, 3390°, 3630°, 3750°, 3990°, 4110°, 4350°, 4470°, 4710°, 4830°, 5070°, 5190°, 5430°, 5550°, 5790°, 5910°, 6150°, 6270°, 6510°, 6630°, 6870°, 6990°, 7230°, 7350°, 7590°, 7710°, 7950°, 8070°, 8310°, 8430°, 8670°, 8790°, 9030°, 9150°, 9390°, 9510°
+  SOLUTIONS|sin x = 1|90°, 450°, 810°, 1170°, 1530°, 1890°, 2250°, 2610°, 2970°, 3330°, 3690°, 4050°, 4410°, 4770°, 5130°, 5490°, 5850°, 6210°, 6570°, 6930°, 7290°, 7650°, 8010°, 8370°, 8730°, 9090°, 9450°
+  Z|x = 30°, 90°, 150°, 390°, 450°, 510°, 750°, 810°, 870°, 1110°, 1170°, 1230°, 1470°, 1530°, 1590°, 1830°, 1890°, 1950°, 2190°, 2250°, 2310°, 2550°, 2610°, 2670°, 2910°, 2970°, 3030°, 3270°, 3330°, 3390°, 3630°, 3690°, 3750°, 3990°, 4050°, 4110°, 4350°, 4410°, 4470°, 4710°, 4770°, 4830°, 5070°, 5130°, 5190°, 5430°, 5490°, 5550°, 5790°, 5850°, 5910°, 6150°, 6210°, 6270°, 6510°, 6570°, 6630°, 6870°, 6930°, 6990°, 7230°, 7290°, 7350°, 7590°, 7650°, 7710°, 7950°, 8010°, 8070°, 8310°, 8370°, 8430°, 8670°, 8730°, 8790°, 9030°, 9090°, 9150°, 9390°, 9450°, 9510°
+Answer: x = 30°, 90°, 150°, 390°, 450°, 510°, 750°, 810°, 870°, 1110°, 1170°, 1230°, 1470°, 1530°, 1590°, 1830°, 1890°, 1950°, 2190°, 2250°, 2310°, 2550°, 2610°, 2670°, 2910°, 2970°, 3030°, 3270°, 3330°, 3390°, 3630°, 3690°, 3750°, 3990°, 4050°, 4110°, 4350°, 4410°, 4470°, 4710°, 4770°, 4830°, 5070°, 5130°, 5190°, 5430°, 5490°, 5550°, 5790°, 5850°, 5910°, 6150°, 6210°, 6270°, 6510°, 6570°, 6630°, 6870°, 6930°, 6990°, 7230°, 7290°, 7350°, 7590°, 7650°, 7710°, 7950°, 8010°, 8070°, 8310°, 8370°, 8430°, 8670°, 8730°, 8790°, 9030°, 9090°, 9150°, 9390°, 9450°, 9510°
 ```
 
 ### Triangle Solve — `TriangleSolveGenerator`  ·  high · difficulty 5
@@ -4182,7 +4204,7 @@ Tangent and normal lines to a quadratic at a lattice point: evaluate f(a), diffe
 **Variants:** `normal_line`, `tangent_line`
 
 ```
-Problem: Find the equation of the tangent line to f(x) = -x^2 - 6x at x = 1.
+Problem: For f(x) = -x^2 - 6x, determine the tangent line at x = 1.
 Steps:
   DERIV_SETUP|f(x) = -x^2 - 6x, at x = 1|tangent line
   SUBST|x|1|-1^2 - 61
@@ -4253,21 +4275,17 @@ L'Hôpital's rule with the 0/0 form checked before every application - including
 **Variants:** `lhopital_double`, `lhopital_exp_log`, `lhopital_rational`, `lhopital_sin`
 
 ```
-Problem: Evaluate lim x→0 of (1 - cos(5x))/x^2 using L'Hôpital's rule.
+Problem: Evaluate lim x→1 of ln(x)/(x - 1) using L'Hôpital's rule.
 Steps:
-  LIMIT_SETUP|lim x→0 of (1 - cos(5x))/x^2|L'Hôpital's rule
-  CHECK|substitution|1 - cos 0 = 0 and 0^2 = 0|indeterminate 0/0
+  LIMIT_SETUP|lim x→1 of ln(x)/(x - 1)|L'Hôpital's rule
+  CHECK|substitution|ln 1 = 0 and 1 - 1 = 0|indeterminate 0/0
   DERIV_RULE|L'Hôpital|replace with f'(x)/g'(x)
-  POWER_RULE|1 - cos(5x)|5 sin(5x)
-  POWER_RULE|x^2|2x
-  REWRITE|lim x→0 of 5 sin(5x)/(2x)
-  CHECK|substitution|5 sin 0 = 0 and 2·0 = 0|still 0/0 — apply the rule again
-  POWER_RULE|5 sin(5x)|25 cos(5x)
-  POWER_RULE|2x|2
-  REWRITE|lim x→0 of 25 cos(5x)/2
-  SUBST|x|0|25 cos 0/2 = 25/2
-  Z|25/2
-Answer: 25/2
+  POWER_RULE|ln(x)|1/x
+  POWER_RULE|x - 1|1
+  REWRITE|lim x→1 of (1/x)/1
+  SUBST|x|1|1/1 = 1
+  Z|1
+Answer: 1
 ```
 
 ### Curve Analysis — `CurveAnalysisGenerator`  ·  high · difficulty 5
@@ -4299,22 +4317,22 @@ Optimization word problems built so every critical point is an integer: model, e
 **Variants:** `optimization_barn_fence`, `optimization_box`, `optimization_product`
 
 ```
-Problem: An open-top box is made from a 24 by 24 sheet by cutting squares of side x from the corners and folding. What x maximizes the volume, and what is that volume?
+Problem: An open-top box is made from a 4662 by 4662 sheet by cutting squares of side x from the corners and folding. What x maximizes the volume, and what is that volume?
 Steps:
-  OPT_SETUP|square sheet 24 by 24; cut corners x and fold|maximize volume
-  REWRITE|V = x(24 - 2x)^2
-  REWRITE|V = 4x^3 - 96x^2 + 576x
-  POWER_RULE|4x^3 - 96x^2 + 576x|12x^2 - 192x + 576
-  REWRITE|V' = (2x - 24)(6x - 24)
-  ZERO_PRODUCT|(2x - 24)(6x - 24) = 0|x = 12 or x = 4
-  REJECT|x = 12|width 24 - 2(12) = 0, degenerate box
-  ACCEPT|x = 4|the only usable critical point
-  SUBST|x|4|V = 4(24 - 8)^2
-  S|24|8|16
-  E|16|2|256
-  M|4|256|1024
-  Z|x = 4; maximum volume 1024
-Answer: x = 4; maximum volume 1024
+  OPT_SETUP|square sheet 4662 by 4662; cut corners x and fold|maximize volume
+  REWRITE|V = x(4662 - 2x)^2
+  REWRITE|V = 4x^3 - 18648x^2 + 21734244x
+  POWER_RULE|4x^3 - 18648x^2 + 21734244x|12x^2 - 37296x + 21734244
+  REWRITE|V' = (2x - 4662)(6x - 4662)
+  ZERO_PRODUCT|(2x - 4662)(6x - 4662) = 0|x = 2331 or x = 777
+  REJECT|x = 2331|width 4662 - 2(2331) = 0, degenerate box
+  ACCEPT|x = 777|the only usable critical point
+  SUBST|x|777|V = 777(4662 - 1554)^2
+  S|4662|1554|3108
+  E|3108|2|9659664
+  M|777|9659664|7505558928
+  Z|x = 777; maximum volume 7505558928
+Answer: x = 777; maximum volume 7505558928
 ```
 
 ### Mean Value Theorem — `MeanValueTheoremGenerator`  ·  high · difficulty 4
@@ -4386,7 +4404,7 @@ Definite integrals by the FTC, and average value: antiderivative term by term (c
 **Variants:** `definite_integral_average`, `definite_integral_ftc`
 
 ```
-Problem: Find the average value of f(x) = 4x^3 - 3x^2 on [1, 2].
+Problem: Compute the average value of f(x) = 4x^3 - 3x^2 over [1, 2].
 Steps:
   INTEG_SETUP|∫ from 1 to 2 of (4x^3 - 3x^2) dx|average value = integral/(b - a)
   INTEG_RULE|power rule|∫ x^n dx = x^(n+1)/(n+1)
@@ -4473,17 +4491,17 @@ Volumes with exact π answers: disks, washers, shells, and square cross-sections
 **Variants:** `volume_cross_section`, `volume_disk`, `volume_shell`, `volume_washer`
 
 ```
-Problem: The base of a solid is the region under y = 5 - x on [0, 5]. Cross-sections perpendicular to the x-axis are squares. Find the volume.
+Problem: The base of a solid is the region under y = 432 - x on [0, 432]. Cross-sections perpendicular to the x-axis are squares. Find the volume.
 Steps:
-  VOLUME_SETUP|base: region under y = 5 - x on [0, 5]; cross-sections perpendicular to the x-axis are squares|cross-section method
+  VOLUME_SETUP|base: region under y = 432 - x on [0, 432]; cross-sections perpendicular to the x-axis are squares|cross-section method
   VOL_FORMULA|V = ∫ [side(x)]^2 dx
-  REWRITE|[(5 - x)]^2 = x^2 - 10x + 25
-  ANTIDERIV|x^2 - 10x + 25|F(x) = (1/3)x^3 - 5x^2 + 25x
-  EVAL|F(5)|125/3
+  REWRITE|[(432 - x)]^2 = x^2 - 864x + 186624
+  ANTIDERIV|x^2 - 864x + 186624|F(x) = (1/3)x^3 - 432x^2 + 186624x
+  EVAL|F(432)|26873856
   EVAL|F(0)|0
-  S|125/3|0|125/3
-  Z|125/3
-Answer: 125/3
+  S|26873856|0|26873856
+  Z|26873856
+Answer: 26873856
 ```
 
 ### Separable ODE — `SeparableODEGenerator`  ·  high · difficulty 5
@@ -4493,19 +4511,19 @@ Separable differential equations solved by the full ritual: separate, integrate 
 **Variants:** `separable_ode_exponential`, `separable_ode_find_k`, `separable_ode_power`, `separable_ode_reciprocal`
 
 ```
-Problem: Solve dy/dx = y^2 with y(0) = 4.
+Problem: Solve dy/dx = y^2 with y(0) = 98.
 Steps:
-  ODE_SETUP|dy/dx = y^2, y(0) = 4|solve
+  ODE_SETUP|dy/dx = y^2, y(0) = 98|solve
   SEPARATE|y^(-2) dy = dx
   INTEG_RULE|both sides|∫ y^(-2) dy = ∫ dx
   ANTIDERIV|y^(-2) dy|-1/y
   ANTIDERIV|dx|x + C
   REWRITE|-1/y = x + C
-  SUBST|x|0|-1/4 = C
-  REWRITE|-1/y = x - 1/4
-  REWRITE|y = 4/(1 - 4x)
-  Z|y = 4/(1 - 4x)
-Answer: y = 4/(1 - 4x)
+  SUBST|x|0|-1/98 = C
+  REWRITE|-1/y = x - 1/98
+  REWRITE|y = 98/(1 - 98x)
+  Z|y = 98/(1 - 98x)
+Answer: y = 98/(1 - 98x)
 ```
 
 ### Integration By Parts — `IntegrationByPartsGenerator`  ·  high · difficulty 5
@@ -4515,16 +4533,16 @@ Integration by parts with the u/dv choice and both du and v written out, the bou
 **Variants:** `integration_by_parts_ln`, `integration_by_parts_x_exp`, `integration_by_parts_x_trig`
 
 ```
-Problem: Find ∫ 2x cos(x) dx.
+Problem: Find ∫ 139x sin(x) dx.
 Steps:
-  INTEG_SETUP|∫ 2x cos(x) dx|integration by parts
+  INTEG_SETUP|∫ 139x sin(x) dx|integration by parts
   PARTS_FORMULA|∫ u dv = uv - ∫ v du
-  PARTS_CHOOSE|u = 2x, dv = cos(x) dx|du = 2 dx, v = sin(x)
-  REWRITE|2x(sin(x)) - ∫ 2(sin(x)) dx
-  ANTIDERIV|2(sin(x))|-2cos(x)
-  REWRITE|2x sin(x) + 2cos(x)
-  Z|2x sin(x) + 2cos(x) + C
-Answer: 2x sin(x) + 2cos(x) + C
+  PARTS_CHOOSE|u = 139x, dv = sin(x) dx|du = 139 dx, v = -cos(x)
+  REWRITE|139x(-cos(x)) - ∫ 139(-cos(x)) dx
+  ANTIDERIV|139(-cos(x))|-139sin(x)
+  REWRITE|-139x cos(x) + 139sin(x)
+  Z|-139x cos(x) + 139sin(x) + C
+Answer: -139x cos(x) + 139sin(x) + C
 ```
 
 ### Partial Fractions — `PartialFractionsGenerator`  ·  high · difficulty 5
@@ -4552,6 +4570,22 @@ Steps:
   REWRITE|3ln(abs(x)) - 4ln(abs(x - 3)) + C
   Z|3ln(abs(x)) - 4ln(abs(x - 3)) + C
 Answer: 3ln(abs(x)) - 4ln(abs(x - 3)) + C
+```
+
+### Telescoping — `TelescopingGenerator`  ·  high · difficulty 5
+
+Telescoping finite sums and products with exact rational or symbolic radical answers.
+
+**Variants:** `telescoping_product`, `telescoping_radical_sum`, `telescoping_rational_sum`, `telescoping_reciprocal_gap`
+
+```
+Problem: Evaluate Σ_{k=98}^{207} (1/k - 1/(k+1)).
+Steps:
+  TELE_SETUP|Σ k=98..207 (1/k - 1/(k+1))
+  TELESCOPE_CANCEL|survive first and last|1/98 - 1/208
+  S|1/98|1/208|55/10192
+  Z|55/10192
+Answer: 55/10192
 ```
 
 ### Improper Integral — `ImproperIntegralGenerator`  ·  high · difficulty 5
@@ -4790,7 +4824,7 @@ Confidence intervals for a mean or a proportion, margins of error, and minimum s
 **Variants:** `confidence_interval_mean_ci`, `confidence_interval_mean_margin`, `confidence_interval_prop_margin`, `confidence_interval_sample_size_mean`, `confidence_interval_sample_size_prop`
 
 ```
-Problem: You want a margin of error of 0.5 for a confidence interval for the mean, with population standard deviation σ = 3. Using z* = 2.05, find the minimum sample size.
+Problem: A planned mean confidence interval needs margin of error of 0.5, with σ = 3. Using z* = 2.05, find the minimum sample size.
 Steps:
   CI_SETUP|σ = 3, E = 0.5, z* = 2.05|minimum sample size for the mean
   SAMPLE_SIZE_FORMULA|n = (z*·σ/E)^2
@@ -4820,6 +4854,30 @@ Steps:
   CHECK|abs(stat) vs critical value|2 ≤ 2.576|fail to reject H0
   Z|fail to reject H0 (2 ≤ 2.576)
 Answer: fail to reject H0 (2 ≤ 2.576)
+```
+
+### Two Sample Test — `TwoSampleTestGenerator`  ·  high · difficulty 5
+
+Two-sample t and two-proportion z tests with supplied critical values and exact-friendly standard errors.
+
+**Variants:** `two_sample_test_prop_z_decision`, `two_sample_test_prop_z_stat`, `two_sample_test_t_decision`, `two_sample_test_t_stat`
+
+```
+Problem: In a two-sided two-proportion z-test of H0: p1 = p2, sample 1 has n1=50, x1=14; sample 2 has n2=50, x2=36. Using a critical value of 2.576, state the conclusion (reject H0 or fail to reject H0).
+Steps:
+  HT_SETUP|H0: p1 = p2; Ha: p1 ≠ p2|n1=50, x1=14; n2=50, x2=36; critical value=2.576
+  D|14|50|0.28
+  D|36|50|0.72
+  TEST_STAT_FORMULA|z = (p̂1-p̂2)/sqrt(pooled(1-pooled)(1/n1+1/n2))
+  A|14|36|50
+  A|50|50|100
+  D|50|100|0.5
+  S|0.28|0.72|-0.44
+  ROOT|√0.01|0.1
+  D|-0.44|0.1|-4.4
+  CHECK|abs(stat) vs critical value|4.4 > 2.576|reject H0
+  Z|reject H0 (4.4 > 2.576)
+Answer: reject H0 (4.4 > 2.576)
 ```
 
 ### Chi Square — `ChiSquareGenerator`  ·  high · difficulty 5
@@ -4980,6 +5038,24 @@ Steps:
 Answer: x^3 + 3x^2
 ```
 
+### Induction Verify — `InductionVerifyGenerator`  ·  high · difficulty 5
+
+Verification-style induction problems: check the base case, then show the algebraic k to k+1 step for standard identities.
+
+**Variants:** `induction_verify_divisibility`, `induction_verify_geometric`, `induction_verify_sum_linear`, `induction_verify_sum_odds`, `induction_verify_sum_squares`
+
+```
+Problem: Verify by induction that 1+6+...+6^n = (6^(n+1)-1)/(6-1) for n≥0. Also report the check at n=28.
+Steps:
+  INDUCT_BASE|n=0|1 = (r^1-1)/(r-1)
+  INDUCT_ASSUME|sum to k = (6^(k+1)-1)/(6-1)
+  INDUCT_STEP|add 6^(k+1)
+  REWRITE|(6^(k+1)-1)/(6-1) + 6^(k+1)|(6^(k+2)-1)/(6-1)
+  CHECK|n=28|7369130657357778596659|formula value
+  Z|check n=28 value=7369130657357778596659; inductive step confirmed
+Answer: check n=28 value=7369130657357778596659; inductive step confirmed
+```
+
 ### Stoichiometry — `StoichiometryGenerator`  ·  high · difficulty 4
 
 Balanced-equation and stoichiometric conversion practice.
@@ -5055,6 +5131,28 @@ Steps:
   D|81/2|1|81/2
   Z|V O2=81/2 L
 Answer: V O2=81/2 L
+```
+
+### Equilibrium ICE — `EquilibriumICEGenerator`  ·  high · difficulty 5
+
+Chemistry equilibrium problems using ICE-table bookkeeping.
+
+**Variants:** `equilibrium_ice_compute_k`, `equilibrium_ice_direction`, `equilibrium_ice_solve_x`
+
+```
+Problem: For A ⇌ 2B, initially [A]=9 and [B]=0. At equilibrium [A]=9-x and [B]=2x. Given K=0.5 for K=[B]^2/[A], find x.
+Steps:
+  ICE_ROW|initial|[A]=9, [B]=0
+  ICE_ROW|change|[A]=-x, [B]=+2x
+  ICE_ROW|equilibrium|[A]=9-x, [B]=2x
+  K_EXPR|K = [B]^2/[A]|0.5 = (2x)^2/(9-x)
+  M|2|1|2
+  M|2|2|4
+  S|9|1|8
+  D|4|8|0.5
+  CHECK|substitute x|x=1|matches K
+  Z|x=1; [A]=8, [B]=2
+Answer: x=1; [A]=8, [B]=2
 ```
 
 ## College
@@ -5492,6 +5590,29 @@ Steps:
   CHECK|u2·u3|0|orthogonal
   Z|orthogonal basis [[2, 1, 0], [-2, 4, 0], [0, 0, -1]]
 Answer: orthogonal basis [[2, 1, 0], [-2, 4, 0], [0, 0, -1]]
+```
+
+### QRDecomposition — `QRDecompositionGenerator`  ·  college · difficulty 4
+
+QR decompositions by Gram-Schmidt using exact rational Q entries.
+
+**Variants:** `qr_decomposition_three`, `qr_decomposition_two`
+
+```
+Problem: Find a QR decomposition A = QR for A = [[4, 3, 2], [0, 1, 1], [0, 0, 3]].
+Steps:
+  QR_SETUP|A = [[4, 3, 2], [0, 1, 1], [0, 0, 3]]|Gram-Schmidt columns
+  QR_ENTRY|q1|[1, 0, 0]
+  GS_SUBTRACT|v2 - (q1·v2)q1|[0, 1, 0]
+  QR_ENTRY|q2|[0, 1, 0]
+  GS_SUBTRACT|v3 - projections|[0, 0, 3]
+  QR_ENTRY|q3|[0, 0, 1]
+  QR_ENTRY|Q|[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+  QR_ENTRY|R|[[4, 3, 2], [0, 1, 1], [0, 0, 3]]
+  CHECK|Q^T Q|I|orthonormal
+  CHECK|QR|[[4, 3, 2], [0, 1, 1], [0, 0, 3]]|matches A
+  Z|Q=[[1, 0, 0], [0, 1, 0], [0, 0, 1]]; R=[[4, 3, 2], [0, 1, 1], [0, 0, 3]]
+Answer: Q=[[1, 0, 0], [0, 1, 0], [0, 0, 1]]; R=[[4, 3, 2], [0, 1, 1], [0, 0, 3]]
 ```
 
 ### Least Squares — `LeastSquaresGenerator`  ·  college · difficulty 4
@@ -5936,6 +6057,37 @@ Steps:
   A|-196864|4|-196860
   Z|a_8 = -196860
 Answer: a_8 = -196860
+```
+
+### Master Theorem — `MasterTheoremGenerator`  ·  college · difficulty 4
+
+Recurrence growth by the Master Theorem and subtract-and-conquer sums.
+
+**Variants:** `master_theorem_master_case1`, `master_theorem_master_case2`, `master_theorem_master_case3`, `master_theorem_subtract`
+
+```
+Problem: Solve the recurrence T(n) = T(n-1) + 2n^7 in Θ notation.
+Steps:
+  REC_SETUP|T(n) = T(n-1) + 2n^7
+  REWRITE|T(n) = T(1) + 2Σ i^7
+  SUM_ORDER|Σ i^7|n^8
+  Z|subtract; Θ(n^8)
+Answer: subtract; Θ(n^8)
+```
+
+### Counting Classics — `CountingClassicsGenerator`  ·  college · difficulty 3
+
+Classic counting principles and identities.
+
+**Variants:** `counting_classics_catalan`, `counting_classics_hockey_stick`, `counting_classics_pigeonhole`, `counting_classics_vandermonde`
+
+```
+Problem: Use the hockey-stick identity to evaluate Σ_{i=14}^{22} C(i,14).
+Steps:
+  IDENTITY|hockey-stick|Σ i=14..22 C(i,14) = C(23,15)
+  COMB_SETUP|C(23, 15)|490314
+  Z|sum = 490314; C(23,15) = 490314
+Answer: sum = 490314; C(23,15) = 490314
 ```
 
 ### Boolean Algebra — `BooleanAlgebraGenerator`  ·  college · difficulty 3
@@ -8871,6 +9023,36 @@ Steps:
 Answer: not_positive_definite (Delta1=1, Delta2=-37)
 ```
 
+### Cholesky — `CholeskyGenerator`  ·  college · difficulty 4
+
+Cholesky factorization of 3x3 positive-definite matrices constructed as A = L L^T from an integer lower-triangular L.
+
+**Variants:** `cholesky`
+
+```
+Problem: Find the Cholesky factor A = L*L^T for A = [[16, 0, 16], [0, 16, 12], [16, 12, 26]].
+Steps:
+  CHOL_SETUP|A = [[16, 0, 16], [0, 16, 12], [16, 12, 26]]|A = L L^T
+  ROOT|√16|4
+  CHOLESKY_ENTRY|l11|4
+  D|0|4|0
+  CHOLESKY_ENTRY|l21|0
+  D|16|4|4
+  CHOLESKY_ENTRY|l31|4
+  S|16|0|16
+  ROOT|√16|4
+  CHOLESKY_ENTRY|l22|4
+  S|12|0|12
+  D|12|4|3
+  CHOLESKY_ENTRY|l32|3
+  S|26|25|1
+  ROOT|√1|1
+  CHOLESKY_ENTRY|l33|1
+  CHECK|L*L^T|[[16, 0, 16], [0, 16, 12], [16, 12, 26]]|matches A
+  Z|L=[[4, 0, 0], [0, 4, 0], [4, 3, 1]]
+Answer: L=[[4, 0, 0], [0, 4, 0], [4, 3, 1]]
+```
+
 ### Embedding Similarity — `EmbeddingSimilarityGenerator`  ·  college · difficulty 3
 
 Embedding cosine similarities, distance matrices, and analogy arithmetic.
@@ -10062,23 +10244,56 @@ Von Neumann entropy from dyadic eigenvalues: S(rho) = -sum lambda_i log2(lambda_
 **Variants:** `von_neumann_entropy_dyadic`
 
 ```
-Problem: Compute the von Neumann entropy in bits for a density matrix with eigenvalues [1/4,1/4,1/4,1/4].
+Problem: Compute the von Neumann entropy in bits for a density matrix with eigenvalues [1/32,1/32,1/128,1/64,1/64,1/4,1/128,1/8,1/128,1/8,1/32,1/4,1/128,1/16,1/32].
 Steps:
-  ENTROPY_SETUP|eigenvalues=[1/4,1/4,1/4,1/4]|S=-sum lambda log2(lambda)
+  ENTROPY_SETUP|eigenvalues=[1/32,1/32,1/128,1/64,1/64,1/4,1/128,1/8,1/128,1/8,1/32,1/4,1/128,1/16,1/32]|S=-sum lambda log2(lambda)
+  LOG2|1/32|-5
+  M|1/32|5|5/32
+  A|0|5/32|5/32
+  LOG2|1/32|-5
+  M|1/32|5|5/32
+  A|5/32|5/32|5/16
+  LOG2|1/128|-7
+  M|1/128|7|7/128
+  A|5/16|7/128|47/128
+  LOG2|1/64|-6
+  M|1/64|6|3/32
+  A|47/128|3/32|59/128
+  LOG2|1/64|-6
+  M|1/64|6|3/32
+  A|59/128|3/32|71/128
   LOG2|1/4|-2
   M|1/4|2|1/2
-  A|0|1/2|1/2
+  A|71/128|1/2|135/128
+  LOG2|1/128|-7
+  M|1/128|7|7/128
+  A|135/128|7/128|71/64
+  LOG2|1/8|-3
+  M|1/8|3|3/8
+  A|71/64|3/8|95/64
+  LOG2|1/128|-7
+  M|1/128|7|7/128
+  A|95/64|7/128|197/128
+  LOG2|1/8|-3
+  M|1/8|3|3/8
+  A|197/128|3/8|245/128
+  LOG2|1/32|-5
+  M|1/32|5|5/32
+  A|245/128|5/32|265/128
   LOG2|1/4|-2
   M|1/4|2|1/2
-  A|1/2|1/2|1
-  LOG2|1/4|-2
-  M|1/4|2|1/2
-  A|1|1/2|3/2
-  LOG2|1/4|-2
-  M|1/4|2|1/2
-  A|3/2|1/2|2
-  Z|S = 2 bits
-Answer: S = 2 bits
+  A|265/128|1/2|329/128
+  LOG2|1/128|-7
+  M|1/128|7|7/128
+  A|329/128|7/128|21/8
+  LOG2|1/16|-4
+  M|1/16|4|1/4
+  A|21/8|1/4|23/8
+  LOG2|1/32|-5
+  M|1/32|5|5/32
+  A|23/8|5/32|97/32
+  Z|S = 97/32 bits
+Answer: S = 97/32 bits
 ```
 
 ### Projector — `ProjectorGenerator`  ·  graduate · difficulty 3
@@ -10088,15 +10303,15 @@ Verify projector idempotence and completeness relations.
 **Variants:** `projector_basis_completeness`, `projector_plus_projector`
 
 ```
-Problem: Verify projector completeness for P0=[[1,0],[0,0]] and P1=[[0,0],[0,1]].
+Problem: Verify that P=[[5697769/557196025,56056308/557196025],[56056308/557196025,551498256/557196025]] is a projector.
 Steps:
-  PROJECTOR_SETUP|P0=[[1,0],[0,0]]|P1=[[0,0],[0,1]]
-  MATRIX_MULT|P0^2|[[1,0],[0,0]]
-  MATRIX_MULT|P1^2|[[0,0],[0,1]]
-  MATRIX_ADD|P0+P1|[[1,0],[0,1]]
-  CHECK|sum_i Pi|[[1,0],[0,1]]|complete
-  Z|complete yes; P0 + P1 = I
-Answer: complete yes; P0 + P1 = I
+  PROJECTOR_SETUP|v=(2387/23605, 23484/23605)|P=vv^T=[[5697769/557196025,56056308/557196025],[56056308/557196025,551498256/557196025]]
+  MATRIX_MULT|row1 dot col1|5697769/557196025*5697769/557196025+56056308/557196025*56056308/557196025|5697769/557196025
+  MATRIX_MULT|row1 dot col2|5697769/557196025*56056308/557196025+56056308/557196025*551498256/557196025|56056308/557196025
+  MATRIX_MULT|row2 dot col2|56056308/557196025*56056308/557196025+551498256/557196025*551498256/557196025|551498256/557196025
+  CHECK|P^2|[[5697769/557196025,56056308/557196025],[56056308/557196025,551498256/557196025]]|idempotent
+  Z|projector yes; P^2 = P
+Answer: projector yes; P^2 = P
 ```
 
 ### Uncertainty — `UncertaintyGenerator`  ·  graduate · difficulty 5
@@ -10898,6 +11113,27 @@ Steps:
   D|14|32|7/16
   Z|rho=7/8; L=7; W=1/2; Lq=49/8; Wq=7/16
 Answer: rho=7/8; L=7; W=1/2; Lq=49/8; Wq=7/16
+```
+
+### Separable PDE — `SeparablePDEGenerator`  ·  graduate · difficulty 3
+
+Exact single-mode separable PDE examples.
+
+**Variants:** `separable_pde_heat_single_mode`, `separable_pde_wave_dalembert`
+
+```
+Problem: For u_tt = 49u_xx with u(x,0)=x^2 and u_t(x,0)=0, use d'Alembert's formula to find u(2,9).
+Steps:
+  PDE_SETUP|u_tt = 49u_xx|u(x,0)=x^2, u_t(x,0)=0
+  DALEMBERT|u=(f(x-ct)+f(x+ct))/2
+  S|2|63|-61
+  A|2|63|65
+  M|-61|-61|3721
+  M|65|65|4225
+  A|3721|4225|7946
+  D|7946|2|3973
+  Z|u(2,9)=3973
+Answer: u(2,9)=3973
 ```
 
 ### ZTransform — `ZTransformGenerator`  ·  graduate · difficulty 4

@@ -25,17 +25,33 @@ def exact_integral(terms, a, b):
 
 def oracle_answer(example):
     p = example["problem"]
-    m = re.fullmatch(r"Evaluate ∫ from (-?\d+) to (-?\d+) of \((.+)\) "
-                     r"dx using the Fundamental Theorem of Calculus\.",
-                     p)
+    m = re.fullmatch(
+        r"(?:Evaluate|Use the Fundamental Theorem of Calculus to evaluate|Compute the definite integral) "
+        r"∫ from (-?\d+) to (-?\d+) of \((.+)\) dx"
+        r"(?: using the Fundamental Theorem of Calculus)?\.",
+        p,
+    )
     if m:
         a, b = int(m.group(1)), int(m.group(2))
         terms = parse_terms(m.group(3))
         v = exact_integral(terms, a, b)
         assert v.denominator == 1
         return str(v.numerator)
-    m = re.fullmatch(r"Find the average value of f\(x\) = (.+) on "
-                     r"\[(-?\d+), (-?\d+)\]\.", p)
+    m = re.fullmatch(
+        r"(?:Find|Compute) the average value of f\(x\) = (.+) "
+        r"(?:on|over) \[(-?\d+), (-?\d+)\]\.",
+        p,
+    )
+    if not m:
+        m = re.fullmatch(
+            r"On \[(-?\d+), (-?\d+)\], find the average value of "
+            r"f\(x\) = (.+)\.",
+            p,
+        )
+        assert m, p
+        a, b = int(m.group(1)), int(m.group(2))
+        terms = parse_terms(m.group(3))
+        return str(exact_integral(terms, a, b) / (b - a))
     assert m, p
     terms = parse_terms(m.group(1))
     a, b = int(m.group(2)), int(m.group(3))
