@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] DoubleIntegralGenerator — Double Integral (college · d3)
-- [ ] TripleIntegralGenerator — Triple Integral (college · d4)
-- [ ] JacobianGenerator — Jacobian (college · d3)
-- [ ] DivCurlGenerator — Div Curl (college · d2)
-- [ ] LineIntegralGenerator — Line Integral (college · d4)
-- [ ] VectorTheoremGenerator — Vector Theorem (college · d5)
 - [ ] CurveGeometryGenerator — Curve Geometry (college · d3)
 - [ ] CentroidGenerator — Centroid (college · d4)
 - [ ] LUDecompositionGenerator — LUDecomposition (college · d3)
