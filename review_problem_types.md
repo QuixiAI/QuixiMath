@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] PerceptronGenerator — Perceptron (graduate · d3)
-- [ ] BackpropGenerator — Backprop (graduate · d5)
-- [ ] InformationGainGenerator — Information Gain (graduate · d4)
-- [ ] MatrixCalculusGenerator — Matrix Calculus (graduate · d4)
-- [ ] PCAGenerator — PCA (graduate · d4)
-- [ ] LowRankApproxGenerator — Low Rank Approx (graduate · d4)
 - [ ] KernelEvaluationGenerator — Kernel Evaluation (graduate · d3)
 - [ ] FeatureMapGenerator — Feature Map (graduate · d4)
 - [ ] KernelValidityGenerator — Kernel Validity (graduate · d4)
