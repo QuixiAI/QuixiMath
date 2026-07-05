@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ImplicitDiffGenerator — Implicit Diff (high · d5)
-- [ ] LogDiffHigherOrderGenerator — Log Diff Higher Order (high · d5)
-- [ ] TangentLineGenerator — Tangent Line (high · d4)
-- [ ] RelatedRatesGenerator — Related Rates (high · d5)
-- [ ] LinearApproxGenerator — Linear Approx (high · d4)
-- [ ] LHopitalGenerator — LHopital (high · d5)
 - [ ] CurveAnalysisGenerator — Curve Analysis (high · d5)
 - [ ] OptimizationGenerator — Optimization (high · d5)
 - [ ] MeanValueTheoremGenerator — Mean Value Theorem (high · d4)
