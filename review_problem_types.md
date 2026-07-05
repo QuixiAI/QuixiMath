@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GasStoichiometryGenerator — Gas Stoichiometry (high · d4)
-- [ ] PartialDerivativeGenerator — Partial Derivative (college · d2)
-- [ ] GradientGenerator — Gradient (college · d2)
-- [ ] MultivarChainRuleGenerator — Multivar Chain Rule (college · d3)
-- [ ] HessianClassifyGenerator — Hessian Classify (college · d3)
-- [ ] LagrangeMultiplierGenerator — Lagrange Multiplier (college · d4)
 - [ ] DoubleIntegralGenerator — Double Integral (college · d3)
 - [ ] TripleIntegralGenerator — Triple Integral (college · d4)
 - [ ] JacobianGenerator — Jacobian (college · d3)
