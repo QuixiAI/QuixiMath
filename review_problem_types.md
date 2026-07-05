@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GraphCountingGenerator — Graph Counting (college · d3)
-- [ ] DijkstraGenerator — Dijkstra (college · d4)
-- [ ] MSTGenerator — MST (college · d4)
-- [ ] GraphTraversalGenerator — Graph Traversal (college · d3)
-- [ ] EulerCircuitGenerator — Euler Circuit (college · d3)
-- [ ] DPTableGenerator — DPTable (college · d4)
 - [ ] AlgorithmTraceGenerator — Algorithm Trace (college · d3)
 - [ ] DFASimulationGenerator — DFASimulation (college · d3)
 - [ ] ExtendedEuclidGenerator — Extended Euclid (college · d3)
