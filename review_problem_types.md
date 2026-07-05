@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] EmbeddingSimilarityGenerator — Embedding Similarity (college · d3)
-- [ ] LayerNormGenerator — Layer Norm (college · d3)
-- [ ] ActivationGenerator — Activation (college · d3)
-- [ ] PositionalEncodingGenerator — Positional Encoding (college · d3)
-- [ ] ParamCountGenerator — Param Count (college · d3)
-- [ ] FLOPsMemoryGenerator — FLOPs Memory (college · d4)
 - [ ] ScalingLawGenerator — Scaling Law (college · d3)
 - [ ] LRScheduleGenerator — LRSchedule (college · d2)
 - [ ] QuantizationGenerator — Quantization (college · d3)
