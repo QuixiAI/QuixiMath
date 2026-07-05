@@ -86,7 +86,10 @@ class PositiveDefiniteGenerator(ProblemGenerator):
             step("CHECK", "all leading minors positive",
                  "true" if positive else "false"),
         ]
-        answer = "positive_definite" if positive else "not_positive_definite"
+        # composite verdict: include the minors so the binary label
+        # is not a gradable coin flip
+        head = "positive_definite" if positive else "not_positive_definite"
+        answer = f"{head} (Delta1={a}, Delta2={det})"
         steps.append(step("Z", answer))
         problem = (
             f"Use Sylvester's criterion to decide whether A={matrix_text(matrix)} "

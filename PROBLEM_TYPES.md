@@ -8867,8 +8867,8 @@ Steps:
   LEADING_MINOR|Delta2|-37
   CHECK|Delta2 > 0|-37 > 0|false
   CHECK|all leading minors positive|false
-  Z|not_positive_definite
-Answer: not_positive_definite
+  Z|not_positive_definite (Delta1=1, Delta2=-37)
+Answer: not_positive_definite (Delta1=1, Delta2=-37)
 ```
 
 ### Embedding Similarity — `EmbeddingSimilarityGenerator`  ·  college · difficulty 3

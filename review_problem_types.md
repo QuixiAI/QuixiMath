@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] NaiveBayesGenerator — Naive Bayes (college · d4)
-- [ ] KMeansStepGenerator — KMeans Step (college · d3)
-- [ ] KNNGenerator — KNN (college · d2)
-- [ ] ClassifierMetricsGenerator — Classifier Metrics (college · d2)
-- [ ] MatrixNormGenerator — Matrix Norm (college · d3)
-- [ ] PositiveDefiniteGenerator — Positive Definite (college · d3)
 - [ ] EmbeddingSimilarityGenerator — Embedding Similarity (college · d3)
 - [ ] LayerNormGenerator — Layer Norm (college · d3)
 - [ ] ActivationGenerator — Activation (college · d3)

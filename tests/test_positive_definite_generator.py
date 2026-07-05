@@ -63,7 +63,8 @@ def expected_flow(example):
         make_step("CHECK", "all leading minors positive",
                   "true" if positive else "false"),
     ]
-    answer = "positive_definite" if positive else "not_positive_definite"
+    head = "positive_definite" if positive else "not_positive_definite"
+    answer = f"{head} (Delta1={a}, Delta2={det})"
     steps.append(make_step("Z", answer))
     return steps, answer
 
@@ -97,9 +98,9 @@ class TestPositiveDefiniteGenerator(unittest.TestCase):
             self.assertEqual(result["final_answer"], answer)
             self.assertEqual(result["steps"], expected_steps)
             if variant == "positive":
-                self.assertEqual(answer, "positive_definite")
+                self.assertTrue(answer.startswith("positive_definite ("))
             else:
-                self.assertEqual(answer, "not_positive_definite")
+                self.assertTrue(answer.startswith("not_positive_definite ("))
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):
