@@ -3123,8 +3123,8 @@ Steps:
   ACCEPT|(1, -3)|product -3 ✓, sum -2 ✓
   REWRITE|(x + 1)(x - 3) = 0
   ZERO_PRODUCT|(x + 1)(x - 3) = 0|x + 1 = 0 or x - 3 = 0
-  Z|x = -1, x = 1, x = 3
-Answer: x = -1, x = 1, x = 3
+  Z|x = -1 or x = 1 or x = 3
+Answer: x = -1 or x = 1 or x = 3
 ```
 
 ### Rational Function Features — `RationalFunctionFeaturesGenerator`  ·  high · difficulty 4

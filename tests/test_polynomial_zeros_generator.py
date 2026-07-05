@@ -34,7 +34,7 @@ def oracle_check(example):
                      r"of P\(x\) = (.+)\.", example["problem"])
     assert m, example["problem"]
     coefs = parse_poly(m.group(2), "x")
-    zeros = [parse_zero(z) for z in example["final_answer"].split(", ")]
+    zeros = [parse_zero(z) for z in example["final_answer"].split(" or ")]
     if len(zeros) != 3:
         return False
     if complex(int(m.group(1)), 0) not in zeros:
@@ -89,7 +89,7 @@ class TestPolynomialZerosGenerator(unittest.TestCase):
         for _ in range(200):
             result = gen.generate()
             vals = [int(v.replace("x = ", ""))
-                    for v in result["final_answer"].split(", ")]
+                    for v in result["final_answer"].split(" or ")]
             self.assertEqual(vals, sorted(vals))
             self.assertTrue(any(s.startswith(f"ACCEPT{DELIM}")
                                 for s in result["steps"]))
@@ -99,7 +99,7 @@ class TestPolynomialZerosGenerator(unittest.TestCase):
         for _ in range(200):
             result = gen.generate()
             zeros = [parse_zero(z)
-                     for z in result["final_answer"].split(", ")]
+                     for z in result["final_answer"].split(" or ")]
             self.assertEqual(zeros[1].conjugate(), zeros[2],
                              result["final_answer"])
             self.assertGreater(zeros[1].imag, 0)

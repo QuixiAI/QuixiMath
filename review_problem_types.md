@@ -6,9 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] RationalRootGenerator — Rational Root (high · d5)
-- [ ] PolynomialZerosGenerator — Polynomial Zeros (high · d5)
-- [ ] RationalFunctionFeaturesGenerator — Rational Function Features (high · d4)
 - [ ] ExponentialModelGenerator — Exponential Model (high · d4)
 - [ ] LogConversionGenerator — Log Conversion (high · d4)
 - [ ] LogPropertiesGenerator — Log Properties (high · d4)

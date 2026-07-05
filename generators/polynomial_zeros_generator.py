@@ -89,7 +89,8 @@ class PolynomialZerosGenerator(ProblemGenerator):
             steps.append(step("ZERO_PRODUCT", f"{f1}{f2} = 0",
                               f"{f1[1:-1]} = 0 or {f2[1:-1]} = 0"))
             zeros = sorted([given, others[0], others[1]])
-            answer = ", ".join(f"{var} = {z}" for z in zeros)
+            # A0 convention: multiple roots ascending, joined with ' or '
+            answer = " or ".join(f"{var} = {z}" for z in zeros)
         else:
             disc = B * B - 4 * C
             wb = f"({B})" if B < 0 else str(B)
@@ -100,7 +101,7 @@ class PolynomialZerosGenerator(ProblemGenerator):
             hi, lo = cx(p, q), cx(p, -q)
             steps.append(step("Q1", -B, f"{2 * q}i", 2, hi))
             steps.append(step("Q2", -B, f"{2 * q}i", 2, lo))
-            answer = f"{var} = {given}, {var} = {hi}, {var} = {lo}"
+            answer = f"{var} = {given} or {var} = {hi} or {var} = {lo}"
         steps.append(step("Z", answer))
 
         return dict(
