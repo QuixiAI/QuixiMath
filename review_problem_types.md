@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GreatCircleGenerator — Great Circle (college · d3)
-- [ ] SphericalExcessGenerator — Spherical Excess (college · d3)
-- [ ] HyperbolicFunctionGenerator — Hyperbolic Function (college · d3)
-- [ ] AngleDefectGenerator — Angle Defect (college · d3)
-- [ ] HermitianCheckGenerator — Hermitian Check (college · d3)
-- [ ] TensorProductGenerator — Tensor Product (college · d3)
 - [ ] QuantumGateGenerator — Quantum Gate (college · d3)
 - [ ] ConservationLawGenerator — Conservation Law (college · d3)
 - [ ] QuarkCompositionGenerator — Quark Composition (college · d3)
