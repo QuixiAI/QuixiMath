@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] AlgorithmTraceGenerator — Algorithm Trace (college · d3)
-- [ ] DFASimulationGenerator — DFASimulation (college · d3)
-- [ ] ExtendedEuclidGenerator — Extended Euclid (college · d3)
-- [ ] ModularInverseGenerator — Modular Inverse (college · d3)
-- [ ] CRTGenerator — CRT (college · d4)
-- [ ] ModExpGenerator — Mod Exp (college · d3)
 - [ ] TotientGenerator — Totient (college · d3)
 - [ ] ContinuedFractionGenerator — Continued Fraction (college · d4)
 - [ ] RSAGenerator — RSA (college · d4)
