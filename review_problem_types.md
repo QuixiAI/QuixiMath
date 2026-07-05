@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GramSchmidtGenerator — Gram Schmidt (college · d4)
-- [ ] LeastSquaresGenerator — Least Squares (college · d4)
-- [ ] IntegratingFactorGenerator — Integrating Factor (college · d3)
-- [ ] ExactODEGenerator — Exact ODE (college · d3)
-- [ ] ODESubstitutionGenerator — ODESubstitution (college · d4)
-- [ ] SecondOrderODEGenerator — Second Order ODE (college · d3)
 - [ ] UndeterminedCoeffGenerator — Undetermined Coeff (college · d4)
 - [ ] VariationParametersGenerator — Variation Parameters (college · d5)
 - [ ] LaplaceIVPGenerator — Laplace IVP (college · d4)
