@@ -6,10 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ParabolaFeaturesGenerator — Parabola Features (high · d5)
-- [ ] EllipseFeaturesGenerator — Ellipse Features (high · d5)
-- [ ] HyperbolaFeaturesGenerator — Hyperbola Features (high · d5)
-- [ ] ConicStandardFormGenerator — Conic Standard Form (high · d5)
 - [ ] RegularPolygonAreaGenerator — Regular Polygon Area (high · d4)
 - [ ] SimilarTrianglesGenerator — Similar Triangles (high · d4)
 - [ ] GeometricMeanGenerator — Geometric Mean (high · d4)
