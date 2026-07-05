@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] TotientGenerator — Totient (college · d3)
-- [ ] ContinuedFractionGenerator — Continued Fraction (college · d4)
-- [ ] RSAGenerator — RSA (college · d4)
-- [ ] DiffieHellmanGenerator — Diffie Hellman (college · d3)
-- [ ] CayleyTableGenerator — Cayley Table (college · d3)
-- [ ] CyclicGroupGenerator — Cyclic Group (college · d3)
 - [ ] PermutationGroupGenerator — Permutation Group (college · d3)
 - [ ] EulerFormulaGenerator — Euler Formula (college · d3)
 - [ ] DeMoivreGenerator — De Moivre (college · d3)
