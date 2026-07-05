@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] LieExponentialGenerator — Lie Exponential (graduate · d4)
-- [ ] StructureConstantGenerator — Structure Constant (graduate · d4)
-- [ ] PauliAlgebraGenerator — Pauli Algebra (graduate · d3)
-- [ ] CasimirGenerator — Casimir (graduate · d4)
-- [ ] IndexGymnasticsGenerator — Index Gymnastics (graduate · d4)
-- [ ] BCHGenerator — BCH (graduate · d5)
 - [ ] YoungTableauxGenerator — Young Tableaux (graduate · d4)
 - [ ] ClebschGordanGenerator — Clebsch Gordan (graduate · d5)
 - [ ] EinsteinSummationGenerator — Einstein Summation (graduate · d3)
