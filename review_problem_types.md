@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ChristoffelGenerator — Christoffel (graduate · d5)
-- [ ] GaussianCurvatureGenerator — Gaussian Curvature (graduate · d5)
-- [ ] GaussBonnetGenerator — Gauss Bonnet (graduate · d4)
-- [ ] MetricArcLengthGenerator — Metric Arc Length (graduate · d4)
-- [ ] FunctionInnerProductGenerator — Function Inner Product (graduate · d3)
-- [ ] LegendreConstructionGenerator — Legendre Construction (graduate · d4)
 - [ ] PartialTraceGenerator — Partial Trace (graduate · d4)
 - [ ] DensityMatrixGenerator — Density Matrix (graduate · d4)
 - [ ] VonNeumannEntropyGenerator — Von Neumann Entropy (graduate · d4)

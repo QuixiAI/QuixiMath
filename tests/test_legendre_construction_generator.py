@@ -15,11 +15,13 @@ from helpers import DELIM
 
 P2_RE = re.compile(
     r"Use Gram-Schmidt on \{1, x, x\^2\} over \[-1,1\] to construct "
-    r"the Legendre polynomial P_2 with leading coefficient 3/2\."
+    r"the Legendre polynomial P_2 with leading coefficient 3/2\. "
+    r"Then evaluate P_2\((-?\d+(?:/\d+)?)\) exactly\."
 )
 P3_RE = re.compile(
     r"Use Gram-Schmidt on \{1, x, x\^2, x\^3\} over \[-1,1\] to "
-    r"construct the Legendre polynomial P_3 with leading coefficient 5/2\."
+    r"construct the Legendre polynomial P_3 with leading coefficient 5/2\. "
+    r"Then evaluate P_3\((-?\d+(?:/\d+)?)\) exactly\."
 )
 
 
@@ -31,14 +33,16 @@ def make_step(*parts):
 
 
 def parse_problem(problem):
-    if P2_RE.fullmatch(problem):
-        return "p2"
-    assert P3_RE.fullmatch(problem), problem
-    return "p3"
+    match = P2_RE.fullmatch(problem)
+    if match:
+        return "p2", Fraction(match.group(1))
+    match = P3_RE.fullmatch(problem)
+    assert match, problem
+    return "p3", Fraction(match.group(1))
 
 
 def expected_flow(example):
-    variant = parse_problem(example["problem"])
+    variant, x0 = parse_problem(example["problem"])
     if variant == "p2":
         numerator = Fraction(2, 3)
         denominator = Fraction(2)
@@ -54,8 +58,13 @@ def expected_flow(example):
             make_step("POLY_SUB", "x^2", projection, "x^2 - 1/3"),
             make_step("POLY_SCALE", "x^2 - 1/3", "3/2",
                       "(3x^2 - 1)/2"),
-            make_step("Z", answer),
         ]
+        value = (3 * x0 * x0 - 1) / 2
+        steps.append(make_step("SUBST", "x", x0,
+                               f"(3*({x0})^2 - 1)/2"))
+        steps.append(make_step("EVAL", f"P_2({x0})", value))
+        answer = f"{answer}; P_2({x0}) = {value}"
+        steps.append(make_step("Z", answer))
     else:
         numerator = Fraction(2, 5)
         denominator = Fraction(2, 3)
@@ -71,8 +80,13 @@ def expected_flow(example):
             make_step("POLY_SUB", "x^3", "3x/5", "x^3 - 3x/5"),
             make_step("POLY_SCALE", "x^3 - 3x/5", "5/2",
                       "(5x^3 - 3x)/2"),
-            make_step("Z", answer),
         ]
+        value = (5 * x0 ** 3 - 3 * x0) / 2
+        steps.append(make_step("SUBST", "x", x0,
+                               f"(5*({x0})^3 - 3*({x0}))/2"))
+        steps.append(make_step("EVAL", f"P_3({x0})", value))
+        answer = f"{answer}; P_3({x0}) = {value}"
+        steps.append(make_step("Z", answer))
     return steps, answer
 
 
@@ -112,7 +126,7 @@ class TestLegendreConstructionGenerator(unittest.TestCase):
             result = gen.generate()
             self.assertEqual(result["operation"],
                              f"legendre_construction_{variant}")
-            self.assertEqual(parse_problem(result["problem"]), variant)
+            self.assertEqual(parse_problem(result["problem"])[0], variant)
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):

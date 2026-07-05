@@ -34,6 +34,23 @@ class LegendreConstructionGenerator(ProblemGenerator):
             problem, steps, answer = self._generate_p2()
         else:
             problem, steps, answer = self._generate_p3()
+        # evaluate at a random rational point so the problem space is not
+        # just the two fixed constructions
+        den = random.choice([2, 5, 10])
+        num = random.choice([n for n in range(-den, den + 1) if n != 0])
+        x0 = Fraction(num, den)
+        if variant == "p2":
+            value = (3 * x0 * x0 - 1) / 2
+            eval_work = f"(3*({fraction_text(x0)})^2 - 1)/2"
+        else:
+            value = (5 * x0 ** 3 - 3 * x0) / 2
+            eval_work = f"(5*({fraction_text(x0)})^3 - 3*({fraction_text(x0)}))/2"
+        name = "P_2" if variant == "p2" else "P_3"
+        steps.append(step("SUBST", "x", fraction_text(x0), eval_work))
+        steps.append(step("EVAL", f"{name}({fraction_text(x0)})",
+                          fraction_text(value)))
+        problem += (f" Then evaluate {name}({fraction_text(x0)}) exactly.")
+        answer = f"{answer}; {name}({fraction_text(x0)}) = {fraction_text(value)}"
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),

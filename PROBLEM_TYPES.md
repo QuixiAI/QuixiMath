@@ -9995,7 +9995,7 @@ Construct P_2 or P_3 by Gram-Schmidt on {1, x, x^2, x^3} over [-1, 1], then scal
 **Variants:** `legendre_construction_p2`, `legendre_construction_p3`
 
 ```
-Problem: Use Gram-Schmidt on {1, x, x^2, x^3} over [-1,1] to construct the Legendre polynomial P_3 with leading coefficient 5/2.
+Problem: Use Gram-Schmidt on {1, x, x^2, x^3} over [-1,1] to construct the Legendre polynomial P_3 with leading coefficient 5/2. Then evaluate P_3(-1) exactly.
 Steps:
   LEGENDRE_SETUP|target=P_3|inner product integral_-1^1 f(x)g(x) dx
   INTEGRAL|<x,x>|2/3
@@ -10004,8 +10004,10 @@ Steps:
   PROJECTION|x^3 onto x|3/5
   POLY_SUB|x^3|3x/5|x^3 - 3x/5
   POLY_SCALE|x^3 - 3x/5|5/2|(5x^3 - 3x)/2
-  Z|P_3(x) = (5x^3 - 3x)/2
-Answer: P_3(x) = (5x^3 - 3x)/2
+  SUBST|x|-1|(5*(-1)^3 - 3*(-1))/2
+  EVAL|P_3(-1)|-1
+  Z|P_3(x) = (5x^3 - 3x)/2; P_3(-1) = -1
+Answer: P_3(x) = (5x^3 - 3x)/2; P_3(-1) = -1
 ```
 
 ### Partial Trace — `PartialTraceGenerator`  ·  graduate · difficulty 4
