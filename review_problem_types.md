@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] UndeterminedCoeffGenerator — Undetermined Coeff (college · d4)
-- [ ] VariationParametersGenerator — Variation Parameters (college · d5)
-- [ ] LaplaceIVPGenerator — Laplace IVP (college · d4)
-- [ ] ODESystemGenerator — ODESystem (college · d5)
-- [ ] StabilityGenerator — Stability (college · d3)
-- [ ] SetOperationsGenerator — Set Operations (college · d2)
 - [ ] RelationCheckGenerator — Relation Check (college · d2)
 - [ ] InclusionExclusionGenerator — Inclusion Exclusion (college · d3)
 - [ ] StarsAndBarsGenerator — Stars And Bars (college · d3)
