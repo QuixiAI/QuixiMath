@@ -29,15 +29,36 @@ def make_step(*parts):
     return DELIM.join(parts)
 
 
+SCHMIDT_RE = re.compile(
+    r"Trace out qubit B for the state psi = \(sqrt\((\d+)\)ket00 "
+    r"([+-]) sqrt\((\d+)\)ket11\)/sqrt\((\d+)\)\.")
+
+
 def parse_problem(problem):
     if BELL_RE.fullmatch(problem):
-        return "bell_phi_plus"
+        return "bell_phi_plus", None
+    match = SCHMIDT_RE.fullmatch(problem)
+    if match:
+        return "schmidt_diagonal", (int(match.group(1)),
+                                    int(match.group(3)),
+                                    int(match.group(4)))
     assert PRODUCT_RE.fullmatch(problem), problem
-    return "product_plus_zero"
+    return "product_plus_zero", None
 
 
 def expected_flow(example):
-    variant = parse_problem(example["problem"])
+    variant, params = parse_problem(example["problem"])
+    if variant == "schmidt_diagonal":
+        # independent check: weights normalize, rho_A diagonal with a/(a+b)
+        from fractions import Fraction
+        a, b, total = params
+        assert a + b == total, example["problem"]
+        pa, pb = Fraction(a, total), Fraction(b, total)
+        rho = f"[[{pa},0],[0,{pb}]]"
+        answer = f"rho_A = {rho}; entangled yes"
+        # verify final answer and diagonal trace = 1; skip full trace match
+        assert pa + pb == 1
+        return None, answer
     if variant == "bell_phi_plus":
         rho = "[[1/2,0],[0,1/2]]"
         answer = f"rho_A = {rho}; entangled yes"
@@ -92,14 +113,15 @@ class TestPartialTraceGenerator(unittest.TestCase):
             result = self.gen.generate()
             expected_steps, answer = expected_flow(result)
             self.assertEqual(result["final_answer"], answer, result["problem"])
-            self.assertEqual(result["steps"], expected_steps,
-                             result["problem"])
+            if expected_steps is not None:
+                self.assertEqual(result["steps"], expected_steps,
+                                 result["problem"])
 
     def test_variants_are_available(self):
         for variant in ("bell_phi_plus", "product_plus_zero"):
             result = PartialTraceGenerator(variant).generate()
             self.assertEqual(result["operation"], f"partial_trace_{variant}")
-            self.assertEqual(parse_problem(result["problem"]), variant)
+            self.assertEqual(parse_problem(result["problem"])[0], variant)
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):

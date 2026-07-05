@@ -10014,7 +10014,7 @@ Answer: P_3(x) = (5x^3 - 3x)/2; P_3(-1) = -1
 
 Reduced density matrices by tracing out qubit B for two canonical two-qubit states.
 
-**Variants:** `partial_trace_bell_phi_plus`, `partial_trace_product_plus_zero`
+**Variants:** `partial_trace_bell_phi_plus`, `partial_trace_product_plus_zero`, `partial_trace_schmidt_diagonal`
 
 ```
 Problem: Trace out qubit B for product state plus0 = (ket00 + ket10)/sqrt(2).

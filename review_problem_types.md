@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] PartialTraceGenerator — Partial Trace (graduate · d4)
-- [ ] DensityMatrixGenerator — Density Matrix (graduate · d4)
-- [ ] VonNeumannEntropyGenerator — Von Neumann Entropy (graduate · d4)
-- [ ] ProjectorGenerator — Projector (graduate · d3)
-- [ ] UncertaintyGenerator — Uncertainty (graduate · d5)
-- [ ] MatrixGroupCheckGenerator — Matrix Group Check (graduate · d3)
 - [ ] LieExponentialGenerator — Lie Exponential (graduate · d4)
 - [ ] StructureConstantGenerator — Structure Constant (graduate · d4)
 - [ ] PauliAlgebraGenerator — Pauli Algebra (graduate · d3)

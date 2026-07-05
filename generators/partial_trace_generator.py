@@ -1,4 +1,6 @@
 import random
+from fractions import Fraction
+from math import gcd
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
@@ -12,6 +14,7 @@ class PartialTraceGenerator(ProblemGenerator):
     Variants:
     - bell_phi_plus: mixed reduced state, entangled.
     - product_plus_zero: pure reduced state, separable.
+    - schmidt_diagonal: sqrt(a)ket00 ± sqrt(b)ket11 with exact weights.
 
     Op-codes used:
     - DENSITY_SETUP / OUTER_PRODUCT / PARTIAL_TRACE /
@@ -19,7 +22,7 @@ class PartialTraceGenerator(ProblemGenerator):
     - Z: reduced density matrix and entanglement verdict
     """
 
-    VARIANTS = ["bell_phi_plus", "product_plus_zero"]
+    VARIANTS = ["bell_phi_plus", "product_plus_zero", "schmidt_diagonal"]
 
     def __init__(self, variant=None):
         if variant is not None and variant not in self.VARIANTS:
@@ -30,8 +33,10 @@ class PartialTraceGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
         if variant == "bell_phi_plus":
             problem, steps, answer = self._generate_bell()
-        else:
+        elif variant == "product_plus_zero":
             problem, steps, answer = self._generate_product()
+        else:
+            problem, steps, answer = self._generate_schmidt()
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
@@ -59,6 +64,36 @@ class PartialTraceGenerator(ProblemGenerator):
             "Trace out qubit B for Bell state Phi+ = "
             "(ket00 + ket11)/sqrt(2)."
         )
+        return problem, steps, answer
+
+    def _generate_schmidt(self):
+        # sqrt(a)ket00 ± sqrt(b)ket11, normalized by sqrt(a+b); a != b so
+        # this never duplicates the Bell variant
+        while True:
+            a = random.randint(1, 6)
+            b = random.randint(1, 6)
+            if a != b and gcd(a, b) == 1:
+                break
+        sign = random.choice(["+", "-"])
+        total = a + b
+        pa, pb = Fraction(a, total), Fraction(b, total)
+        purity = pa * pa + pb * pb
+        rho = f"[[{pa},0],[0,{pb}]]"
+        psi = f"(sqrt({a})ket00 {sign} sqrt({b})ket11)/sqrt({total})"
+        cross = f"sqrt({a * b})/{total}"
+        steps = [
+            step("DENSITY_SETUP", "state=Schmidt", f"psi={psi}"),
+            step("OUTER_PRODUCT",
+                 f"rho={pa}ket00bra00 {sign} {cross}(ket00bra11+ket11bra00) + {pb}ket11bra11"),
+            step("PARTIAL_TRACE", "ket00bra00", "ket0bra0"),
+            step("PARTIAL_TRACE", "ket00bra11", "0"),
+            step("PARTIAL_TRACE", "ket11bra00", "0"),
+            step("PARTIAL_TRACE", "ket11bra11", "ket1bra1"),
+            step("REDUCED_DENSITY", f"rho_A={rho}"),
+            step("CHECK", "Tr(rho_A^2)", str(purity), "mixed entangled"),
+        ]
+        answer = f"rho_A = {rho}; entangled yes"
+        problem = f"Trace out qubit B for the state psi = {psi}."
         return problem, steps, answer
 
     def _generate_product(self):

@@ -1,7 +1,13 @@
 import random
+from fractions import Fraction
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+# Pythagorean (a, b, c) triples give exact unit vectors (a/c, b/c)
+TRIPLES = [(3, 4, 5), (4, 3, 5), (5, 12, 13), (12, 5, 13),
+           (8, 15, 17), (15, 8, 17), (7, 24, 25), (24, 7, 25),
+           (20, 21, 29), (21, 20, 29)]
 
 
 class ProjectorGenerator(ProblemGenerator):
@@ -9,7 +15,8 @@ class ProjectorGenerator(ProblemGenerator):
     Verify projector idempotence and completeness relations.
 
     Variants:
-    - plus_projector: P_plus^2 = P_plus for |+><+|.
+    - plus_projector: P^2 = P for the projector onto an exact unit
+      vector (a/c, b/c) built from a Pythagorean triple.
     - basis_completeness: P0 + P1 = I for the computational basis.
 
     Op-codes used:
@@ -40,18 +47,29 @@ class ProjectorGenerator(ProblemGenerator):
         )
 
     def _generate_plus(self):
-        p = "[[1/2,1/2],[1/2,1/2]]"
+        # projector onto the exact unit vector v = (a/c, b/c)
+        a, b, c = random.choice(TRIPLES)
+        aa = Fraction(a * a, c * c)
+        ab = Fraction(a * b, c * c)
+        bb = Fraction(b * b, c * c)
+        p = f"[[{aa},{ab}],[{ab},{bb}]]"
+        # P^2 entries: idempotence follows from aa + bb = 1
+        e11 = aa * aa + ab * ab
+        e12 = aa * ab + ab * bb
+        e22 = ab * ab + bb * bb
         steps = [
-            step("PROJECTOR_SETUP", "P_plus=ket+bra+",
-                 f"P={p}"),
-            step("MATRIX_MULT", "row1 dot col1", "1/4+1/4", "1/2"),
-            step("MATRIX_MULT", "row1 dot col2", "1/4+1/4", "1/2"),
-            step("MATRIX_MULT", "row2 dot col1", "1/4+1/4", "1/2"),
-            step("MATRIX_MULT", "row2 dot col2", "1/4+1/4", "1/2"),
+            step("PROJECTOR_SETUP", f"v=({Fraction(a, c)}, {Fraction(b, c)})",
+                 f"P=vv^T={p}"),
+            step("MATRIX_MULT", "row1 dot col1",
+                 f"{aa}*{aa}+{ab}*{ab}", str(e11)),
+            step("MATRIX_MULT", "row1 dot col2",
+                 f"{aa}*{ab}+{ab}*{bb}", str(e12)),
+            step("MATRIX_MULT", "row2 dot col2",
+                 f"{ab}*{ab}+{bb}*{bb}", str(e22)),
             step("CHECK", "P^2", p, "idempotent"),
         ]
         answer = "projector yes; P^2 = P"
-        problem = "Verify that P_plus=[[1/2,1/2],[1/2,1/2]] is a projector."
+        problem = f"Verify that P={p} is a projector."
         return problem, steps, answer
 
     def _generate_basis(self):

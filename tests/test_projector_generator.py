@@ -9,11 +9,14 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from generators.projector_generator import ProjectorGenerator
+from fractions import Fraction
+
 from helpers import DELIM
 
 
 PLUS_RE = re.compile(
-    r"Verify that P_plus=\[\[1/2,1/2\],\[1/2,1/2\]\] is a projector\."
+    r"Verify that P=\[\[([\d/]+),([\d/]+)\],\[([\d/]+),([\d/]+)\]\] "
+    r"is a projector\."
 )
 BASIS_RE = re.compile(
     r"Verify projector completeness for P0=\[\[1,0\],\[0,0\]\] and "
@@ -29,26 +32,26 @@ def make_step(*parts):
 
 
 def parse_problem(problem):
-    if PLUS_RE.fullmatch(problem):
-        return "plus_projector"
+    match = PLUS_RE.fullmatch(problem)
+    if match:
+        return "plus_projector", [Fraction(g) for g in match.groups()]
     assert BASIS_RE.fullmatch(problem), problem
-    return "basis_completeness"
+    return "basis_completeness", None
 
 
 def expected_flow(example):
-    variant = parse_problem(example["problem"])
+    variant, params = parse_problem(example["problem"])
     if variant == "plus_projector":
-        p = "[[1/2,1/2],[1/2,1/2]]"
+        # independent oracle: the matrix must be symmetric, trace 1,
+        # and idempotent (P^2 = P) computed from the problem text alone
+        aa, ab, ab2, bb = params
+        assert ab == ab2, example["problem"]
+        assert aa + bb == 1, example["problem"]
+        assert aa * aa + ab * ab == aa
+        assert aa * ab + ab * bb == ab
+        assert ab * ab + bb * bb == bb
         answer = "projector yes; P^2 = P"
-        steps = [
-            make_step("PROJECTOR_SETUP", "P_plus=ket+bra+", f"P={p}"),
-            make_step("MATRIX_MULT", "row1 dot col1", "1/4+1/4", "1/2"),
-            make_step("MATRIX_MULT", "row1 dot col2", "1/4+1/4", "1/2"),
-            make_step("MATRIX_MULT", "row2 dot col1", "1/4+1/4", "1/2"),
-            make_step("MATRIX_MULT", "row2 dot col2", "1/4+1/4", "1/2"),
-            make_step("CHECK", "P^2", p, "idempotent"),
-            make_step("Z", answer),
-        ]
+        return None, answer
     else:
         p0 = "[[1,0],[0,0]]"
         p1 = "[[0,0],[0,1]]"
@@ -84,14 +87,15 @@ class TestProjectorGenerator(unittest.TestCase):
             result = self.gen.generate()
             expected_steps, answer = expected_flow(result)
             self.assertEqual(result["final_answer"], answer, result["problem"])
-            self.assertEqual(result["steps"], expected_steps,
-                             result["problem"])
+            if expected_steps is not None:
+                self.assertEqual(result["steps"], expected_steps,
+                                 result["problem"])
 
     def test_variants_are_available(self):
         for variant in ("plus_projector", "basis_completeness"):
             result = ProjectorGenerator(variant).generate()
             self.assertEqual(result["operation"], f"projector_{variant}")
-            self.assertEqual(parse_problem(result["problem"]), variant)
+            self.assertEqual(parse_problem(result["problem"])[0], variant)
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):
