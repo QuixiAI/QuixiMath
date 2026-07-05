@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] RegularPolygonAreaGenerator — Regular Polygon Area (high · d4)
-- [ ] SimilarTrianglesGenerator — Similar Triangles (high · d4)
-- [ ] GeometricMeanGenerator — Geometric Mean (high · d4)
-- [ ] DistanceFormulaGenerator — Distance Formula (high · d3)
-- [ ] MidpointGenerator — Midpoint (high · d3)
-- [ ] SegmentPartitionGenerator — Segment Partition (high · d4)
 - [ ] TransformationGenerator — Transformation (high · d3)
 - [ ] ArcSectorGenerator — Arc Sector (high · d4)
 - [ ] CircleAngleGenerator — Circle Angle (high · d4)
