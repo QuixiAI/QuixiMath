@@ -4818,8 +4818,8 @@ Steps:
   S|89|85|4
   D|4|2|2
   CHECK|abs(stat) vs critical value|2 ≤ 2.576|fail to reject H0
-  Z|fail to reject H0
-Answer: fail to reject H0
+  Z|fail to reject H0 (2 ≤ 2.576)
+Answer: fail to reject H0 (2 ≤ 2.576)
 ```
 
 ### Chi Square — `ChiSquareGenerator`  ·  high · difficulty 5
@@ -4845,8 +4845,8 @@ Steps:
   A|3.125|2.5|5.625
   A|5.625|0.625|6.25
   CHECK|χ² vs critical value|6.25 > 3.841|reject H0
-  Z|reject H0
-Answer: reject H0
+  Z|reject H0 (6.25 > 3.841)
+Answer: reject H0 (6.25 > 3.841)
 ```
 
 ### Conditional Probability — `ConditionalProbabilityGenerator`  ·  high · difficulty 5

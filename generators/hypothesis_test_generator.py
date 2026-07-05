@@ -45,11 +45,13 @@ class HypothesisTestGenerator(ProblemGenerator):
     @staticmethod
     def _decision_step(stat, crit):
         reject = abs(stat) > crit
-        verdict = "reject H0" if reject else "fail to reject H0"
         rel = ">" if reject else "≤"
+        comparison = f"{dec(abs(stat))} {rel} {dec(crit)}"
+        head = "reject H0" if reject else "fail to reject H0"
+        # composite verdict: the bare label would be a gradable coin flip
+        verdict = f"{head} ({comparison})"
         return step("CHECK", "abs(stat) vs critical value",
-                    f"{dec(abs(stat))} {rel} {dec(crit)}",
-                    verdict), verdict
+                    comparison, head), verdict
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)

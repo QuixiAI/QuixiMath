@@ -38,6 +38,7 @@ def oracle_check(example):
     if "test statistic" in p:
         return ans == dec(stat)
     want = "reject H0" if abs(stat) > crit else "fail to reject H0"
+    ans = ans.split(" (")[0]
     return ans == want
 
 
@@ -71,8 +72,9 @@ class TestHypothesisTestGenerator(unittest.TestCase):
         for v in ("prop_z_decision", "t_decision"):
             gen = HypothesisTestGenerator(v)
             verdicts = {gen.generate()["final_answer"] for _ in range(300)}
-            self.assertIn("reject H0", verdicts)
-            self.assertIn("fail to reject H0", verdicts)
+            heads = {v.split(" (")[0] for v in verdicts}
+            self.assertIn("reject H0", heads)
+            self.assertIn("fail to reject H0", heads)
 
     def test_stat_formula_present(self):
         for _ in range(200):

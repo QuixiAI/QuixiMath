@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] HypothesisTestGenerator — Hypothesis Test (high · d5)
-- [ ] ChiSquareGenerator — Chi Square (high · d5)
-- [ ] ConditionalProbabilityGenerator — Conditional Probability (high · d5)
-- [ ] GeometricDistributionGenerator — Geometric Distribution (high · d4)
-- [ ] FermiEstimationGenerator — Fermi Estimation (high · d4)
-- [ ] NormalTableGenerator — Normal Table (high · d4)
 - [ ] MultiplyingBinomialsGenerator — Multiplying Binomials (high · d5)
 - [ ] MultiplyingPolynomialsGenerator — Multiplying Polynomials (high · d5)
 - [ ] PolynomialDivMonomialGenerator — Polynomial Div Monomial (high · d5)

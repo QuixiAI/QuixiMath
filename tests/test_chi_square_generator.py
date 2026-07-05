@@ -40,6 +40,7 @@ def oracle_check(example):
     if "test statistic" in p:
         return ans == exact(chi)
     want = "reject H0" if chi > crit else "fail to reject H0"
+    ans = ans.split(" (")[0]
     return ans == want
 
 
@@ -83,8 +84,9 @@ class TestChiSquareGenerator(unittest.TestCase):
         for v in ("gof_decision", "independence_decision"):
             gen = ChiSquareGenerator(v)
             verdicts = {gen.generate()["final_answer"] for _ in range(400)}
-            self.assertIn("reject H0", verdicts)
-            self.assertIn("fail to reject H0", verdicts)
+            heads = {v.split(" (")[0] for v in verdicts}
+            self.assertIn("reject H0", heads)
+            self.assertIn("fail to reject H0", heads)
 
     def test_pipe_safe(self):
         for _ in range(300):

@@ -65,10 +65,12 @@ class ChiSquareGenerator(ProblemGenerator):
     @staticmethod
     def _decision_step(chi, crit):
         reject = chi > crit
-        verdict = "reject H0" if reject else "fail to reject H0"
         rel = ">" if reject else "≤"
-        return step("CHECK", "χ² vs critical value",
-                    f"{exact(chi)} {rel} {dec(crit)}", verdict), verdict
+        comparison = f"{exact(chi)} {rel} {dec(crit)}"
+        head = "reject H0" if reject else "fail to reject H0"
+        # composite verdict: the bare label would be a gradable coin flip
+        verdict = f"{head} ({comparison})"
+        return step("CHECK", "χ² vs critical value", comparison, head), verdict
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
