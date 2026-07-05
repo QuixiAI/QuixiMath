@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] CosetGenerator — Coset (graduate · d4)
-- [ ] FiniteFieldGenerator — Finite Field (graduate · d4)
-- [ ] QuaternionGenerator — Quaternion (graduate · d4)
-- [ ] ComplexLogGenerator — Complex Log (graduate · d4)
-- [ ] MobiusTransformGenerator — Mobius Transform (graduate · d4)
-- [ ] ResidueGenerator — Residue (graduate · d4)
 - [ ] ContourIntegralGenerator — Contour Integral (graduate · d5)
 - [ ] LaurentSeriesGenerator — Laurent Series (graduate · d5)
 - [ ] SphericalTriangleGenerator — Spherical Triangle (graduate · d4)
