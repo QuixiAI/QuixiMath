@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ScalingLawGenerator — Scaling Law (college · d3)
-- [ ] LRScheduleGenerator — LRSchedule (college · d2)
-- [ ] QuantizationGenerator — Quantization (college · d3)
-- [ ] AnnuityGenerator — Annuity (college · d4)
-- [ ] BondPricingGenerator — Bond Pricing (college · d4)
-- [ ] NPVIRRGenerator — NPVIRR (college · d4)
 - [ ] MatrixExponentialGenerator — Matrix Exponential (graduate · d3)
 - [ ] SVDGenerator — SVD (graduate · d4)
 - [ ] SeriesSolutionGenerator — Series Solution (graduate · d4)
