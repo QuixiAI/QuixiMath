@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] TrigIdentityVerifyGenerator — Trig Identity Verify (high · d5)
-- [ ] TrigEquationGenerator — Trig Equation (high · d5)
-- [ ] TriangleSolveGenerator — Triangle Solve (high · d5)
-- [ ] TriangleAreaSASGenerator — Triangle Area SAS (high · d4)
-- [ ] PolarParametricGenerator — Polar Parametric (high · d5)
-- [ ] VectorOpsGenerator — Vector Ops (high · d4)
 - [ ] DotProductGenerator — Dot Product (high · d4)
 - [ ] MatrixOpsGenerator — Matrix Ops (high · d4)
 - [ ] DeterminantGenerator — Determinant (high · d4)

@@ -87,7 +87,9 @@ class VectorOpsGenerator(ProblemGenerator):
                 acc += c * c
             val = sqrt_txt(total)
             if "√" in val:
-                steps.append(step("ROOT_SIMPLIFY", f"√{total} = {val}"))
+                # only show the simplification when it changes something
+                if val != f"√{total}":
+                    steps.append(step("ROOT_SIMPLIFY", f"√{total} = {val}"))
             else:
                 steps.append(step("E", val, 2, total))
             answer = val
