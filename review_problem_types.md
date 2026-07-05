@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] DotProductGenerator — Dot Product (high · d4)
-- [ ] MatrixOpsGenerator — Matrix Ops (high · d4)
-- [ ] DeterminantGenerator — Determinant (high · d4)
-- [ ] MatrixInverseGenerator — Matrix Inverse (high · d4)
-- [ ] CramersRuleGenerator — Cramers Rule (high · d5)
-- [ ] RowReductionGenerator — Row Reduction (high · d5)
 - [ ] LimitEvaluationGenerator — Limit Evaluation (high · d4)
 - [ ] DerivativeLimitDefGenerator — Derivative Limit Def (high · d5)
 - [ ] DerivativePowerRuleGenerator — Derivative Power Rule (high · d4)
