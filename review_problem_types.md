@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] CurveGeometryGenerator — Curve Geometry (college · d3)
-- [ ] CentroidGenerator — Centroid (college · d4)
-- [ ] LUDecompositionGenerator — LUDecomposition (college · d3)
-- [ ] SubspaceBasisGenerator — Subspace Basis (college · d3)
-- [ ] EigenvalueGenerator — Eigenvalue (college · d3)
-- [ ] DiagonalizationGenerator — Diagonalization (college · d4)
 - [ ] GramSchmidtGenerator — Gram Schmidt (college · d4)
 - [ ] LeastSquaresGenerator — Least Squares (college · d4)
 - [ ] IntegratingFactorGenerator — Integrating Factor (college · d3)
