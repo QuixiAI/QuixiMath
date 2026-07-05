@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] SpecialRelativityGenerator — Special Relativity (college · d3)
-- [ ] RelativisticEnergyGenerator — Relativistic Energy (college · d4)
-- [ ] DopplerGenerator — Doppler (college · d3)
-- [ ] OpticsGenerator — Optics (college · d2)
-- [ ] InterferenceGenerator — Interference (college · d3)
-- [ ] StandingWaveGenerator — Standing Wave (college · d2)
 - [ ] EntropyGenerator — Entropy (college · d3)
 - [ ] MutualInformationGenerator — Mutual Information (college · d4)
 - [ ] HuffmanCodingGenerator — Huffman Coding (college · d4)
