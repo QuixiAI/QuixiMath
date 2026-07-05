@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**486 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**510 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6429,6 +6429,46 @@ Steps:
 Answer: array = [3, 17, 26, 32, 33, 20]
 ```
 
+### Turing Machine Trace — `TuringMachineTraceGenerator`  ·  college · difficulty 4
+
+Bounded deterministic Turing-machine execution on short inputs.
+
+**Variants:** `turing_machine_trace_binary_flip`, `turing_machine_trace_erase_ones`, `turing_machine_trace_unary_increment`
+
+```
+Problem: Run bounded TM binary_flip on input 0011 for at most 7 steps. Rules: q0,0->q0,1,R; q0,1->q0,0,R; q0,_->qH,_,S. Blank is _. Report final status, state, trimmed tape, and head position.
+Steps:
+  TM_SETUP|binary_flip|input=0011|limit=7
+  TM_RULE|q0,0|q0,1,R
+  TM_RULE|q0,1|q0,0,R
+  TM_RULE|q0,_|qH,_,S
+  TM_CONFIG|step 0|state=q0|head=0|tape=0011
+  TM_READ|head=0|0
+  TM_WRITE|head=0|1
+  TM_MOVE|0|R|1
+  TM_CONFIG|step 1|state=q0|head=1|tape=1011
+  TM_READ|head=1|0
+  TM_WRITE|head=1|1
+  TM_MOVE|1|R|2
+  TM_CONFIG|step 2|state=q0|head=2|tape=1111
+  TM_READ|head=2|1
+  TM_WRITE|head=2|0
+  TM_MOVE|2|R|3
+  TM_CONFIG|step 3|state=q0|head=3|tape=1101
+  TM_READ|head=3|1
+  TM_WRITE|head=3|0
+  TM_MOVE|3|R|4
+  TM_CONFIG|step 4|state=q0|head=4|tape=1100
+  TM_READ|head=4|_
+  TM_WRITE|head=4|_
+  TM_MOVE|4|S|4
+  TM_CONFIG|step 5|state=qH|head=4|tape=1100
+  TM_HALT|step 5|halted
+  CHECK|halted|state=qH|tape=1100
+  Z|halted; state=qH; tape=1100; head=4
+Answer: halted; state=qH; tape=1100; head=4
+```
+
 ### DFASimulation — `DFASimulationGenerator`  ·  college · difficulty 3
 
 DFA simulation with a complete state-sequence trace.
@@ -6470,6 +6510,209 @@ Steps:
   CHECK|q1 in accepting states|accepted
   Z|accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
 Answer: accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
+```
+
+### NFASimulation — `NFASimulationGenerator`  ·  college · difficulty 3
+
+NFA and epsilon-NFA simulation with active-state-set traces.
+
+**Variants:** `nfa_simulation_contains_ab`, `nfa_simulation_ends_with_ab`, `nfa_simulation_epsilon_optional_a`
+
+```
+Problem: Run the NFA with states q0, q1, q2; alphabet a, b; start q0; accepting states q2; transitions q0:a->{q0,q1},b->{q0}; q1:a->{},b->{q2}; q2:a->{q2},b->{q2}; input baba. List the active-state sets after each symbol and give the result.
+Steps:
+  NFA_SETUP|states q0, q1, q2|alphabet a, b|start q0
+  NFA_ACCEPT|q2
+  NFA_TRANSITION|q0|a|{q0,q1}
+  NFA_TRANSITION|q0|b|{q0}
+  NFA_TRANSITION|q1|a|{}
+  NFA_TRANSITION|q1|b|{q2}
+  NFA_TRANSITION|q2|a|{q2}
+  NFA_TRANSITION|q2|b|{q2}
+  NFA_INPUT|baba
+  EPS_CLOSURE|{q0}|{q0}
+  NFA_ACTIVE|start|{q0}
+  NFA_READ|pos 1|b
+  NFA_MOVE|{q0}|b|q0->{q0}|{q0}
+  EPS_CLOSURE|{q0}|{q0}
+  NFA_ACTIVE|after 1|{q0}
+  NFA_READ|pos 2|a
+  NFA_MOVE|{q0}|a|q0->{q0,q1}|{q0,q1}
+  EPS_CLOSURE|{q0,q1}|{q0,q1}
+  NFA_ACTIVE|after 2|{q0,q1}
+  NFA_READ|pos 3|b
+  NFA_MOVE|{q0,q1}|b|q0->{q0}; q1->{q2}|{q0,q2}
+  EPS_CLOSURE|{q0,q2}|{q0,q2}
+  NFA_ACTIVE|after 3|{q0,q2}
+  NFA_READ|pos 4|a
+  NFA_MOVE|{q0,q2}|a|q0->{q0,q1}; q2->{q2}|{q0,q1,q2}
+  EPS_CLOSURE|{q0,q1,q2}|{q0,q1,q2}
+  NFA_ACTIVE|after 4|{q0,q1,q2}
+  CHECK|active ∩ accept = q2|accepted
+  Z|accepted; sets = {q0} -> {q0} -> {q0,q1} -> {q0,q2} -> {q0,q1,q2}
+Answer: accepted; sets = {q0} -> {q0} -> {q0,q1} -> {q0,q2} -> {q0,q1,q2}
+```
+
+### DFAMinimization — `DFAMinimizationGenerator`  ·  college · difficulty 4
+
+DFA minimization by table-free partition refinement.
+
+**Variants:** `dfa_minimization_all_distinct`, `dfa_minimization_ends_with_one_clones`, `dfa_minimization_two_accept_clones`
+
+```
+Problem: Use partition refinement to minimize this DFA: states A, B, C; alphabet 0, 1; start A; accepting states B, C; transitions A:0->A,1->B; B:0->C,1->B; C:0->C,1->B.
+Steps:
+  DFA_MIN_SETUP|states A, B, C|alphabet 0, 1|start A
+  DFA_ACCEPT|B, C
+  DFA_MIN_TRANSITION|A|0|A
+  DFA_MIN_TRANSITION|A|1|B
+  DFA_MIN_TRANSITION|B|0|C
+  DFA_MIN_TRANSITION|B|1|B
+  DFA_MIN_TRANSITION|C|0|C
+  DFA_MIN_TRANSITION|C|1|B
+  MIN_INITIAL|nonaccept A|accept B, C|{A}, {B,C}
+  MIN_SIGNATURE|round 1|A|0->B0,1->B1
+  MIN_SIGNATURE|round 1|B|0->B1,1->B1
+  MIN_SIGNATURE|round 1|C|0->B1,1->B1
+  MIN_REFINE|round 1|{A}, {B,C}
+  MIN_STABLE|{A}, {B,C}
+  MIN_TRANSITION|{A}|0|{A}
+  MIN_TRANSITION|{A}|1|{B,C}
+  CHECK|representative A|0->{A},1->{B,C}
+  MIN_TRANSITION|{B,C}|0|{B,C}
+  MIN_TRANSITION|{B,C}|1|{B,C}
+  CHECK|representative B|0->{B,C},1->{B,C}
+  Z|blocks = {A}, {B,C}; start = {A}; accepting = {B,C}; transitions = {A}:0->{A},1->{B,C}; {B,C}:0->{B,C},1->{B,C}
+Answer: blocks = {A}, {B,C}; start = {A}; accepting = {B,C}; transitions = {A}:0->{A},1->{B,C}; {B,C}:0->{B,C},1->{B,C}
+```
+
+### Regex To Automaton — `RegexToAutomatonGenerator`  ·  college · difficulty 4
+
+Direct DFA construction for small regular expressions.
+
+**Variants:** `regex_to_automaton_a_star_b`, `regex_to_automaton_contains_ab`, `regex_to_automaton_ends_ab_or_ba`
+
+```
+Problem: Build the direct DFA for regular expression (a|b)*ab(a|b)* over alphabet a,b. Report start, accepting states, and transition table.
+Steps:
+  REGEX_SETUP|(a or b)*ab(a or b)*|alphabet a,b|canonical progress DFA
+  REGEX_STATE|q0|no useful suffix
+  REGEX_STATE|q1|suffix a
+  REGEX_STATE|q2|seen ab
+  REGEX_ACCEPT|q2
+  REGEX_TRANSITION|q0|a|q1
+  REGEX_TRANSITION|q0|b|q0
+  REGEX_TRANSITION|q1|a|q1
+  REGEX_TRANSITION|q1|b|q2
+  REGEX_TRANSITION|q2|a|q2
+  REGEX_TRANSITION|q2|b|q2
+  CHECK|complete table|3 states
+  Z|start=q0; accept=q2; transitions=q0:a->q1,b->q0; q1:a->q1,b->q2; q2:a->q2,b->q2
+Answer: start=q0; accept=q2; transitions=q0:a->q1,b->q0; q1:a->q1,b->q2; q2:a->q2,b->q2
+```
+
+### PDASimulation — `PDASimulationGenerator`  ·  college · difficulty 4
+
+Pushdown-automaton simulation for balanced parentheses and a^n b^n.
+
+**Variants:** `pda_simulation_anbn`, `pda_simulation_balanced_parentheses`
+
+```
+Problem: Simulate PDA anbn on input aab. Start with stack $. Report accept/reject and the final stack.
+Steps:
+  PDA_SETUP|a^n b^n|stack=$
+  PDA_STATE|pos 1|push|stack=$
+  PDA_READ|a
+  PDA_PUSH|A|stack=$A
+  PDA_STATE|pos 2|push|stack=$A
+  PDA_READ|a
+  PDA_PUSH|A|stack=$AA
+  PDA_STATE|pos 3|push|stack=$AA
+  PDA_READ|b
+  PDA_POP|A|stack=$A
+  CHECK|state=pop|stack=$A|rejected
+  Z|rejected; stack=$A
+Answer: rejected; stack=$A
+```
+
+### CYKParser — `CYKParserGenerator`  ·  college · difficulty 4
+
+CYK parsing for a small Chomsky-normal-form grammar.
+
+**Variants:** `cyk_parser_membership`
+
+```
+Problem: Run the CYK parser for string abb with grammar A->a; B->b; C->S B; S->A B or A C. Report the top cell and accept/reject.
+Steps:
+  CYK_SETUP|string abb|length 3
+  CYK_RULE|A|a
+  CYK_RULE|B|b
+  CYK_RULE|C|S B
+  CYK_RULE|S|A B or A C
+  CYK_TERMINAL|cell 1,1|a|{A}
+  CYK_TERMINAL|cell 2,2|b|{B}
+  CYK_TERMINAL|cell 3,3|b|{B}
+  CYK_SPAN|2
+  CYK_SPLIT|cell 1,2|1,1 x 2,2|{A} x {B}
+  CYK_COMBINE|A B|{S}|cell 1,2
+  CYK_CELL|1,2|{S}
+  CYK_SPLIT|cell 2,3|2,2 x 3,3|{B} x {B}
+  CYK_CELL|2,3|{}
+  CYK_SPAN|3
+  CYK_SPLIT|cell 1,3|1,1 x 2,3|{A} x {}
+  CYK_SPLIT|cell 1,3|1,2 x 3,3|{S} x {B}
+  CYK_COMBINE|S B|{C}|cell 1,3
+  CYK_CELL|1,3|{C}
+  CHECK|S in top cell|rejected
+  Z|rejected; top cell = {C}
+Answer: rejected; top cell = {C}
+```
+
+### DPLLTrace — `DPLLTraceGenerator`  ·  college · difficulty 4
+
+Deterministic DPLL traces for tiny CNF formulas.
+
+**Variants:** `dpll_trace_branch_sat`, `dpll_trace_branch_unsat`, `dpll_trace_unit_sat`
+
+```
+Problem: Run a DPLL trace for (A OR B) AND (not A OR B) AND (A OR not B); branch alphabetically and try True before False.
+Steps:
+  DPLL_SETUP|(A OR B) AND (not A OR B) AND (A OR not B)|variables A, B|True first
+  DPLL_STATE|depth 0|none|3 clauses left
+  DPLL_BRANCH|depth 0|A|True
+  DPLL_STATE|depth 1|A=True|1 clauses left
+  DPLL_UNIT|(B)|B=True
+  DPLL_SIMPLIFY|A=True, B=True|0 clauses left
+  DPLL_SAT|A=True, B=True
+  Z|satisfiable; A=True, B=True
+Answer: satisfiable; A=True, B=True
+```
+
+### Resolution Proof — `ResolutionProofGenerator`  ·  college · difficulty 4
+
+Propositional resolution refutations for tiny unsatisfiable CNFs.
+
+**Variants:** `resolution_proof_binary_refutation`, `resolution_proof_chain_refutation`, `resolution_proof_unit_refutation`
+
+```
+Problem: Give a resolution refutation for clauses C1=(A), C2=(not A OR B), C3=(not B), using the stated clause order and alphabetical complementary literals, skipping duplicate resolvents.
+Steps:
+  RES_SETUP|C1=(A), C2=(not A OR B), C3=(not B)
+  CLAUSE|C1|(A)
+  CLAUSE|C2|(not A OR B)
+  CLAUSE|C3|(not B)
+  RESOLVE|C1|C2|A
+  DERIVED|C4|(B)
+  RES_SKIP|C1|C2|(B)
+  RESOLVE|C2|C3|B
+  DERIVED|C5|(not A)
+  RES_SKIP|C1|C2|(B)
+  RESOLVE|C1|C5|A
+  DERIVED|C6|{}
+  RES_EMPTY|C6
+  CHECK|empty clause|unsatisfiable
+  Z|unsatisfiable; empty clause = C6
+Answer: unsatisfiable; empty clause = C6
 ```
 
 ### Extended Euclid — `ExtendedEuclidGenerator`  ·  college · difficulty 3
@@ -6878,6 +7121,30 @@ Steps:
   CHECK|shared secrets match|18
   Z|Alice public = 4; Bob public = 21; shared secret = 18
 Answer: Alice public = 4; Bob public = 21; shared secret = 18
+```
+
+### Pollard Factorization — `PollardFactorizationGenerator`  ·  college · difficulty 4
+
+Pollard rho and Pollard p-1 factorization traces for small composites.
+
+**Variants:** `pollard_factorization_p_minus_1`, `pollard_factorization_rho`
+
+```
+Problem: Run Pollard p-1 on n=299 using base=3, B=6. Report the nontrivial factor and cofactor.
+Steps:
+  POLLARD_PM1_SETUP|n=299|base=3|B=6
+  LCM_STEP|1|2|2
+  LCM_STEP|2|3|6
+  LCM_STEP|6|4|12
+  LCM_STEP|12|5|60
+  LCM_STEP|60|6|60
+  MOD_POWER|3^60|mod 299|105
+  S|105|1|104
+  GCD|gcd(104,299)|13
+  POLLARD_FACTOR|13|23
+  CHECK|13*23|299
+  Z|factor = 13; cofactor = 23
+Answer: factor = 13; cofactor = 23
 ```
 
 ### Cayley Table — `CayleyTableGenerator`  ·  college · difficulty 3
@@ -8574,6 +8841,53 @@ Steps:
 Answer: H(X,Y)=2 bits; H(Y given X)=1 bit; I(X;Y)=1 bit
 ```
 
+### BECChannel — `BECChannelGenerator`  ·  college · difficulty 4
+
+Binary erasure channel capacity and block erasure probabilities.
+
+**Variants:** `bec_channel_capacity`, `bec_channel_exactly_one_erasure`, `bec_channel_no_erasure`
+
+```
+Problem: A binary erasure channel has erasure probability epsilon=1/3. Find the probability of no erasures in n=3 uses.
+Steps:
+  BEC_SETUP|epsilon=1/3
+  S|1|1/3|2/3
+  BEC_FORMULA|P(no erasures)=(1-epsilon)^n
+  E|2/3|3|8/27
+  Z|P(no erasures in 3) = 8/27
+Answer: P(no erasures in 3) = 8/27
+```
+
+### Viterbi — `ViterbiGenerator`  ·  college · difficulty 4
+
+Viterbi decoding for a two-state hidden Markov model.
+
+**Variants:** `viterbi_hmm_decode`
+
+```
+Problem: Decode observations BBA with Viterbi. States H,L; start H=1/2,L=1/2; transitions HH=3/4,HL=1/4,LH=1/3,LL=2/3; emissions H:A=3/4,H:B=1/4,L:A=1/4,L:B=3/4.
+Steps:
+  HMM_SETUP|states H,L|observations BBA
+  HMM_START|H=1/2, L=1/2
+  VITERBI_INIT|H|obs=B|1/8
+  VITERBI_INIT|L|obs=B|3/8
+  VITERBI_CAND|t=2,state=H|from H|3/128
+  VITERBI_CAND|t=2,state=H|from L|1/32
+  VITERBI_PICK|t=2,state=H|from L|1/32
+  VITERBI_CAND|t=2,state=L|from H|3/128
+  VITERBI_CAND|t=2,state=L|from L|3/16
+  VITERBI_PICK|t=2,state=L|from L|3/16
+  VITERBI_CAND|t=3,state=H|from H|9/512
+  VITERBI_CAND|t=3,state=H|from L|3/64
+  VITERBI_PICK|t=3,state=H|from L|3/64
+  VITERBI_CAND|t=3,state=L|from H|1/512
+  VITERBI_CAND|t=3,state=L|from L|1/32
+  VITERBI_PICK|t=3,state=L|from L|1/32
+  VITERBI_BACKTRACE|L->L->H|3/64
+  Z|path = L->L->H; probability = 3/64
+Answer: path = L->L->H; probability = 3/64
+```
+
 ### Huffman Coding — `HuffmanCodingGenerator`  ·  college · difficulty 4
 
 Huffman tree construction with expected length, entropy, and Kraft check.
@@ -8669,6 +8983,38 @@ Steps:
   KRAFT_CHECK|sum=1|complete
   Z|lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
 Answer: lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kraft=1
+```
+
+### LZCompression — `LZCompressionGenerator`  ·  college · difficulty 4
+
+LZ77 and LZ78 compression traces on short strings.
+
+**Variants:** `lz_compression_lz77`, `lz_compression_lz78`
+
+```
+Problem: Compress the string bananaban with LZ78 with dictionary index 0 as the empty phrase and $ as the end marker. Use the exact greedy rule stated by the method and list the emitted tokens.
+Steps:
+  LZ_SETUP|LZ78|bananaban
+  LZ78_DICT|0|empty
+  LZ78_MATCH|pos 0|phrase empty|index 0|next b
+  LZ78_EMIT|(0,b)
+  LZ78_DICT|1|b
+  LZ78_MATCH|pos 1|phrase empty|index 0|next a
+  LZ78_EMIT|(0,a)
+  LZ78_DICT|2|a
+  LZ78_MATCH|pos 2|phrase empty|index 0|next n
+  LZ78_EMIT|(0,n)
+  LZ78_DICT|3|n
+  LZ78_MATCH|pos 3|phrase a|index 2|next n
+  LZ78_EMIT|(2,n)
+  LZ78_DICT|4|an
+  LZ78_MATCH|pos 5|phrase a|index 2|next b
+  LZ78_EMIT|(2,b)
+  LZ78_DICT|5|ab
+  LZ78_MATCH|pos 7|phrase an|index 4|next $
+  LZ78_EMIT|(4,$)
+  Z|LZ78 = (0,b), (0,a), (0,n), (2,n), (2,b), (4,$)
+Answer: LZ78 = (0,b), (0,a), (0,n), (2,n), (2,b), (4,$)
 ```
 
 ### Hamming Code — `HammingCodeGenerator`  ·  college · difficulty 4
@@ -9533,6 +9879,48 @@ Steps:
 Answer: coefficient = 2
 ```
 
+### Unification — `UnificationGenerator`  ·  graduate · difficulty 4
+
+First-order term unification with occurs-check.
+
+**Variants:** `unification_nested`, `unification_occurs`, `unification_simple`
+
+```
+Problem: Find the most general unifier of g(X,h(Y)) and g(h(a),h(b)); use occurs-check.
+Steps:
+  UNIFY_SETUP|g(X,h(Y))|g(h(a),h(b))|occurs-check
+  UNIFY_PAIR|g(X,h(Y))|g(h(a),h(b))
+  UNIFY_DECOMPOSE|g|2 arguments
+  UNIFY_PAIR|X|h(a)
+  UNIFY_BIND|X|h(a)|{X=h(a)}
+  UNIFY_PAIR|h(Y)|h(b)
+  UNIFY_DECOMPOSE|h|1 arguments
+  UNIFY_PAIR|Y|b
+  UNIFY_BIND|Y|b|{X=h(a), Y=b}
+  Z|MGU = {X=h(a), Y=b}
+Answer: MGU = {X=h(a), Y=b}
+```
+
+### Lambda Reduction — `LambdaReductionGenerator`  ·  graduate · difficulty 4
+
+Small lambda-calculus beta-reduction traces with capture avoidance.
+
+**Variants:** `lambda_reduction_alpha`, `lambda_reduction_constant`, `lambda_reduction_identity`
+
+```
+Problem: Normalize (((lambda x. (lambda y. x)) a) b) using leftmost-outermost beta reduction; alpha-rename when needed.
+Steps:
+  LAMBDA_SETUP|(((lambda x. (lambda y. x)) a) b)|leftmost-outermost
+  BETA|(lambda x. lambda y. x) applied to a
+  SUBSTITUTE|x:=a in lambda y. x|lambda y. a
+  REWRITE|lambda y. a
+  BETA|(lambda y. a) applied to b
+  SUBSTITUTE|y:=b in a|a
+  REWRITE|a
+  Z|normal form = a
+Answer: normal form = a
+```
+
 ### Quadratic Residue — `QuadraticResidueGenerator`  ·  graduate · difficulty 4
 
 Legendre symbol computation by Euler's criterion.
@@ -9579,6 +9967,51 @@ Steps:
 Answer: Legendre(99,29) = -1
 ```
 
+### Jacobi Symbol — `JacobiSymbolGenerator`  ·  graduate · difficulty 4
+
+Jacobi symbol computation by the iterative reciprocity algorithm.
+
+**Variants:** `jacobi_symbol`
+
+```
+Problem: Compute the Jacobi symbol (217/105) using the standard reciprocity algorithm.
+Steps:
+  JACOBI_SETUP|a=217|n=105|n odd
+  MOD_REDUCE|217|mod 105|7
+  JACOBI_RECIPROCITY|a mod 4 = 3|n mod 4 = 1|keep sign
+  JACOBI_SWAP|a=105|n=7|sign 1
+  MOD_REDUCE|105|mod 7|0
+  JACOBI_END|gcd(217,105)>1|0
+  Z|Jacobi(217,105) = 0
+Answer: Jacobi(217,105) = 0
+```
+
+### Tonelli Shanks — `TonelliShanksGenerator`  ·  graduate · difficulty 5
+
+Tonelli-Shanks modular square roots for odd primes.
+
+**Variants:** `tonelli_shanks`
+
+```
+Problem: Use Tonelli-Shanks to solve x^2 congruent to 5 modulo prime 41.
+Steps:
+  TS_SETUP|a=5|p=41
+  TS_FACTOR|p-1=40|q=5|s=3
+  TS_NONRESIDUE|3
+  MOD_POWER|3^5|mod 41|38
+  MOD_POWER|5^5|mod 41|9
+  MOD_POWER|5^3|mod 41|2
+  TS_INIT|m=3|c=38|t=9|r=2
+  TS_LOOP|i=2|b=38
+  TS_INIT|m=2|c=9|t=40|r=35
+  TS_LOOP|i=1|b=9
+  TS_INIT|m=1|c=40|t=1|r=28
+  CHECK|13^2 mod 41|5
+  CHECK|28^2 mod 41|5
+  Z|roots = 13, 28 mod 41
+Answer: roots = 13, 28 mod 41
+```
+
 ### Primality Test — `PrimalityTestGenerator`  ·  graduate · difficulty 4
 
 Miller-Rabin primality test traces with supplied witnesses.
@@ -9600,6 +10033,34 @@ Steps:
   MR_WITNESS_RESULT|4|composite
   Z|composite; witness = 4
 Answer: composite; witness = 4
+```
+
+### Baby Step Giant Step — `BabyStepGiantStepGenerator`  ·  graduate · difficulty 4
+
+Baby-step giant-step discrete logarithm in small prime fields.
+
+**Variants:** `baby_step_giant_step`
+
+```
+Problem: Use baby-step giant-step to solve 2^x congruent to 22 modulo 29, with 0 <= x < 28.
+Steps:
+  BSGS_SETUP|p=29|g=2|h=22|m=6
+  BABY_STEP|j=0|1
+  BABY_STEP|j=1|2
+  BABY_STEP|j=2|4
+  BABY_STEP|j=3|8
+  BABY_STEP|j=4|16
+  BABY_STEP|j=5|3
+  GIANT_FACTOR|g^-m mod p|5
+  GIANT_STEP|i=0|22
+  GIANT_STEP|i=1|23
+  GIANT_STEP|i=2|28
+  GIANT_STEP|i=3|24
+  GIANT_STEP|i=4|4
+  BSGS_MATCH|i=4|j=2|x=26
+  CHECK|2^26 mod 29|22
+  Z|x = 26
+Answer: x = 26
 ```
 
 ### Coset — `CosetGenerator`  ·  graduate · difficulty 4
@@ -9728,6 +10189,111 @@ Steps:
   R|x + 1
   Z|quotient = x^3 + x^2; remainder = x + 1
 Answer: quotient = x^3 + x^2; remainder = x + 1
+```
+
+### Elliptic Curve Finite Field — `EllipticCurveFiniteFieldGenerator`  ·  graduate · difficulty 4
+
+Elliptic-curve point arithmetic over small prime fields.
+
+**Variants:** `elliptic_curve_finite_field_add`, `elliptic_curve_finite_field_double`, `elliptic_curve_finite_field_scalar`
+
+```
+Problem: Work over F_19 on E: y^2 = x^3 + 1x + 1; compute 2P for P=(0,18).
+Steps:
+  EC_SETUP|p=19|a=1|b=1
+  EC_POINT_CHECK|P|y^2 mod p = 1|x^3+ax+b mod p = 1
+  EC_POINT_CHECK|Q|y^2 mod p = 1|x^3+ax+b mod p = 1
+  EC_SLOPE_FORMULA|2P|(3x1^2+a)/(2y1)
+  MOD_INVERSE|36 mod 19|9
+  M|1|9|9
+  MOD_REDUCE|9|mod 19|9
+  EC_SLOPE|2P|9
+  M|9|9|81
+  S|81|0|81
+  S|81|0|81
+  MOD_REDUCE|81|mod 19|5
+  EC_X3|2P|5
+  S|0|5|-5
+  M|9|-5|-45
+  S|-45|18|-63
+  MOD_REDUCE|-63|mod 19|13
+  EC_Y3|2P|13
+  EC_POINT_CHECK|result|y^2 mod p = 17|x^3+ax+b mod p = 17
+  CHECK|2P|(5,13)
+  Z|2P = (5,13)
+Answer: 2P = (5,13)
+```
+
+### ECDH — `ECDHGenerator`  ·  graduate · difficulty 4
+
+Toy elliptic-curve Diffie-Hellman over F_17.
+
+**Variants:** `ecdh_key_exchange`
+
+```
+Problem: On E: y^2=x^3+2x+2 over F_17 with base point G=(5,1), Alice secret a=8 and Bob secret b=8. Compute both public keys and the shared ECDH point.
+Steps:
+  ECDH_SETUP|E:y^2=x^3+2x+2 over F_17|G=(5,1)
+  EC_SCALAR|a=8|aG=(13,7)
+  EC_SCALAR|b=8|bG=(13,7)
+  EC_PUBLIC|A=(13,7)|B=(13,7)
+  EC_SHARED|aB=(0,6)|bA=(0,6)
+  CHECK|(0,6)|(0,6)
+  Z|A=(13,7); B=(13,7); shared=(0,6)
+Answer: A=(13,7); B=(13,7); shared=(0,6)
+```
+
+### ECDSA — `ECDSAGenerator`  ·  graduate · difficulty 5
+
+Toy ECDSA signing and verification on a small curve.
+
+**Variants:** `ecdsa_sign_verify`
+
+```
+Problem: On E: y^2=x^3+2x+2 over F_17 with G=(5,1) of order n=19, private key d=8, message hash z=7, and nonce k=3. Compute the ECDSA signature and verify it.
+Steps:
+  ECDSA_SETUP|E/F_17, G=(5,1), n=19|d=8|z=7|k=3
+  ECDSA_PUBLIC|Q=dG=(13,7)
+  ECDSA_NONCE|kG=(10,6)|r=10
+  MOD_INVERSE|3 mod 19|13
+  ECDSA_SIGN|s=k^-1(z+rd) mod n|s=10
+  MOD_INVERSE|10 mod 19|2
+  ECDSA_VERIFY|u1=14|u2=1
+  EC_SCALAR|u1G=(9,1)|u2Q=(13,7)
+  EC_ADD|(10,6)
+  CHECK|x(X) mod n = 10|r=10|valid
+  Z|signature = (r=10, s=10); verification = valid
+Answer: signature = (r=10, s=10); verification = valid
+```
+
+### LLLReduction — `LLLReductionGenerator`  ·  graduate · difficulty 4
+
+Two-dimensional LLL/Gauss lattice basis reduction.
+
+**Variants:** `lll_reduction_2d`
+
+```
+Problem: Use two-dimensional LLL (Gauss reduction) on basis [(6,1),(11,2)]. Round mu to the nearest integer.
+Steps:
+  LLL_SETUP|[(6,1),(11,2)]
+  DOT|b2.b1|68
+  NORM2|b1|37
+  MU|68/37|round=2
+  SIZE_REDUCE|b2=(11, 2)|b2-2b1=(-1, 0)
+  DOT|b2.b1|-6
+  NORM2|b1|37
+  MU|-6/37|round=0
+  SWAP|norm b2=1|norm b1=37
+  DOT|b2.b1|-6
+  NORM2|b1|1
+  MU|-6|round=-6
+  SIZE_REDUCE|b2=(6, 1)|b2-(-6)b1=(0, 1)
+  DOT|b2.b1|0
+  NORM2|b1|1
+  MU|0|round=0
+  LLL_DONE|[(-1,0),(0,1)]
+  Z|reduced basis = [(-1,0),(0,1)]
+Answer: reduced basis = [(-1,0),(0,1)]
 ```
 
 ### Quaternion — `QuaternionGenerator`  ·  graduate · difficulty 4
@@ -11483,6 +12049,30 @@ Steps:
 Answer: C=0.00058 bits/use
 ```
 
+### Entropy Rate Markov — `EntropyRateMarkovGenerator`  ·  graduate · difficulty 4
+
+Entropy rate of a two-state Markov chain using supplied log values.
+
+**Variants:** `entropy_rate_markov`
+
+```
+Problem: For a two-state Markov chain with P00=1/2, P01=1/2, P10=1/4, P11=3/4, use I(1/4)=2, I(1/2)=1, I(3/4)=0.415. Find the entropy rate.
+Steps:
+  MARKOV_SETUP|P00=1/2,P01=1/2|P10=1/4,P11=3/4
+  STATIONARY|pi0=1/3|pi1=2/3
+  ENTROPY_TERM|row 0|p=1/2|I=1|1/2
+  ENTROPY_TERM|row 0|p=1/2|I=1|1/2
+  ROW_ENTROPY|H0|1
+  ENTROPY_TERM|row 1|p=1/4|I=2|1/2
+  ENTROPY_TERM|row 1|p=3/4|I=0.415|249/800
+  ROW_ENTROPY|H1|649/800
+  M|1/3|1|1/3
+  M|2/3|649/800|649/1200
+  A|1/3|649/1200|1049/1200
+  Z|entropy_rate = 0.874167 bits/symbol
+Answer: entropy_rate = 0.874167 bits/symbol
+```
+
 ### Arithmetic Coding — `ArithmeticCodingGenerator`  ·  graduate · difficulty 5
 
 Arithmetic coding interval narrowing with exact rational endpoints.
@@ -11543,6 +12133,64 @@ Steps:
   D|1527/8192|2|1527/16384
   Z|interval=[763/8192,191/2048); code=1527/16384
 Answer: interval=[763/8192,191/2048); code=1527/16384
+```
+
+### Convolutional Code Viterbi — `ConvolutionalCodeViterbiGenerator`  ·  graduate · difficulty 4
+
+Encode and decode a tiny rate-1/2 convolutional code by Viterbi search.
+
+**Variants:** `convolutional_code_viterbi`
+
+```
+Problem: Use the rate-1/2 convolutional code output=(u xor previous,u) with initial previous bit 0. Encode message 100. Then Viterbi-decode received bits 111100 by minimum Hamming distance, breaking ties lexicographically.
+Steps:
+  CONV_SETUP|output=(u xor prev,u)|message=100|prev0=0
+  CONV_ENCODE_STEP|i=1|prev=0,u=1|11
+  CONV_ENCODE_STEP|i=2|prev=1,u=0|10
+  CONV_ENCODE_STEP|i=3|prev=0,u=0|00
+  CONV_RECEIVED|111100|flipped position 4
+  VITERBI_CAND|000|000000|distance=4
+  VITERBI_PICK|000|distance=4
+  VITERBI_CAND|001|000011|distance=6
+  VITERBI_CAND|010|001110|distance=3
+  VITERBI_PICK|010|distance=3
+  VITERBI_CAND|011|001101|distance=3
+  VITERBI_CAND|100|111000|distance=1
+  VITERBI_PICK|100|distance=1
+  VITERBI_CAND|101|111011|distance=3
+  VITERBI_CAND|110|110110|distance=2
+  VITERBI_CAND|111|110101|distance=2
+  CHECK|100|100|matches original
+  Z|encoded=111000; decoded=100; distance=1
+Answer: encoded=111000; decoded=100; distance=1
+```
+
+### Reed Solomon — `ReedSolomonGenerator`  ·  graduate · difficulty 4
+
+Toy Reed-Solomon RS(4,2) over F_7 by line evaluation.
+
+**Variants:** `reed_solomon_correct`, `reed_solomon_encode`
+
+```
+Problem: A Reed-Solomon RS(4,2) word over F_7 is made by evaluating m(x)=m0+m1*x at x=1,2,3,4. Received word is [6,0,4,1] with at most one error. Recover the message and corrected codeword.
+Steps:
+  RS_SETUP|F_7|RS(4,2)|one error allowed
+  RS_RECEIVED|[6,0,4,1]
+  RS_PAIR|x=1,2|y=6,0
+  RS_LINE|m0=5|m1=1|agree=2
+  RS_PAIR|x=1,3|y=6,4
+  RS_LINE|m0=0|m1=6|agree=2
+  RS_PAIR|x=1,4|y=6,1
+  RS_LINE|m0=3|m1=3|agree=2
+  RS_PAIR|x=2,3|y=0,4
+  RS_LINE|m0=6|m1=4|agree=3
+  RS_PAIR|x=2,4|y=0,1
+  RS_LINE|m0=6|m1=4|agree=3
+  RS_PAIR|x=3,4|y=4,1
+  RS_LINE|m0=6|m1=4|agree=3
+  RS_CORRECT|position=1|[3,0,4,1]
+  Z|message = [6,4]; codeword = [3,0,4,1]; error_position = 1
+Answer: message = [6,4]; codeword = [3,0,4,1]; error_position = 1
 ```
 
 ### Gradient Step — `GradientStepGenerator`  ·  graduate · difficulty 4

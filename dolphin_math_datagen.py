@@ -258,7 +258,17 @@ from generators.graph_traversal_generator import GraphTraversalGenerator
 from generators.euler_circuit_generator import EulerCircuitGenerator
 from generators.dp_table_generator import DPTableGenerator
 from generators.algorithm_trace_generator import AlgorithmTraceGenerator
+from generators.turing_machine_trace_generator import TuringMachineTraceGenerator
 from generators.dfa_simulation_generator import DFASimulationGenerator
+from generators.nfa_simulation_generator import NFASimulationGenerator
+from generators.dfa_minimization_generator import DFAMinimizationGenerator
+from generators.regex_to_automaton_generator import RegexToAutomatonGenerator
+from generators.pda_simulation_generator import PDASimulationGenerator
+from generators.cyk_parser_generator import CYKParserGenerator
+from generators.dpll_trace_generator import DPLLTraceGenerator
+from generators.resolution_proof_generator import ResolutionProofGenerator
+from generators.unification_generator import UnificationGenerator
+from generators.lambda_reduction_generator import LambdaReductionGenerator
 from generators.extended_euclid_generator import ExtendedEuclidGenerator
 from generators.modular_inverse_generator import ModularInverseGenerator
 from generators.crt_generator import CRTGenerator
@@ -266,14 +276,22 @@ from generators.mod_exp_generator import ModExpGenerator
 from generators.totient_generator import TotientGenerator
 from generators.continued_fraction_generator import ContinuedFractionGenerator
 from generators.quadratic_residue_generator import QuadraticResidueGenerator
+from generators.jacobi_symbol_generator import JacobiSymbolGenerator
+from generators.tonelli_shanks_generator import TonelliShanksGenerator
 from generators.rsa_generator import RSAGenerator
 from generators.diffie_hellman_generator import DiffieHellmanGenerator
 from generators.primality_test_generator import PrimalityTestGenerator
+from generators.pollard_factorization_generator import PollardFactorizationGenerator
+from generators.baby_step_giant_step_generator import BabyStepGiantStepGenerator
 from generators.cayley_table_generator import CayleyTableGenerator
 from generators.cyclic_group_generator import CyclicGroupGenerator
 from generators.permutation_group_generator import PermutationGroupGenerator
 from generators.coset_generator import CosetGenerator
 from generators.finite_field_generator import FiniteFieldGenerator
+from generators.elliptic_curve_finite_field_generator import EllipticCurveFiniteFieldGenerator
+from generators.ecdh_generator import ECDHGenerator
+from generators.ecdsa_generator import ECDSAGenerator
+from generators.lll_reduction_generator import LLLReductionGenerator
 from generators.quaternion_generator import QuaternionGenerator
 from generators.euler_formula_generator import EulerFormulaGenerator
 from generators.de_moivre_generator import DeMoivreGenerator
@@ -409,8 +427,14 @@ from generators.entropy_generator import EntropyGenerator
 from generators.mutual_information_generator import MutualInformationGenerator
 from generators.kl_divergence_generator import KLDivergenceGenerator
 from generators.channel_capacity_generator import ChannelCapacityGenerator
+from generators.bec_channel_generator import BECChannelGenerator
+from generators.entropy_rate_markov_generator import EntropyRateMarkovGenerator
+from generators.viterbi_generator import ViterbiGenerator
 from generators.huffman_coding_generator import HuffmanCodingGenerator
 from generators.arithmetic_coding_generator import ArithmeticCodingGenerator
+from generators.lz_compression_generator import LZCompressionGenerator
+from generators.convolutional_code_viterbi_generator import ConvolutionalCodeViterbiGenerator
+from generators.reed_solomon_generator import ReedSolomonGenerator
 from generators.hamming_code_generator import HammingCodeGenerator
 from generators.crc_generator import CRCGenerator
 from generators.kraft_inequality_generator import KraftInequalityGenerator
@@ -883,7 +907,17 @@ ALL_GENERATORS = [
     EulerCircuitGenerator(),
     DPTableGenerator(),
     AlgorithmTraceGenerator(),
+    TuringMachineTraceGenerator(),
     DFASimulationGenerator(),
+    NFASimulationGenerator(),
+    DFAMinimizationGenerator(),
+    RegexToAutomatonGenerator(),
+    PDASimulationGenerator(),
+    CYKParserGenerator(),
+    DPLLTraceGenerator(),
+    ResolutionProofGenerator(),
+    UnificationGenerator(),
+    LambdaReductionGenerator(),
     ExtendedEuclidGenerator(),
     ModularInverseGenerator(),
     CRTGenerator(),
@@ -891,14 +925,22 @@ ALL_GENERATORS = [
     TotientGenerator(),
     ContinuedFractionGenerator(),
     QuadraticResidueGenerator(),
+    JacobiSymbolGenerator(),
+    TonelliShanksGenerator(),
     RSAGenerator(),
     DiffieHellmanGenerator(),
     PrimalityTestGenerator(),
+    PollardFactorizationGenerator(),
+    BabyStepGiantStepGenerator(),
     CayleyTableGenerator(),
     CyclicGroupGenerator(),
     PermutationGroupGenerator(),
     CosetGenerator(),
     FiniteFieldGenerator(),
+    EllipticCurveFiniteFieldGenerator(),
+    ECDHGenerator(),
+    ECDSAGenerator(),
+    LLLReductionGenerator(),
     QuaternionGenerator(),
     EulerFormulaGenerator(),
     DeMoivreGenerator(),
@@ -1034,8 +1076,14 @@ ALL_GENERATORS = [
     MutualInformationGenerator(),
     KLDivergenceGenerator(),
     ChannelCapacityGenerator(),
+    BECChannelGenerator(),
+    EntropyRateMarkovGenerator(),
+    ViterbiGenerator(),
     HuffmanCodingGenerator(),
     ArithmeticCodingGenerator(),
+    LZCompressionGenerator(),
+    ConvolutionalCodeViterbiGenerator(),
+    ReedSolomonGenerator(),
     HammingCodeGenerator(),
     CRCGenerator(),
     KraftInequalityGenerator(),

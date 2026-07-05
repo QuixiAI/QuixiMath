@@ -20,16 +20,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **486 problem-type entries** in the generated catalog, one per registered
+- **510 problem-type entries** in the generated catalog, one per registered
   generator class
-- **502 registered generator instances**; **501** are in the default pool
-- **485 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **526 registered generator instances**; **525** are in the default pool
+- **509 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **1,101 distinct operation variant labels** across the catalog
-- **1,464 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- **1,149 distinct operation variant labels** across the catalog
+- **1,602 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
 - Catalog grade-band distribution: **36 elementary**, **64 middle**,
-  **148 high**, **141 college**, **97 graduate**
+  **148 high**, **153 college**, **109 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
