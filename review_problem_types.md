@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] SchwarzschildGenerator — Schwarzschild (graduate · d4)
-- [ ] PlanckUnitsGenerator — Planck Units (graduate · d4)
-- [ ] HawkingGenerator — Hawking (graduate · d4)
-- [ ] CasimirForceGenerator — Casimir Force (graduate · d3)
-- [ ] NaturalUnitsGenerator — Natural Units (graduate · d4)
-- [ ] InvariantMassGenerator — Invariant Mass (graduate · d4)
 - [ ] BranchingRatioGenerator — Branching Ratio (graduate · d3)
 - [ ] CrossSectionGenerator — Cross Section (graduate · d3)
 - [ ] GammaMatrixGenerator — Gamma Matrix (graduate · d5)
