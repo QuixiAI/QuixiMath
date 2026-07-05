@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] BranchingRatioGenerator — Branching Ratio (graduate · d3)
-- [ ] CrossSectionGenerator — Cross Section (graduate · d3)
-- [ ] GammaMatrixGenerator — Gamma Matrix (graduate · d5)
-- [ ] GrassmannGenerator — Grassmann (graduate · d4)
-- [ ] RunningCouplingGenerator — Running Coupling (graduate · d4)
-- [ ] MGFGenerator — MGF (graduate · d4)
 - [ ] RVTransformGenerator — RVTransform (graduate · d5)
 - [ ] MLEGenerator — MLE (graduate · d4)
 - [ ] MethodOfMomentsGenerator — Method Of Moments (graduate · d3)
