@@ -6,9 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] LogPropertiesGenerator — Log Properties (high · d4)
-- [ ] ExponentialEquationGenerator — Exponential Equation (high · d5)
-- [ ] LogEquationGenerator — Log Equation (high · d5)
 - [ ] ParabolaFeaturesGenerator — Parabola Features (high · d5)
 - [ ] EllipseFeaturesGenerator — Ellipse Features (high · d5)
 - [ ] HyperbolaFeaturesGenerator — Hyperbola Features (high · d5)
