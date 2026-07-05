@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] SpecialRightTriangleGenerator — Special Right Triangle (high · d4)
-- [ ] AngleMeasureGenerator — Angle Measure (high · d4)
-- [ ] UnitCircleGenerator — Unit Circle (high · d4)
-- [ ] SinusoidFeaturesGenerator — Sinusoid Features (high · d4)
-- [ ] TrigSixFunctionsGenerator — Trig Six Functions (high · d4)
-- [ ] TrigIdentityEvalGenerator — Trig Identity Eval (high · d5)
 - [ ] TrigIdentityVerifyGenerator — Trig Identity Verify (high · d5)
 - [ ] TrigEquationGenerator — Trig Equation (high · d5)
 - [ ] TriangleSolveGenerator — Triangle Solve (high · d5)
