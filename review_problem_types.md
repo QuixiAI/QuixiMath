@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] GaussLawGenerator — Gauss Law (college · d4)
-- [ ] TransientCircuitGenerator — Transient Circuit (college · d4)
-- [ ] MagnetismGenerator — Magnetism (college · d4)
-- [ ] GasLawGenerator — Gas Law (college · d2)
-- [ ] FirstLawGenerator — First Law (college · d3)
-- [ ] HeatEngineGenerator — Heat Engine (college · d3)
 - [ ] EntropyChangeGenerator — Entropy Change (college · d4)
 - [ ] CalorimetryGenerator — Calorimetry (college · d2)
 - [ ] BlackbodyGenerator — Blackbody (college · d3)
