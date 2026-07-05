@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] DFTGenerator — DFT (college · d4)
-- [ ] FourierSeriesGenerator — Fourier Series (college · d4)
-- [ ] SignalArithmeticGenerator — Signal Arithmetic (college · d2)
-- [ ] ProjectileMotionGenerator — Projectile Motion (college · d2)
-- [ ] NewtonsLawsGenerator — Newtons Laws (college · d3)
-- [ ] CollisionGenerator — Collision (college · d3)
 - [ ] EnergyConservationGenerator — Energy Conservation (college · d2)
 - [ ] OrbitalMechanicsGenerator — Orbital Mechanics (college · d3)
 - [ ] StaticsGenerator — Statics (college · d3)
