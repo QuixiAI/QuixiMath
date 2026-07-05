@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] EntropyChangeGenerator — Entropy Change (college · d4)
-- [ ] CalorimetryGenerator — Calorimetry (college · d2)
-- [ ] BlackbodyGenerator — Blackbody (college · d3)
-- [ ] QuantumFormulaGenerator — Quantum Formula (college · d3)
-- [ ] ParticleInBoxGenerator — Particle In Box (college · d3)
-- [ ] HydrogenAtomGenerator — Hydrogen Atom (college · d3)
 - [ ] SpecialRelativityGenerator — Special Relativity (college · d3)
 - [ ] RelativisticEnergyGenerator — Relativistic Energy (college · d4)
 - [ ] DopplerGenerator — Doppler (college · d3)
