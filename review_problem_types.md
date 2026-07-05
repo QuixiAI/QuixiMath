@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] LimitEvaluationGenerator — Limit Evaluation (high · d4)
-- [ ] DerivativeLimitDefGenerator — Derivative Limit Def (high · d5)
-- [ ] DerivativePowerRuleGenerator — Derivative Power Rule (high · d4)
-- [ ] DerivativeProductQuotientGenerator — Derivative Product Quotient (high · d5)
-- [ ] ChainRuleGenerator — Chain Rule (high · d5)
-- [ ] DerivativeTranscendentalGenerator — Derivative Transcendental (high · d5)
 - [ ] ImplicitDiffGenerator — Implicit Diff (high · d5)
 - [ ] LogDiffHigherOrderGenerator — Log Diff Higher Order (high · d5)
 - [ ] TangentLineGenerator — Tangent Line (high · d4)
