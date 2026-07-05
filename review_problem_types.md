@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] YoungTableauxGenerator — Young Tableaux (graduate · d4)
-- [ ] ClebschGordanGenerator — Clebsch Gordan (graduate · d5)
-- [ ] EinsteinSummationGenerator — Einstein Summation (graduate · d3)
-- [ ] IndexRaisingGenerator — Index Raising (graduate · d3)
-- [ ] RiemannTensorGenerator — Riemann Tensor (graduate · d5)
-- [ ] FourVectorGenerator — Four Vector (graduate · d3)
 - [ ] SchwarzschildGenerator — Schwarzschild (graduate · d4)
 - [ ] PlanckUnitsGenerator — Planck Units (graduate · d4)
 - [ ] HawkingGenerator — Hawking (graduate · d4)
