@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] ORFormulaGenerator — ORFormula (graduate · d3)
-- [ ] ZTransformGenerator — ZTransform (graduate · d4)
-- [ ] TransferFunctionGenerator — Transfer Function (graduate · d4)
-- [ ] RouthHurwitzGenerator — Routh Hurwitz (graduate · d4)
-- [ ] LagrangianGenerator — Lagrangian (graduate · d4)
-- [ ] HamiltonianGenerator — Hamiltonian (graduate · d4)
 - [ ] ACCircuitGenerator — ACCircuit (graduate · d4)
 - [ ] PartitionFunctionGenerator — Partition Function (graduate · d4)
 - [ ] WavefunctionGenerator — Wavefunction (graduate · d4)
