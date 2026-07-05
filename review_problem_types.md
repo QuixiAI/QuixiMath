@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] MarkovChainGenerator — Markov Chain (college · d4)
-- [ ] SimplexGenerator — Simplex (college · d5)
-- [ ] LPCornerGenerator — LPCorner (college · d3)
-- [ ] GradientDescentGenerator — Gradient Descent (college · d3)
-- [ ] GameTheoryGenerator — Game Theory (college · d4)
-- [ ] ConvolutionGenerator — Convolution (college · d3)
 - [ ] DFTGenerator — DFT (college · d4)
 - [ ] FourierSeriesGenerator — Fourier Series (college · d4)
 - [ ] SignalArithmeticGenerator — Signal Arithmetic (college · d2)
