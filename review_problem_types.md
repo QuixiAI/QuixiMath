@@ -6,12 +6,6 @@ unique answer (verified independently), op-codes, formatting, and
 near-infinite unique-question capacity. Delete a line when its review
 is complete (fixes applied if needed).
 
-- [ ] MatrixExponentialGenerator — Matrix Exponential (graduate · d3)
-- [ ] SVDGenerator — SVD (graduate · d4)
-- [ ] SeriesSolutionGenerator — Series Solution (graduate · d4)
-- [ ] GeneratingFunctionGenerator — Generating Function (graduate · d4)
-- [ ] QuadraticResidueGenerator — Quadratic Residue (graduate · d4)
-- [ ] PrimalityTestGenerator — Primality Test (graduate · d4)
 - [ ] CosetGenerator — Coset (graduate · d4)
 - [ ] FiniteFieldGenerator — Finite Field (graduate · d4)
 - [ ] QuaternionGenerator — Quaternion (graduate · d4)
