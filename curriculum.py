@@ -1,6 +1,6 @@
 """Central grade/difficulty metadata for every registered generator class.
 
-Each class in ``ALL_GENERATORS`` (dolphin_math_datagen.py) must have an entry
+Each class in ``ALL_GENERATORS`` (quixi_math_datagen.py) must have an entry
 here — the pipeline stamps ``grade_level`` and ``difficulty`` onto every
 generated example after ``generate()`` returns. A generator may instead emit
 either key itself (e.g. computed per-instance from its operands); generator-

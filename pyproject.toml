@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dolphin-math"
+name = "quixi-math"
 version = "0.1.0"
 description = "Synthetic math problem generator with step-by-step solutions for training data."
 readme = "README.md"
@@ -21,7 +21,7 @@ classifiers = [
 dev = ["pytest>=8.0"]
 
 [tool.setuptools]
-py-modules = ["dolphin_math_datagen", "base_generator", "helpers", "curriculum"]
+py-modules = ["quixi_math_datagen", "base_generator", "helpers", "curriculum"]
 
 [tool.setuptools.packages.find]
 include = ["generators"]

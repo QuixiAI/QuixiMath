@@ -1,10 +1,10 @@
-# Dolphin Math Data Generator
+# Quixi Math Data Generator
 
 <img width="410" alt="image" src="https://github.com/user-attachments/assets/f8a5d3d2-7820-4f7c-a5d3-fbac667e7084" />
 
 ## Purpose
 
-Dolphin Math generates synthetic math problems with visible, step-by-step
+Quixi Math generates synthetic math problems with visible, step-by-step
 scratchpads. Each example includes the problem text, pipe-delimited solution
 steps, a canonical final answer, and curriculum metadata.
 
@@ -87,25 +87,25 @@ With no arguments, the CLI prints one sample from each registered generator
 instance:
 
 ```bash
-uv run python dolphin_math_datagen.py
+uv run python quixi_math_datagen.py
 ```
 
 The explicit form is:
 
 ```bash
-uv run python dolphin_math_datagen.py --sample
+uv run python quixi_math_datagen.py --sample
 ```
 
 Use a seed for reproducible samples:
 
 ```bash
-uv run python dolphin_math_datagen.py --sample -s 7
+uv run python quixi_math_datagen.py --sample -s 7
 ```
 
 Limit samples to specific generator classes:
 
 ```bash
-uv run python dolphin_math_datagen.py --sample \
+uv run python quixi_math_datagen.py --sample \
   --generators MultiDigitAdditionGenerator,LongDivisionGenerator
 ```
 
@@ -114,20 +114,20 @@ uv run python dolphin_math_datagen.py --sample \
 Generate JSONL with an explicit output path:
 
 ```bash
-uv run python dolphin_math_datagen.py -n 50000 -o dolphin_math_50000.jsonl -s 123
+uv run python quixi_math_datagen.py -n 50000 -o quixi_math_50000.jsonl -s 123
 ```
 
 If `-o/--output` is omitted, the output path defaults to
-`dolphin_math_<n>.jsonl`:
+`quixi_math_<n>.jsonl`:
 
 ```bash
-uv run python dolphin_math_datagen.py -n 50000 -s 123
+uv run python quixi_math_datagen.py -n 50000 -s 123
 ```
 
 Restrict a build to selected generator classes:
 
 ```bash
-uv run python dolphin_math_datagen.py -n 5000 -o subset.jsonl \
+uv run python quixi_math_datagen.py -n 5000 -o subset.jsonl \
   --generators MultiDigitAdditionGenerator,DecimalMultGenerator
 ```
 
@@ -142,7 +142,7 @@ weights with `--weights`; unlisted skills keep weight `1.0`.
 Inline weights:
 
 ```bash
-uv run python dolphin_math_datagen.py -n 10000 \
+uv run python quixi_math_datagen.py -n 10000 \
   --weights "QuadraticGenerator=3,MeanGenerator=0.5"
 ```
 
@@ -156,7 +156,7 @@ JSON file weights:
 ```
 
 ```bash
-uv run python dolphin_math_datagen.py -n 10000 --weights weights.json
+uv run python quixi_math_datagen.py -n 10000 --weights weights.json
 ```
 
 Exact `(operation, problem)` repeats are skipped by default. Pass
@@ -245,7 +245,7 @@ Before handing off generator changes, also run:
 ```bash
 uv run python tools/gen_opcode_legend.py --check
 uv run python tools/gen_problem_types.py --check
-uv run python dolphin_math_datagen.py --sample --generators MyNewGenerator
+uv run python quixi_math_datagen.py --sample --generators MyNewGenerator
 ```
 
 For capacity checks, use:
@@ -263,8 +263,8 @@ uv run python tools/probe_generator_capacity.py
 ## Project Structure
 
 ```text
-dolphin-math/
-├── dolphin_math_datagen.py      # Main CLI, sampling, validation, JSONL build
+quixi-math/
+├── quixi_math_datagen.py      # Main CLI, sampling, validation, JSONL build
 ├── base_generator.py            # ProblemGenerator contract
 ├── helpers.py                   # step formatter, seeded UUID helper, utilities
 ├── curriculum.py                # class -> grade_level/difficulty table
@@ -294,7 +294,7 @@ When adding a new generator:
 3. Include an oracle test that recomputes `final_answer` from the problem text
    alone, preferably by a route independent of the generator implementation.
 4. Add an import and an instance to `ALL_GENERATORS` in
-   `dolphin_math_datagen.py`.
+   `quixi_math_datagen.py`.
 5. Add a `curriculum.CURRICULUM` entry for the class.
 6. Regenerate `OPCODES.md` and `PROBLEM_TYPES.md`.
 7. Run the focused test, a restricted seeded sample, and the full test suite.

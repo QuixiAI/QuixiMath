@@ -1,7 +1,7 @@
-# Dolphin Math Training Plan
+# Quixi Math Training Plan
 
-This document describes how to size and phase Dolphin Math data when mixing it
-into a larger general pretraining corpus. The goal is not to make Dolphin Math
+This document describes how to size and phase Quixi Math data when mixing it
+into a larger general pretraining corpus. The goal is not to make Quixi Math
 the whole math diet. The goal is to provide dense, high-quality scratchpad
 examples that teach exact step discipline, arithmetic bookkeeping, verification,
 and canonical answer formatting.
@@ -9,7 +9,7 @@ and canonical answer formatting.
 ## Summary Recommendation
 
 For a serious first full run after `TODO.md` is complete, generate about
-**1-3B Dolphin Math tokens**, likely **5-15M examples** once advanced generators
+**1-3B Quixi Math tokens**, likely **5-15M examples** once advanced generators
 produce longer scratchpads.
 
 Use a **progressive interleaved curriculum**:
@@ -45,9 +45,9 @@ exhausts its useful space, downweight it or treat it as garnish.
 
 ## Mixture Share
 
-When Dolphin Math is included in a larger general pretraining dataset:
+When Quixi Math is included in a larger general pretraining dataset:
 
-| Training setting | Dolphin Math share |
+| Training setting | Quixi Math share |
 | --- | ---: |
 | Broad general pretraining | 0.5-3% of total tokens |
 | Math-heavy midtraining or final phase | 5-10% of total tokens |
@@ -60,7 +60,7 @@ solutions.
 ## Curriculum Schedule
 
 Use `grade_level` and `difficulty` metadata to construct phase-specific sampling
-weights. The percentages below are the composition of the Dolphin Math subset,
+weights. The percentages below are the composition of the Quixi Math subset,
 not the whole pretraining corpus.
 
 | Training progress | Elementary | Middle | High | College | Graduate |
@@ -153,15 +153,15 @@ Track:
 
 Do not commit the full budget before measuring. Run small ablations first:
 
-1. **100M Dolphin tokens:** verifies that the serialization, tokenizer behavior,
+1. **100M Quixi tokens:** verifies that the serialization, tokenizer behavior,
    and phase mixer are not broken.
-2. **300M Dolphin tokens:** enough to see early skill movement and regressions.
-3. **1B Dolphin tokens:** first meaningful comparison of curriculum schedules.
-4. **1-3B Dolphin tokens:** recommended v1 production scale if ablations help.
+2. **300M Quixi tokens:** enough to see early skill movement and regressions.
+3. **1B Quixi tokens:** first meaningful comparison of curriculum schedules.
+4. **1-3B Quixi tokens:** recommended v1 production scale if ablations help.
 
 Compare at least:
 
-- Randomly mixed Dolphin examples.
+- Randomly mixed Quixi examples.
 - Strict easy-to-hard ordering.
 - Progressive interleaving as described above.
 - Progressive interleaving plus late-phase `CHECK`/composite upweighting.
@@ -178,9 +178,9 @@ Useful generation commands:
 
 ```bash
 source .venv/bin/activate
-python dolphin_math_datagen.py --sample
-python dolphin_math_datagen.py -n 1000000 -o /tmp/dolphin_math_1m.jsonl -s 123
-python dolphin_math_datagen.py -n 1000000 -o /tmp/dolphin_math_1m.jsonl --weights "QuadraticGenerator=3,MeanGenerator=0.5" -s 123
+python quixi_math_datagen.py --sample
+python quixi_math_datagen.py -n 1000000 -o /tmp/quixi_math_1m.jsonl -s 123
+python quixi_math_datagen.py -n 1000000 -o /tmp/quixi_math_1m.jsonl --weights "QuadraticGenerator=3,MeanGenerator=0.5" -s 123
 ```
 
 For large builds:
@@ -204,7 +204,7 @@ These are scale reference points, not direct prescriptions:
   synthetic format:
   <https://arxiv.org/abs/2310.10631>
 - Chinchilla-style dense-model planning is often summarized around 20-25 tokens
-  per parameter, but Dolphin Math should be a targeted slice of that budget:
+  per parameter, but Quixi Math should be a targeted slice of that budget:
   <https://arxiv.org/html/2404.10102v1>
 - Continued-pretraining work supports shifting toward more targeted data later
   in training while preserving enough base-distribution replay:

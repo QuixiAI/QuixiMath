@@ -28,7 +28,7 @@ class TestGenProblemTypes(unittest.TestCase):
         self.assertNotIn("should not appear", desc)
 
     def test_collect_covers_every_class(self):
-        from dolphin_math_datagen import ALL_GENERATORS
+        from quixi_math_datagen import ALL_GENERATORS
         classes = {type(g).__name__ for g in ALL_GENERATORS}
         entries = collect(seed=0)
         self.assertEqual({e["class"] for e in entries}, classes)

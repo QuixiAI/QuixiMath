@@ -16,7 +16,7 @@ wheels = [
 ]
 
 [[package]]
-name = "dolphin-math"
+name = "quixi-math"
 version = "0.1.0"
 source = { editable = "." }
 

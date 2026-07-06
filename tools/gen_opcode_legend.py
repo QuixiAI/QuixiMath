@@ -136,7 +136,7 @@ def scan_opcodes(generators_dir=GENERATORS_DIR):
 
 def collect_examples(seed=EXAMPLE_SEED, samples_per_gen=SAMPLES_PER_GENERATOR):
     """Sample every registered generator and record one example step per code."""
-    from dolphin_math_datagen import ALL_GENERATORS
+    from quixi_math_datagen import ALL_GENERATORS
 
     random.seed(seed)
     examples = {}

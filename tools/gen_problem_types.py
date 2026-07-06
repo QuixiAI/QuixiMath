@@ -65,7 +65,7 @@ def render_example(example):
 
 def collect(seed=0):
     """Group registered instances by class, preserving registration order."""
-    from dolphin_math_datagen import ALL_GENERATORS
+    from quixi_math_datagen import ALL_GENERATORS
     from curriculum import CURRICULUM
 
     order = []

@@ -13,7 +13,7 @@ if repo_root not in sys.path:
 
 import curriculum
 from curriculum import CURRICULUM, GRADE_LEVELS, stamp_metadata
-from dolphin_math_datagen import (
+from quixi_math_datagen import (
     ALL_GENERATORS,
     DEFAULT_POOL_EXCLUDED,
     build_dataset,

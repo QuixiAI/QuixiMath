@@ -103,7 +103,7 @@ def main(argv=None):
                         help="write machine-readable rows to this path")
     args = parser.parse_args(argv)
 
-    from dolphin_math_datagen import ALL_GENERATORS
+    from quixi_math_datagen import ALL_GENERATORS
 
     generators = ALL_GENERATORS
     if args.generators:

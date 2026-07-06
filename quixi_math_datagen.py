@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -----------------------------------------------------------
-# dolphin_math_datagen.py
+# quixi_math_datagen.py
 # Main script to generate the dataset using individual generator classes.
 # -----------------------------------------------------------
 import json
@@ -1390,7 +1390,7 @@ def build_dataset(n=10_000, path="math_visible_dataset_refactored.jsonl", seed=N
 
 # ---------- Main Execution Block ----------
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate Dolphin Math Dataset")
+    parser = argparse.ArgumentParser(description="Generate Quixi Math Dataset")
     parser.add_argument(
         "-n", "--num_examples",
         type=int,
@@ -1401,7 +1401,7 @@ if __name__ == "__main__":
         "-o", "--output",
         type=str,
         default=None, # Default will be generated based on num_examples
-        help="Output file path for the generated dataset. Defaults to dolphin_math_<num_examples>.jsonl"
+        help="Output file path for the generated dataset. Defaults to quixi_math_<num_examples>.jsonl"
     )
     parser.add_argument(
         "-s", "--seed",
@@ -1440,7 +1440,7 @@ if __name__ == "__main__":
 
     # Determine the output filename if not provided
     if args.output is None:
-        args.output = f"dolphin_math_{args.num_examples}.jsonl"
+        args.output = f"quixi_math_{args.num_examples}.jsonl"
 
     # Check if any arguments were passed (other than the script name itself)
     # OR if the --sample flag was explicitly used.
