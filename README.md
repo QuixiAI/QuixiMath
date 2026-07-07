@@ -2,6 +2,10 @@
 
 <img width="504" height="322" alt="math" src="https://github.com/user-attachments/assets/47fb7346-2ba1-49fb-b9e6-21917f078256" />
 
+QuixiMath is brought to you by Eric Hartford and QuixiAI
+
+https://huggingface.co/datasets/QuixiAI/QuixiMath-1B
+
 ## Purpose
 
 Quixi Math generates synthetic math problems with visible, step-by-step
