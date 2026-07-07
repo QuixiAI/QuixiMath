@@ -2,10 +2,6 @@
 
 <img width="504" height="322" alt="math" src="https://github.com/user-attachments/assets/47fb7346-2ba1-49fb-b9e6-21917f078256" />
 
-## Sample
-
-<img width="410" alt="image" src="https://github.com/user-attachments/assets/f8a5d3d2-7820-4f7c-a5d3-fbac667e7084" />
-
 ## Purpose
 
 Quixi Math generates synthetic math problems with visible, step-by-step
@@ -16,6 +12,10 @@ The dataset is designed for training and evaluating language models on
 multi-step mathematical reasoning. It can be used for SFT-style trace learning
 and RL-style answer/reasoning validation; generate separate datasets for those
 uses so syntax learning and reward optimization can be controlled separately.
+
+## Sample
+
+<img width="410" alt="image" src="https://github.com/user-attachments/assets/f8a5d3d2-7820-4f7c-a5d3-fbac667e7084" />
 
 ## Current Inventory
 
