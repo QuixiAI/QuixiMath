@@ -561,6 +561,7 @@ from generators.direct_proof_algebra_generator import DirectProofAlgebraGenerato
 from generators.characteristic_vector_generator import CharacteristicVectorGenerator
 from generators.set_algebra_laws_generator import SetAlgebraLawsGenerator
 from generators.quantifier_negation_generator import QuantifierNegationGenerator
+from generators.quantifier_finite_domain_generator import QuantifierFiniteDomainGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -755,6 +756,7 @@ ALL_GENERATORS = [
     CharacteristicVectorGenerator(),
     SetAlgebraLawsGenerator(),
     QuantifierNegationGenerator(),
+    QuantifierFiniteDomainGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

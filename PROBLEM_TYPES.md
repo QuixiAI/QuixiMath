@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**539 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**540 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6219,6 +6219,85 @@ Steps:
   CHECK|membership columns|10101010|10101010
   Z|Q
 Answer: Q
+```
+
+### Quantifier Finite Domain — `QuantifierFiniteDomainGenerator`  ·  college · difficulty 3
+
+Generate exact finite-model-checking records.
+
+**Variants:** `quantifier_finite_domain_arithmetic_predicate`, `quantifier_finite_domain_function_table`, `quantifier_finite_domain_nested_three`, `quantifier_finite_domain_relation_table`
+
+```
+Problem: Domain D = {3, 17, 32, 33}. R = {(3, 3), (3, 32), (3, 33), (17, 3), (17, 17), (17, 32), (17, 33), (32, 3), (32, 17), (32, 32), (33, 3), (33, 33)}. Formula: ∀x ∀y ∃z (R(x, z) ∨ R(z, y)). Triple order: x, then y, then z. Model-check every ordered triple in the finite domain.
+Steps:
+  DOMAIN|{3, 17, 32, 33}
+  QUANT_CASE|x=3, y=3, z=3|matrix=T
+  QUANT_CASE|x=3, y=3, z=17|matrix=T
+  QUANT_CASE|x=3, y=3, z=32|matrix=T
+  QUANT_CASE|x=3, y=3, z=33|matrix=T
+  QUANT_CASE|x=3, y=17, z=3|matrix=T
+  QUANT_CASE|x=3, y=17, z=17|matrix=T
+  QUANT_CASE|x=3, y=17, z=32|matrix=T
+  QUANT_CASE|x=3, y=17, z=33|matrix=T
+  QUANT_CASE|x=3, y=32, z=3|matrix=T
+  QUANT_CASE|x=3, y=32, z=17|matrix=T
+  QUANT_CASE|x=3, y=32, z=32|matrix=T
+  QUANT_CASE|x=3, y=32, z=33|matrix=T
+  QUANT_CASE|x=3, y=33, z=3|matrix=T
+  QUANT_CASE|x=3, y=33, z=17|matrix=T
+  QUANT_CASE|x=3, y=33, z=32|matrix=T
+  QUANT_CASE|x=3, y=33, z=33|matrix=T
+  QUANT_CASE|x=17, y=3, z=3|matrix=T
+  QUANT_CASE|x=17, y=3, z=17|matrix=T
+  QUANT_CASE|x=17, y=3, z=32|matrix=T
+  QUANT_CASE|x=17, y=3, z=33|matrix=T
+  QUANT_CASE|x=17, y=17, z=3|matrix=T
+  QUANT_CASE|x=17, y=17, z=17|matrix=T
+  QUANT_CASE|x=17, y=17, z=32|matrix=T
+  QUANT_CASE|x=17, y=17, z=33|matrix=T
+  QUANT_CASE|x=17, y=32, z=3|matrix=T
+  QUANT_CASE|x=17, y=32, z=17|matrix=T
+  QUANT_CASE|x=17, y=32, z=32|matrix=T
+  QUANT_CASE|x=17, y=32, z=33|matrix=T
+  QUANT_CASE|x=17, y=33, z=3|matrix=T
+  QUANT_CASE|x=17, y=33, z=17|matrix=T
+  QUANT_CASE|x=17, y=33, z=32|matrix=T
+  QUANT_CASE|x=17, y=33, z=33|matrix=T
+  QUANT_CASE|x=32, y=3, z=3|matrix=T
+  QUANT_CASE|x=32, y=3, z=17|matrix=T
+  QUANT_CASE|x=32, y=3, z=32|matrix=T
+  QUANT_CASE|x=32, y=3, z=33|matrix=T
+  QUANT_CASE|x=32, y=17, z=3|matrix=T
+  QUANT_CASE|x=32, y=17, z=17|matrix=T
+  QUANT_CASE|x=32, y=17, z=32|matrix=T
+  QUANT_CASE|x=32, y=17, z=33|matrix=F
+  QUANT_CASE|x=32, y=32, z=3|matrix=T
+  QUANT_CASE|x=32, y=32, z=17|matrix=T
+  QUANT_CASE|x=32, y=32, z=32|matrix=T
+  QUANT_CASE|x=32, y=32, z=33|matrix=F
+  QUANT_CASE|x=32, y=33, z=3|matrix=T
+  QUANT_CASE|x=32, y=33, z=17|matrix=T
+  QUANT_CASE|x=32, y=33, z=32|matrix=T
+  QUANT_CASE|x=32, y=33, z=33|matrix=T
+  QUANT_CASE|x=33, y=3, z=3|matrix=T
+  QUANT_CASE|x=33, y=3, z=17|matrix=T
+  QUANT_CASE|x=33, y=3, z=32|matrix=T
+  QUANT_CASE|x=33, y=3, z=33|matrix=T
+  QUANT_CASE|x=33, y=17, z=3|matrix=T
+  QUANT_CASE|x=33, y=17, z=17|matrix=T
+  QUANT_CASE|x=33, y=17, z=32|matrix=T
+  QUANT_CASE|x=33, y=17, z=33|matrix=T
+  QUANT_CASE|x=33, y=32, z=3|matrix=T
+  QUANT_CASE|x=33, y=32, z=17|matrix=T
+  QUANT_CASE|x=33, y=32, z=32|matrix=T
+  QUANT_CASE|x=33, y=32, z=33|matrix=T
+  QUANT_CASE|x=33, y=33, z=3|matrix=T
+  QUANT_CASE|x=33, y=33, z=17|matrix=T
+  QUANT_CASE|x=33, y=33, z=32|matrix=F
+  QUANT_CASE|x=33, y=33, z=33|matrix=T
+  QUANT_RESULT|∀x ∀y ∃z|true|atomic column=TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
+  Z|true; atomic column = TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
+Answer: true; atomic column = TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
