@@ -5985,18 +5985,19 @@ Answer: x^3 + 3x^2
 
 Verification-style induction problems: check the base case, then show the algebraic k to k+1 step for standard identities.
 
-**Variants:** `induction_verify_divisibility`, `induction_verify_geometric`, `induction_verify_sum_linear`, `induction_verify_sum_odds`, `induction_verify_sum_squares`
+**Variants:** `induction_verify_divisibility`, `induction_verify_geometric`, `induction_verify_strong_induction`, `induction_verify_sum_linear`, `induction_verify_sum_odds`, `induction_verify_sum_squares`, `induction_verify_well_ordering`
 
 ```
-Problem: Verify by induction that 1+6+...+6^n = (6^(n+1)-1)/(6-1) for n≥0. Also report the check at n=28.
+Problem: Use well-ordering to justify the division algorithm. For N=42550 and d=267, consider the nonnegative values N−dq, choose the least r, and show r<d. Report the resulting quotient and remainder.
 Steps:
-  INDUCT_BASE|n=0|1 = (r^1-1)/(r-1)
-  INDUCT_ASSUME|sum to k = (6^(k+1)-1)/(6-1)
-  INDUCT_STEP|add 6^(k+1)
-  REWRITE|(6^(k+1)-1)/(6-1) + 6^(k+1)|(6^(k+2)-1)/(6-1)
-  CHECK|n=28|7369130657357778596659|formula value
-  Z|check n=28 value=7369130657357778596659; inductive step confirmed
-Answer: check n=28 value=7369130657357778596659; inductive step confirmed
+  SETUP|S = nonnegative values N−dq|S is nonempty
+  LEAST|r = least element of S
+  ASSUME|r ≥ d
+  CONTRADICTION|r−d is nonnegative and in S|r−d < r
+  DIVMOD|42550|267|159 R 97
+  CHECK|267·159 + 97|42550|0 ≤ 97 < 267
+  Z|q=159, r=97; least-remainder argument confirmed
+Answer: q=159, r=97; least-remainder argument confirmed
 ```
 
 ### Stoichiometry — `StoichiometryGenerator`  ·  high · difficulty 4

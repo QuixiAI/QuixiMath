@@ -308,6 +308,21 @@ def oracle_pde(example):
 
 def oracle_induction(example):
     p = example["problem"]
+    if "strong induction" in p or "n=4a+5b" in p:
+        check_n = int(re.search(r"first witness at n=(\d+)", p).group(1))
+        for witness_b in range(check_n // 5 + 1):
+            remainder = check_n - 5 * witness_b
+            if remainder >= 0 and remainder % 4 == 0:
+                witness_a = remainder // 4
+                break
+        return (f"check n={check_n}: {check_n} = 4·{witness_a} + "
+                f"5·{witness_b}; strong induction confirmed")
+    if "well-ordering" in p:
+        number, divisor = map(int, re.search(
+            r"For N=(\d+) and d=(\d+)", p).groups())
+        quotient, remainder = divmod(number, divisor)
+        return (f"q={quotient}, r={remainder}; "
+                "least-remainder argument confirmed")
     check_n = int(re.search(r"check at n=(\d+)", p).group(1))
     if "n≥0" in p:
         r = int(re.search(r"1\+(\d+)\+\.\.\.", p).group(1))
