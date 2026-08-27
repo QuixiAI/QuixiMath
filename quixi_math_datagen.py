@@ -564,6 +564,7 @@ from generators.quantifier_negation_generator import QuantifierNegationGenerator
 from generators.quantifier_finite_domain_generator import QuantifierFiniteDomainGenerator
 from generators.prenex_normal_form_generator import PrenexNormalFormGenerator
 from generators.english_to_logic_generator import EnglishToLogicGenerator
+from generators.natural_deduction_generator import NaturalDeductionGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -761,6 +762,7 @@ ALL_GENERATORS = [
     QuantifierFiniteDomainGenerator(),
     PrenexNormalFormGenerator(),
     EnglishToLogicGenerator(),
+    NaturalDeductionGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

@@ -306,6 +306,7 @@ CURRICULUM = {
     "QuantifierFiniteDomainGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PrenexNormalFormGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "EnglishToLogicGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "NaturalDeductionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

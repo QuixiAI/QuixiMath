@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**542 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**543 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6337,6 +6337,26 @@ Steps:
   REWRITE|∀x (S(x) → ∀y (R(y) → N(x, y)))
   Z|∀x (S(x) → ∀y (R(y) → N(x, y)))
 Answer: ∀x (S(x) → ∀y (R(y) → N(x, y)))
+```
+
+### Natural Deduction — `NaturalDeductionGenerator`  ·  college · difficulty 4
+
+Generate line-by-line deductions with independently checkable rules.
+
+**Variants:** `natural_deduction_conditional_proof`, `natural_deduction_forward_chain`, `natural_deduction_justify`, `natural_deduction_missing_line`
+
+```
+Problem: Derivation: 1. n [premise]; 2. b [premise]; 3. n ∧ b [∧I 1,2]; 4. (n ∧ b) ∨ i [∨I 3]; 5. ((n ∧ b) ∨ i) → q [premise]; 6. ____ [→E 5,4]. Determine the unique formula that belongs on the blank line.
+Steps:
+  PREMISE|1|n
+  PREMISE|2|b
+  APPLY|∧I|1,2|n ∧ b
+  APPLY|∨I|3|(n ∧ b) ∨ i
+  PREMISE|5|((n ∧ b) ∨ i) → q
+  APPLY|→E|5,4|q
+  CHECK|line 6: q|rule schema satisfied
+  Z|line 6: q
+Answer: line 6: q
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
