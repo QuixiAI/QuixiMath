@@ -74,6 +74,7 @@ CURRICULUM = {
     "CounterexampleSearchGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "ConditionalFormsGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "KnightsKnavesGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "LogicGridPuzzleGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "UnitRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "RatioTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "TipBillSplitGenerator": {"grade_level": MIDDLE, "difficulty": 3},

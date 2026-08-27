@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**520 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**521 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1043,6 +1043,72 @@ Steps:
   CHECK|unique surviving case|Nico knave, Bea knave, Iris knave
   Z|Nico knave, Bea knave, Iris knave
 Answer: Nico knave, Bea knave, Iris knave
+```
+
+### Logic Grid Puzzle — `LogicGridPuzzleGenerator`  ·  middle · difficulty 3
+
+Generate clues, enumerate candidates, and retain a unique solution.
+
+**Variants:** `logic_grid_puzzle_four_by_four`, `logic_grid_puzzle_three_by_three`, `logic_grid_puzzle_three_by_three_two_categories`
+
+```
+Problem: Puzzle format: three by three two categories. People: [Nico, Ben, Iris]. Pets: [canary, rabbit, turtle]. Drinks: [smoothie, tea, water]. Clues: (1) Ben has canary. (2) Nico has rabbit. (3) Ben does not drink smoothie. (4) Iris does not drink water. (5) Nico does not drink tea. (6) Nico does not drink water. Eliminate inconsistent mappings until one solution remains.
+Steps:
+  CLUE_APPLY|clue 1|Ben has canary|36 → 12 candidates
+  ELIMINATE|clue 1|Nico: canary, smoothie; Ben: rabbit, tea; Iris: turtle, water|violates clue
+  ELIMINATE|clue 1|Nico: canary, smoothie; Ben: rabbit, water; Iris: turtle, tea|violates clue
+  ELIMINATE|clue 1|Nico: canary, tea; Ben: rabbit, smoothie; Iris: turtle, water|violates clue
+  ELIMINATE|clue 1|Nico: canary, tea; Ben: rabbit, water; Iris: turtle, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: canary, water; Ben: rabbit, smoothie; Iris: turtle, tea|violates clue
+  ELIMINATE|clue 1|Nico: canary, water; Ben: rabbit, tea; Iris: turtle, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: canary, smoothie; Ben: turtle, tea; Iris: rabbit, water|violates clue
+  ELIMINATE|clue 1|Nico: canary, smoothie; Ben: turtle, water; Iris: rabbit, tea|violates clue
+  ELIMINATE|clue 1|Nico: canary, tea; Ben: turtle, smoothie; Iris: rabbit, water|violates clue
+  ELIMINATE|clue 1|Nico: canary, tea; Ben: turtle, water; Iris: rabbit, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: canary, water; Ben: turtle, smoothie; Iris: rabbit, tea|violates clue
+  ELIMINATE|clue 1|Nico: canary, water; Ben: turtle, tea; Iris: rabbit, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, smoothie; Ben: turtle, tea; Iris: canary, water|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, smoothie; Ben: turtle, water; Iris: canary, tea|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, tea; Ben: turtle, smoothie; Iris: canary, water|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, tea; Ben: turtle, water; Iris: canary, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, water; Ben: turtle, smoothie; Iris: canary, tea|violates clue
+  ELIMINATE|clue 1|Nico: rabbit, water; Ben: turtle, tea; Iris: canary, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: turtle, smoothie; Ben: rabbit, tea; Iris: canary, water|violates clue
+  ELIMINATE|clue 1|Nico: turtle, smoothie; Ben: rabbit, water; Iris: canary, tea|violates clue
+  ELIMINATE|clue 1|Nico: turtle, tea; Ben: rabbit, smoothie; Iris: canary, water|violates clue
+  ELIMINATE|clue 1|Nico: turtle, tea; Ben: rabbit, water; Iris: canary, smoothie|violates clue
+  ELIMINATE|clue 1|Nico: turtle, water; Ben: rabbit, smoothie; Iris: canary, tea|violates clue
+  ELIMINATE|clue 1|Nico: turtle, water; Ben: rabbit, tea; Iris: canary, smoothie|violates clue
+  CLUE_APPLY|clue 2|Nico has rabbit|12 → 6 candidates
+  ELIMINATE|clue 2|Nico: turtle, smoothie; Ben: canary, tea; Iris: rabbit, water|violates clue
+  ELIMINATE|clue 2|Nico: turtle, smoothie; Ben: canary, water; Iris: rabbit, tea|violates clue
+  ELIMINATE|clue 2|Nico: turtle, tea; Ben: canary, smoothie; Iris: rabbit, water|violates clue
+  ELIMINATE|clue 2|Nico: turtle, tea; Ben: canary, water; Iris: rabbit, smoothie|violates clue
+  ELIMINATE|clue 2|Nico: turtle, water; Ben: canary, smoothie; Iris: rabbit, tea|violates clue
+  ELIMINATE|clue 2|Nico: turtle, water; Ben: canary, tea; Iris: rabbit, smoothie|violates clue
+  CLUE_APPLY|clue 3|Ben does not drink smoothie|6 → 4 candidates
+  ELIMINATE|clue 3|Nico: rabbit, tea; Ben: canary, smoothie; Iris: turtle, water|violates clue
+  ELIMINATE|clue 3|Nico: rabbit, water; Ben: canary, smoothie; Iris: turtle, tea|violates clue
+  CLUE_APPLY|clue 4|Iris does not drink water|4 → 3 candidates
+  ELIMINATE|clue 4|Nico: rabbit, smoothie; Ben: canary, tea; Iris: turtle, water|violates clue
+  CLUE_APPLY|clue 5|Nico does not drink tea|3 → 2 candidates
+  ELIMINATE|clue 5|Nico: rabbit, tea; Ben: canary, water; Iris: turtle, smoothie|violates clue
+  CLUE_APPLY|clue 6|Nico does not drink water|2 → 1 candidates
+  ELIMINATE|clue 6|Nico: rabbit, water; Ben: canary, tea; Iris: turtle, smoothie|violates clue
+  DEDUCE|Nico|pet = rabbit|only solution left
+  DEDUCE|Nico|drink = smoothie|only solution left
+  DEDUCE|Ben|pet = canary|only solution left
+  DEDUCE|Ben|drink = water|only solution left
+  DEDUCE|Iris|pet = turtle|only solution left
+  DEDUCE|Iris|drink = tea|only solution left
+  CHECK|clue 1|holds
+  CHECK|clue 2|holds
+  CHECK|clue 3|holds
+  CHECK|clue 4|holds
+  CHECK|clue 5|holds
+  CHECK|clue 6|holds
+  Z|Nico: rabbit, smoothie; Ben: canary, water; Iris: turtle, tea
+Answer: Nico: rabbit, smoothie; Ben: canary, water; Iris: turtle, tea
 ```
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
