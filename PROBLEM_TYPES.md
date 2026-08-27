@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**526 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**527 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2602,6 +2602,68 @@ Steps:
   CHECK|countermodel|premises=T,T|conclusion=F
   Z|invalid; OAI-4
 Answer: invalid; OAI-4
+```
+
+### Set Expression — `SetExpressionGenerator`  ·  high · difficulty 3
+
+Generate nested set evaluation records over a stated finite universe.
+
+**Variants:** `set_expression_symmetric_difference`, `set_expression_three_step`, `set_expression_two_step`, `set_expression_with_complement`
+
+```
+Problem: U = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}. A = {5, 9}. B = {2, 3, 4, 5, 6, 7, 8, 11, 13}. C = {5, 10, 13}. Expression: (A − B) Δ (C − A). Find the elements on exactly one side at the Δ stage.
+Steps:
+  SET_SETUP|U = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}|A = {5, 9}|B = {2, 3, 4, 5, 6, 7, 8, 11, 13}|C = {5, 10, 13}
+  SUBEXPR|A − B|{9}
+  ELEMENT_SCAN|1|left=no, right=no|skip
+  ELEMENT_SCAN|2|left=no, right=yes|skip
+  ELEMENT_SCAN|3|left=no, right=yes|skip
+  ELEMENT_SCAN|4|left=no, right=yes|skip
+  ELEMENT_SCAN|5|left=yes, right=yes|skip
+  ELEMENT_SCAN|6|left=no, right=yes|skip
+  ELEMENT_SCAN|7|left=no, right=yes|skip
+  ELEMENT_SCAN|8|left=no, right=yes|skip
+  ELEMENT_SCAN|9|left=yes, right=no|keep
+  ELEMENT_SCAN|10|left=no, right=no|skip
+  ELEMENT_SCAN|11|left=no, right=yes|skip
+  ELEMENT_SCAN|12|left=no, right=no|skip
+  ELEMENT_SCAN|13|left=no, right=yes|skip
+  ELEMENT_SCAN|14|left=no, right=no|skip
+  REWRITE|{9} Δ (C − A)
+  SUBEXPR|C − A|{10, 13}
+  ELEMENT_SCAN|1|left=no, right=no|skip
+  ELEMENT_SCAN|2|left=no, right=no|skip
+  ELEMENT_SCAN|3|left=no, right=no|skip
+  ELEMENT_SCAN|4|left=no, right=no|skip
+  ELEMENT_SCAN|5|left=yes, right=yes|skip
+  ELEMENT_SCAN|6|left=no, right=no|skip
+  ELEMENT_SCAN|7|left=no, right=no|skip
+  ELEMENT_SCAN|8|left=no, right=no|skip
+  ELEMENT_SCAN|9|left=no, right=yes|skip
+  ELEMENT_SCAN|10|left=yes, right=no|keep
+  ELEMENT_SCAN|11|left=no, right=no|skip
+  ELEMENT_SCAN|12|left=no, right=no|skip
+  ELEMENT_SCAN|13|left=yes, right=no|keep
+  ELEMENT_SCAN|14|left=no, right=no|skip
+  REWRITE|{9} Δ {10, 13}
+  SUBEXPR|{9} Δ {10, 13}|{9, 10, 13}
+  ELEMENT_SCAN|1|left=no, right=no|skip
+  ELEMENT_SCAN|2|left=no, right=no|skip
+  ELEMENT_SCAN|3|left=no, right=no|skip
+  ELEMENT_SCAN|4|left=no, right=no|skip
+  ELEMENT_SCAN|5|left=no, right=no|skip
+  ELEMENT_SCAN|6|left=no, right=no|skip
+  ELEMENT_SCAN|7|left=no, right=no|skip
+  ELEMENT_SCAN|8|left=no, right=no|skip
+  ELEMENT_SCAN|9|left=yes, right=no|keep
+  ELEMENT_SCAN|10|left=no, right=yes|keep
+  ELEMENT_SCAN|11|left=no, right=no|skip
+  ELEMENT_SCAN|12|left=no, right=no|skip
+  ELEMENT_SCAN|13|left=no, right=yes|keep
+  ELEMENT_SCAN|14|left=no, right=no|skip
+  REWRITE|{9, 10, 13}
+  Z|{9, 10, 13}
+Answer: {9, 10, 13}
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
