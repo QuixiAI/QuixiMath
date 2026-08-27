@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**527 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**528 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2664,6 +2664,84 @@ Steps:
   REWRITE|{9, 10, 13}
   Z|{9, 10, 13}
 Answer: {9, 10, 13}
+```
+
+### Set Identity Membership Table — `SetIdentityMembershipTableGenerator`  ·  high · difficulty 3
+
+Generate exact eight-row membership proofs and refutations.
+
+**Variants:** `set_identity_membership_table_de_morgan`, `set_identity_membership_table_difference_laws`, `set_identity_membership_table_distributive`, `set_identity_membership_table_refute_identity`, `set_identity_membership_table_verify_identity`
+
+```
+Problem: Set names: Q, B, K are arbitrary subsets of U. Claim: Q ∪ (B ∩ K) = (Q ∪ B) ∩ (Q ∪ K). Check every row of this set-distribution equation.
+Steps:
+  MEMBER_ROW|x∈B, x∈K, x∈Q
+  EVAL_SUB|x∈B, x∈K, x∈Q|B ∩ K|∈
+  EVAL_SUB|x∈B, x∈K, x∈Q|Q ∪ (B ∩ K)|∈
+  SIDE|left|∈
+  EVAL_SUB|x∈B, x∈K, x∈Q|Q ∪ B|∈
+  EVAL_SUB|x∈B, x∈K, x∈Q|Q ∪ K|∈
+  EVAL_SUB|x∈B, x∈K, x∈Q|(Q ∪ B) ∩ (Q ∪ K)|∈
+  SIDE|right|∈
+  MEMBER_ROW|x∈B, x∈K, x∉Q
+  EVAL_SUB|x∈B, x∈K, x∉Q|B ∩ K|∈
+  EVAL_SUB|x∈B, x∈K, x∉Q|Q ∪ (B ∩ K)|∈
+  SIDE|left|∈
+  EVAL_SUB|x∈B, x∈K, x∉Q|Q ∪ B|∈
+  EVAL_SUB|x∈B, x∈K, x∉Q|Q ∪ K|∈
+  EVAL_SUB|x∈B, x∈K, x∉Q|(Q ∪ B) ∩ (Q ∪ K)|∈
+  SIDE|right|∈
+  MEMBER_ROW|x∈B, x∉K, x∈Q
+  EVAL_SUB|x∈B, x∉K, x∈Q|B ∩ K|∉
+  EVAL_SUB|x∈B, x∉K, x∈Q|Q ∪ (B ∩ K)|∈
+  SIDE|left|∈
+  EVAL_SUB|x∈B, x∉K, x∈Q|Q ∪ B|∈
+  EVAL_SUB|x∈B, x∉K, x∈Q|Q ∪ K|∈
+  EVAL_SUB|x∈B, x∉K, x∈Q|(Q ∪ B) ∩ (Q ∪ K)|∈
+  SIDE|right|∈
+  MEMBER_ROW|x∈B, x∉K, x∉Q
+  EVAL_SUB|x∈B, x∉K, x∉Q|B ∩ K|∉
+  EVAL_SUB|x∈B, x∉K, x∉Q|Q ∪ (B ∩ K)|∉
+  SIDE|left|∉
+  EVAL_SUB|x∈B, x∉K, x∉Q|Q ∪ B|∈
+  EVAL_SUB|x∈B, x∉K, x∉Q|Q ∪ K|∉
+  EVAL_SUB|x∈B, x∉K, x∉Q|(Q ∪ B) ∩ (Q ∪ K)|∉
+  SIDE|right|∉
+  MEMBER_ROW|x∉B, x∈K, x∈Q
+  EVAL_SUB|x∉B, x∈K, x∈Q|B ∩ K|∉
+  EVAL_SUB|x∉B, x∈K, x∈Q|Q ∪ (B ∩ K)|∈
+  SIDE|left|∈
+  EVAL_SUB|x∉B, x∈K, x∈Q|Q ∪ B|∈
+  EVAL_SUB|x∉B, x∈K, x∈Q|Q ∪ K|∈
+  EVAL_SUB|x∉B, x∈K, x∈Q|(Q ∪ B) ∩ (Q ∪ K)|∈
+  SIDE|right|∈
+  MEMBER_ROW|x∉B, x∈K, x∉Q
+  EVAL_SUB|x∉B, x∈K, x∉Q|B ∩ K|∉
+  EVAL_SUB|x∉B, x∈K, x∉Q|Q ∪ (B ∩ K)|∉
+  SIDE|left|∉
+  EVAL_SUB|x∉B, x∈K, x∉Q|Q ∪ B|∉
+  EVAL_SUB|x∉B, x∈K, x∉Q|Q ∪ K|∈
+  EVAL_SUB|x∉B, x∈K, x∉Q|(Q ∪ B) ∩ (Q ∪ K)|∉
+  SIDE|right|∉
+  MEMBER_ROW|x∉B, x∉K, x∈Q
+  EVAL_SUB|x∉B, x∉K, x∈Q|B ∩ K|∉
+  EVAL_SUB|x∉B, x∉K, x∈Q|Q ∪ (B ∩ K)|∈
+  SIDE|left|∈
+  EVAL_SUB|x∉B, x∉K, x∈Q|Q ∪ B|∈
+  EVAL_SUB|x∉B, x∉K, x∈Q|Q ∪ K|∈
+  EVAL_SUB|x∉B, x∉K, x∈Q|(Q ∪ B) ∩ (Q ∪ K)|∈
+  SIDE|right|∈
+  MEMBER_ROW|x∉B, x∉K, x∉Q
+  EVAL_SUB|x∉B, x∉K, x∉Q|B ∩ K|∉
+  EVAL_SUB|x∉B, x∉K, x∉Q|Q ∪ (B ∩ K)|∉
+  SIDE|left|∉
+  EVAL_SUB|x∉B, x∉K, x∉Q|Q ∪ B|∉
+  EVAL_SUB|x∉B, x∉K, x∉Q|Q ∪ K|∉
+  EVAL_SUB|x∉B, x∉K, x∉Q|(Q ∪ B) ∩ (Q ∪ K)|∉
+  SIDE|right|∉
+  TABLE_COMPARE|match
+  Z|identity; columns match
+Answer: identity; columns match
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
