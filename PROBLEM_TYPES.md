@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**513 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**514 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -194,6 +194,23 @@ Steps:
   CONNECTIVE|¬q|T
   Z|p = T; q = F; ¬q = T
 Answer: p = T; q = F; ¬q = T
+```
+
+### Operation Properties — `OperationPropertiesGenerator`  ·  elementary · difficulty 2
+
+Generate structural property matches with complete arithmetic checks.
+
+**Variants:** `operation_properties_apply`, `operation_properties_equality_chain`, `operation_properties_identify`
+
+```
+Problem: Expression: 665 + 0. Requested property: additive identity property. Give an equivalent expression in the requested form.
+Steps:
+  PROPERTY_MATCH|additive identity property|a + 0 = a|665 + 0
+  REWRITE|665 + 0|665
+  A|665|0|665
+  CHECK|665 + 0|665|rewrite = 665
+  Z|rewritten: 665; value = 665; property = additive identity property
+Answer: rewritten: 665; value = 665; property = additive identity property
 ```
 
 ### Decimal Add Sub — `DecimalAddSubGenerator`  ·  elementary · difficulty 3
