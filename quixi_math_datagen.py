@@ -544,6 +544,7 @@ from generators.conditional_forms_generator import ConditionalFormsGenerator
 from generators.knights_knaves_generator import KnightsKnavesGenerator
 from generators.logic_grid_puzzle_generator import LogicGridPuzzleGenerator
 from generators.truth_table_generator import TruthTableGenerator
+from generators.wff_parsing_generator import WFFParsingGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -721,6 +722,7 @@ ALL_GENERATORS = [
     # ===== HIGH SCHOOL =====
 
     TruthTableGenerator(),
+    WFFParsingGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

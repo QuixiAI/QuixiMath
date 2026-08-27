@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**522 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**523 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2511,6 +2511,32 @@ Steps:
   TT_COLUMN|formula|TFFF
   Z|TFFF
 Answer: TFFF
+```
+
+### WFFParsing — `WFFParsingGenerator`  ·  high · difficulty 2
+
+Generate syntax-tree walks and deliberately localized invalid strings.
+
+**Variants:** `wff_parsing_depth_and_subformulas`, `wff_parsing_infix_to_polish`, `wff_parsing_is_wff`, `wff_parsing_main_connective`, `wff_parsing_polish_to_infix`
+
+```
+Problem: Polish formula: EECrpqp. Recover the infix syntax tree from the prefix spelling.
+Steps:
+  SCAN|E|open operand slots 2
+  SCAN|E|open operand slots 3
+  SCAN|C|open operand slots 4
+  SCAN|r|open operand slots 3
+  SCAN|p|open operand slots 2
+  SCAN|q|open operand slots 1
+  SCAN|p|open operand slots 0
+  PARSE|p|atom
+  PARSE|q|atom
+  PARSE|r|atom
+  PARSE|r → p|binary →
+  PARSE|(r → p) ↔ q|binary ↔
+  PARSE|((r → p) ↔ q) ↔ p|binary ↔
+  Z|((r → p) ↔ q) ↔ p
+Answer: ((r → p) ↔ q) ↔ p
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
