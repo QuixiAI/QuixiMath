@@ -2,6 +2,7 @@ import random
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.partial_trace_generator import PHASE_FACTORS, phase_text
 
 
 SINGLE_GATES = ["H", "X", "Y", "Z"]
@@ -33,6 +34,14 @@ def ket(bit):
 
 def probs_for_basis(bit):
     return ("1", "0") if bit == 0 else ("0", "1")
+
+
+def phased_state(local_state, phase):
+    for local_phase in ("-i", "i", "-"):
+        if local_state.startswith(local_phase):
+            body = local_state[len(local_phase):]
+            return f"{local_phase}·e^(i{phase})·{body}"
+    return f"e^(i{phase})·{local_state}"
 
 
 class QuantumGateGenerator(ProblemGenerator):
@@ -77,6 +86,8 @@ class QuantumGateGenerator(ProblemGenerator):
     def _generate_single(self):
         gate = random.choice(SINGLE_GATES)
         bit = random.randint(0, 1)
+        global_phase = phase_text(random.choice(PHASE_FACTORS))
+        input_state = phased_state(ket(bit), global_phase)
         matrix = {
             "H": "(1/sqrt(2))*[[1,1],[1,-1]]",
             "X": "[[0,1],[1,0]]",
@@ -95,39 +106,44 @@ class QuantumGateGenerator(ProblemGenerator):
             p0, p1 = probs_for_basis(out)
         elif gate == "Y":
             out = 1 - bit
-            phase = "i" if bit == 0 else "-i"
-            state = f"{phase}{ket(out)}"
+            local_phase = "i" if bit == 0 else "-i"
+            state = f"{local_phase}{ket(out)}"
             p0, p1 = probs_for_basis(out)
         else:
-            phase = "" if bit == 0 else "-"
-            state = f"{phase}{ket(bit)}"
+            local_phase = "" if bit == 0 else "-"
+            state = f"{local_phase}{ket(bit)}"
             p0, p1 = probs_for_basis(bit)
+        state = phased_state(state, global_phase)
         steps = [
-            step("QUANTUM_SETUP", f"gate={gate}", f"input={ket(bit)}"),
+            step("QUANTUM_SETUP", f"gate={gate}", f"input={input_state}"),
             step("GATE_MATRIX", gate, matrix),
-            step("APPLY_GATE", gate, ket(bit), state),
+            step("APPLY_GATE", gate, input_state, state),
             step("MEASURE_PROB", "computational basis",
                  f"P(0)={p0}", f"P(1)={p1}"),
         ]
         answer = f"state = {state}; P(0) = {p0}, P(1) = {p1}"
-        problem = f"Apply the {gate} gate to {ket(bit)} and give measurement probabilities."
+        problem = (f"Apply the {gate} gate to {input_state} and give "
+                   f"measurement probabilities.")
         return problem, steps, answer
 
     def _generate_sequence(self):
         n = random.choice([2, 3])
         gates = [random.choice(SINGLE_GATES) for _ in range(n)]
         bit = random.randint(0, 1)
+        global_phase = phase_text(random.choice(PHASE_FACTORS))
+        input_state = phased_state(ket(bit), global_phase)
         kind, phase = str(bit), 1
         steps = [step("QUANTUM_SETUP", f"gates={' then '.join(gates)}",
-                      f"input={ket(bit)}")]
+                      f"input={input_state}")]
         for gate in gates:
-            prev_txt = state_txt(kind, phase)
+            prev_txt = phased_state(state_txt(kind, phase), global_phase)
             new_kind, factor = GATE_ACTION[gate][kind]
             phase = phase * factor
             kind = new_kind
             steps.append(step("APPLY_GATE", gate, prev_txt,
-                              state_txt(kind, phase)))
-        state = state_txt(kind, phase)
+                              phased_state(state_txt(kind, phase),
+                                           global_phase)))
+        state = phased_state(state_txt(kind, phase), global_phase)
         if kind in ("0", "1"):
             p0, p1 = probs_for_basis(int(kind))
         else:
@@ -135,16 +151,17 @@ class QuantumGateGenerator(ProblemGenerator):
         steps.append(step("MEASURE_PROB", "computational basis",
                           f"P(0)={p0}", f"P(1)={p1}"))
         answer = f"state = {state}; P(0) = {p0}, P(1) = {p1}"
-        problem = (f"Apply {' then '.join(gates)} to {ket(bit)} and give "
+        problem = (f"Apply {' then '.join(gates)} to {input_state} and give "
                    f"the final state and measurement probabilities.")
         return problem, steps, answer
 
     def _generate_cnot(self):
         control = random.randint(0, 1)
         target = random.randint(0, 1)
+        phase = phase_text(random.choice(PHASE_FACTORS))
         out_target = target ^ control
-        input_state = f"ket{control}{target}"
-        output_state = f"ket{control}{out_target}"
+        input_state = phased_state(f"ket{control}{target}", phase)
+        output_state = phased_state(f"ket{control}{out_target}", phase)
         steps = [
             step("QUANTUM_SETUP", "gate=CNOT", f"input={input_state}"),
             step("GATE_MATRIX", "CNOT",

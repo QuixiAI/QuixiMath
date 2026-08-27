@@ -1,5 +1,7 @@
+import itertools
 import os
 import random
+import re
 import sys
 import unittest
 
@@ -10,6 +12,24 @@ if repo_root not in sys.path:
 from generators.resolution_proof_generator import ResolutionProofGenerator
 from tests.advanced_generator_oracles import resolution_proof_oracle
 from tests.new_generator_test_utils import assert_contract, assert_pipe_safe
+
+
+def clauses_from_problem(problem):
+    return [tuple(raw.split(" OR "))
+            for raw in re.findall(r"C\d+=\(([^)]*)\)", problem)]
+
+
+def satisfies(clauses, assignment):
+    for clause in clauses:
+        clause_value = False
+        for literal in clause:
+            if literal.startswith("not "):
+                clause_value |= not assignment[literal[4:]]
+            else:
+                clause_value |= assignment[literal]
+        if not clause_value:
+            return False
+    return True
 
 
 class TestResolutionProofGenerator(unittest.TestCase):
@@ -39,6 +59,21 @@ class TestResolutionProofGenerator(unittest.TestCase):
                              f"resolution_proof_{variant}")
             self.assertEqual(result["final_answer"],
                              resolution_proof_oracle(result["problem"]))
+
+    def test_problem_cnf_is_unsatisfiable_by_brute_force(self):
+        for _ in range(300):
+            result = ResolutionProofGenerator().generate()
+            clauses = clauses_from_problem(result["problem"])
+            variables = sorted({literal.removeprefix("not ")
+                                for clause in clauses for literal in clause})
+            has_model = False
+            for values in itertools.product((False, True),
+                                            repeat=len(variables)):
+                assignment = dict(zip(variables, values))
+                if satisfies(clauses, assignment):
+                    has_model = True
+                    break
+            self.assertFalse(has_model, result["problem"])
 
     def test_invalid_variant(self):
         with self.assertRaises(ValueError):

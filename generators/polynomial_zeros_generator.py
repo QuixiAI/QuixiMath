@@ -44,7 +44,7 @@ class PolynomialZerosGenerator(ProblemGenerator):
 
         while True:
             if variant == "factorable":
-                roots = random.sample(range(-6, 7), 3)
+                roots = random.sample(range(-35, 36), 3)
                 given = random.choice(roots)
                 others = sorted(r for r in roots if r != given)
                 B = -(others[0] + others[1])
@@ -52,9 +52,11 @@ class PolynomialZerosGenerator(ProblemGenerator):
                 if C == 0:
                     continue
             else:
-                given = random.choice([v for v in range(-4, 5) if v != 0])
-                p = random.randint(-3, 3)
-                q = random.randint(1, 4)
+                given = random.choice([
+                    value for value in range(-35, 36) if value != 0
+                ])
+                p = random.randint(-25, 25)
+                q = random.randint(1, 25)
                 B = -2 * p
                 C = p * p + q * q
             # dividend = (x - given)(x^2 + Bx + C)

@@ -15,14 +15,15 @@ from helpers import DELIM
 
 def oracle_chi(problem):
     """Recompute χ² from the counts in the problem text alone."""
-    m = re.search(r"observed counts are ([\d, ]+?) and each expected "
+    m = re.search(r"observed counts by category: (.*?); each expected "
                   r"count is (\d+)", problem)
     if m:
-        obs = [int(v) for v in m.group(1).split(", ")]
+        obs = [int(value) for value in re.findall(r"=([0-9]+)", m.group(1))]
         E = int(m.group(2))
         return sum(Fraction((o - E) ** 2, E) for o in obs)
-    m = re.search(r"counts (\d+), (\d+) in row 1 and (\d+), (\d+) in "
-                  r"row 2 \(N = (\d+)\)", problem)
+    m = re.search(r"counts: (\d+), (\d+); (\d+), (\d+); N = (\d+)",
+                  problem)
+    assert m, problem
     o11, o12, o21, o22, N = (int(g) for g in m.groups())
     R1, R2 = o11 + o12, o21 + o22
     C1, C2 = o11 + o21, o12 + o22
@@ -59,7 +60,7 @@ class TestChiSquareGenerator(unittest.TestCase):
 
     def test_oracle_all_variants(self):
         """A9 oracle: recompute χ² and the decision from the text."""
-        for _ in range(500):
+        for _ in range(1000):
             result = self.gen.generate()
             self.assertTrue(oracle_check(result),
                             (result["problem"], result["final_answer"]))
@@ -93,6 +94,8 @@ class TestChiSquareGenerator(unittest.TestCase):
             result = self.gen.generate()
             for s in result["steps"]:
                 self.assertLessEqual(len(s.split(DELIM)) - 1, 4, s)
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
 
     def test_all_variants_reachable(self):
         ops = set()
@@ -103,6 +106,28 @@ class TestChiSquareGenerator(unittest.TestCase):
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             ChiSquareGenerator("bogus")
+
+    def test_step_arithmetic_and_expected_cells(self):
+        for _ in range(500):
+            result = self.gen.generate()
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "EXP_CELL":
+                    match = re.fullmatch(r"\((\d+)·(\d+)\)/(\d+)", fields[1])
+                    self.assertIsNotNone(match, raw)
+                    row, column, total = map(int, match.groups())
+                    self.assertEqual(Fraction(row * column, total),
+                                     Fraction(fields[2]), raw)
+                elif fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+
+    def test_widened_labels_and_phrasings_vary(self):
+        problems = {self.gen.generate()["problem"] for _ in range(1000)}
+        self.assertGreater(len(problems), 990)
+        joined = "\n".join(problems)
+        self.assertIn("observed counts by category", joined)
+        self.assertIn("Independence table data", joined)
 
 
 if __name__ == "__main__":

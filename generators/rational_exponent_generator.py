@@ -1,4 +1,5 @@
 import random
+from fractions import Fraction
 from math import gcd
 
 from base_generator import ProblemGenerator
@@ -50,14 +51,15 @@ class RationalExponentGenerator(ProblemGenerator):
     def _to_radical(self):
         # 40% numeric base: 7^(2/3) -> ∛(7^2) -> ∛49
         if random.random() < 0.4:
-            b = random.choice([2, 3, 5, 6, 7, 10])
+            coefficient = random.randint(2, 100)
+            b = random.randint(2, 30)
             while True:
                 n = random.choice([2, 3, 4])
-                m = random.randint(2, 5)
-                if gcd(m, n) == 1 and b ** m <= 1000:
+                m = random.randint(1, 5)
+                if gcd(m, n) == 1:
                     break
-            original = f"{b}^({m}/{n})"
-            answer = f"{ROOT_SYM[n]}{b ** m}"
+            original = f"{coefficient}·{b}^({m}/{n})"
+            answer = f"{coefficient}·{ROOT_SYM[n]}{b ** m}"
             steps = [
                 step("EXP_RULE_SETUP", original),
                 step("FORM_IDENTIFY", "rational_exponent",
@@ -69,7 +71,8 @@ class RationalExponentGenerator(ProblemGenerator):
             return self._pack("rational_exponent_to_radical",
                               f"Write as a radical: {original}", steps,
                               answer)
-        var = random.choice(["x", "y", "n", "t"])
+        var = (f"{random.choice(['x', 'y', 'n', 't'])}_"
+               f"{random.randint(1, 1000)}")
         while True:
             n = random.choice([2, 3, 4])
             m = random.randint(1, 9)
@@ -88,7 +91,8 @@ class RationalExponentGenerator(ProblemGenerator):
                           f"Write as a radical: {original}", steps, answer)
 
     def _from_radical(self):
-        var = random.choice(["x", "y", "n", "t"])
+        var = (f"{random.choice(['x', 'y', 'n', 't'])}_"
+               f"{random.randint(1, 1000)}")
         while True:
             n = random.choice([2, 3, 4])
             m = random.randint(1, 9)
@@ -119,15 +123,16 @@ class RationalExponentGenerator(ProblemGenerator):
 
     def _evaluate(self):
         n = random.choice([2, 3])
-        k = random.randint(2, 6 if n == 3 else 12)
+        k = random.randint(2, 20)
         while True:
-            m = random.randint(1, 3)
+            m = random.randint(1, 5)
             if gcd(m, n) == 1:
                 break
+        coefficient = random.randint(2, 100)
         base = k ** n
         negative = random.random() < 0.3
         exp_txt = f"(-{m}/{n})" if negative else f"({m}/{n})"
-        original = f"{base}^{exp_txt}"
+        original = f"{coefficient}·{base}^{exp_txt}"
         value = k ** m
 
         steps = [
@@ -144,9 +149,12 @@ class RationalExponentGenerator(ProblemGenerator):
         if negative:
             steps.append(step("EXP_RULE_IDENTIFY", "negative_exponent",
                               "x^(-n) = 1/x^n"))
-            answer = f"1/{value}"
+            core_value = Fraction(1, value)
         else:
-            answer = str(value)
+            core_value = Fraction(value)
+        result = coefficient * core_value
+        steps.append(step("M", coefficient, str(core_value), str(result)))
+        answer = str(result)
         steps.append(step("Z", answer))
         return self._pack("rational_exponent_evaluate",
                           f"Evaluate: {original}", steps, answer)

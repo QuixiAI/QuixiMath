@@ -14,14 +14,14 @@ from helpers import DELIM
 
 
 COS_RE = re.compile(
-    r"In a spherical triangle, sides b=(\d+) deg and c=(\d+) deg "
+    r".* In a spherical triangle, sides b=(\d+) deg and c=(\d+) deg "
     r"enclose angle A=(\d+) deg\. Given cos\(b\)=([^,]+), "
     r"cos\(c\)=([^,]+), sin\(b\)=([^,]+), sin\(c\)=([^,]+), "
     r"and cos\(A\)=([^,]+), use the spherical law of cosines to "
     r"find cos\(a\)\."
 )
 SIN_RE = re.compile(
-    r"In a spherical triangle, side a=(\d+) deg, side b=(\d+) deg, "
+    r".* In a spherical triangle, side a=(\d+) deg, side b=(\d+) deg, "
     r"and angle A=(\d+) deg\. Given sin\(a\)=([^,]+), "
     r"sin\(b\)=([^,]+), and sin\(A\)=([^,]+), use the spherical "
     r"law of sines to find sin\(B\)\."

@@ -1,5 +1,6 @@
 import random
 from fractions import Fraction
+from math import gcd
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
@@ -33,6 +34,129 @@ def money(fr):
     return f"${c // 100}.{c % 100:02d}"
 
 
+def _places(fr):
+    """Decimal places in the exact decimal render of ``fr``."""
+    s = dec(fr)
+    return len(s.split(".")[1]) if "." in s else 0
+
+
+def _rate_time_options(sign):
+    """(rate percent, years) pairs whose accumulation factor still has at
+    most four decimal places, so the closing multiplication stays short."""
+    out = []
+    for r in range(1, 96):
+        base = 1 + sign * Fraction(r, 100)
+        if base <= 0:
+            continue
+        for t in range(2, 7):
+            if _places(base ** t) <= 4:
+                out.append((r, t))
+    return out
+
+
+GROWTH_RATES = _rate_time_options(1)
+DECAY_RATES = _rate_time_options(-1)
+
+NAMES = [
+    "Alina", "Bo", "Cyrus", "Daniela", "Eli", "Fatou", "Gideon", "Hina",
+    "Ivan", "Jamila", "Kofi", "Lena", "Mateo", "Nia", "Oleg", "Paloma",
+    "Quinn", "Rania", "Soren", "Talia", "Umar", "Valeria", "Wren", "Xiulan",
+    "Yara", "Zeke", "Amara", "Bertil", "Chiara", "Dolores", "Emeka", "Freya",
+    "Goran", "Hilde", "Ilya", "Josefa", "Kwame", "Leif", "Marisol", "Nadir",
+]
+
+GROWTH_THINGS = [
+    "a savings account", "a bond fund", "an index fund",
+    "a certificate of deposit", "an art collection", "a vintage guitar",
+    "a rare coin set", "a small vineyard", "a stamp album",
+    "a share of a startup", "a timber lot", "a classic motorcycle",
+    "a jewellery box", "a fine violin", "a plot of farmland",
+]
+
+DECAY_THINGS = [
+    "a delivery van", "a laser cutter", "a printing press", "a tractor",
+    "a fishing boat", "a laptop", "a coffee roaster", "a snow plough",
+    "a camera body", "a milling machine", "a hot air balloon",
+    "a food truck", "a sewing machine", "an excavator", "a tour bus",
+]
+
+CONT_THINGS = [
+    "a money market account", "a college fund", "a retirement account",
+    "a brokerage account", "a savings bond", "a trust account",
+    "a business reserve", "a rainy day fund",
+]
+
+SUBSTANCES = [
+    "iodine", "radium", "polonium", "technetium", "a medical tracer",
+    "a radioactive dye", "a laboratory isotope", "cobalt", "caesium",
+    "strontium", "a fluorescent marker", "the sample isotope",
+    "a decaying catalyst", "a shipment isotope", "thorium",
+]
+
+MASS_UNITS = ["g", "mg", "kg"]
+TIME_UNITS = ["years", "days", "hours"]
+
+GROWTH_TEMPLATES = [
+    "An investment of ${P} grows {r}% per year. What is it worth after "
+    "{t} years?",
+    "{name} puts ${P} into {thing} that grows {r}% each year. What is it "
+    "worth after {t} years?",
+    "{Thing} bought for ${P} appreciates {r}% per year. Give its value "
+    "after {t} years.",
+    "A fund holding ${P} increases {r}% annually. How much is in it after "
+    "{t} years?",
+    "{name} invests ${P} in {thing}; its value rises {r}% per year. What is "
+    "it worth after {t} years?",
+    "{Thing} is worth ${P} today and gains {r}% of its value every year. "
+    "What is it worth after {t} years?",
+]
+
+DECAY_TEMPLATES = [
+    "A machine worth ${P} loses {r}% of its value each year. What is it "
+    "worth after {t} years?",
+    "{name} owns {thing} worth ${P} that loses {r}% of its value each "
+    "year. What is it worth after {t} years?",
+    "{Thing} bought for ${P} depreciates {r}% per year. Give its value "
+    "after {t} years.",
+    "The book value of {thing} is ${P} and declines {r}% annually. What is "
+    "the book value after {t} years?",
+    "{name} bought {thing} for ${P}; its resale value drops {r}% each "
+    "year. What is it worth after {t} years?",
+    "{Thing} valued at ${P} falls {r}% in value every year. What is its "
+    "value after {t} years?",
+]
+
+HALF_LIFE_TEMPLATES = [
+    "A sample of {m0} {u} has a half-life of {h} {tu}. How much remains "
+    "after {t} {tu}?",
+    "{name} measures {m0} {u} of {sub}, whose half-life is {h} {tu}. How "
+    "much is left after {t} {tu}?",
+    "{Sub} decays with a half-life of {h} {tu}. Starting from {m0} {u}, "
+    "how much remains after {t} {tu}?",
+    "A {m0} {u} sample of {sub} is stored for {t} {tu}. If its half-life "
+    "is {h} {tu}, how much remains?",
+    "The half-life of {sub} is {h} {tu}. How much of a {m0} {u} sample is "
+    "left after {t} {tu}?",
+]
+
+CONTINUOUS_TEMPLATES = [
+    "An investment of ${P} earns {r}% interest compounded continuously. "
+    "Give its exact value in dollars after {t} years.",
+    "{name} deposits ${P} at {r}% compounded continuously. Write the exact "
+    "value in dollars after {t} years.",
+    "${P} is placed in an account paying {r}% continuously compounded "
+    "interest. Give the exact value in dollars after {t} years.",
+    "A trust holds ${P} earning {r}% compounded continuously. Give its "
+    "exact value in dollars after {t} years.",
+    "{name} opens {thing} with ${P} at {r}% compounded continuously. Give "
+    "the exact value in dollars after {t} years.",
+]
+
+
+def _cap(phrase):
+    return phrase[0].upper() + phrase[1:]
+
+
 class ExponentialModelGenerator(ProblemGenerator):
     """
     Exponential models kept exact by hand: compound growth and decay
@@ -44,6 +168,12 @@ class ExponentialModelGenerator(ProblemGenerator):
     - decay:      A = P(1 - r)^t on a depreciating value
     - half_life:  A = P·(1/2)^(t/h), the sample halved step by step
     - continuous: A = Pe^(rt); the answer stays exact, e.g. 500e^0.3
+
+    Widened axes: every rate 1..95% whose accumulation factor stays within
+    four decimal places, terms of 2..6 periods, principals drawn from the
+    whole exact-cents lattice, half-lives and sample masses built backward
+    from an exact remainder, three mass units and three time units, and
+    six phrasings per variant over forty names and dozens of contexts.
 
     Op-codes used:
     - MODEL: the model formula (formula)
@@ -60,37 +190,48 @@ class ExponentialModelGenerator(ProblemGenerator):
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
         self.variant = variant
 
+    @staticmethod
+    def _principal(factor):
+        """A principal that keeps P·factor exact to the cent, drawn from as
+        round a lattice as the factor allows."""
+        need = factor.denominator // gcd(factor.numerator * 100,
+                                         factor.denominator)
+        for grid in (100, 25, 5, 1):
+            stride = need * grid // gcd(need, grid)
+            if stride <= 2000:
+                break
+        top = 40000 // stride
+        low = max(1, (100 + stride - 1) // stride)
+        return stride * random.randint(low, max(low, top))
+
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant in ("growth", "decay"):
-            while True:
-                P = random.choice([200, 400, 500, 800, 1000, 2000, 4000,
-                                   5000, 8000])
-                r = random.choice([10, 20, 25, 50])
-                t = random.randint(2, 4)
-                base = 1 + Fraction(r, 100) * (1 if variant == "growth"
-                                               else -1)
-                value = P * base ** t
-                if (value * 100).denominator == 1:
-                    break
+            grow = variant == "growth"
+            r, t = random.choice(GROWTH_RATES if grow else DECAY_RATES)
+            base = 1 + Fraction(r, 100) * (1 if grow else -1)
+            P = self._principal(base ** t)
+            value = P * base ** t
             rate_dec = dec(Fraction(r, 100))
             base_txt = dec(base)
-            if variant == "growth":
+            name = random.choice(NAMES)
+            thing = random.choice(GROWTH_THINGS if grow else DECAY_THINGS)
+            template = random.choice(GROWTH_TEMPLATES if grow
+                                     else DECAY_TEMPLATES)
+            problem = template.format(P=P, r=r, t=t, name=name, thing=thing,
+                                      Thing=_cap(thing))
+            if grow:
                 formula = "A = P(1 + r)^t"
                 combine = step("A", 1, rate_dec, base_txt)
-                problem = (f"An investment of ${P} grows {r}% per year. "
-                           f"What is it worth after {t} years?")
             else:
                 formula = "A = P(1 - r)^t"
                 combine = step("S", 1, rate_dec, base_txt)
-                problem = (f"A machine worth ${P} loses {r}% of its value "
-                           f"each year. What is it worth after {t} years?")
             answer = money(value)
             steps = [
                 step("MODEL", formula),
                 step("MODEL_APPLY", f"A = {P} · (1 "
-                     f"{'+' if variant == 'growth' else '-'} "
+                     f"{'+' if grow else '-'} "
                      f"{rate_dec})^{t}"),
                 step("PERCENT_TO_DEC", f"{r}%", rate_dec),
                 combine,
@@ -100,12 +241,18 @@ class ExponentialModelGenerator(ProblemGenerator):
             ]
             op = f"exponential_{variant}"
         elif variant == "half_life":
-            k = random.randint(2, 4)
-            h = random.choice([3, 5, 10, 12, 20, 25])
-            m0 = random.choice([1, 3, 5, 6, 7]) * 2 ** k
+            k = random.randint(2, 6)
+            h = random.choice([2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18,
+                               20, 24, 25, 28, 30, 36, 40, 45, 50, 60, 75,
+                               80, 90, 100, 120])
+            remaining = random.choice([n for n in range(1, 100)
+                                       if n % 2 == 1])
+            m0 = remaining * 2 ** k
             t = k * h
-            remaining = m0 >> k
-            answer = f"{remaining} g"
+            unit = random.choice(MASS_UNITS)
+            tu = random.choice(TIME_UNITS)
+            sub = random.choice(SUBSTANCES)
+            answer = f"{remaining} {unit}"
             steps = [
                 step("MODEL", "A = P · (1/2)^(t/h)"),
                 step("MODEL_APPLY", f"A = {m0} · (1/2)^({t}/{h})"),
@@ -116,13 +263,15 @@ class ExponentialModelGenerator(ProblemGenerator):
                 steps.append(step("D", cur, 2, cur // 2))
                 cur //= 2
             steps.append(step("Z", answer))
-            problem = (f"A sample of {m0} g has a half-life of {h} years. "
-                       f"How much remains after {t} years?")
+            problem = random.choice(HALF_LIFE_TEMPLATES).format(
+                m0=m0, h=h, t=t, u=unit, tu=tu, sub=sub, Sub=_cap(sub),
+                name=random.choice(NAMES))
             op = "exponential_half_life"
         else:
-            P = random.choice([200, 300, 500, 750, 1000, 1500, 2000])
-            r = random.choice([2, 3, 4, 5, 6, 8])
-            t = random.randint(2, 12)
+            P = 25 * random.randint(4, 2000)
+            r = random.choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14,
+                               15, 16, 18, 20, 24, 25])
+            t = random.randint(2, 20)
             rt = dec(Fraction(r * t, 100))
             answer = f"{P}e^{rt}"
             steps = [
@@ -132,9 +281,9 @@ class ExponentialModelGenerator(ProblemGenerator):
                 step("MODEL_APPLY", f"A = {P}e^{rt}"),
                 step("Z", answer),
             ]
-            problem = (f"An investment of ${P} earns {r}% interest "
-                       f"compounded continuously. Give its exact value "
-                       f"in dollars after {t} years.")
+            problem = random.choice(CONTINUOUS_TEMPLATES).format(
+                P=P, r=r, t=t, name=random.choice(NAMES),
+                thing=random.choice(CONT_THINGS))
             op = "exponential_continuous"
 
         return dict(

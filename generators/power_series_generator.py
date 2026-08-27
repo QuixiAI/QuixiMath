@@ -44,12 +44,16 @@ class PowerSeriesGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        a = random.randint(-5, 5)
+        a = random.randint(-50, 50)
+        series_scale = random.choice([
+            value for value in range(-250, 251)
+            if value not in (-1, 0, 1)
+        ])
         X, ix = center_txt(a), inner_txt(a)
         AX = f"abs({ix})"
 
         if variant in ("open", "half_open", "closed"):
-            c = random.randint(2, 5)
+            c = random.randint(2, 20)
             lo, hi = a - c, a + c
             if variant == "open":
                 body = f"{X}^n/{c}^n"
@@ -61,10 +65,13 @@ class PowerSeriesGenerator(ProblemGenerator):
                 body = f"{X}^n/(n^2·{c}^n)"
                 nfac = "(n/(n + 1))^2"
                 nfac_lim = "lim n→∞ (n/(n + 1))^2 = 1"
+            series_body = f"{series_scale}·{body}"
             steps = [
-                step("SERIES_SETUP", f"Σ {body}, n ≥ 1",
+                step("SERIES_SETUP", f"Σ {series_body}, n ≥ 1",
                      "radius and interval of convergence"),
                 step("TEST_CHOOSE", "ratio test", "power series"),
+                step("CANCEL", f"abs({series_scale}/{series_scale}) = 1",
+                     "constant coefficient cancels"),
                 step("CANCEL", f"{AX}^(n+1)/{AX}^n = {AX}",
                      f"{c}^(n+1)/{c}^n = {c}"),
                 step("REWRITE",
@@ -82,11 +89,14 @@ class PowerSeriesGenerator(ProblemGenerator):
             if variant == "open":
                 steps += [
                     step("SUBST", "x", hi,
-                         f"Σ {c}^n/{c}^n = Σ 1"),
-                    step("CHECK", "nth-term", "terms are 1, not → 0",
+                         f"Σ {series_scale}·{c}^n/{c}^n = "
+                         f"Σ {series_scale}"),
+                    step("CHECK", "nth-term",
+                         f"terms are {series_scale}, not → 0",
                          f"diverges at x = {hi}"),
                     step("SUBST", "x", lo,
-                         f"Σ (-{c})^n/{c}^n = Σ (-1)^n"),
+                         f"Σ {series_scale}·(-{c})^n/{c}^n = "
+                         f"Σ {series_scale}·(-1)^n"),
                     step("CHECK", "nth-term", "terms do not approach 0",
                          f"diverges at x = {lo}"),
                 ]
@@ -94,11 +104,13 @@ class PowerSeriesGenerator(ProblemGenerator):
             elif variant == "half_open":
                 steps += [
                     step("SUBST", "x", hi,
-                         f"Σ {c}^n/(n·{c}^n) = Σ 1/n"),
+                         f"Σ {series_scale}·{c}^n/(n·{c}^n) = "
+                         f"Σ {series_scale}/n"),
                     step("CHECK", "p-series", "p = 1 ≤ 1",
                          f"diverges at x = {hi}"),
                     step("SUBST", "x", lo,
-                         f"Σ (-{c})^n/(n·{c}^n) = Σ (-1)^n/n"),
+                         f"Σ {series_scale}·(-{c})^n/(n·{c}^n) = "
+                         f"Σ {series_scale}·(-1)^n/n"),
                     step("CHECK", "AST", "1/n decreases to 0",
                          f"converges at x = {lo}"),
                 ]
@@ -106,11 +118,13 @@ class PowerSeriesGenerator(ProblemGenerator):
             else:
                 steps += [
                     step("SUBST", "x", hi,
-                         f"Σ {c}^n/(n^2·{c}^n) = Σ 1/n^2"),
+                         f"Σ {series_scale}·{c}^n/(n^2·{c}^n) = "
+                         f"Σ {series_scale}/n^2"),
                     step("CHECK", "p-series", "p = 2 > 1",
                          f"converges at x = {hi}"),
                     step("SUBST", "x", lo,
-                         f"Σ (-{c})^n/(n^2·{c}^n) = Σ (-1)^n/n^2"),
+                         f"Σ {series_scale}·(-{c})^n/(n^2·{c}^n) = "
+                         f"Σ {series_scale}·(-1)^n/n^2"),
                     step("CHECK", "absolute convergence",
                          "Σ 1/n^2 converges",
                          f"converges at x = {lo}"),
@@ -118,10 +132,13 @@ class PowerSeriesGenerator(ProblemGenerator):
                 answer = f"R = {c}, [{lo}, {hi}]"
         elif variant == "zero_radius":
             body = f"n!·{X}^n"
+            series_body = f"{series_scale}·{body}"
             steps = [
-                step("SERIES_SETUP", f"Σ {body}, n ≥ 1",
+                step("SERIES_SETUP", f"Σ {series_body}, n ≥ 1",
                      "radius and interval of convergence"),
                 step("TEST_CHOOSE", "ratio test", "power series"),
+                step("CANCEL", f"abs({series_scale}/{series_scale}) = 1",
+                     "constant coefficient cancels"),
                 step("CANCEL", "(n+1)!/n! = n + 1",
                      f"{AX}^(n+1)/{AX}^n = {AX}"),
                 step("REWRITE",
@@ -134,10 +151,13 @@ class PowerSeriesGenerator(ProblemGenerator):
             answer = f"R = 0, x = {a} only"
         else:
             body = f"{X}^n/n!"
+            series_body = f"{series_scale}·{body}"
             steps = [
-                step("SERIES_SETUP", f"Σ {body}, n ≥ 1",
+                step("SERIES_SETUP", f"Σ {series_body}, n ≥ 1",
                      "radius and interval of convergence"),
                 step("TEST_CHOOSE", "ratio test", "power series"),
+                step("CANCEL", f"abs({series_scale}/{series_scale}) = 1",
+                     "constant coefficient cancels"),
                 step("CANCEL", f"{AX}^(n+1)/{AX}^n = {AX}",
                      "(n+1)!/n! = n + 1"),
                 step("REWRITE",
@@ -154,7 +174,7 @@ class PowerSeriesGenerator(ProblemGenerator):
             problem_id=jid(),
             operation=f"power_series_{variant}",
             problem=(f"Find the radius and interval of convergence "
-                     f"of Σ {body} for n ≥ 1."),
+                     f"of Σ {series_body} for n ≥ 1."),
             steps=steps,
             final_answer=answer,
         )

@@ -1,23 +1,25 @@
 import random
+from math import isqrt
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-P = 7
-POINTS = [1, 2, 3, 4]
+PRIMES = [value for value in range(23, 200)
+          if all(value % divisor
+                 for divisor in range(2, isqrt(value) + 1))]
 
 
-def inv_mod(value):
-    return pow(value % P, -1, P)
+def inv_mod(value, p):
+    return pow(value % p, -1, p)
 
 
-def eval_line(m0, m1, x):
-    return (m0 + m1 * x) % P
+def eval_line(m0, m1, x, p):
+    return (m0 + m1 * x) % p
 
 
-def codeword(m0, m1):
-    return [eval_line(m0, m1, x) for x in POINTS]
+def codeword(m0, m1, points, p):
+    return [eval_line(m0, m1, x, p) for x in points]
 
 
 def list_text(values):
@@ -26,7 +28,7 @@ def list_text(values):
 
 class ReedSolomonGenerator(ProblemGenerator):
     """
-    Toy Reed-Solomon RS(4,2) over F_7 by line evaluation.
+    Toy Reed-Solomon RS(4,2) over a small prime field by line evaluation.
 
     Variants:
     - encode: evaluate m(x)=m0+m1*x at x=1,2,3,4
@@ -47,12 +49,14 @@ class ReedSolomonGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        m0 = random.randint(0, P - 1)
-        m1 = random.randint(1, P - 1)
+        p = random.choice(PRIMES)
+        points = sorted(random.sample(range(1, p), 4))
+        m0 = random.randint(0, p - 1)
+        m1 = random.randint(1, p - 1)
         if variant == "encode":
-            problem, steps, answer = self._encode(m0, m1)
+            problem, steps, answer = self._encode(m0, m1, points, p)
         else:
-            problem, steps, answer = self._correct(m0, m1)
+            problem, steps, answer = self._correct(m0, m1, points, p)
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
@@ -62,42 +66,45 @@ class ReedSolomonGenerator(ProblemGenerator):
             final_answer=answer,
         )
 
-    def _encode(self, m0, m1):
-        steps = [step("RS_SETUP", "F_7", f"m(x)={m0}+{m1}x",
-                      "points 1,2,3,4")]
+    def _encode(self, m0, m1, points, p):
+        points_text = ",".join(str(value) for value in points)
+        steps = [step("RS_SETUP", f"F_{p}", f"m(x)={m0}+{m1}x",
+                      f"points {points_text}")]
         values = []
-        for x in POINTS:
+        for x in points:
             raw = m0 + m1 * x
-            y = raw % P
+            y = raw % p
             steps.append(step("M", m1, x, m1 * x))
             steps.append(step("A", m0, m1 * x, raw))
-            steps.append(step("MOD_REDUCE", raw, "mod 7", y))
+            steps.append(step("MOD_REDUCE", raw, f"mod {p}", y))
             steps.append(step("RS_EVAL", f"x={x}", y))
             values.append(y)
         answer = f"codeword = {list_text(values)}"
         problem = (
-            f"Encode Reed-Solomon RS(4,2) over F_7 with m(x)={m0}+{m1}x "
-            "at evaluation points 1,2,3,4."
+            f"Encode Reed-Solomon RS(4,2) over F_{p} with "
+            f"m(x)={m0}+{m1}x at evaluation points {points_text}."
         )
         return problem, steps, answer
 
-    def _correct(self, m0, m1):
-        sent = codeword(m0, m1)
+    def _correct(self, m0, m1, points, p):
+        points_text = ",".join(str(value) for value in points)
+        sent = codeword(m0, m1, points, p)
         received = sent[:]
         pos = random.randrange(4)
-        received[pos] = (received[pos] + random.randint(1, P - 1)) % P
-        steps = [step("RS_SETUP", "F_7", "RS(4,2)", "one error allowed"),
+        received[pos] = (received[pos] + random.randint(1, p - 1)) % p
+        steps = [step("RS_SETUP", f"F_{p}", "RS(4,2)",
+                      f"points {points_text}; one error allowed"),
                  step("RS_RECEIVED", list_text(received))]
         best = None
-        for i in range(len(POINTS)):
-            for j in range(i + 1, len(POINTS)):
-                x1, y1 = POINTS[i], received[i]
-                x2, y2 = POINTS[j], received[j]
-                numerator = (y2 - y1) % P
-                denominator = (x2 - x1) % P
-                slope = numerator * inv_mod(denominator) % P
-                intercept = (y1 - slope * x1) % P
-                candidate = codeword(intercept, slope)
+        for i in range(len(points)):
+            for j in range(i + 1, len(points)):
+                x1, y1 = points[i], received[i]
+                x2, y2 = points[j], received[j]
+                numerator = (y2 - y1) % p
+                denominator = (x2 - x1) % p
+                slope = numerator * inv_mod(denominator, p) % p
+                intercept = (y1 - slope * x1) % p
+                candidate = codeword(intercept, slope, points, p)
                 agree = sum(a == b for a, b in zip(candidate, received))
                 steps.append(step("RS_PAIR", f"x={x1},{x2}",
                                   f"y={y1},{y2}"))
@@ -115,8 +122,9 @@ class ReedSolomonGenerator(ProblemGenerator):
             f"error_position = {err_pos}"
         )
         problem = (
-            "A Reed-Solomon RS(4,2) word over F_7 is made by evaluating "
-            f"m(x)=m0+m1*x at x=1,2,3,4. Received word is {list_text(received)} "
+            f"A Reed-Solomon RS(4,2) word over F_{p} is made by evaluating "
+            f"m(x)=m0+m1*x at x={points_text}. Received word is "
+            f"{list_text(received)} "
             "with at most one error. Recover the message and corrected codeword."
         )
         return problem, steps, answer

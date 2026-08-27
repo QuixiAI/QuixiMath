@@ -2,6 +2,8 @@ import unittest
 import sys
 import os
 import random
+import math
+import re
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,6 +13,20 @@ if repo_root not in sys.path:
 
 from generators.pythag_hyp_generator import PythagHypGenerator
 from helpers import DELIM
+
+
+def oracle_answer(problem):
+    match = re.fullmatch(
+        r"In right triangle [A-Z]{3}, [A-Z]{2} and [A-Z]{2} are "
+        r"perpendicular legs of lengths (\d+) and (\d+)\. Find "
+        r"hypotenuse [A-Z]{2}\.",
+        problem,
+    )
+    assert match, problem
+    a, b = map(int, match.groups())
+    root = math.isqrt(a * a + b * b)
+    assert root * root == a * a + b * b, problem
+    return str(root)
 
 class TestPythagHypGenerator(unittest.TestCase):
 
@@ -58,15 +74,40 @@ class TestPythagHypGenerator(unittest.TestCase):
             self.assertEqual(result["steps"][-1].split(DELIM)[1], result["final_answer"])
 
             # Check if problem string looks reasonable
-            self.assertIn("Find hypotenuse:", result["problem"])
-            self.assertIn("legs", result["problem"])
-            self.assertIn("and", result["problem"])
+            self.assertIn("right triangle", result["problem"])
+            self.assertIn("perpendicular legs", result["problem"])
+            self.assertIn("Find hypotenuse", result["problem"])
 
             # Check if final answer is a valid integer string (since we use scaled triples)
             try:
                 int(result["final_answer"])
             except ValueError:
                 self.fail(f"Final answer '{result['final_answer']}' is not a valid integer string.")
+
+    def test_oracle_and_arithmetic_steps(self):
+        """A9 oracle: solve the labeled triangle from prompt lengths."""
+        for _ in range(500):
+            result = self.generator.generate()
+            self.assertEqual(oracle_answer(result["problem"]),
+                             result["final_answer"], result["problem"])
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "E":
+                    self.assertEqual(int(fields[1]) ** int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "A":
+                    self.assertEqual(int(fields[1]) + int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "ROOT":
+                    self.assertEqual(int(fields[2]) ** 2, int(fields[1]),
+                                     raw_step)
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == '__main__':

@@ -16,9 +16,9 @@ from helpers import DELIM
 
 def oracle_parts(example):
     problem = example["problem"]
-    match = re.fullmatch(
+    match = re.search(
         r"How many nonnegative integer solutions are there to "
-        r"x1 \+ \.\.\. \+ x(\d+) = (\d+)\?",
+        r"x1 \+ \.\.\. \+ x(\d+) = (\d+)\?$",
         problem,
     )
     if match:
@@ -32,9 +32,9 @@ def oracle_parts(example):
             "bottom": k - 1,
             "answer": f"solutions = {value}",
         }
-    match = re.fullmatch(
+    match = re.search(
         r"How many positive integer solutions are there to "
-        r"x1 \+ \.\.\. \+ x(\d+) = (\d+)\?",
+        r"x1 \+ \.\.\. \+ x(\d+) = (\d+)\?$",
         problem,
     )
     if match:
@@ -49,12 +49,12 @@ def oracle_parts(example):
             "bottom": k - 1,
             "answer": f"solutions = {value}",
         }
-    match = re.fullmatch(
-        r"How many distinct strings can be made from (.+)\?",
+    match = re.search(
+        r"How many distinct strings can be made from (.+)\?$",
         problem,
     )
     assert match is not None, problem
-    counts = [int(value) for value in re.findall(r"(\d+) [A-D](?:'s)?",
+    counts = [int(value) for value in re.findall(r"(\d+) [A-Z](?:'s)?",
                                                   match.group(1))]
     total = sum(counts)
     denom = 1

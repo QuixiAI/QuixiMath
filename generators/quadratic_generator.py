@@ -8,9 +8,10 @@ class QuadraticGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         operation = "quadratic_eq"
+        var = random.choice(["x", "y", "t", "n", "z"])
         while True: # Loop until a valid quadratic with integer roots is found
-            r1, r2 = random.sample(range(-6, 7), 2) # Ensure distinct roots
-            a = random.randint(1, 3)
+            r1, r2 = random.sample(range(-25, 26), 2) # Ensure distinct roots
+            a = random.randint(1, 25)
             b = -a * (r1 + r2)
             c = a * r1 * r2
 
@@ -43,18 +44,18 @@ class QuadraticGenerator(ProblemGenerator):
         # Q1 is the plus branch (larger root for a > 0)
         root1, root2 = max(root1, root2), min(root1, root2)
         # A0 convention: multiple roots ascending, joined with ' or '
-        final_answer_str = f"x = {root2} or x = {root1}"
+        final_answer_str = f"{var} = {root2} or {var} = {root1}"
 
         # Formatting logic to use ^2 instead of ²
         expr_terms = []
-        if a == 1: expr_terms.append("x^2")
-        elif a == -1: expr_terms.append("-x^2")
-        else: expr_terms.append(f"{a}x^2")
+        if a == 1: expr_terms.append(f"{var}^2")
+        elif a == -1: expr_terms.append(f"-{var}^2")
+        else: expr_terms.append(f"{a}{var}^2")
 
         if b != 0:
             sign = "+" if b > 0 else "-"
             b_val_str = "" if abs(b) == 1 else str(abs(b))
-            expr_terms.append(f"{sign}{b_val_str}x")
+            expr_terms.append(f"{sign}{b_val_str}{var}")
         if c != 0:
             sign = "+" if c > 0 else "" # Use sign only, value included
             expr_terms.append(f"{sign}{c}")
@@ -63,6 +64,9 @@ class QuadraticGenerator(ProblemGenerator):
         problem = f"Solve {expr} = 0"
 
         steps = [
+            step("EQ_SETUP", f"{expr} = 0", "quadratic formula"),
+            step("THEOREM", "quadratic formula",
+                 f"{var} = (-b ± √(b^2 - 4ac))/(2a)"),
             step("DISC", b*b, 4*a*c, disc), # Calculate discriminant parts
             step("ROOT", disc, sqrt_disc), # Square root of discriminant
             step("Q1", -b, sqrt_disc, denom, root1), # Calculate first root

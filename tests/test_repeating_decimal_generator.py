@@ -26,15 +26,15 @@ class TestRepeatingDecimalGenerator(unittest.TestCase):
         self.gen = RepeatingDecimalGenerator()
 
     def test_terminating(self):
-        with patch("generators.repeating_decimal_generator.random.choice", return_value=8), \
-             patch("generators.repeating_decimal_generator.random.randint", return_value=1):
+        with patch("generators.repeating_decimal_generator.fraction_instance",
+                   return_value=(1, 8)):
             res = self.gen.generate()
         self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
         self.assertEqual(res["final_answer"], "0.125 (terminating)")
 
     def test_repeating_uses_repetend_notation(self):
-        with patch("generators.repeating_decimal_generator.random.choice", return_value=3), \
-             patch("generators.repeating_decimal_generator.random.randint", return_value=1):
+        with patch("generators.repeating_decimal_generator.fraction_instance",
+                   return_value=(1, 3)):
             res = self.gen.generate()
         # 1/3 is exactly 0.(3), never a rounded 0.333333
         self.assertEqual(res["final_answer"], "0.(3) (repeating)")
@@ -46,7 +46,7 @@ class TestRepeatingDecimalGenerator(unittest.TestCase):
         for _ in range(500):
             res = self.gen.generate()
             n, d = (int(x) for x in re.search(
-                r"if (\d+)/(\d+) is", res["problem"]).groups())
+                r"(\d+)/(\d+)", res["problem"]).groups())
             dec_text, kind = re.fullmatch(
                 r"(.+) \((terminating|repeating)\)",
                 res["final_answer"]).groups()
@@ -61,6 +61,31 @@ class TestRepeatingDecimalGenerator(unittest.TestCase):
             while reduced_den % 5 == 0:
                 reduced_den //= 5
             self.assertEqual(kind == "terminating", reduced_den == 1)
+
+    def test_long_division_and_factor_steps_are_arithmetic(self):
+        for _ in range(300):
+            res = self.gen.generate()
+            for raw_step in res["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "D":
+                    current, divisor, digit = map(int, fields[1:])
+                    self.assertEqual(current // divisor, digit, raw_step)
+                    self.assertLess(digit, 10, raw_step)
+                elif fields[0] == "PF_STEP":
+                    value, factor, quotient = map(int, fields[1:])
+                    self.assertEqual(value, factor * quotient, raw_step)
+
+    def test_pipe_safe_and_render_sane(self):
+        bad_fragments = ("1x", "-1x", "^1", "+ 0", "--")
+        for _ in range(300):
+            res = self.gen.generate()
+            self.assertNotIn(DELIM, res["problem"])
+            self.assertNotIn(DELIM, res["final_answer"])
+            self.assertFalse(any(fragment in res["problem"]
+                                 for fragment in bad_fragments))
+            for raw_step in res["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
     def test_prime_steps_are_prime(self):
         for _ in range(300):

@@ -3,6 +3,9 @@ from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.exponential_model_generator import dec
+# Shared with the probability strand (plans/probability_plan.md §4); re-exported
+# here because the tests import it from this module.
+from prob_common import exact
 
 # Upper-tail χ² critical values (α = 0.05) by degrees of freedom,
 # supplied in the problem text (Principle 5).
@@ -12,17 +15,47 @@ CRIT_BY_DF = {
 }
 # Expected counts per category for the uniform goodness-of-fit case;
 # each divides a power of 10 so every χ² term is an exact decimal.
-GOF_EXPECTED = [5, 10, 20, 25]
+GOF_EXPECTED = [5, 10, 20, 25, 50, 100]
 
+CATEGORY_BANKS = [
+    ["red", "blue", "green", "yellow", "purple", "orange", "white"],
+    ["north", "south", "east", "west", "central", "coastal", "inland"],
+    ["apple", "banana", "cherry", "grape", "mango", "pear", "plum"],
+    ["bus", "car", "bike", "walk", "train", "tram", "ferry"],
+    ["bronze", "silver", "gold", "black", "white", "copper", "blue"],
+    ["A", "B", "C", "D", "E", "F", "G"],
+]
 
-def exact(fr):
-    """Terminating decimal when possible, else the reduced fraction."""
-    d = fr.denominator
-    while d % 2 == 0:
-        d //= 2
-    while d % 5 == 0:
-        d //= 5
-    return dec(fr) if d == 1 else str(fr)
+TABLE_LABELS = [
+    ("treatment", "control", "improved", "not improved"),
+    ("morning", "evening", "yes", "no"),
+    ("urban", "rural", "supports", "opposes"),
+    ("online", "in person", "passed", "did not pass"),
+    ("new design", "old design", "clicked", "did not click"),
+    ("group A", "group B", "selected", "not selected"),
+    ("before noon", "after noon", "on time", "late"),
+    ("method one", "method two", "success", "failure"),
+]
+
+NAMES = [
+    "Aisha", "Ben", "Cleo", "Diego", "Emi", "Farah", "Grace", "Hugo",
+    "Imani", "Jonas", "Kavya", "Liam", "Maya", "Noah", "Omar", "Priya",
+    "Quinn", "Rosa", "Samir", "Tara", "Uma", "Vera", "Wes", "Ximena",
+]
+SETTINGS = [
+    "statistics class", "the survey lab", "study hall", "the library",
+    "a research workshop", "the school office", "a quality-control meeting",
+    "the learning center", "a classroom review", "an online lesson",
+    "the community center", "a data-analysis seminar",
+]
+PROBLEM_TEMPLATES = [
+    "At {place}, {name} analyzes this study. {data} {ask}",
+    "{name} is working in {place}. {data} {ask}",
+    "During {place}, {name} receives the following summary: {data} {ask}",
+    "A worksheet for {name} at {place} gives this information. {data} {ask}",
+    "For a report in {place}, {name} must analyze these data. {data} {ask}",
+    "{name} checks a result during {place}. {data} {ask}",
+]
 
 
 def sq_txt(d):
@@ -74,123 +107,128 @@ class ChiSquareGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-
         if variant.startswith("gof"):
-            k = random.randint(3, 6)
-            E = random.choice(GOF_EXPECTED)
-            df = k - 1
-            crit = Fraction(CRIT_BY_DF[df])
-            while True:
-                devs = [random.randint(-4, 4) for _ in range(k - 1)]
-                devs.append(-sum(devs))
-                obs = [E + d for d in devs]
-                if all(o >= 0 for o in obs) and abs(devs[-1]) <= E:
-                    break
-            chi = Fraction(sum(d * d for d in devs), E)
-            steps = [
-                step("CHI_SETUP",
-                     f"observed: {', '.join(map(str, obs))}; "
-                     f"expected: {E} each",
-                     f"goodness of fit; df = {df}, "
-                     f"critical value = {dec(crit)}"),
-                step("CHI_FORMULA", "χ² = Σ (O - E)^2/E"),
-            ]
-            running = Fraction(0)
-            terms = []
-            for o, d in zip(obs, devs):
-                term = Fraction(d * d, E)
-                terms.append(term)
-                steps.append(step("CHI_TERM", f"{o} - {E} = {d}",
-                                  sq_txt(d),
-                                  f"{d * d}/{E} = {exact(term)}"))
-            running = terms[0]
-            for t in terms[1:]:
-                steps.append(step("A", exact(running), exact(t),
-                                  exact(running + t)))
-                running += t
-            if variant == "gof_decision":
-                dstep, verdict = self._decision_step(chi, crit)
-                steps.append(dstep)
-                answer = verdict
-            else:
-                answer = exact(chi)
-            ask = ("what is the χ² test statistic?"
-                   if variant == "gof_stat"
-                   else "state the conclusion (reject H0 or fail to "
-                   "reject H0).")
-            problem = (f"A goodness-of-fit test checks whether {k} "
-                       f"categories are equally likely. The observed "
-                       f"counts are {', '.join(map(str, obs))} and "
-                       f"each expected count is {E}. Using a critical "
-                       f"value of {dec(crit)} (df = {df}), {ask}")
-        else:
-            df = 1
-            crit = Fraction(CRIT_BY_DF[df])
-            N = 100
-            # Both a and 10-a stay in {2,5,8}, so every expected count
-            # is a 2^x·5^y product and each χ² term is an exact decimal.
-            a1 = random.choice([2, 5, 8])
-            b1 = random.choice([2, 5, 8])
-            R1, R2 = a1 * 10, (10 - a1) * 10
-            C1, C2 = b1 * 10, (10 - b1) * 10
-            E11 = Fraction(R1 * C1, N)
-            E12 = Fraction(R1 * C2, N)
-            E21 = Fraction(R2 * C1, N)
-            E22 = Fraction(R2 * C2, N)
-            minE = min(E11, E12, E21, E22)
-            delta = random.randint(1, int(minE) - 1) if minE > 1 else 1
-            O11, O12 = int(E11) + delta, int(E12) - delta
-            O21, O22 = int(E21) - delta, int(E22) + delta
-            cells = [(O11, E11, R1, C1), (O12, E12, R1, C2),
-                     (O21, E21, R2, C1), (O22, E22, R2, C2)]
-            chi = sum(Fraction((o - e) ** 2) / e for o, e, _, _ in cells)
-            steps = [
-                step("CHI_SETUP",
-                     f"row 1: {O11}, {O12}; row 2: {O21}, {O22}; "
-                     f"N = {N}",
-                     f"independence; df = 1, "
-                     f"critical value = {dec(crit)}"),
-                step("CHI_FORMULA",
-                     "E = (row·col)/N; χ² = Σ (O - E)^2/E"),
-            ]
-            for o, e, r, c in cells:
-                steps.append(step("EXP_CELL", f"({r}·{c})/{N}",
-                                  exact(e)))
-            terms = []
-            for o, e, r, c in cells:
-                d = o - e
-                term = Fraction(d * d) / e
-                terms.append(term)
-                dv = int(d)
-                steps.append(step("CHI_TERM", f"{o} - {exact(e)} = {dv}",
-                                  sq_txt(dv),
-                                  f"{dv * dv}/{exact(e)} = {exact(term)}"))
-            running = terms[0]
-            for t in terms[1:]:
-                steps.append(step("A", exact(running), exact(t),
-                                  exact(running + t)))
-                running += t
-            if variant == "independence_decision":
-                dstep, verdict = self._decision_step(chi, crit)
-                steps.append(dstep)
-                answer = verdict
-            else:
-                answer = exact(chi)
-            ask = ("what is the χ² test statistic?"
-                   if variant == "independence_stat"
-                   else "state the conclusion (reject H0 or fail to "
-                   "reject H0).")
-            problem = (f"A 2×2 contingency table has counts {O11}, "
-                       f"{O12} in row 1 and {O21}, {O22} in row 2 "
-                       f"(N = {N}). Test the two variables for "
-                       f"independence. Using a critical value of "
-                       f"{dec(crit)} (df = 1), {ask}")
-        steps.append(step("Z", answer))
+            return self._generate_gof(variant)
+        return self._generate_independence(variant)
 
+    @staticmethod
+    def _phrase(data, ask):
+        return random.choice(PROBLEM_TEMPLATES).format(
+            name=random.choice(NAMES), place=random.choice(SETTINGS),
+            data=data, ask=ask)
+
+    @staticmethod
+    def _sum_terms(steps, terms):
+        running = terms[0]
+        for term in terms[1:]:
+            steps.append(step("A", exact(running), exact(term),
+                              exact(running + term)))
+            running += term
+
+    def _finish(self, variant, problem, steps, chi, crit):
+        if variant.endswith("decision"):
+            decision, answer = self._decision_step(chi, crit)
+            steps.append(decision)
+        else:
+            answer = exact(chi)
+        steps.append(step("Z", answer))
         return dict(
-            problem_id=jid(),
-            operation=f"chi_square_{variant}",
-            problem=problem,
-            steps=steps,
-            final_answer=answer,
-        )
+            problem_id=jid(), operation=f"chi_square_{variant}",
+            problem=problem, steps=steps, final_answer=answer)
+
+    def _generate_gof(self, variant):
+        k = random.randint(3, 7)
+        expected = random.choice(GOF_EXPECTED)
+        df = k - 1
+        crit = Fraction(CRIT_BY_DF[df])
+        limit = min(8, expected - 1)
+        while True:
+            deviations = [random.randint(-limit, limit) for _ in range(k - 1)]
+            deviations.append(-sum(deviations))
+            observed = [expected + d for d in deviations]
+            if (all(value > 0 for value in observed)
+                    and abs(deviations[-1]) <= limit
+                    and any(deviations)):
+                break
+        labels = random.sample(random.choice(CATEGORY_BANKS), k)
+        labelled = ", ".join(f"{label}={count}"
+                             for label, count in zip(labels, observed))
+        data = ("Goodness-of-fit data [observed counts by category: "
+                f"{labelled}; each expected count is {expected}; critical "
+                f"value of {dec(crit)} (df = {df})].")
+        ask = ("Find the χ² test statistic."
+               if variant == "gof_stat"
+               else "State the conclusion: reject H0 or fail to reject H0.")
+        problem = self._phrase(data, ask)
+        steps = [
+            step("CHI_SETUP", f"observed: {', '.join(map(str, observed))}; "
+                 f"expected: {expected} each",
+                 f"goodness of fit; df = {df}, critical value = {dec(crit)}"),
+            step("CHI_FORMULA", "χ² = Σ (O - E)^2/E"),
+        ]
+        terms = []
+        for value, difference in zip(observed, deviations):
+            term = Fraction(difference * difference, expected)
+            terms.append(term)
+            steps.append(step("CHI_TERM",
+                              f"{value} - {expected} = {difference}",
+                              sq_txt(difference),
+                              f"{difference * difference}/{expected} = "
+                              f"{exact(term)}"))
+        self._sum_terms(steps, terms)
+        chi = sum(terms, Fraction(0))
+        return self._finish(variant, problem, steps, chi, crit)
+
+    def _generate_independence(self, variant):
+        crit = Fraction(CRIT_BY_DF[1])
+        total = random.choice([100, 200, 300, 400])
+        row_tenths = random.randint(2, 8)
+        col_tenths = random.randint(2, 8)
+        row1 = total * row_tenths // 10
+        row2 = total - row1
+        col1 = total * col_tenths // 10
+        col2 = total - col1
+        expected = [Fraction(row1 * col1, total),
+                    Fraction(row1 * col2, total),
+                    Fraction(row2 * col1, total),
+                    Fraction(row2 * col2, total)]
+        limit = min(12, *(int(value) - 1 for value in expected))
+        delta = random.choice([d for d in range(-limit, limit + 1)
+                               if d != 0])
+        observed = [int(expected[0]) + delta, int(expected[1]) - delta,
+                    int(expected[2]) - delta, int(expected[3]) + delta]
+        r1, r2, c1, c2 = random.choice(TABLE_LABELS)
+        data = (f"Independence table data [rows {r1}, {r2}; columns {c1}, "
+                f"{c2}; counts: {observed[0]}, {observed[1]}; "
+                f"{observed[2]}, {observed[3]}; N = {total}; critical value "
+                f"of {dec(crit)} (df = 1)].")
+        ask = ("Find the χ² test statistic."
+               if variant == "independence_stat"
+               else "State the conclusion: reject H0 or fail to reject H0.")
+        problem = self._phrase(data, ask)
+        margins = [(row1, col1), (row1, col2),
+                   (row2, col1), (row2, col2)]
+        steps = [
+            step("CHI_SETUP",
+                 f"row 1: {observed[0]}, {observed[1]}; row 2: "
+                 f"{observed[2]}, {observed[3]}; N = {total}",
+                 f"independence; df = 1, critical value = {dec(crit)}"),
+            step("CHI_FORMULA", "E = (row·col)/N; χ² = Σ (O - E)^2/E"),
+        ]
+        for value, (row, column) in zip(expected, margins):
+            steps.append(step("EXP_CELL", f"({row}·{column})/{total}",
+                              exact(value)))
+        terms = []
+        for observed_value, expected_value in zip(observed, expected):
+            difference = observed_value - expected_value
+            term = Fraction(difference * difference) / expected_value
+            terms.append(term)
+            difference = int(difference)
+            steps.append(step("CHI_TERM",
+                              f"{observed_value} - {exact(expected_value)} = "
+                              f"{difference}", sq_txt(difference),
+                              f"{difference * difference}/"
+                              f"{exact(expected_value)} = {exact(term)}"))
+        self._sum_terms(steps, terms)
+        chi = sum(terms, Fraction(0))
+        return self._finish(variant, problem, steps, chi, crit)

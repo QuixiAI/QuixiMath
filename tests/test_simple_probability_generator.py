@@ -1,5 +1,6 @@
 import unittest
 import random
+import re
 import sys
 import os
 
@@ -26,9 +27,10 @@ class TestSimpleProbabilityGenerator(unittest.TestCase):
             res = self.gen.generate()
             self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
             # Extract favorable/total
-            words = res["problem"].split()
-            favorable = int(words[4])
-            total = int(words[9])
+            match = re.search(r"event has (\d+) favorable outcomes out of "
+                              r"(\d+) equally likely outcomes", res["problem"])
+            self.assertIsNotNone(match, res["problem"])
+            favorable, total = map(int, match.groups())
             expected = Fraction(favorable, total)
             answer = Fraction(res["final_answer"])
             self.assertEqual(answer, expected, res["problem"])
@@ -39,6 +41,15 @@ class TestSimpleProbabilityGenerator(unittest.TestCase):
                              (expected.numerator, expected.denominator))
             self.assertLess(answer, 1)
             self.assertGreater(answer, 0)
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            res = self.gen.generate()
+            self.assertNotIn(DELIM, res["problem"])
+            self.assertNotIn(DELIM, res["final_answer"])
+            for raw_step in res["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

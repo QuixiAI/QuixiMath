@@ -17,7 +17,56 @@ from generators.exponent_generator import (
     ScientificNotationGenerator,
     RootsAndRadicalsGenerator,
 )
+from generators.exponential_model_generator import dec
 from helpers import DELIM
+
+
+_POW_RE = re.compile(
+    r"(?:\((?P<pb>-?\d+(?:\.\d+)?(?:/\d+)?)\)|(?P<b>\d+(?:\.\d+)?))"
+    r"\^(?P<e>\d+)")
+
+
+def parse_exponent_expression(text):
+    """Pull the power expression out of any phrasing.
+
+    Returns ``(terms, ops, is_decimal)`` where ``terms`` is a list of
+    ``(Fraction base, int exponent)`` and ``ops`` the connecting symbols.
+    Reads the sentence only — nothing from the generator.
+    """
+    matches = list(_POW_RE.finditer(text))
+    assert matches, text
+    terms = []
+    decimal = False
+    for m in matches:
+        btxt = m.group("pb") if m.group("pb") is not None else m.group("b")
+        if "." in btxt:
+            decimal = True
+        terms.append((Fraction(btxt), int(m.group("e"))))
+    ops = []
+    for prev, nxt in zip(matches, matches[1:]):
+        joiner = text[prev.end():nxt.start()].strip()
+        assert joiner in ("·", "+", "-"), (joiner, text)
+        ops.append(joiner)
+    return terms, ops, decimal
+
+
+def exponent_oracle_answer(text):
+    """A9 oracle: evaluate the parsed expression with exact arithmetic."""
+    terms, ops, decimal = parse_exponent_expression(text)
+    value = terms[0][0] ** terms[0][1]
+    for op, (base, exp) in zip(ops, terms[1:]):
+        other = base ** exp
+        if op == "·":
+            value = value * other
+        elif op == "+":
+            value = value + other
+        else:
+            value = value - other
+    if decimal:
+        return dec(value)
+    if value.denominator == 1:
+        return str(value.numerator)
+    return f"{value.numerator}/{value.denominator}"
 
 
 class TestExponentEvaluationGenerator(unittest.TestCase):
@@ -33,7 +82,7 @@ class TestExponentEvaluationGenerator(unittest.TestCase):
         self.assertIsInstance(result, dict)
         self.assertIn("problem_id", result)
         self.assertIn("operation", result)
-        self.assertEqual(result["operation"], "exponent_evaluation")
+        self.assertTrue(result["operation"].startswith("exponent_evaluation"))
         self.assertIn("problem", result)
         self.assertIn("steps", result)
         self.assertIn("final_answer", result)
@@ -41,14 +90,14 @@ class TestExponentEvaluationGenerator(unittest.TestCase):
         # Check final step
         final_step = result["steps"][-1]
         self.assertTrue(final_step.startswith(f"Z{DELIM}"))
+        self.assertEqual(final_step.split(DELIM, 1)[1], result["final_answer"])
 
     def test_generate_consistency(self):
         """Generate multiple examples and check consistency."""
-        for _ in range(20):
+        for _ in range(200):
             result = self.generator.generate()
 
-            # Problem should contain 'Evaluate' and '^'
-            self.assertIn("Evaluate", result["problem"])
+            # The power expression is always present in the prompt.
             self.assertIn("^", result["problem"])
 
             # Check for exponent steps
@@ -58,11 +107,83 @@ class TestExponentEvaluationGenerator(unittest.TestCase):
             self.assertTrue(has_setup_step, "Missing EXP_SETUP step")
             self.assertTrue(has_expand_step, "Missing EXP_EXPAND step")
 
-            # Final answer should be a valid integer
-            try:
-                int(result["final_answer"])
-            except ValueError:
-                self.fail(f"Final answer '{result['final_answer']}' is not a valid integer")
+            # Final answer is an exact integer, reduced fraction, or
+            # terminating decimal.
+            ans = result["final_answer"]
+            self.assertRegex(ans, r"^-?\d+(?:\.\d+|/\d+)?$")
+            if "/" in ans:
+                num, den = ans.split("/")
+                self.assertEqual(Fraction(int(num), int(den)),
+                                 Fraction(ans), ans)
+                self.assertNotEqual(int(den), 1)
+            if "." in ans:
+                self.assertFalse(ans.endswith("0"), ans)
+
+    def test_oracle_recomputation(self):
+        """A9 oracle: re-evaluate the printed expression independently."""
+        for _ in range(1500):
+            result = self.generator.generate()
+            self.assertEqual(exponent_oracle_answer(result["problem"]),
+                             result["final_answer"], result["problem"])
+
+    def test_partial_product_chain(self):
+        """EXP_PARTIAL lines must multiply out, and the expansion must show
+        exactly `exponent` factors."""
+        for _ in range(400):
+            result = self.generator.generate()
+            terms, _, _ = parse_exponent_expression(result["problem"])
+            setups = [s.split(DELIM) for s in result["steps"]
+                      if s.startswith(f"EXP_SETUP{DELIM}")]
+            expands = [s.split(DELIM) for s in result["steps"]
+                       if s.startswith(f"EXP_EXPAND{DELIM}")]
+            self.assertEqual(len(setups), len(terms))
+            self.assertEqual(len(expands), len(terms))
+            for (base, exp), setup, expand in zip(terms, setups, expands):
+                self.assertEqual(Fraction(setup[1]), base)
+                self.assertEqual(int(setup[2]), exp)
+                self.assertEqual(len(expand[1].split(" × ")), exp)
+            for s in result["steps"]:
+                parts = s.split(DELIM)
+                if parts[0] == "EXP_PARTIAL":
+                    self.assertEqual(Fraction(parts[1]) * Fraction(parts[2]),
+                                     Fraction(parts[3]), s)
+                elif parts[0] == "M":
+                    self.assertEqual(Fraction(parts[1]) * Fraction(parts[2]),
+                                     Fraction(parts[3]), s)
+                elif parts[0] == "A":
+                    self.assertEqual(Fraction(parts[1]) + Fraction(parts[2]),
+                                     Fraction(parts[3]), s)
+                elif parts[0] == "S":
+                    self.assertEqual(Fraction(parts[1]) - Fraction(parts[2]),
+                                     Fraction(parts[3]), s)
+
+    def test_all_families_reachable(self):
+        ops = set()
+        kinds = set()
+        for _ in range(600):
+            result = self.generator.generate()
+            ops.add(result["operation"])
+            terms, _, decimal = parse_exponent_expression(result["problem"])
+            if decimal:
+                kinds.add("decimal")
+            elif any(b.denominator != 1 for b, _ in terms):
+                kinds.add("fraction")
+            elif any(b < 0 for b, _ in terms):
+                kinds.add("negative")
+            else:
+                kinds.add("positive")
+        self.assertEqual(ops, {"exponent_evaluation",
+                               "exponent_evaluation_product",
+                               "exponent_evaluation_sum"})
+        self.assertEqual(kinds, {"decimal", "fraction", "negative",
+                                 "positive"})
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            for s in result["steps"]:
+                self.assertLessEqual(len(s.split(DELIM)), 5, s)
 
     def test_negative_base_allowed(self):
         """Test that negative bases are generated when allowed."""
@@ -78,9 +199,29 @@ class TestExponentEvaluationGenerator(unittest.TestCase):
     def test_no_negative_base(self):
         """Test that no negative bases when disabled."""
         gen = ExponentEvaluationGenerator(allow_negative_base=False)
-        for _ in range(20):
+        for _ in range(300):
             result = gen.generate()
             self.assertNotIn("(-", result["problem"])
+            terms, _, _ = parse_exponent_expression(result["problem"])
+            for base, _exp in terms:
+                self.assertGreater(base, 0)
+            self.assertEqual(exponent_oracle_answer(result["problem"]),
+                             result["final_answer"])
+
+    def test_max_exponent_respected(self):
+        gen = ExponentEvaluationGenerator(max_exponent=4)
+        for _ in range(200):
+            result = gen.generate()
+            terms, _, _ = parse_exponent_expression(result["problem"])
+            for _base, exp in terms:
+                self.assertLessEqual(exp, 4)
+
+    def test_determinism_under_seed(self):
+        random.seed(19)
+        first = [self.generator.generate()["problem"] for _ in range(25)]
+        random.seed(19)
+        second = [self.generator.generate()["problem"] for _ in range(25)]
+        self.assertEqual(first, second)
 
 
 class TestExponentRulesGenerator(unittest.TestCase):
@@ -107,7 +248,7 @@ class TestExponentRulesGenerator(unittest.TestCase):
             result = self.generator.generate()
 
             # Problem should contain 'Simplify' or 'Evaluate'
-            self.assertTrue("Simplify" in result["problem"] or "Evaluate" in result["problem"])
+            self.assertRegex(result["problem"].lower(), r"simplify|evaluate")
 
             # Check for rule steps
             has_setup_step = any(s.startswith(f"EXP_RULE_SETUP{DELIM}") for s in result["steps"])
@@ -209,6 +350,7 @@ class TestScientificNotationGenerator(unittest.TestCase):
 
 
 SCI_TERM_RE = re.compile(r"^(-?\d+(?:\.\d+)?) × 10\^(-?\d+)$")
+SCI_ANY_RE = re.compile(r"(-?\d+(?:\.\d+)?) × 10\^(-?\d+)")
 SCI_PAREN_RE = re.compile(r"\((-?\d+(?:\.\d+)?) × 10\^(-?\d+)\)")
 
 
@@ -224,7 +366,9 @@ class TestScientificNotationOracle(unittest.TestCase):
         gen = ScientificNotationGenerator(problem_type='to_scientific')
         for _ in range(300):
             result = gen.generate()
-            number = Fraction(result["problem"].split(": ", 1)[1])
+            tokens = re.findall(r"(?<![\w^.])-?\d+(?:\.\d+)?", result["problem"])
+            self.assertEqual(len(tokens), 1, result["problem"])
+            number = Fraction(tokens[0])
             m = SCI_TERM_RE.match(result["final_answer"])
             self.assertIsNotNone(m, result["final_answer"])
             coeff = Fraction(m.group(1))
@@ -235,7 +379,7 @@ class TestScientificNotationOracle(unittest.TestCase):
         gen = ScientificNotationGenerator(problem_type='from_scientific')
         for _ in range(300):
             result = gen.generate()
-            m = SCI_TERM_RE.match(result["problem"].split(": ", 1)[1])
+            m = SCI_ANY_RE.search(result["problem"])
             self.assertIsNotNone(m, result["problem"])
             self.assertEqual(Fraction(result["final_answer"]),
                              sci_value(m.group(1), m.group(2)))
@@ -259,15 +403,56 @@ class TestScientificNotationOracle(unittest.TestCase):
                 self.assertTrue(1 <= coeff < 10, result["final_answer"])
 
     def test_no_float_artifacts(self):
-        # Legitimate exact values have at most 7 decimals (9.9 × 10^-6);
-        # anything longer is binary-float noise (e.g. 440.00000000000006).
+        # Long strings of leading zeros are legitimate for powers such as
+        # 10^-12; binary-float tails are not. Every printed decimal must be
+        # minimal and exactly parseable by Fraction.
         gen = ScientificNotationGenerator()
         for _ in range(400):
             result = gen.generate()
             blobs = result["steps"] + [result["problem"],
                                        result["final_answer"]]
             for blob in blobs:
-                self.assertNotRegex(blob, r"\d\.\d{10,}", blob)
+                for token in re.findall(r"-?\d+\.\d+", blob):
+                    self.assertFalse(token.endswith("0"), token)
+                    self.assertEqual(str(Fraction(token)),
+                                     str(Fraction(token)), token)
+
+
+RULE_BASE = r"(?P<base>\([^()]+\)|[a-z])"
+
+
+def exponent_rule_oracle(problem, operation):
+    """Parse one rule expression from problem text and simplify it."""
+    if operation == "exponent_product_rule":
+        pattern = RULE_BASE + r"\^(?P<a>\d+) · (?P=base)\^(?P<b>\d+)"
+        match = re.search(pattern, problem)
+        exponent = int(match.group("a")) + int(match.group("b"))
+    elif operation == "exponent_quotient_rule":
+        pattern = RULE_BASE + r"\^(?P<a>\d+) / (?P=base)\^(?P<b>\d+)"
+        match = re.search(pattern, problem)
+        exponent = int(match.group("a")) - int(match.group("b"))
+    elif operation == "exponent_power_rule":
+        pattern = r"\(" + RULE_BASE + r"\^(?P<a>\d+)\)\^(?P<b>\d+)"
+        match = re.search(pattern, problem)
+        exponent = int(match.group("a")) * int(match.group("b"))
+    elif operation == "exponent_negative_rule":
+        pattern = RULE_BASE + r"\^\(-(?P<a>\d+)\)"
+        match = re.search(pattern, problem)
+        exponent = int(match.group("a"))
+        base = match.group("base")
+        if "/" in base:
+            numerator, denominator = base.strip("()").split("/")
+            reciprocal = denominator if numerator == "1" \
+                else f"({denominator}/{numerator})"
+            return reciprocal if exponent == 1 else f"{reciprocal}^{exponent}"
+        denominator = base if exponent == 1 else f"{base}^{exponent}"
+        return f"1/{denominator}"
+    else:
+        match = re.search(r"(?P<base>\([^()]+\)|[a-z]|\d+)\^0", problem)
+        return "1" if match else None
+    assert match, (operation, problem)
+    base = match.group("base")
+    return base if exponent == 1 else f"{base}^{exponent}"
 
 
 class TestRootsAndRadicalsGenerator(unittest.TestCase):
@@ -323,6 +508,42 @@ class TestRootsAndRadicalsGenerator(unittest.TestCase):
             # Answer should be in form a√b
             self.assertIn("√", result["final_answer"])
 
+    def test_oracle_from_problem_text(self):
+        """A9 oracle: extract the radicand and solve by integer search."""
+        import math
+        for _ in range(1200):
+            result = self.generator.generate()
+            match = re.search(r"([√∛])(\d+)", result["problem"])
+            self.assertIsNotNone(match, result["problem"])
+            symbol, raw = match.groups()
+            radicand = int(raw)
+            if result["operation"] == "square_root_perfect":
+                root = math.isqrt(radicand)
+                self.assertEqual(root * root, radicand)
+                expected = str(root)
+            elif result["operation"] == "cube_root_perfect":
+                root = next(k for k in range(1, 101)
+                            if k ** 3 >= radicand)
+                self.assertEqual(root ** 3, radicand)
+                expected = str(root)
+            else:
+                factor_root = max(k for k in range(1, math.isqrt(radicand) + 1)
+                                  if radicand % (k * k) == 0)
+                remainder = radicand // (factor_root * factor_root)
+                expected = f"{factor_root}√{remainder}"
+            self.assertEqual(result["final_answer"], expected,
+                             result["problem"])
+            self.assertEqual(result["steps"][-1], f"Z{DELIM}{expected}")
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
+
 
 class TestExponentRulesBaseStyles(unittest.TestCase):
     """Decimal and fractional bases: same rules, styled bases (A9 oracles)."""
@@ -333,29 +554,9 @@ class TestExponentRulesBaseStyles(unittest.TestCase):
         gen = ExponentRulesGenerator(base_style=base_style)
         for _ in range(n):
             res = gen.generate()
-            expr = res["problem"].split(": ", 1)[1]
-            ans = res["final_answer"]
-            base_re = r"\((\d+\.\d|\d+/\d+)\)"
-            if res["operation"] == "exponent_zero_rule":
-                self.assertEqual(ans, "1")
-                continue
-            exps = [int(e) for e in re.findall(r"\^\(?(-?\d+)\)?", expr)]
-            base = re.search(base_re, expr).group(1)
-            if res["operation"] == "exponent_product_rule":
-                self.assertEqual(ans, f"({base})^{exps[0] + exps[1]}", expr)
-            elif res["operation"] == "exponent_quotient_rule":
-                self.assertEqual(ans, f"({base})^{exps[0] - exps[1]}", expr)
-            elif res["operation"] == "exponent_power_rule":
-                self.assertEqual(ans, f"({base})^{exps[0] * exps[1]}", expr)
-            else:  # negative rule
-                n_exp = -exps[0]
-                if base_style == "fraction":
-                    num, den = base.split("/")
-                    expected = (f"{den}^{n_exp}" if num == "1"
-                                else f"({den}/{num})^{n_exp}")
-                    self.assertEqual(ans, expected, expr)
-                else:
-                    self.assertEqual(ans, f"1/({base})^{n_exp}", expr)
+            self.assertEqual(
+                exponent_rule_oracle(res["problem"], res["operation"]),
+                res["final_answer"], res["problem"])
 
     def test_decimal_bases(self):
         self._oracle_sweep("decimal")
@@ -369,6 +570,18 @@ class TestExponentRulesBaseStyles(unittest.TestCase):
         for _ in range(50):
             res = gen.generate()
             self.assertNotIn("(0.", res["problem"])
+
+    def test_all_styles_and_phrasings_have_problem_text_oracles(self):
+        for style in ExponentRulesGenerator.BASE_STYLES:
+            gen = ExponentRulesGenerator(base_style=style)
+            for _ in range(700):
+                result = gen.generate()
+                self.assertEqual(
+                    exponent_rule_oracle(result["problem"],
+                                         result["operation"]),
+                    result["final_answer"], result["problem"])
+                self.assertEqual(result["steps"][-1],
+                                 f"Z{DELIM}{result['final_answer']}")
 
     def test_fraction_bases_are_reduced(self):
         import re

@@ -2,6 +2,25 @@ import random
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
+
+PLACES = [
+    "algebra class", "graphing workshop", "technical college",
+    "engineering classroom", "learning center", "math club", "study hall",
+    "science lab", "training center", "university classroom", "design studio",
+    "robotics lab", "survey office", "computer lab", "tutoring center",
+    "research station", "lecture room", "exam review", "modeling group",
+    "problem-solving workshop",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following equation.",
+    "During a session at the {place}, this line is analyzed.",
+    "An exercise used by the {place} asks about this equation.",
+    "The {place} is checking a slope-intercept form.",
+    "A review prepared at the {place} includes this line.",
+    "In a lesson at the {place}, the following equation is studied.",
+]
+
 class SlopeInterceptFormGenerator(ProblemGenerator):
     """
     Generates problems to identify slope and y-intercept from an equation.
@@ -24,8 +43,8 @@ class SlopeInterceptFormGenerator(ProblemGenerator):
         pass
         
     def generate(self) -> dict:
-        m = random.randint(-10, 10)
-        b = random.randint(-10, 10)
+        m = random.randint(-100, 100)
+        b = random.randint(-100, 100)
         
         # Decide format
         fmt = random.choice(['standard', 'swapped', 'no_b', 'horizontal'])
@@ -75,7 +94,8 @@ class SlopeInterceptFormGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation="slope_intercept_identify",
-            problem=f"Identify the slope and y-intercept of the line: {equation}",
+            problem=(f"{random.choice(CONTEXTS).format(place=random.choice(PLACES))} "
+                     f"Identify the slope and y-intercept of the line: {equation}"),
             steps=steps,
             final_answer=ans
         )

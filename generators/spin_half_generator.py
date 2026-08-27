@@ -1,3 +1,4 @@
+import math
 import random
 from fractions import Fraction
 
@@ -31,19 +32,20 @@ PAULI_MATRIX_TEXT = {
     "z": "[[1,0],[0,-1]]",
 }
 
-PYTHAGOREAN_STATES = [
-    (3, 4, 5),
-    (5, 12, 13),
-    (8, 15, 17),
-    (7, 24, 25),
-    (20, 21, 29),
-    (12, 35, 37),
-    (9, 40, 41),
-    (28, 45, 53),
-    (11, 60, 61),
-    (33, 56, 65),
-    (16, 63, 65),
-    (48, 55, 73),
+PLACES = [
+    "quantum lab", "physics classroom", "technical college", "theory group",
+    "university seminar", "research station", "training center",
+    "science museum", "computing lab", "measurement lab", "lecture room",
+    "modeling workshop", "research institute", "learning center",
+    "engineering classroom", "graduate seminar", "instrument center",
+    "study hall", "tutoring center", "problem-solving workshop",
+]
+
+CONTEXTS = [
+    "Experiment run {run} was prepared at the {place}.",
+    "The {place} recorded spin trial {run}.",
+    "Laboratory case {run} comes from the {place}.",
+    "Analysis record {run} was supplied by the {place}.",
 ]
 
 EIGEN_CASES = [
@@ -115,12 +117,24 @@ def eigen_text(value):
 
 
 def random_real_state():
-    a, b, denom = random.choice(PYTHAGOREAN_STATES)
+    while True:
+        outer = random.randint(2, 8)
+        inner = random.randint(1, outer - 1)
+        if math.gcd(outer, inner) == 1 and (outer - inner) % 2 == 1:
+            break
+    a = outer * outer - inner * inner
+    b = 2 * outer * inner
+    denom = outer * outer + inner * inner
     if random.choice([False, True]):
         a, b = b, a
     a *= random.choice([-1, 1])
     b *= random.choice([-1, 1])
     return [cx(Fraction(a, denom)), cx(Fraction(b, denom))]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(
+        run=random.randint(100, 99999), place=random.choice(PLACES))
 
 
 class SpinHalfGenerator(ProblemGenerator):
@@ -193,7 +207,8 @@ class SpinHalfGenerator(ProblemGenerator):
         steps.append(step("APPLY_PAULI", f"sigma_{axis} psi", result_text))
         answer = f"sigma_{axis} psi={result_text}"
         problem = (
-            f"For spin state psi={vector_text(psi)} in the z basis, apply "
+            f"{context_text()} For spin state psi={vector_text(psi)} in the "
+            f"z basis, apply "
             f"sigma_{axis}."
         )
         return problem, steps, answer
@@ -215,7 +230,8 @@ class SpinHalfGenerator(ProblemGenerator):
                           f"{lam}*psi", f"lambda={lam}"))
         answer = f"sigma_{axis} psi={lam}*psi; lambda={lam}"
         problem = (
-            f"Show that psi={case['state']} is an eigenstate of sigma_{axis} "
+            f"{context_text()} Show that psi={case['state']} is an eigenstate "
+            f"of sigma_{axis} "
             "and find the eigenvalue."
         )
         return problem, steps, answer
@@ -276,7 +292,8 @@ class SpinHalfGenerator(ProblemGenerator):
             f"P(-{axis})={fraction_text(p_minus)}"
         )
         problem = (
-            f"For normalized spin state psi={vector_text(psi)} in the z "
+            f"{context_text()} For normalized spin state "
+            f"psi={vector_text(psi)} in the z "
             f"basis, measure spin along {axis}. Find P(+{axis}) and "
             f"P(-{axis})."
         )

@@ -55,6 +55,7 @@ class QuarkCompositionGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        count = random.randint(2, 1000)
         if variant == "baryon":
             constituents = [random.choice(QUARKS) for _ in range(3)]
         elif variant == "antibaryon":
@@ -69,7 +70,8 @@ class QuarkCompositionGenerator(ProblemGenerator):
         total = Fraction(0)
         table = "u=2/3,d=-1/3,s=-1/3,c=2/3,b=-1/3; anti=-charge"
         steps = [
-            step("QUARK_SETUP", variant, " ".join(constituents), table),
+            step("QUARK_SETUP", f"{variant},count={count}",
+                 " ".join(constituents), table),
         ]
         for name in constituents:
             charge = quark_charge(name)
@@ -80,14 +82,16 @@ class QuarkCompositionGenerator(ProblemGenerator):
                      fraction_text(next_total))
             )
             total = next_total
-        answer = f"Q = {signed_fraction(total)}"
+        ensemble_total = count * total
+        steps.append(step("M", count, fraction_text(total),
+                          fraction_text(ensemble_total)))
+        answer = f"Q = {signed_fraction(ensemble_total)}"
         steps.append(step("Z", answer))
-        article = "an" if variant[0] in "aeiou" else "a"
         problem = (
             "Given quark charges u=2/3, d=-1/3, s=-1/3, c=2/3, "
             "b=-1/3 and antiquarks have opposite charge, compute the "
-            f"electric charge of {article} {variant} with constituents "
-            f"{' '.join(constituents)}."
+            f"total electric charge of {count} identical {variant}s, each "
+            f"with constituents {' '.join(constituents)}."
         )
         return dict(
             problem_id=jid(),

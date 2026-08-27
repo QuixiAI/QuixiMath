@@ -15,19 +15,19 @@ from generators.stoichiometry_generator import StoichiometryGenerator
 from helpers import DELIM
 
 
-BALANCE_RE = re.compile(r"Balance the equation: (.+)\.")
+BALANCE_RE = re.compile(r".* Balance the equation: (.+)\.")
 MASS_RE = re.compile(
-    r"Given balanced equation (.+), how many grams of ([A-Za-z0-9]+) form "
+    r".* Given balanced equation (.+), how many grams of ([A-Za-z0-9]+) form "
     r"from (\d+) g ([A-Za-z0-9]+)\? Molar masses: "
     r"([A-Za-z0-9]+)=(\d+) g/mol, ([A-Za-z0-9]+)=(\d+) g/mol\."
 )
 VOLUME_RE = re.compile(
-    r"Given balanced equation (.+), how many liters of ([A-Za-z0-9]+) gas "
+    r".* Given balanced equation (.+), how many liters of ([A-Za-z0-9]+) gas "
     r"form from (\d+) g ([A-Za-z0-9]+)\? Use molar mass "
     r"([A-Za-z0-9]+)=(\d+) g/mol and molar gas volume (\d+) L/mol\."
 )
 LIMIT_RE = re.compile(
-    r"Given balanced equation (.+), initial amounts are ([A-Za-z0-9]+)="
+    r".* Given balanced equation (.+), initial amounts are ([A-Za-z0-9]+)="
     r"(\d+) mol and ([A-Za-z0-9]+)=(\d+) mol\. Find the limiting reactant "
     r"and maximum ([A-Za-z0-9]+) produced\."
 )
@@ -323,6 +323,7 @@ class TestStoichiometryGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

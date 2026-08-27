@@ -3,6 +3,7 @@ import random
 import re
 import sys
 import unittest
+import math
 
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
@@ -24,10 +25,18 @@ def oracle_answer(example):
     if m:  # shifted
         h = int(m.group(2)) * (-1 if m.group(1) == "+" else 1)
         k = int(m.group(3))
-        r = int(k ** 0.5)
+        r = math.isqrt(k)
         assert r * r == k
         lo, hi = sorted((h - r, h + r))
         return f"{var} = {lo} or {var} = {hi}"
+
+    m = re.fullmatch(rf"{var}\^2 \+ (\d+) = (\d+)", expr)
+    if m:  # additive-equivalent simple form
+        offset, rhs = map(int, m.groups())
+        k = rhs - offset
+        r = math.isqrt(k)
+        assert r * r == k
+        return f"{var} = {-r} or {var} = {r}"
 
     m = re.fullmatch(rf"(\d*){var}\^2 = (\d+)", expr)
     if not m:
@@ -38,7 +47,7 @@ def oracle_answer(example):
         a, rhs = int(m.group(1) or 1), int(m.group(2))
     assert rhs % a == 0
     k = rhs // a
-    r = int(k ** 0.5)
+    r = math.isqrt(k)
     if r * r == k:
         return f"{var} = {-r} or {var} = {r}"
     assert k in SQUARE_FREE, k
@@ -121,6 +130,13 @@ class TestQuadraticSquareRootGenerator(unittest.TestCase):
             self.assertIn("(", gen.generate()["problem"])
         with self.assertRaises(ValueError):
             QuadraticSquareRootGenerator("bogus")
+
+    def test_pipe_safety(self):
+        for _ in range(400):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

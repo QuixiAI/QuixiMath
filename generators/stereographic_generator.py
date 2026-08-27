@@ -5,15 +5,33 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-COORDS = [
-    Fraction(-3), Fraction(-2), Fraction(-3, 2), Fraction(-1),
-    Fraction(-1, 2), Fraction(0), Fraction(1, 2), Fraction(1),
-    Fraction(3, 2), Fraction(2), Fraction(3),
+PLACES = [
+    "geometry seminar", "complex analysis class", "technical college",
+    "mapping lab", "university classroom", "research group", "study hall",
+    "visualization lab", "training center", "mathematics department",
+    "science museum", "lecture room", "modeling workshop", "tutoring center",
+    "research station", "computer lab", "learning center", "observatory",
+    "engineering classroom", "problem-solving workshop",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following projection.",
+    "During a session at the {place}, this point is mapped.",
+    "An exercise used by the {place} asks for this projection.",
+    "The {place} is checking an exact coordinate map.",
 ]
 
 
 def fraction_text(value):
     return str(Fraction(value))
+
+
+def coordinate():
+    return Fraction(random.randint(-10, 10), random.randint(1, 5))
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
 
 
 def sphere_from_plane(u, v):
@@ -51,8 +69,8 @@ class StereographicGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        u = random.choice(COORDS)
-        v = random.choice(COORDS)
+        u = coordinate()
+        v = coordinate()
         if variant == "plane_to_sphere":
             problem, steps, answer = self._generate_plane_to_sphere(u, v)
         else:
@@ -110,7 +128,8 @@ class StereographicGenerator(ProblemGenerator):
             f"{fraction_text(z)})"
         )
         problem = (
-            f"Map plane point (u,v)=({fraction_text(u)},{fraction_text(v)}) "
+            f"{context_text()} Map plane point (u,v)=({fraction_text(u)},"
+            f"{fraction_text(v)}) "
             f"to the unit sphere by stereographic projection from the "
             f"north pole."
         )
@@ -137,7 +156,7 @@ class StereographicGenerator(ProblemGenerator):
             f"{fraction_text(recovered_v)})"
         )
         problem = (
-            f"Map sphere point (X,Y,Z)=({fraction_text(x)},"
+            f"{context_text()} Map sphere point (X,Y,Z)=({fraction_text(x)},"
             f"{fraction_text(y)},{fraction_text(z)}) with Z != 1 to "
             f"the plane by inverse stereographic projection from the "
             f"north pole."

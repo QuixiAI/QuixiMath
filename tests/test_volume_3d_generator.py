@@ -1,5 +1,6 @@
 import unittest
 import random
+import re
 import sys
 import os
 
@@ -110,6 +111,26 @@ class TestSurfaceAreaCylinderGenerator(unittest.TestCase):
         gen = SurfaceAreaCylinderGenerator(use_pi_symbol=True)
         result = gen.generate()
         self.assertIn("π", result["final_answer"])
+
+    def test_oracle_from_problem_text(self):
+        for _ in range(500):
+            result = self.generator.generate()
+            match = re.search(r"cylinder with radius (\d+) units and height "
+                              r"(\d+) units", result["problem"])
+            self.assertIsNotNone(match, result["problem"])
+            radius, height = map(int, match.groups())
+            expected = 2 * radius * radius + 2 * radius * height
+            self.assertEqual(result["final_answer"],
+                             f"{expected}π square units")
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == '__main__':

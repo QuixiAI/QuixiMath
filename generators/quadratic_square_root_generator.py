@@ -1,8 +1,16 @@
 import random
+import math
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
-SQUARE_FREE = [2, 3, 5, 6, 7, 10, 11, 13, 14, 15, 17, 19, 21, 22, 23, 26]
+
+def is_square_free(value):
+    return all(value % (factor * factor) != 0
+               for factor in range(2, math.isqrt(value) + 1))
+
+
+SQUARE_FREE = [value for value in range(2, 10001)
+               if is_square_free(value)]
 
 
 class QuadraticSquareRootGenerator(ProblemGenerator):
@@ -11,7 +19,7 @@ class QuadraticSquareRootGenerator(ProblemGenerator):
     sides — remembering the ± and expanding it into both branches.
 
     Variants:
-    - simple:     x² = k, k a perfect square
+    - simple:     x² + d = k + d, reducing directly to x² = k
     - irrational: x² = k, k square-free — exact answers ±√k
     - scaled:     ax² = k (divide first; half the time shown as ax² − k = 0
                   so a MOVE_TERM opens the solve)
@@ -51,8 +59,8 @@ class QuadraticSquareRootGenerator(ProblemGenerator):
             answer = f"{var} = -√{k} or {var} = √{k}"
 
         elif variant == "shifted":
-            r = random.randint(2, 12)
-            h = random.choice([v for v in range(-9, 10) if v != 0])
+            r = random.randint(2, 100)
+            h = random.choice([v for v in range(-100, 101) if v != 0])
             sign = "-" if h > 0 else "+"
             inner = f"{var} {sign} {abs(h)}"
             original = f"({inner})^2 = {r * r}"
@@ -76,12 +84,15 @@ class QuadraticSquareRootGenerator(ProblemGenerator):
             answer = f"{var} = {lo} or {var} = {hi}"
 
         else:
-            r = random.randint(2, 12)
+            r = random.randint(2, 100)
             if variant == "simple":
-                original = f"{var}^2 = {r * r}"
+                offset = random.randint(1, 500)
+                original = f"{var}^2 + {offset} = {r * r + offset}"
                 steps.append(step("EQ_SETUP", original))
+                steps.append(step("EQ_OP_BOTH", "subtract", offset,
+                                  f"{var}^2", r * r))
             else:  # scaled
-                a = random.randint(2, 6)
+                a = random.randint(2, 100)
                 rhs = a * r * r
                 if random.random() < 0.5:
                     original = f"{a}{var}^2 - {rhs} = 0"

@@ -49,6 +49,117 @@ section (don't fork it) when a new tier introduces new answer shapes.
   parenthesized when compound: `5x√(2x)`; denominators rationalized.
 - **Expressions:** terms in descending power order: `2x^2 + 3x - 5`.
 
+## Logic and set answers (A0 extension)
+
+- **Logic notation:** `¬ ∧ ∨ → ↔ ⊕`; NAND is `↑`. Precedence is `¬` > `∧`
+  > `∨` > `→` > `↔`, and every binary subformula except the outermost is
+  parenthesized. Propositional variables are `p q r s`, predicates `P Q R`,
+  and individuals `x y z`.
+- **Truth values and tables:** `T` / `F`; variables alphabetically with `T`
+  before `F`, so two-variable rows are `TT, TF, FT, FF`. A result column is
+  one string such as `TFTT`.
+- **Sets:** `∈ ∉`, `⊆ ⊂`, `∪ ∩ − Δ ×`, complement `Aᶜ`, empty `∅`, universe
+  `U`, power set `P(A)`, and cardinality `card(A)`. Set-builder notation uses
+  a colon: `{x ∈ ℤ : −3 ≤ x < 4}`. Divisibility uses the word `divides` or
+  `∣` (U+2223), never ASCII `|`.
+- **Canonical collections:** rosters are sorted with no duplicates and use
+  comma-space separators; ordered pairs are `(a, b)`. Partition blocks are
+  sorted by least element: `{{1, 3}, {2}, {4, 5}}`.
+- **Composite verdicts:** join facts with `; ` and include the canonical
+  witness: `valid; modus tollens`, `not equivalent; differ at p=T, q=F`,
+  `injective no (f(2) = f(4) = 3); surjective yes; bijective no`. Binary
+  labels such as `true`, `valid`, or `reflexive yes` never stand alone.
+
+## Probability answers (A0 extension)
+
+- **Probabilities:** lowest-terms fraction (`3/8`); `0` and `1` for impossible
+  and certain; integers plain. `as_percent` / `as_decimal` variants say which
+  form the text wants and answer `37.5%` / `0.375` (totals chosen so the
+  decimal terminates).
+- **Conditioning:** always the word `given` — `P(A given B)`, never a bar and
+  never `∣` (U+2223 is reserved for divisibility in the foundations strand).
+  ASCII `|` is banned from probability problem text as well as from steps;
+  tallies are written as counts or as `H T T H` sequences.
+- **Events are sets** in the foundations dialect: sample space `S`, rosters
+  `{1, 2, 3, 4, 5, 6}`, event rosters `A = {2, 4, 6}`, `∪ ∩ − Δ`, complement
+  `Aᶜ`, empty `∅`, `card(A)` (never `|A|`); prose phrasings may say "A and B",
+  "A or B", "not A".
+- **Compound outcomes:** compact strings in enumeration order — `H1, H2, H3,
+  T1, T2, T3`, `HH, HT, TH, TT`, draws as color initials `RB`, two numeric
+  components as ordered pairs `(3, 4)`. **Enumeration order is fixed:** `H`
+  before `T`, dice ascending, spinner sectors in the order printed, bag colors
+  in the order the problem lists them, tree branches in the same order. Ties
+  ("most likely outcome") break by enumeration order and the answer says so.
+- **Supplied rounded constants:** when Φ or `e^-λ` enters, the problem says
+  "to 4 decimal places" and the answer is a 4-decimal string (`0.2706`);
+  arithmetic on the supplied value is exact decimal arithmetic
+  (`Fraction("0.1353")`).
+- **Moments:** E, Var and Cov as lowest-terms fractions; money as `$3.50`;
+  negative values keep the ASCII minus (`-1/8`).
+- **Odds:** `a:b` with a colon, in lowest terms (`3:5`). Absolute deviations
+  as `abs(X − μ)`. Weighted atoms as `P(a) = 1/10`. Two-way tables in prose as
+  `<row>=<v> and <col>=<w>: n`, cells joined with `; `.
+- **pmf / cdf tables:** `P(S=0) = 1/8; P(S=1) = 3/8; …` and `F(1) = 1/8; …`
+  in ascending support order. Vectors `π = (2/5, 2/5, 1/5)`. Functions on
+  atoms `3/2 on {1, 2}; 3 on {3}; 5 on {4, 5, 6}`.
+- **π in a denominator:** `2/(3π)` (A0 above covers only π in numerators).
+- **PGF polynomials in `s`:** descending powers, fractional coefficients
+  parenthesized: `(1/4)s^2 + (1/2)s + 1/4`.
+- **Composite verdicts:** join with `; ` and put the checkable fact after the
+  label — `likely; 5/8`, `independent; P(A ∩ B) = 1/3 = P(A)·P(B)`,
+  `switch; 2/3 vs 1/3`, `invalid; sum = 9/8`. Every coin-flip verdict
+  (`likely`, `independent`, `valid`, `fair`, `martingale`) carries the number
+  that earns it.
+
+## Statistics answers (A0 extension)
+
+- **Notation:** `μ σ σ² x̄ s s² p p̂ Φ χ² Σ α β`; absolute values use
+  `abs(z)`. Problems and setup steps state sample versus population, and the
+  formula step names the divisor `n` or `n - 1`. Conditioning uses `given`.
+- **Numbers and lists:** data use comma-space separators; sorted step fields
+  use commas without spaces. Terminating decimals are minimal, other exact
+  values are reduced fractions, supplied-Φ probabilities retain four decimal
+  places, percents use `%`, and intervals use `(45.738, 54.262)`.
+- **Table-shaped answers:** ascending `key: value` pairs joined by `; `, for
+  example `6: 2; 7: 0; 8: 4` or `1: 2 5 7; 2: 0 3 3; 3: none; 4: 1`.
+  Multi-statistic summaries use labeled fields such as `SSB = 128; SSW = 24;
+  df = 2, 9; MSB = 64; MSW = 8/3; F = 24`.
+- **Composite verdicts:** the label is followed by the earning fact:
+  `right-skewed; mean 24.5 > median 20`, `fails; np = 6 < 10`, `unusual;
+  z = 2.5`. Hypothesis decisions keep `reject H0 (4.4 > 2.576)` or
+  `reject H0 (p = 0.0228 < 0.05)`.
+- **Displays:** tally, dot-plot, stem-and-leaf, box-plot, histogram, two-way
+  table, and supplied-constant renderings follow the exact parseable textual
+  forms defined in `plans/statistics_plan.md` §3. Empty rows/bins required by a
+  display remain visible; stem-and-leaf plots always include a key.
+- **Supplied constants and rules:** every Φ, z*, t*, χ², F, percentile-z, or
+  `e^-λ` value used in a step appears verbatim in the problem, with degrees of
+  freedom where applicable. Quartile, percentile, trimming, outlier, modal-
+  class, median-class, and bootstrap conventions are stated in the problem.
+
+## Applied answers (A0 extension)
+
+- **Problem text names no method:** it gives only the situation and question.
+  A separately labeled `scaffolded` modifier may name a method and is never
+  the default.
+- **Quantities:** always carry units (`2 hours`, `48 km/h`, `112 m²`, `53
+  tiles`); money is `$712.50` without thousands separators, percents are
+  `40%`, and changes between percents are `10 percentage points`.
+- **Standard modifiers:** `distractor` begins with `SELECT_RELEVANT` and does
+  not change the answer; `estimate_first` wraps the exact work with
+  `ESTIMATE` / `ESTIMATE_CHECK`; `with_model` answers with the canonical
+  equation then value, such as `1/6 + 1/3 = 1/t; t = 2 hours`.
+- **Missing information:** exactly `insufficient information; need <slot
+  name>`, using the story template's human phrase, such as `the price of a
+  notebook`.
+- **Composite verdicts:** `label; fact`, for example `plan B; $420 vs $455`,
+  `implausible; correct 80 km/h`, or `does not apply; fixed $3 fee makes cost
+  non-proportional; correct $23`. Choice labels never stand alone.
+- **Canonical models:** `with_model` uses the template's fixed variable and
+  arrangement (`t` time, `h` hours, `x` count, `w` width, `p` price). Rejected
+  physical roots or orientations are explicit, e.g. `REJECT|t = -1|negative
+  time`.
+
 ## Verification & Trial-and-Error Vocabulary (A1 / A2)
 
 - `CHECK|method|lhs_work|rhs_work` — two independent routes to the same

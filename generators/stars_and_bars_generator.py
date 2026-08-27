@@ -1,8 +1,32 @@
 import math
 import random
+import string
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+PLACES = [
+    "combinatorics class", "math club", "technical college", "study hall",
+    "training center", "university seminar", "problem-solving workshop",
+    "computer lab", "science classroom", "learning center", "tutoring center",
+    "research group", "exam review", "lecture room", "statistics class",
+    "engineering classroom", "algebra workshop", "design studio",
+    "research station", "graduate seminar",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following counting problem.",
+    "During a session at the {place}, this arrangement is analyzed.",
+    "An exercise used by the {place} asks for this count.",
+    "The {place} is checking the following combinatorial model.",
+    "A review prepared at the {place} includes this problem.",
+    "In a lesson at the {place}, the following count is studied.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
 
 
 def product_steps(factors):
@@ -71,8 +95,8 @@ class StarsAndBarsGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "nonnegative":
-            n = random.randint(4, 24)
-            k = random.randint(2, 7)
+            n = random.randint(4, 50)
+            k = random.randint(2, 10)
             n_plus_k = n + k
             top = n_plus_k - 1
             bottom = k - 1
@@ -91,8 +115,8 @@ class StarsAndBarsGenerator(ProblemGenerator):
             )
             answer = f"solutions = {value}"
         elif variant == "positive":
-            k = random.randint(2, 7)
-            n = random.randint(k + 2, k + 24)
+            k = random.randint(2, 10)
+            n = random.randint(k + 2, k + 50)
             remaining = n - k
             top = n - 1
             bottom = k - 1
@@ -112,8 +136,8 @@ class StarsAndBarsGenerator(ProblemGenerator):
             )
             answer = f"solutions = {value}"
         else:
-            letters = ["A", "B", "C", "D"]
             count_len = random.choice([3, 4])
+            letters = random.sample(string.ascii_uppercase, count_len)
             counts = [random.randint(1, 5) for _ in range(count_len)]
             total = sum(counts)
             denom_facts = [factorial_value(count) for count in counts]
@@ -140,7 +164,7 @@ class StarsAndBarsGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation=f"stars_and_bars_{variant}",
-            problem=problem,
+            problem=f"{context_text()} {problem}",
             steps=steps,
             final_answer=answer,
         )

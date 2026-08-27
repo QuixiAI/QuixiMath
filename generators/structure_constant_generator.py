@@ -5,8 +5,31 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-COEFFS = [-4, -3, -2, -1, 1, 2, 3, 4]
 LABELS = ["x", "y", "z"]
+
+PLACES = [
+    "quantum seminar", "algebra class", "technical college", "physics lab",
+    "university classroom", "research group", "training center",
+    "mathematics department", "study hall", "science museum", "lecture room",
+    "modeling workshop", "research station", "learning center", "theory group",
+    "engineering classroom", "tutoring center", "graduate seminar",
+    "computer lab", "problem-solving workshop",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following generators.",
+    "During a session at the {place}, this commutator is checked.",
+    "An exercise used by the {place} asks for this structure constant.",
+    "The {place} is verifying an exact su(2) calculation.",
+]
+
+
+def nonzero_coefficient():
+    return random.choice([value for value in range(-20, 21) if value])
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
 
 
 def cx(real=0, imag=0):
@@ -135,8 +158,8 @@ class StructureConstantGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         left, right = random.sample(LABELS, 2)
-        a = random.choice(COEFFS)
-        b = random.choice(COEFFS)
+        a = nonzero_coefficient()
+        b = nonzero_coefficient()
         target_label, epsilon = EPSILON[(left, right)]
         coefficient = a * b * epsilon
 
@@ -175,7 +198,7 @@ class StructureConstantGenerator(ProblemGenerator):
         answer = f"[A,B] = {target_name} = {matrix_text(comm)}"
         steps.append(step("Z", answer))
         problem = (
-            "For spin-1/2 generators "
+            f"{context_text()} For spin-1/2 generators "
             "Jx=[[0,1/2],[1/2,0]], "
             "Jy=[[0,-i/2],[i/2,0]], "
             "Jz=[[1/2,0],[0,-1/2]], "

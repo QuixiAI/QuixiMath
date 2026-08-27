@@ -5,7 +5,8 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.radical_multiply_generator import rad, split_square
 
-CORES = [2, 3, 5, 6, 7, 10, 13]
+CORES = [value for value in range(2, 501)
+         if split_square(value)[0] == 1]
 
 
 class RadicalRationalizeGenerator(ProblemGenerator):
@@ -43,7 +44,7 @@ class RadicalRationalizeGenerator(ProblemGenerator):
 
     def _simple(self):
         m = random.choice(CORES)
-        a = random.randint(2, 12)
+        a = random.randint(2, 500)
         original = f"{a}/√{m}"
         steps = [
             step("ROOT_SETUP", original),
@@ -65,7 +66,7 @@ class RadicalRationalizeGenerator(ProblemGenerator):
 
     def _quotient(self):
         n = random.choice(CORES)
-        k = random.choice([2, 3, 4, 5, 6, 8, 9, 12, 18])
+        k = random.randint(2, 500)
         big = n * k
         original = f"√{big}/√{n}"
         steps = [
@@ -90,9 +91,9 @@ class RadicalRationalizeGenerator(ProblemGenerator):
 
     def _conjugate(self):
         while True:
-            b = random.randint(2, 6)
+            b = random.randint(2, 50)
             m = random.choice([c for c in CORES if c < b * b])
-            a = random.randint(2, 9)
+            a = random.randint(2, 100)
             if b * b != m:
                 break
         d = b * b - m

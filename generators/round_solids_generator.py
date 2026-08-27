@@ -1,6 +1,53 @@
+import math
 import random
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+PLACES = [
+    "architecture studio", "engineering classroom", "design workshop",
+    "science museum", "technical college", "modeling lab",
+    "construction office", "fabrication shop", "surveying class",
+    "robotics lab", "university classroom", "training center",
+    "prototype bay", "materials lab", "research station", "drafting room",
+    "geometry seminar", "instrument shop", "field laboratory", "makerspace",
+]
+
+CONTEXTS = [
+    "At the {place}, a solid is being analyzed.",
+    "During a session at the {place}, the following solid is studied.",
+    "A worksheet from the {place} gives these dimensions.",
+    "In a model prepared by the {place}, the following measurements apply.",
+    "An exercise used at the {place} asks about this solid.",
+    "The {place} records a new set of solid measurements.",
+    "A review prepared by the {place} includes the following dimensions.",
+    "In a lesson at the {place}, this solid is analyzed.",
+    "A design note from the {place} specifies the following solid.",
+    "The next exercise at the {place} uses these measurements.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
+def cone_triple():
+    while True:
+        outer = random.randint(2, 7)
+        inner = random.randint(1, outer - 1)
+        primitive_a = outer * outer - inner * inner
+        primitive_b = 2 * outer * inner
+        if (math.gcd(outer, inner) == 1 and (outer - inner) % 2 == 1
+                and max(primitive_a, primitive_b) <= 100):
+            break
+    max_scale = max(1, min(4, 100 // max(primitive_a, primitive_b)))
+    scale = random.randint(1, max_scale)
+    leg_a = scale * primitive_a
+    leg_b = scale * primitive_b
+    hypotenuse = scale * (outer * outer + inner * inner)
+    if random.choice([False, True]):
+        leg_a, leg_b = leg_b, leg_a
+    return leg_a, leg_b, hypotenuse
 
 
 class RoundSolidsGenerator(ProblemGenerator):
@@ -26,12 +73,6 @@ class RoundSolidsGenerator(ProblemGenerator):
                 "surface_area_pyramid", "surface_area_cone",
                 "surface_area_sphere"]
 
-    # (r, h, slant) — r² + h² = slant²; primitive triples plus multiples
-    TRIPLES = [(a * k, b * k, c * k)
-               for (a, b, c) in [(3, 4, 5), (5, 12, 13), (8, 15, 17),
-                                 (7, 24, 25), (20, 21, 29), (9, 40, 41)]
-               for k in (1, 2, 3, 4)]
-
     def __init__(self, variant=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
@@ -45,7 +86,7 @@ class RoundSolidsGenerator(ProblemGenerator):
 
     def _volume_pyramid(self):
         while True:
-            l, w, h = (random.randint(2, 12) for _ in range(3))
+            l, w, h = (random.randint(2, 30) for _ in range(3))
             if (l * w * h) % 3 == 0:
                 break
         base_area = l * w
@@ -58,14 +99,15 @@ class RoundSolidsGenerator(ProblemGenerator):
         ]
         return dict(
             problem_id=jid(), operation="volume_pyramid",
-            problem=(f"Find the volume of a pyramid with a rectangular base "
+            problem=(f"{context_text()} Find the volume of a pyramid with a "
+                     f"rectangular base "
                      f"{l} units by {w} units and height {h} units."),
             steps=steps, final_answer=f"{volume} cubic units")
 
     def _volume_cone(self):
         while True:
-            r = random.randint(2, 10)
-            h = random.randint(3, 15)
+            r = random.randint(2, 25)
+            h = random.randint(3, 30)
             if (r * r * h) % 3 == 0:
                 break
         coef = r * r * h // 3
@@ -77,12 +119,13 @@ class RoundSolidsGenerator(ProblemGenerator):
         ]
         return dict(
             problem_id=jid(), operation="volume_cone",
-            problem=(f"Find the volume of a cone with radius {r} units and "
+            problem=(f"{context_text()} Find the volume of a cone with radius "
+                     f"{r} units and "
                      f"height {h} units. Leave the answer in terms of π."),
             steps=steps, final_answer=f"{coef}π cubic units")
 
     def _volume_sphere(self):
-        r = random.randint(2, 20)
+        r = random.randint(2, 50)
         give_diameter = random.random() < 0.5
         cubed = r ** 3
         if (4 * cubed) % 3 == 0:
@@ -102,15 +145,16 @@ class RoundSolidsGenerator(ProblemGenerator):
                else f"radius {r} units")
         return dict(
             problem_id=jid(), operation="volume_sphere",
-            problem=(f"Find the volume of a sphere with {dim}. "
+            problem=(f"{context_text()} Find the volume of a sphere with "
+                     f"{dim}. "
                      f"Leave the answer in terms of π."),
             steps=steps, final_answer=answer)
 
     # ---------------- surface areas ----------------
 
     def _surface_area_pyramid(self):
-        b = random.randint(2, 12)
-        slant = random.randint(3, 15)
+        b = random.randint(2, 30)
+        slant = random.randint(3, 35)
         base_sq = b * b
         lateral = 2 * b * slant
         total = base_sq + lateral
@@ -124,12 +168,13 @@ class RoundSolidsGenerator(ProblemGenerator):
         ]
         return dict(
             problem_id=jid(), operation="surface_area_pyramid",
-            problem=(f"Find the surface area of a square pyramid with base "
+            problem=(f"{context_text()} Find the surface area of a square "
+                     f"pyramid with base "
                      f"side {b} units and slant height {slant} units."),
             steps=steps, final_answer=f"{total} square units")
 
     def _surface_area_cone(self):
-        r, h, slant = random.choice(self.TRIPLES)
+        r, h, slant = cone_triple()
         r_sq, h_sq = r * r, h * h
         rl = r * slant
         coef = r_sq + rl
@@ -146,12 +191,13 @@ class RoundSolidsGenerator(ProblemGenerator):
         ]
         return dict(
             problem_id=jid(), operation="surface_area_cone",
-            problem=(f"Find the surface area of a cone with radius {r} units "
+            problem=(f"{context_text()} Find the surface area of a cone with "
+                     f"radius {r} units "
                      f"and height {h} units. Leave the answer in terms of π."),
             steps=steps, final_answer=f"{coef}π square units")
 
     def _surface_area_sphere(self):
-        r = random.randint(2, 20)
+        r = random.randint(2, 50)
         give_diameter = random.random() < 0.5
         r_sq = r * r
         coef = 4 * r_sq
@@ -167,6 +213,7 @@ class RoundSolidsGenerator(ProblemGenerator):
                else f"radius {r} units")
         return dict(
             problem_id=jid(), operation="surface_area_sphere",
-            problem=(f"Find the surface area of a sphere with {dim}. "
+            problem=(f"{context_text()} Find the surface area of a sphere "
+                     f"with {dim}. "
                      f"Leave the answer in terms of π."),
             steps=steps, final_answer=f"{coef}π square units")

@@ -9,9 +9,9 @@ class ProportionalRelationshipGenerator(ProblemGenerator):
         operation = "proportional_relationship" # Correct operation name
         # Generate a simple proportion a/b = c/x or a/b = x/c
         # Ensure integer results for simplicity
-        a = random.randint(1, 10)
-        b = random.randint(1, 10)
-        k = random.randint(2, 5) # Multiplier
+        a = random.randint(1, 60)
+        b = random.randint(1, 60)
+        k = random.randint(2, 60)  # Multiplier
 
         if random.choice([True, False]):
             # Case 1: a/b = c/x  => x = (b*c)/a

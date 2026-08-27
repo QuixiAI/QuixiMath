@@ -56,7 +56,8 @@ class PermutationCombinationGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "factorial":
-            n = random.randint(3, 11)
+            n = random.randint(3, 14)
+            start = random.randint(1, 10000)
             factors = list(range(1, n + 1))
             steps = [step("FACT_SETUP", f"{n}!", "expand the factorial"),
                      step("FACT_FORMULA",
@@ -64,10 +65,13 @@ class PermutationCombinationGenerator(ProblemGenerator):
             prod_steps, value = product_steps(factors)
             steps += prod_steps
             answer = str(value)
-            problem = f"Evaluate {n}!."
+            problem = (f"Evaluate {n}!, the number of linear orders of "
+                       f"the labeled items a_{start} through "
+                       f"a_{start + n - 1}.")
         elif variant == "permutation":
-            n = random.randint(4, 14)
-            r = random.randint(2, min(6, n))
+            n = random.randint(4, 18)
+            r = random.randint(2, min(8, n))
+            start = random.randint(1, 2000)
             steps = [step("PERM_SETUP", f"P({n}, {r})",
                           "n!/(n-r)!"),
                      step("PERM_FORMULA",
@@ -76,10 +80,13 @@ class PermutationCombinationGenerator(ProblemGenerator):
             steps += body
             answer = str(value)
             problem = (f"How many ordered arrangements are there of "
-                       f"{r} items chosen from {n}? Compute P({n}, {r}).")
+                       f"{r} items chosen from {n}? Compute P({n}, {r}) "
+                       f"for the items a_{start} through "
+                       f"a_{start + n - 1}.")
         elif variant == "combination":
-            n = random.randint(4, 14)
-            r = random.randint(2, min(6, n - 1))
+            n = random.randint(4, 18)
+            r = random.randint(2, min(8, n - 1))
+            start = random.randint(1, 2000)
             steps = [step("COMB_SETUP", f"C({n}, {r})",
                           "n!/(r!·(n-r)!)"),
                      step("COMB_FORMULA", "C(n, r) = P(n, r)/r!")]
@@ -95,10 +102,12 @@ class PermutationCombinationGenerator(ProblemGenerator):
             answer = str(value)
             problem = (f"How many ways can {r} items be chosen from "
                        f"{n} when order does not matter? Compute "
-                       f"C({n}, {r}).")
+                       f"C({n}, {r}) for the items a_{start} through "
+                       f"a_{start + n - 1}.")
         else:
-            n = random.randint(4, 12)
-            r = random.randint(2, min(5, n - 1))
+            n = random.randint(4, 16)
+            r = random.randint(2, min(7, n - 1))
+            start = random.randint(1, 2000)
             order = random.random() < 0.5
             if order:
                 steps = [
@@ -112,7 +121,8 @@ class PermutationCombinationGenerator(ProblemGenerator):
                 steps += body
                 problem = (f"In how many ways can {r} people be "
                            f"seated in a row of {r} chairs, chosen "
-                           f"from a group of {n}?")
+                           f"from a group of {n}? The people are labeled "
+                           f"p_{start} through p_{start + n - 1}.")
             else:
                 steps = [
                     step("COMB_SETUP", f"choose {r} of {n}",
@@ -131,7 +141,9 @@ class PermutationCombinationGenerator(ProblemGenerator):
                 value = numer // rfact
                 steps.append(step("D", numer, rfact, value))
                 problem = (f"In how many ways can a committee of {r} "
-                           f"be chosen from a group of {n}?")
+                           f"be chosen from a group of {n}? The people "
+                           f"are labeled p_{start} through "
+                           f"p_{start + n - 1}.")
             answer = str(value)
         steps.append(step("Z", answer))
 

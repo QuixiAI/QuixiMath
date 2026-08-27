@@ -4,6 +4,28 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+CYLINDER_PLACES = [
+    "engineering classroom", "design studio", "technical college",
+    "fabrication shop", "science museum", "training center", "robotics lab",
+    "architecture office", "materials lab", "university classroom",
+    "construction lab", "modeling workshop", "study hall", "research station",
+    "drafting room", "learning center", "prototype bay", "survey office",
+    "problem-solving workshop", "tutoring center",
+]
+
+CYLINDER_CONTEXTS = [
+    "A worksheet from the {place} gives the following cylinder.",
+    "During a session at the {place}, this solid is analyzed.",
+    "An exercise used by the {place} asks for this surface area.",
+    "The {place} is checking a cylinder design.",
+]
+
+
+def cylinder_context_text():
+    return random.choice(CYLINDER_CONTEXTS).format(
+        place=random.choice(CYLINDER_PLACES))
+
+
 class VolumePrismGenerator(ProblemGenerator):
     """
     Generates volume of prism problems.
@@ -251,8 +273,8 @@ class SurfaceAreaCylinderGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         """Generate a cylinder surface area problem."""
-        radius = random.randint(2, 20)
-        height = random.randint(3, 30)
+        radius = random.randint(2, 50)
+        height = random.randint(3, 60)
 
         # Bases: 2πr²
         bases_coef = 2 * radius ** 2
@@ -262,7 +284,9 @@ class SurfaceAreaCylinderGenerator(ProblemGenerator):
 
         total_coef = bases_coef + lateral_coef
 
-        problem = f"Find the surface area of a cylinder with radius {radius} units and height {height} units."
+        problem = (f"{cylinder_context_text()} Find the surface area of a "
+                   f"cylinder with radius {radius} units and height {height} "
+                   f"units.")
 
         steps_list = []
         steps_list.append(step("SA_SETUP", "cylinder", f"r={radius}, h={height}"))

@@ -1,3 +1,4 @@
+import math
 import os
 import random
 import re
@@ -16,38 +17,37 @@ from helpers import DELIM
 def oracle_answer(example):
     """Recomputes the answer from the problem text alone (exact, π symbolic)."""
     p = example["problem"]
-    op = example["operation"]
     nums = [int(n) for n in re.findall(r"(\d+) units", p)]
-    if op == "volume_pyramid":
+    if "volume of a pyramid" in p:
         l, w, h = nums
         v = Fraction(l * w * h, 3)
         assert v.denominator == 1
         return f"{v.numerator} cubic units"
-    if op == "volume_cone":
+    if "volume of a cone" in p:
         r, h = nums
         c = Fraction(r * r * h, 3)
         assert c.denominator == 1
         return f"{c.numerator}π cubic units"
-    if op == "volume_sphere":
+    if "volume of a sphere" in p:
         (n,) = nums
         r = n // 2 if "diameter" in p else n
         c = Fraction(4 * r ** 3, 3)
         coef = f"{c.numerator}π" if c.denominator == 1 else f"{4 * r ** 3}π/3"
         return f"{coef} cubic units"
-    if op == "surface_area_pyramid":
+    if "surface area of a square pyramid" in p:
         b, slant = nums
         return f"{b * b + 2 * b * slant} square units"
-    if op == "surface_area_cone":
+    if "surface area of a cone" in p:
         r, h = nums
         slant_sq = r * r + h * h
-        slant = int(slant_sq ** 0.5)
+        slant = math.isqrt(slant_sq)
         assert slant * slant == slant_sq, "not a perfect square slant"
         return f"{r * r + r * slant}π square units"
-    if op == "surface_area_sphere":
+    if "surface area of a sphere" in p:
         (n,) = nums
         r = n // 2 if "diameter" in p else n
         return f"{4 * r * r}π square units"
-    raise AssertionError(op)
+    raise AssertionError(p)
 
 
 class TestRoundSolidsGenerator(unittest.TestCase):
@@ -105,6 +105,15 @@ class TestRoundSolidsGenerator(unittest.TestCase):
                 self.assertEqual(gen.generate()["operation"], variant)
         with self.assertRaises(ValueError):
             RoundSolidsGenerator("bogus")
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

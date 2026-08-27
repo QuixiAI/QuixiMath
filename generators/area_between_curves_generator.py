@@ -7,6 +7,48 @@ from generators.domain_range_generator import lin
 from generators.polynomial_long_division_generator import poly_txt
 
 
+# Integer intersection pairs (p, q), p < q, both nonzero so the factor
+# pair search always has a nonzero product to sweep.
+PAIRS = [(p, q)
+         for p in range(-10, 11) if p != 0
+         for q in range(p + 1, min(11, p + 10)) if q != 0]
+
+SHIFTS = list(range(-9, 10))       # the parabola's x coefficient
+LIFTS = list(range(-12, 13))       # the parabola's constant term
+
+TEMPLATES = [
+    "Find the area between y = {f} and y = {g}.",
+    "Find the area of the region bounded by the curves y = {f} and "
+    "y = {g}.",
+    "The curves y = {f} and y = {g} enclose a region. Find its area.",
+    "Compute the exact area of the region between y = {f} and y = {g}.",
+    "Find the area enclosed by the graphs of y = {f} and y = {g}.",
+    "Two curves, y = {f} and y = {g}, intersect at two points. Find the "
+    "area of the region between them.",
+]
+
+
+def antideriv_txt(cubic, square, linear):
+    """'F(x) = -(1/3)x^3 + (5/2)x^2 - 6x' from exact coefficients."""
+    parts = []
+    for coef, power in ((cubic, 3), (square, 2), (linear, 1)):
+        if coef == 0:
+            continue
+        magnitude = abs(coef)
+        if magnitude == 1:
+            body = ""
+        elif magnitude.denominator == 1:
+            body = str(magnitude.numerator)
+        else:
+            body = f"({magnitude})"
+        term = f"{body}x^{power}" if power > 1 else f"{body}x"
+        if not parts:
+            parts.append(f"-{term}" if coef < 0 else term)
+        else:
+            parts.append(f"+ {term}" if coef > 0 else f"- {term}")
+    return "F(x) = " + (" ".join(parts) if parts else "0")
+
+
 class AreaBetweenCurvesGenerator(ProblemGenerator):
     """
     Area between curves with integer intersections by construction:
@@ -15,15 +57,16 @@ class AreaBetweenCurvesGenerator(ProblemGenerator):
     exact fractions.
 
     Variants:
-    - line_parabola: y = x² vs the secant line through (p, p²), (q, q²)
-    - parabola_pair: y = x² vs y = 2k² - x², symmetric about 0
+    - line_parabola: y = x² + Bx + C vs the secant line through its
+      points at x = p and x = q
+    - parabola_pair: an upward parabola vs a downward one meeting at
+      x = p and x = q
 
     Op-codes used:
     - AREA_SETUP / EQ_SETUP / MOVE_TERM / FACTOR_PAIR_GOAL / TRY /
-      REJECT / ACCEPT / ZERO_PRODUCT (established)
+      REJECT / ACCEPT / ZERO_PRODUCT / EQ_OP_BOTH (established)
     - CHECK: midpoint comparison to pick the top curve (established)
-    - REWRITE / INTEG_RULE / ANTIDERIV / SUBST / EVAL / S
-      (established, exact fractions)
+    - REWRITE / ANTIDERIV / EVAL / S (established, exact fractions)
     - Z: the exact area
     """
 
@@ -36,81 +79,91 @@ class AreaBetweenCurvesGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        p, q = random.choice(PAIRS)
+        total, product = p + q, p * q
+        mid = Fraction(p + q, 2)
 
         if variant == "line_parabola":
-            while True:
-                p = random.randint(-6, 5)
-                q = p + random.randint(1, 6)
-                if p != 0 and q != 0:
-                    break
-            m = p + q
-            b = -p * q
-            line = lin(m, b, "x") if m != 0 else str(b)
+            shift = random.choice(SHIFTS)
+            lift = random.choice(LIFTS)
+            para = poly_txt([1, shift, lift], "x")
+            slope = shift + total
+            intercept = lift - product
+            line = lin(slope, intercept, "x") if slope != 0 \
+                else str(intercept)
+            top, bottom = line, para
             area = Fraction((q - p) ** 3, 6)
-            mid = Fraction(p + q, 2)
-            line_mid = m * mid + b
-            para_mid = mid * mid
+            cubic = Fraction(-1, 3)
+            square = Fraction(total, 2)
+            linear = Fraction(-product)
+            integrand = poly_txt([-1, total, -product], "x")
             steps = [
-                step("AREA_SETUP", f"y = x^2 and y = {line}",
+                step("AREA_SETUP", f"y = {para} and y = {line}",
                      "area between the curves"),
-                step("EQ_SETUP", f"x^2 = {line}", "find intersections"),
+                step("EQ_SETUP", f"{para} = {line}", "find intersections"),
                 step("MOVE_TERM", "everything to the left",
-                     f"{poly_txt([1, -m, -b], 'x')} = 0"),
+                     f"{poly_txt([1, -total, product], 'x')} = 0"),
             ]
-            mm, nn = pair_search(steps, p * q, -(p + q))
-            f1, f2 = binomial("x", mm), binomial("x", nn)
-            steps.append(step("ZERO_PRODUCT", f"{f1}{f2} = 0",
+            mm, nn = pair_search(steps, product, -total)
+            steps.append(step("ZERO_PRODUCT",
+                              f"{binomial('x', mm)}{binomial('x', nn)} = 0",
                               f"x = {p} or x = {q}"))
+            line_mid = slope * mid + intercept
+            para_mid = mid * mid + shift * mid + lift
             steps.append(step("CHECK", f"midpoint x = {mid}",
-                              f"line = {line_mid}, parabola = "
-                              f"{para_mid}", "line is on top"))
-            steps.append(step("REWRITE",
-                              f"A = ∫ from {p} to {q} of "
-                              f"({line} - x^2) dx"))
-            F_txt = (f"F(x) = {Fraction(m, 2)}x^2 + {b}x - (1/3)x^3"
-                     .replace("+ -", "- "))
-            steps.append(step("ANTIDERIV", f"{line} - x^2", F_txt))
-
-            def F(x):
-                return Fraction(m, 2) * x * x + b * x - \
-                    Fraction(x ** 3, 3)
-            steps.append(step("EVAL", f"F({q})", F(q)))
-            steps.append(step("EVAL", f"F({p})", F(p)))
-            steps.append(step("S", F(q), F(p), area))
-            answer = str(area)
-            problem = (f"Find the area between y = x^2 and "
-                       f"y = {line}.")
+                              f"line = {line_mid}, parabola = {para_mid}",
+                              "line is on top"))
         else:
-            k = random.randint(1, 7)
-            c = 2 * k * k
-            area = Fraction(8 * k ** 3, 3)
+            shift = random.choice(SHIFTS)
+            lift = random.choice(LIFTS)
+            down = poly_txt([-1, shift, lift], "x")
+            up_shift = shift - 2 * total
+            up_lift = lift + 2 * product
+            up = poly_txt([1, up_shift, up_lift], "x")
+            top, bottom = down, up
+            area = Fraction((q - p) ** 3, 3)
+            cubic = Fraction(-2, 3)
+            square = Fraction(total)
+            linear = Fraction(-2 * product)
+            integrand = poly_txt([-2, 2 * total, -2 * product], "x")
+            reduced = poly_txt([1, -total, product], "x")
             steps = [
-                step("AREA_SETUP", f"y = x^2 and y = {c} - x^2",
+                step("AREA_SETUP", f"y = {up} and y = {down}",
                      "area between the curves"),
-                step("EQ_SETUP", f"x^2 = {c} - x^2",
-                     "find intersections"),
-                step("EQ_OP_BOTH", "add", "x^2", "2x^2", c),
-                step("EQ_OP_BOTH", "divide", 2, "x^2", k * k),
-                step("REWRITE", f"x = ±{k}"),
-                step("CHECK", "midpoint x = 0",
-                     f"upper = {c}, lower = 0",
-                     f"{c} - x^2 is on top"),
-                step("REWRITE",
-                     f"A = ∫ from {-k} to {k} of "
-                     f"({c} - 2x^2) dx"),
-                step("ANTIDERIV", f"{c} - 2x^2",
-                     f"F(x) = {c}x - (2/3)x^3"),
+                step("EQ_SETUP", f"{up} = {down}", "find intersections"),
+                step("MOVE_TERM", "everything to the left",
+                     f"{poly_txt([2, -2 * total, 2 * product], 'x')} = 0"),
+                step("EQ_OP_BOTH", "divide", 2, reduced, 0),
             ]
+            mm, nn = pair_search(steps, product, -total)
+            steps.append(step("ZERO_PRODUCT",
+                              f"{binomial('x', mm)}{binomial('x', nn)} = 0",
+                              f"x = {p} or x = {q}"))
+            down_mid = -mid * mid + shift * mid + lift
+            up_mid = mid * mid + up_shift * mid + up_lift
+            steps.append(step("CHECK", f"midpoint x = {mid}",
+                              f"upper = {down_mid}, lower = {up_mid}",
+                              f"{down} is on top"))
 
-            def F(x):
-                return c * x - Fraction(2 * x ** 3, 3)
-            steps.append(step("EVAL", f"F({k})", F(k)))
-            steps.append(step("EVAL", f"F({-k})", F(-k)))
-            steps.append(step("S", F(k), F(-k), area))
-            answer = str(area)
-            problem = (f"Find the area between y = x^2 and "
-                       f"y = {c} - x^2.")
+        steps.append(step("REWRITE",
+                          f"A = ∫ from {p} to {q} of ({top} - ({bottom})) dx"))
+        steps.append(step("REWRITE",
+                          f"A = ∫ from {p} to {q} of ({integrand}) dx"))
+        steps.append(step("ANTIDERIV", integrand,
+                          antideriv_txt(cubic, square, linear)))
+
+        def evaluate(x):
+            return cubic * x ** 3 + square * x * x + linear * x
+
+        steps.append(step("EVAL", f"F({q})", evaluate(q)))
+        steps.append(step("EVAL", f"F({p})", evaluate(p)))
+        steps.append(step("S", evaluate(q), evaluate(p), area))
+        answer = str(area)
         steps.append(step("Z", answer))
+
+        first, second = (top, bottom) if random.random() < 0.5 \
+            else (bottom, top)
+        problem = random.choice(TEMPLATES).format(f=first, g=second)
 
         return dict(
             problem_id=jid(),

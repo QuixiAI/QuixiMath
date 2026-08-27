@@ -3,6 +3,7 @@ import random
 import re
 import sys
 import unittest
+import math
 
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
@@ -17,14 +18,14 @@ from helpers import DELIM
 def oracle_answer(example):
     """Independently simplifies the radical from the problem text alone."""
     expr = example["problem"].split(": ", 1)[1]
-    var = next(v for v in "xyn" if v in expr)
+    var = next(v for v in "xyntz" if v in expr)
     m = re.fullmatch(rf"√\((\d*){var}(?:\^(\d+))?\)", expr)
     assert m, expr
     n = int(m.group(1) or 1)
     p = int(m.group(2) or 1)
 
     s = 1
-    for cand in range(1, int(n ** 0.5) + 1):
+    for cand in range(1, math.isqrt(n) + 1):
         if n % (cand * cand) == 0:
             s = cand
     f = n // (s * s)
@@ -97,9 +98,16 @@ class TestRadicalVariableSimplifyGenerator(unittest.TestCase):
     def test_variable_always_present_and_radical_always_remains(self):
         for _ in range(200):
             result = self.gen.generate()
-            var = next(v for v in "xyn" if v in result["problem"])
+            var = next(v for v in "xyntz" if v in result["problem"])
             self.assertIn(var, result["problem"])
             self.assertIn("√", result["final_answer"])
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

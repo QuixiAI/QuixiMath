@@ -7,6 +7,27 @@ from helpers import step, jid
 
 ANGLES = [30, 45, 60, 90, 120, 135, 150]
 
+PLACES = [
+    "geometry seminar", "navigation class", "technical college",
+    "surveying workshop", "university classroom", "research group",
+    "mapping office", "observatory", "training center", "science museum",
+    "mathematics department", "study hall", "engineering classroom",
+    "geodesy lab", "lecture room", "learning center", "research station",
+    "problem-solving workshop", "tutoring center", "modeling lab",
+]
+
+CONTEXTS = [
+    "Chart record {record} from the {place} supplies exact trig values.",
+    "The {place} labels this calculation as case {record}.",
+    "A worksheet case {record} from the {place} gives exact trig data.",
+    "During study {record} at the {place}, this triangle is analyzed.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(
+        record=random.randint(100, 99999), place=random.choice(PLACES))
+
 
 def simplify_sqrt(radicand):
     outside = 1
@@ -188,7 +209,8 @@ class SphericalTriangleGenerator(ProblemGenerator):
         ]
         answer = f"cos(a) = {exact_text(target)}"
         problem = (
-            f"In a spherical triangle, sides b={b} deg and c={c} deg "
+            f"{context_text()} In a spherical triangle, sides b={b} deg and "
+            f"c={c} deg "
             f"enclose angle A={angle_a} deg. Given "
             f"cos(b)={exact_text(cos_b)}, cos(c)={exact_text(cos_c)}, "
             f"sin(b)={exact_text(sin_b)}, sin(c)={exact_text(sin_c)}, "
@@ -224,7 +246,8 @@ class SphericalTriangleGenerator(ProblemGenerator):
         ]
         answer = f"sin(B) = {exact_text(target)}"
         problem = (
-            f"In a spherical triangle, side a={side_a} deg, side b="
+            f"{context_text()} In a spherical triangle, side a={side_a} deg, "
+            f"side b="
             f"{side_b} deg, and angle A={angle_a} deg. Given "
             f"sin(a)={exact_text(sin_a)}, sin(b)={exact_text(sin_b)}, "
             f"and sin(A)={exact_text(sin_angle_a)}, use the spherical "

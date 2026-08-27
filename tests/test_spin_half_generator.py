@@ -13,15 +13,15 @@ from helpers import DELIM
 
 
 APPLY_RE = re.compile(
-    r"For spin state psi=\[([^,\]]+),([^,\]]+)\] in the z basis, "
+    r".* For spin state psi=\[([^,\]]+),([^,\]]+)\] in the z basis, "
     r"apply sigma_([xyz])\."
 )
 MEASURE_RE = re.compile(
-    r"For normalized spin state psi=\[([^,\]]+),([^,\]]+)\] in the z "
+    r".* For normalized spin state psi=\[([^,\]]+),([^,\]]+)\] in the z "
     r"basis, measure spin along ([xz])\. Find P\(\+\3\) and P\(-\3\)\."
 )
 EIGEN_RE = re.compile(
-    r"Show that psi=(.+) is an eigenstate of sigma_([xyz]) and find the "
+    r".* Show that psi=(.+) is an eigenstate of sigma_([xyz]) and find the "
     r"eigenvalue\."
 )
 
@@ -365,6 +365,7 @@ class TestSpinHalfGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

@@ -21,13 +21,20 @@ def to_t(expr):
     return eval("lambda t: " + re.sub(r"(\d)t", r"\1*t", s))
 
 
-def pi_val(s):
+def pi_factor(s):
+    if s == "0":
+        return Fraction(0)
     m = re.fullmatch(r"(-?\d*)π(?:/(\d+))?", s)
     if not m:
         return None
     head = m.group(1)
     num = -1 if head == "-" else 1 if head == "" else int(head)
-    return num * math.pi / int(m.group(2) or 1)
+    return Fraction(num, int(m.group(2) or 1))
+
+
+def pi_val(s):
+    factor = pi_factor(s)
+    return None if factor is None else float(factor) * math.pi
 
 
 def oracle_check(example):
@@ -60,14 +67,25 @@ def oracle_check(example):
         a, th = int(m.group(1)), pi_val(m.group(2))
         return abs(0.5 * a * a * th - pi_val(ans)) < 1e-9
     m = re.fullmatch(r"Find the area enclosed by the polar curve "
-                     r"r = (\d+)cos\(θ\) for -π/2 ≤ θ ≤ π/2\.", p)
+                     r"r = (\d+)cos\((.+)\) for (\S+) ≤ θ ≤ (\S+)\.",
+                     p)
     assert m, p
     c = int(m.group(1))
+    inner = m.group(2)
+    if inner == "θ":
+        phase = 0.0
+    else:
+        shifted = re.fullmatch(r"θ - (\S+)", inner)
+        assert shifted, inner
+        phase = pi_val(shifted.group(1))
+    lower = pi_val(m.group(3))
+    upper = pi_val(m.group(4))
     n = 4000
     total = 0.0
     for i in range(n):
-        th = -math.pi / 2 + math.pi * (i + 0.5) / n
-        total += 0.5 * (c * math.cos(th)) ** 2 * (math.pi / n)
+        th = lower + (upper - lower) * (i + 0.5) / n
+        total += (0.5 * (c * math.cos(th - phase)) ** 2
+                  * ((upper - lower) / n))
     return abs(total - pi_val(ans)) < 1e-4
 
 

@@ -13,11 +13,13 @@ from helpers import DELIM
 
 
 SINGLE_RE = re.compile(
-    r"Apply the (H|X|Y|Z) gate to ket([01]) and give measurement "
+    r"Apply the (H|X|Y|Z) gate to e\^\(i([^)]+)\)·ket([01]) and give "
+    r"measurement "
     r"probabilities\."
 )
 CNOT_RE = re.compile(
-    r"Apply the CNOT gate to ket([01])([01]) and give measurement "
+    r"Apply the CNOT gate to e\^\(i([^)]+)\)·ket([01])([01]) and give "
+    r"measurement "
     r"probabilities\."
 )
 
@@ -38,7 +40,8 @@ def probs_for_basis(bit):
 
 
 SEQ_RE = re.compile(
-    r"Apply ([HXYZ](?: then [HXYZ])+) to ket([01]) and give "
+    r"Apply ([HXYZ](?: then [HXYZ])+) to e\^\(i([^)]+)\)·ket([01]) "
+    r"and give "
     r"the final state and measurement probabilities\.")
 
 
@@ -46,16 +49,16 @@ def parse_problem(problem):
     match = SINGLE_RE.fullmatch(problem)
     if match:
         return {"variant": "single", "gate": match.group(1),
-                "bit": int(match.group(2))}
+                "phase": match.group(2), "bit": int(match.group(3))}
     match = SEQ_RE.fullmatch(problem)
     if match:
         return {"variant": "sequence",
                 "gates": match.group(1).split(" then "),
-                "bit": int(match.group(2))}
+                "phase": match.group(2), "bit": int(match.group(3))}
     match = CNOT_RE.fullmatch(problem)
     assert match is not None, problem
-    return {"variant": "cnot", "control": int(match.group(1)),
-            "target": int(match.group(2))}
+    return {"variant": "cnot", "phase": match.group(1),
+            "control": int(match.group(2)), "target": int(match.group(3))}
 
 
 def simulate_sequence(gates, bit):
@@ -83,6 +86,14 @@ def simulate_sequence(gates, bit):
 PHASE_TXT = {(1, 0): "", (-1, 0): "-", (0, 1): "i", (0, -1): "-i"}
 
 
+def phased_state(local_state, phase):
+    for local_phase in ("-i", "i", "-"):
+        if local_state.startswith(local_phase):
+            body = local_state[len(local_phase):]
+            return f"{local_phase}·e^(i{phase})·{body}"
+    return f"e^(i{phase})·{local_state}"
+
+
 def state_text_from_amps(amps, k):
     a0, a1 = amps
     if k == 0:
@@ -97,6 +108,8 @@ def state_text_from_amps(amps, k):
 def expected_single(parts):
     gate = parts["gate"]
     bit = parts["bit"]
+    global_phase = parts["phase"]
+    input_state = phased_state(ket(bit), global_phase)
     matrix = {
         "H": "(1/sqrt(2))*[[1,1],[1,-1]]",
         "X": "[[0,1],[1,0]]",
@@ -113,17 +126,18 @@ def expected_single(parts):
         p0, p1 = probs_for_basis(out)
     elif gate == "Y":
         out = 1 - bit
-        phase = "i" if bit == 0 else "-i"
-        state = f"{phase}{ket(out)}"
+        local_phase = "i" if bit == 0 else "-i"
+        state = f"{local_phase}{ket(out)}"
         p0, p1 = probs_for_basis(out)
     else:
-        phase = "" if bit == 0 else "-"
-        state = f"{phase}{ket(bit)}"
+        local_phase = "" if bit == 0 else "-"
+        state = f"{local_phase}{ket(bit)}"
         p0, p1 = probs_for_basis(bit)
+    state = phased_state(state, global_phase)
     steps = [
-        make_step("QUANTUM_SETUP", f"gate={gate}", f"input={ket(bit)}"),
+        make_step("QUANTUM_SETUP", f"gate={gate}", f"input={input_state}"),
         make_step("GATE_MATRIX", gate, matrix),
-        make_step("APPLY_GATE", gate, ket(bit), state),
+        make_step("APPLY_GATE", gate, input_state, state),
         make_step("MEASURE_PROB", "computational basis",
                   f"P(0)={p0}", f"P(1)={p1}"),
     ]
@@ -135,9 +149,10 @@ def expected_single(parts):
 def expected_cnot(parts):
     control = parts["control"]
     target = parts["target"]
+    phase = parts["phase"]
     out_target = target ^ control
-    input_state = f"ket{control}{target}"
-    output_state = f"ket{control}{out_target}"
+    input_state = phased_state(f"ket{control}{target}", phase)
+    output_state = phased_state(f"ket{control}{out_target}", phase)
     steps = [
         make_step("QUANTUM_SETUP", "gate=CNOT", f"input={input_state}"),
         make_step("GATE_MATRIX", "CNOT",
@@ -194,6 +209,7 @@ class TestQuantumGateGenerator(unittest.TestCase):
             parts = parse_problem(result["problem"])
             amps, k = simulate_sequence(parts["gates"], parts["bit"])
             state, (p0, p1) = state_text_from_amps(amps, k)
+            state = phased_state(state, parts["phase"])
             expected = f"state = {state}; P(0) = {p0}, P(1) = {p1}"
             self.assertEqual(result["final_answer"], expected,
                              result["problem"])

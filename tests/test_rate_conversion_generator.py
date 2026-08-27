@@ -69,14 +69,25 @@ class TestRateConversionGenerator(unittest.TestCase):
                          "1 m|100 cm", "1 min|60 s"}
         for _ in range(500):
             res = self.gen.generate()
-            value, from_u, to_u = re.fullmatch(
-                r"Convert (\d+) (\S+) to (\S+)", res["problem"]).groups()
+            match = re.search(
+                r"[Cc]onvert (\d+) (\S+) to ([^\s.]+)", res["problem"]
+            )
+            self.assertIsNotNone(match, res["problem"])
+            value, from_u, to_u = match.groups()
             expected = int(value) * rates[(from_u, to_u)]
             self.assertEqual(expected.denominator, 1, res["problem"])
             self.assertEqual(res["final_answer"], f"{expected} {to_u}")
             for s in res["steps"]:
                 if s.startswith("CONV_FACTOR"):
                     self.assertIn(s.split("|", 1)[1], valid_factors, s)
+                fields = s.split(DELIM)
+                if fields[0] == "M":
+                    self.assertEqual(int(fields[1]) * int(fields[2]),
+                                     int(fields[3]), s)
+                elif fields[0] == "D":
+                    self.assertEqual(int(fields[1]) // int(fields[2]),
+                                     int(fields[3]), s)
+                    self.assertEqual(int(fields[1]) % int(fields[2]), 0, s)
 
 
 if __name__ == "__main__":

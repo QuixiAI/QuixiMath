@@ -1,8 +1,10 @@
 import random
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.radical_multiply_generator import split_square
 
-SQUARE_FREE = [1, 2, 3, 5, 6, 7, 10, 11, 13, 15]
+SQUARE_FREE = [1] + [value for value in range(2, 151)
+                     if split_square(value)[0] == 1]
 
 
 class RadicalVariableSimplifyGenerator(ProblemGenerator):
@@ -24,11 +26,11 @@ class RadicalVariableSimplifyGenerator(ProblemGenerator):
     """
 
     def generate(self) -> dict:
-        var = random.choice(["x", "x", "x", "y", "n"])
+        var = random.choice(["x", "y", "n", "t", "z"])
         while True:
-            s = random.randint(1, 7)
+            s = random.randint(1, 30)
             f = random.choice(SQUARE_FREE)
-            p = random.randint(1, 5)
+            p = random.randint(1, 20)
             k, rem = divmod(p, 2)
             if s == 1 and k == 0:
                 continue          # nothing to pull out

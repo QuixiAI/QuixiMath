@@ -98,12 +98,19 @@ def regex_to_automaton_oracle(problem):
     }
     regex = next(item for item in specs if item in problem)
     start, accept, states, transitions = specs[regex]
+    requested_states = re.search(
+        r"Use the state names ([^.]+)\.", problem
+    ).group(1).split(", ")
+    assert len(requested_states) == len(states)
+    rename = dict(zip(states, requested_states))
     rows = [
-        f"{state}:a->{transitions[(state, 'a')]},b->{transitions[(state, 'b')]}"
+        f"{rename[state]}:a->{rename[transitions[(state, 'a')]]},"
+        f"b->{rename[transitions[(state, 'b')]]}"
         for state in states
     ]
     return (
-        f"start={start}; accept={', '.join(accept)}; "
+        f"start={rename[start]}; "
+        f"accept={', '.join(rename[state] for state in accept)}; "
         f"transitions={'; '.join(rows)}"
     )
 
@@ -497,8 +504,10 @@ def convolutional_code_viterbi_oracle(problem):
 
 
 def reed_solomon_oracle(problem):
-    p = 7
-    points = [1, 2, 3, 4]
+    p = int(re.search(r"over F_(\d+)", problem).group(1))
+    points = [int(value) for value in re.search(
+        r"(?:evaluation points\s+|at x=)([0-9,]+)", problem
+    ).group(1).split(",")]
 
     def codeword(m0, m1):
         return [(m0 + m1 * x) % p for x in points]
@@ -511,7 +520,7 @@ def reed_solomon_oracle(problem):
         return f"codeword = {list_text(codeword(m0, m1))}"
 
     received = [int(x) for x in re.search(
-        r"Received word is \[([0-6,]+)\]", problem
+        r"Received word is \[([0-9,]+)\]", problem
     ).group(1).split(",")]
     best = None
     for i in range(len(points)):

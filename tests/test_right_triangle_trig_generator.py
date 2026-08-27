@@ -17,10 +17,10 @@ from helpers import DELIM
 
 def oracle_answer(example):
     p = example["problem"]
-    m = re.fullmatch(r"In a right triangle, the leg opposite angle A is "
-                     r"(\d+), the leg adjacent to A is (\d+), and the "
-                     r"hypotenuse is (\d+)\. Write (sin|cos|tan) A as a "
-                     r"fraction in lowest terms\.", p)
+    m = re.search(r"In a right triangle, the leg opposite angle A is "
+                  r"(\d+), the leg adjacent to A is (\d+), and the "
+                  r"hypotenuse is (\d+)\. Write (sin|cos|tan) A as a "
+                  r"fraction in lowest terms\.$", p)
     if m:
         a, b, c = int(m.group(1)), int(m.group(2)), int(m.group(3))
         assert a * a + b * b == c * c
@@ -28,18 +28,18 @@ def oracle_answer(example):
         val = {"sin": Fraction(a, c), "cos": Fraction(b, c),
                "tan": Fraction(a, b)}[fn]
         return f"{fn} A = {val}"
-    m = re.fullmatch(r"In a right triangle, one acute angle measures "
-                     r"(\d+)° and the (.+) is (\d+)\. Given that "
-                     r"(sin|cos|tan) \1° ≈ ([\d.]+), find the (.+)\.", p)
+    m = re.search(r"In a right triangle, one acute angle measures "
+                  r"(\d+)° and the (.+) is (\d+)\. Given that "
+                  r"(sin|cos|tan) \1° ≈ ([\d.]+), find the (.+)\.$", p)
     if m:
         known = int(m.group(3))
         val = Fraction(m.group(5))
         x = known * val
         assert x.denominator == 1
         return str(x.numerator)
-    m = re.fullmatch(r"In a right triangle, the (.+) is (\d+) and the "
-                     r"(.+) is (\d+)\. Given that (sin|cos|tan) (\d+)° ≈ "
-                     r"([\d.]+), find the measure of angle A\.", p)
+    m = re.search(r"In a right triangle, the (.+) is (\d+) and the "
+                  r"(.+) is (\d+)\. Given that (sin|cos|tan) (\d+)° ≈ "
+                  r"([\d.]+), find the measure of angle A\.$", p)
     assert m, p
     num, den = int(m.group(2)), int(m.group(4))
     assert Fraction(num, den) == Fraction(m.group(7))
@@ -107,6 +107,15 @@ class TestRightTriangleTrigGenerator(unittest.TestCase):
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             RightTriangleTrigGenerator("bogus")
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

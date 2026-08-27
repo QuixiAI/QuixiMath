@@ -16,13 +16,18 @@ from helpers import DELIM
 def oracle_answer(example):
     """Independently computes with math.comb from the text alone."""
     p = example["problem"]
-    m = re.fullmatch(r"Build Pascal's triangle down to row (\d+) "
-                     r"\(row 0 is 1\)\. Give row \1\.", p)
+    m = re.search(r"[Gg]ive row (\d+)", p)
     if m:
         n = int(m.group(1))
+        mentioned_rows = [int(value) for value in re.findall(
+            r"(?:through|to|of) row (\d+)", p
+        )]
+        self_consistent = not mentioned_rows or all(
+            value == n for value in mentioned_rows
+        )
+        assert self_consistent, p
         return ", ".join(str(math.comb(n, k)) for k in range(n + 1))
-    m = re.fullmatch(r"Use Pascal's triangle to find (\d+)C(\d+) "
-                     r"\(row 0 is 1\)\.", p)
+    m = re.search(r"(\d+)C(\d+)", p)
     assert m, p
     return str(math.comb(int(m.group(1)), int(m.group(2))))
 

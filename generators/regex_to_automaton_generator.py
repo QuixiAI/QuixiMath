@@ -79,6 +79,10 @@ def step_regex_text(regex):
     return regex.replace("|", " or ")
 
 
+def renamed_state(state, prefix):
+    return f"{prefix}{state[1:]}"
+
+
 class RegexToAutomatonGenerator(ProblemGenerator):
     """
     Direct DFA construction for small regular expressions.
@@ -101,26 +105,34 @@ class RegexToAutomatonGenerator(ProblemGenerator):
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
         spec = AUTOMATA[variant]
-        states = spec["states"]
-        transitions = spec["transitions"]
+        prefix = f"q{random.randint(1, 100000)}_"
+        states = [renamed_state(state, prefix) for state in spec["states"]]
+        transitions = {
+            (renamed_state(state, prefix), symbol): renamed_state(target, prefix)
+            for (state, symbol), target in spec["transitions"].items()
+        }
+        start = renamed_state(spec["start"], prefix)
+        accept = [renamed_state(state, prefix) for state in spec["accept"]]
         steps = [
             step("REGEX_SETUP", step_regex_text(spec["regex"]), "alphabet a,b",
                  "canonical progress DFA"),
         ]
         for state, meaning in spec["notes"]:
-            steps.append(step("REGEX_STATE", state, meaning))
-        steps.append(step("REGEX_ACCEPT", list_text(spec["accept"])))
+            steps.append(step("REGEX_STATE", renamed_state(state, prefix),
+                              meaning))
+        steps.append(step("REGEX_ACCEPT", list_text(accept)))
         for state in states:
             for symbol in ALPHABET:
                 steps.append(step("REGEX_TRANSITION", state, symbol,
                                   transitions[(state, symbol)]))
         table = transition_answer(states, transitions)
         answer = (
-            f"start={spec['start']}; accept={list_text(spec['accept'])}; "
+            f"start={start}; accept={list_text(accept)}; "
             f"transitions={table}"
         )
         steps.append(step("CHECK", "complete table", f"{len(states)} states"))
-        problem = random.choice(PROBLEM_TEMPLATES).format(regex=spec["regex"])
+        problem = (random.choice(PROBLEM_TEMPLATES).format(regex=spec["regex"])
+                   + f" Use the state names {list_text(states)}.")
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),

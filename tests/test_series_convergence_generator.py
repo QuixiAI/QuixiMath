@@ -58,6 +58,9 @@ def oracle_check(example):
 
 
 def _oracle(q, ans):
+    match = re.search(r"Determine whether Σ .*$", q)
+    assert match, q
+    q = match.group(0)
     m = re.fullmatch(r"Determine whether Σ \((\d*)n( \+ \d+)?\)/"
                      r"\((\d*)n \+ (\d+)\) for n ≥ 1 converges or "
                      r"diverges\.", q)
@@ -77,19 +80,16 @@ def _oracle(q, ans):
     m = re.fullmatch(r"Determine whether Σ (\d+)\^n/n! for n ≥ 1 "
                      r"converges or diverges\.", q)
     if m:
-        c, term, tail = int(m.group(1)), 1.0, 0.0
-        for n in range(1, 400):
-            term = term * c / n
-            if n > 100:
-                tail += term
-        return ans == "converges" and tail < 1e-6
+        c = int(m.group(1))
+        # Far enough into the sequence, consecutive-term ratios are below
+        # 1/2 and continue decreasing, so the tail is geometrically bounded.
+        return ans == "converges" and Fraction(c, 1001) < Fraction(1, 2)
     m = re.fullmatch(r"Determine whether Σ n!/(\d+)\^n for n ≥ 1 "
                      r"converges or diverges\.", q)
     if m:
-        c, term = int(m.group(1)), 1.0
-        for n in range(1, 400):
-            term = term * n / c
-        return ans == "diverges" and term > 1e6
+        c = int(m.group(1))
+        # The consecutive-term ratio at n=1000 exceeds 1 and then grows.
+        return ans == "diverges" and Fraction(1001, c) > 1
     m = re.fullmatch(r"Determine whether Σ \(-1\)\^\(n\+1\)·(.+) for "
                      r"n ≥ 1 converges absolutely, converges "
                      r"conditionally, or diverges\.", q)
@@ -172,6 +172,15 @@ class TestSeriesConvergenceGenerator(unittest.TestCase):
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             SeriesConvergenceGenerator("bogus")
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

@@ -16,7 +16,8 @@ from helpers import DELIM
 PROBLEM_RE = re.compile(
     r"Given quark charges u=([^,]+), d=([^,]+), s=([^,]+), c=([^,]+), "
     r"b=([^ ]+) and antiquarks have opposite charge, compute the "
-    r"electric charge of (?:a|an) (baryon|antibaryon|meson) with constituents "
+    r"total electric charge of (\d+) identical "
+    r"(baryon|antibaryon|meson)s, each with constituents "
     r"([^.]+)\."
 )
 
@@ -51,8 +52,9 @@ def parse_problem(problem):
     }
     return {
         "table": table,
-        "variant": match.group(6),
-        "constituents": match.group(7).split(" "),
+        "count": int(match.group(6)),
+        "variant": match.group(7),
+        "constituents": match.group(8).split(" "),
     }
 
 
@@ -67,8 +69,9 @@ def expected_flow(example):
     constituents = parts["constituents"]
     table = "u=2/3,d=-1/3,s=-1/3,c=2/3,b=-1/3; anti=-charge"
     steps = [
-        make_step("QUARK_SETUP", parts["variant"], " ".join(constituents),
-                  table),
+        make_step("QUARK_SETUP",
+                  f"{parts['variant']},count={parts['count']}",
+                  " ".join(constituents), table),
     ]
     total = Fraction(0)
     for name in constituents:
@@ -80,7 +83,10 @@ def expected_flow(example):
                       fraction_text(next_total))
         )
         total = next_total
-    answer = f"Q = {signed_fraction(total)}"
+    ensemble_total = parts["count"] * total
+    steps.append(make_step("M", parts["count"], fraction_text(total),
+                           fraction_text(ensemble_total)))
+    answer = f"Q = {signed_fraction(ensemble_total)}"
     steps.append(make_step("Z", answer))
     return steps, answer
 
@@ -114,6 +120,9 @@ class TestQuarkCompositionGenerator(unittest.TestCase):
                 fields = raw_step.split(DELIM)
                 if fields[0] == "A":
                     self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
                                      Fraction(fields[3]), raw_step)
 
     def test_quark_charge_steps_match_prompt_table(self):

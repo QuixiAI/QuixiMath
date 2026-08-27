@@ -1,4 +1,3 @@
-import math
 import random
 from fractions import Fraction
 from base_generator import ProblemGenerator
@@ -6,6 +5,31 @@ from helpers import step, jid
 
 LADDERS = [(5, 12, 13), (12, 5, 13), (3, 4, 5), (4, 3, 5),
            (6, 8, 10), (8, 6, 10), (8, 15, 17), (15, 8, 17)]
+
+UNIT_PAIRS = [
+    ("cm", "s"), ("m", "s"), ("ft", "s"), ("in", "s"),
+    ("cm", "min"), ("m", "min"), ("ft", "min"), ("in", "min"),
+]
+
+PLACES = [
+    "design studio", "school laboratory", "robotics lab", "waterworks",
+    "science museum", "testing center", "engineering workshop",
+    "research station", "training facility", "field laboratory",
+    "fabrication shop", "university lab", "prototype bay", "survey site",
+    "technical college", "observatory workshop", "quality-control lab",
+    "modeling classroom", "materials lab", "instrument room",
+]
+
+CONTEXTS = [
+    "At the {place}, a measurement is being recorded.",
+    "During a test at the {place}, a measurement is being recorded.",
+    "A report from the {place} gives the following measurements.",
+    "In a model used by the {place}, the following rates apply.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
 
 
 class RelatedRatesGenerator(ProblemGenerator):
@@ -37,14 +61,17 @@ class RelatedRatesGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        length_unit, time_unit = random.choice(UNIT_PAIRS)
+        context = context_text()
 
         if variant == "circle":
-            r0 = random.randint(2, 12)
-            k = random.randint(1, 5)
+            r0 = random.randint(2, 40)
+            k = random.randint(1, 20)
             val = 2 * r0 * k
             steps = [
                 step("RATE_SETUP",
-                     f"circle: dr/dt = {k} cm/s; r = {r0} cm",
+                     f"circle: dr/dt = {k} {length_unit}/{time_unit}; "
+                     f"r = {r0} {length_unit}",
                      "dA/dt"),
                 step("REWRITE", "A = πr^2"),
                 step("IMPLICIT_DIFF", "d/dt of A = πr^2",
@@ -54,18 +81,22 @@ class RelatedRatesGenerator(ProblemGenerator):
                 step("M", 2, r0, 2 * r0),
                 step("M", 2 * r0, k, val),
             ]
-            answer = f"dA/dt = {val}π cm²/s"
-            problem = (f"The radius of a circle grows at {k} cm/s. How "
+            answer = (f"dA/dt = {val}π {length_unit}²/{time_unit}")
+            problem = (f"{context} The radius of a circle grows at {k} "
+                       f"{length_unit}/{time_unit}. How "
                        f"fast is the area increasing when the radius "
-                       f"is {r0} cm? Give an exact answer.")
+                       f"is {r0} {length_unit}? Give an exact answer.")
         elif variant == "ladder":
             x0, y0, L = random.choice(LADDERS)
-            k = random.randint(1, 4)
+            scale = random.randint(1, 8)
+            x0, y0, L = x0 * scale, y0 * scale, L * scale
+            k = random.randint(1, 12)
             rate = Fraction(-x0 * k, y0)
             steps = [
                 step("RATE_SETUP",
-                     f"{L} ft ladder; the base slides away at {k} ft/s; "
-                     f"base is {x0} ft from the wall", "dy/dt"),
+                     f"{L} {length_unit} ladder; the base slides away at "
+                     f"{k} {length_unit}/{time_unit}; base is {x0} "
+                     f"{length_unit} from the wall", "dy/dt"),
                 step("REWRITE", f"x^2 + y^2 = {L * L}"),
                 step("E", x0, 2, x0 * x0),
                 step("S", L * L, x0 * x0, y0 * y0),
@@ -84,18 +115,20 @@ class RelatedRatesGenerator(ProblemGenerator):
                      rate),
                 step("FRAC_REDUCE", f"{-2 * x0 * k}/{2 * y0}", rate),
             ]
-            answer = f"dy/dt = {rate} ft/s"
-            problem = (f"A {L} ft ladder leans against a wall. The base "
-                       f"slides away from the wall at {k} ft/s. How fast "
+            answer = f"dy/dt = {rate} {length_unit}/{time_unit}"
+            problem = (f"{context} A {L} {length_unit} ladder leans against "
+                       f"a wall. The base slides away from the wall at {k} "
+                       f"{length_unit}/{time_unit}. How fast "
                        f"is the top sliding down when the base is {x0} "
-                       f"ft from the wall?")
+                       f"{length_unit} from the wall?")
         elif variant == "cube":
-            s0 = random.randint(2, 10)
-            k = random.randint(1, 4)
+            s0 = random.randint(2, 25)
+            k = random.randint(1, 15)
             val = 3 * s0 * s0 * k
             steps = [
                 step("RATE_SETUP",
-                     f"cube: ds/dt = {k} cm/s; s = {s0} cm", "dV/dt"),
+                     f"cube: ds/dt = {k} {length_unit}/{time_unit}; "
+                     f"s = {s0} {length_unit}", "dV/dt"),
                 step("REWRITE", "V = s^3"),
                 step("IMPLICIT_DIFF", "d/dt of V = s^3",
                      "dV/dt = 3s^2·ds/dt"),
@@ -105,20 +138,22 @@ class RelatedRatesGenerator(ProblemGenerator):
                 step("M", 3, s0 * s0, 3 * s0 * s0),
                 step("M", 3 * s0 * s0, k, val),
             ]
-            answer = f"dV/dt = {val} cm³/s"
-            problem = (f"Each edge of a cube grows at {k} cm/s. How "
+            answer = f"dV/dt = {val} {length_unit}³/{time_unit}"
+            problem = (f"{context} Each edge of a cube grows at {k} "
+                       f"{length_unit}/{time_unit}. How "
                        f"fast is the volume increasing when the edge "
-                       f"is {s0} cm?")
+                       f"is {s0} {length_unit}?")
         else:
-            h0 = random.choice([2, 4, 6, 8, 10])
-            k = random.randint(2, 9)
+            h0 = random.randint(2, 30)
+            k = random.randint(2, 20)
             rate = Fraction(4 * k, h0 * h0)
             rtxt = (f"{rate}/π" if rate.denominator == 1
                     else f"{rate.numerator}/({rate.denominator}π)")
             steps = [
                 step("RATE_SETUP",
                      f"conical tank, radius = height/2; water in at "
-                     f"dV/dt = {k} m³/min; depth h = {h0} m", "dh/dt"),
+                     f"dV/dt = {k} {length_unit}³/{time_unit}; depth "
+                     f"h = {h0} {length_unit}", "dh/dt"),
                 step("REWRITE",
                      "V = (1/3)πr^2·h with r = h/2, so V = πh^3/12"),
                 step("IMPLICIT_DIFF", "d/dt of V = πh^3/12",
@@ -132,10 +167,11 @@ class RelatedRatesGenerator(ProblemGenerator):
                      rtxt),
                 step("FRAC_REDUCE", f"{4 * k}/{h0 * h0}", rate),
             ]
-            answer = f"dh/dt = {rtxt} m/min"
-            problem = (f"Water pours into a conical tank (radius equals "
-                       f"half the depth) at {k} m³/min. How fast is the "
-                       f"depth rising when the water is {h0} m deep? "
+            answer = f"dh/dt = {rtxt} {length_unit}/{time_unit}"
+            problem = (f"{context} Water pours into a conical tank (radius "
+                       f"equals half the depth) at {k} {length_unit}³/"
+                       f"{time_unit}. How fast is the depth rising when the "
+                       f"water is {h0} {length_unit} deep? "
                        f"Give an exact answer.")
         steps.append(step("Z", answer))
 

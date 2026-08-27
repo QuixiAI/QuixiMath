@@ -2,7 +2,7 @@
 """Build a Hugging Face-compatible QuixiMath dataset release.
 
 The builder streams generated examples directly to sharded Parquet files using
-the size-config layout described in dataset_plan.md. Smaller configs are prefix
+the size-config layout described in plans/dataset_plan.md. Smaller configs are prefix
 subsets of larger configs within each split.
 """
 

@@ -1,5 +1,6 @@
 import random
 from decimal import Decimal, ROUND_HALF_UP
+from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid, DELIM # Import DELIM
 
@@ -124,18 +125,22 @@ class PercentProblemGenerator(ProblemGenerator):
         problem_type = random.choice(['find_part', 'find_percent', 'find_whole'])
         steps = []
 
-        # Generate numbers ensuring relatively clean results
-        percent_val = random.choice([10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90])
+        # Half-percent increments keep the conversion exact while providing a
+        # broad range that includes discounts, ordinary rates, and increases.
+        percent_units = random.randint(1, 400)
+        percent_val = Decimal(percent_units) / 2
+        percent_str = plain(percent_val)
         percent_dec = Decimal(percent_val) / 100
+        ratio = Fraction(percent_units, 200)
 
         if problem_type == 'find_part':
             # "What is P% of W?" - Calculation is multiplication, no division needed
-            whole = random.choice([10, 20, 40, 50, 60, 80, 100, 120, 150, 200])
+            whole = 5 * random.randint(2, 501)
             part = (percent_dec * Decimal(whole)).normalize()
             operation = "percent_find_part"
-            problem = f"What is {percent_val}% of {whole}?"
+            problem = f"What is {percent_str}% of {whole}?"
 
-            steps.append(step("PERCENT_TO_DEC", f"{percent_val}%", str(percent_dec)))
+            steps.append(step("PERCENT_TO_DEC", f"{percent_str}%", plain(percent_dec)))
             steps.append(step("SETUP_PERCENT_EQ", f"part = {percent_dec} * {whole}"))
             # This step is high-level, but the core operation is multiplication,
             # which has its own detailed generator (DecimalMultGenerator).
@@ -146,12 +151,9 @@ class PercentProblemGenerator(ProblemGenerator):
 
         elif problem_type == 'find_percent':
             # "P is what percent of W?" - Requires division: part / whole
-            whole = random.choice([10, 20, 40, 50, 80, 100, 150, 200])
-            part_options = [p for p in range(1, whole * 2) if (Decimal(p) / Decimal(whole)).normalize().as_tuple().exponent >= -2] # Allow > 100%
-            if not part_options:
-                 part = int(Decimal('0.2') * Decimal(whole))
-            else:
-                 part = random.choice(part_options)
+            scale = random.randint(1, 500)
+            part = ratio.numerator * scale
+            whole = ratio.denominator * scale
 
             # Use Decimal for precise final answer calculation
             calculated_percent_dec = (Decimal(part) / Decimal(whole)).normalize()
@@ -165,25 +167,20 @@ class PercentProblemGenerator(ProblemGenerator):
             division_steps, quotient_str = self._generate_division_steps(str(part), str(whole))
             steps.extend(division_steps)
             # Convert the final decimal result to percent, minimal digits
-            percent_str = f"{plain(calculated_percent_val)}%"
-            steps.append(step("DEC_TO_PERCENT", quotient_str, percent_str))
-            final_answer_str = percent_str
+            answer_percent = f"{plain(calculated_percent_val)}%"
+            steps.append(step("DEC_TO_PERCENT", quotient_str, answer_percent))
+            final_answer_str = answer_percent
 
 
         else: # find_whole
             # "P is P% of what number?" - Requires division: part / percent_dec
-            part = random.choice([5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 90, 100, 120])
-            # Use Decimal for precise final answer calculation
-            whole_dec = (Decimal(part) / percent_dec).normalize()
-            # Ensure the generated 'whole' is an integer for cleaner problems
-            if whole_dec != whole_dec.to_integral_value():
-                 return self.generate() # Retry if not integer
-
-            whole = int(whole_dec)
+            scale = random.randint(1, 500)
+            part = ratio.numerator * scale
+            whole = ratio.denominator * scale
             operation = "percent_find_whole"
-            problem = f"{part} is {percent_val}% of what number?"
+            problem = f"{part} is {percent_str}% of what number?"
 
-            steps.append(step("PERCENT_TO_DEC", f"{percent_val}%", str(percent_dec)))
+            steps.append(step("PERCENT_TO_DEC", f"{percent_str}%", plain(percent_dec)))
             steps.append(step("SETUP_PERCENT_EQ", f"{part} = {percent_dec} * whole"))
             steps.append(step("REARRANGE_EQ", f"whole = {part} / {percent_dec}"))
             # Generate division steps

@@ -1,7 +1,10 @@
 import random
-import math
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.pythagorean_common import (
+    random_scaled_triple,
+    triangle_labels,
+)
 
 
 class PythagoreanLegGenerator(ProblemGenerator):
@@ -23,46 +26,36 @@ class PythagoreanLegGenerator(ProblemGenerator):
     - Z: Final answer
     """
 
-    # Pythagorean triples: (a, b, c) where a² + b² = c²
-    TRIPLES = [
-        (3, 4, 5),
-        (5, 12, 13),
-        (8, 15, 17),
-        (7, 24, 25),
-        (6, 8, 10),
-        (9, 12, 15),
-        (12, 16, 20),
-        (15, 20, 25),
-        (9, 40, 41),
-        (11, 60, 61),
-        (20, 21, 29),
-        (12, 35, 37),
-        (28, 45, 53),
-        (13, 84, 85),
-    ]
-
     def generate(self) -> dict:
         """Generate a Pythagorean theorem find-leg problem."""
-        # Select a random triple
-        triple = random.choice(self.TRIPLES)
-        a, b, c = triple
-
-        # Optionally scale the triple
-        scale = random.choice([1, 2, 3, 4])
-        a, b, c = a * scale, b * scale, c * scale
+        a, b, c = random_scaled_triple()
+        vertex_a, vertex_b, vertex_c = triangle_labels()
+        first_leg = f"{vertex_a}{vertex_b}"
+        second_leg = f"{vertex_b}{vertex_c}"
+        hypotenuse = f"{vertex_a}{vertex_c}"
 
         # Randomly choose which leg is given and which to find
         if random.choice([True, False]):
             given_leg = a
             unknown_leg = b
+            given_side = first_leg
+            unknown_side = second_leg
         else:
             given_leg = b
             unknown_leg = a
+            given_side = second_leg
+            unknown_side = first_leg
 
-        problem = f"In a right triangle, the hypotenuse is {c} units and one leg is {given_leg} units. Find the length of the other leg."
+        problem = (
+            f"In right triangle {vertex_a}{vertex_b}{vertex_c}, "
+            f"hypotenuse {hypotenuse} is {c} units and leg {given_side} "
+            f"is {given_leg} units. Find leg {unknown_side}."
+        )
 
         steps_list = []
-        steps_list.append(step("PYTHAG_SETUP", f"c={c}", f"a={given_leg}", "b=?"))
+        steps_list.append(step("PYTHAG_SETUP", f"{hypotenuse}={c}",
+                               f"{given_side}={given_leg}",
+                               f"{unknown_side}=?"))
         steps_list.append(step("PYTHAG_FORMULA", "a² + b² = c²"))
         steps_list.append(step("PYTHAG_SUBSTITUTE", f"{given_leg}² + b² = {c}²"))
 
@@ -103,51 +96,45 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
     - Z: Final answer
     """
 
-    # Pythagorean triples
-    TRIPLES = [
-        (3, 4, 5),
-        (5, 12, 13),
-        (8, 15, 17),
-        (6, 8, 10),
-        (9, 12, 15),
-        (12, 16, 20),
-        (15, 20, 25),
-        (7, 24, 25),
-        (20, 21, 29),
-        (12, 35, 37),
-    ]
-
     def generate(self) -> dict:
         """Generate a Pythagorean theorem word problem."""
         context = random.choice(['ladder', 'diagonal', 'distance'])
-
-        triple = random.choice(self.TRIPLES)
-        scale = random.choice([1, 2, 3])
-        a, b, c = triple[0] * scale, triple[1] * scale, triple[2] * scale
+        a, b, c = random_scaled_triple()
+        vertices = triangle_labels()
+        diagram = "".join(vertices)
+        diagram_note = (f"Use right-triangle diagram {diagram}, with the "
+                        f"right angle at {vertices[1]}.")
 
         if context == 'ladder':
-            return self._generate_ladder(a, b, c)
+            return self._generate_ladder(a, b, c, diagram, diagram_note)
         elif context == 'diagonal':
-            return self._generate_diagonal(a, b, c)
+            return self._generate_diagonal(a, b, c, diagram, diagram_note)
         else:
-            return self._generate_distance(a, b, c)
+            return self._generate_distance(a, b, c, diagram, diagram_note)
 
-    def _generate_ladder(self, a, b, c) -> dict:
+    def _generate_ladder(self, a, b, c, diagram, diagram_note) -> dict:
         """Generate ladder against wall problem."""
         # Ladder (c) against wall, find either height (b) or distance from wall (a)
         find_height = random.choice([True, False])
 
         if find_height:
-            problem = f"A {c}-foot ladder is placed against a wall. The base of the ladder is {a} feet from the wall. How high up the wall does the ladder reach?"
+            problem = (f"A {c}-foot ladder is placed against a wall. The "
+                       f"base of the ladder is {a} feet from the wall. How "
+                       f"high up the wall does the ladder reach? "
+                       f"{diagram_note}")
             answer = b
             given = a
         else:
-            problem = f"A {c}-foot ladder reaches {b} feet up a wall. How far is the base of the ladder from the wall?"
+            problem = (f"A {c}-foot ladder reaches {b} feet up a wall. "
+                       f"How far is the base of the ladder from the wall? "
+                       f"{diagram_note}")
             answer = a
             given = b
 
         steps_list = []
-        steps_list.append(step("PYTHAG_CONTEXT", "ladder", f"ladder={c}ft, given={given}ft"))
+        steps_list.append(step("PYTHAG_CONTEXT", "ladder",
+                               f"ladder={c}ft, given={given}ft",
+                               f"diagram={diagram}"))
         # model the unknown as ? — never leak the answer in the setup
         if find_height:
             steps_list.append(step("PYTHAG_MODEL", f"ground={a}", "wall=?", f"ladder={c}"))
@@ -175,12 +162,16 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
             final_answer=final_answer,
         )
 
-    def _generate_diagonal(self, a, b, c) -> dict:
+    def _generate_diagonal(self, a, b, c, diagram, diagram_note) -> dict:
         """Generate rectangle diagonal problem."""
-        problem = f"A rectangle has a length of {a} units and a width of {b} units. What is the length of its diagonal?"
+        problem = (f"A rectangle has a length of {a} units and a width of "
+                   f"{b} units. What is the length of its diagonal? "
+                   f"{diagram_note}")
 
         steps_list = []
-        steps_list.append(step("PYTHAG_CONTEXT", "rectangle_diagonal", f"length={a}, width={b}"))
+        steps_list.append(step("PYTHAG_CONTEXT", "rectangle_diagonal",
+                               f"length={a}, width={b}",
+                               f"diagram={diagram}"))
         steps_list.append(step("PYTHAG_MODEL", f"length={a}", f"width={b}", "diagonal=?"))
         steps_list.append(step("PYTHAG_FORMULA", "d² = l² + w²"))
         steps_list.append(step("PYTHAG_SUBSTITUTE", f"d² = {a}² + {b}²"))
@@ -198,12 +189,16 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
             final_answer=final_answer,
         )
 
-    def _generate_distance(self, a, b, c) -> dict:
+    def _generate_distance(self, a, b, c, diagram, diagram_note) -> dict:
         """Generate distance/displacement problem."""
-        problem = f"A person walks {a} meters east and then {b} meters north. What is the straight-line distance from the starting point?"
+        problem = (f"A person walks {a} meters east and then {b} meters "
+                   f"north. What is the straight-line distance from the "
+                   f"starting point? {diagram_note}")
 
         steps_list = []
-        steps_list.append(step("PYTHAG_CONTEXT", "displacement", f"east={a}m, north={b}m"))
+        steps_list.append(step("PYTHAG_CONTEXT", "displacement",
+                               f"east={a}m, north={b}m",
+                               f"diagram={diagram}"))
         steps_list.append(step("PYTHAG_MODEL", f"east={a}", f"north={b}", "distance=?"))
         steps_list.append(step("PYTHAG_FORMULA", "d² = east² + north²"))
         steps_list.append(step("PYTHAG_SUBSTITUTE", f"d² = {a}² + {b}²"))

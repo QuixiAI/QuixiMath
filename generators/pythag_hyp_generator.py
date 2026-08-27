@@ -1,23 +1,25 @@
-import random
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from generators.pythagorean_common import (
+    random_scaled_triple,
+    triangle_labels,
+)
 
 class PythagHypGenerator(ProblemGenerator):
     """Generates Pythagorean theorem problems (finding hypotenuse)."""
 
     def generate(self) -> dict:
         operation = "pythag_hyp"
-        # Use common integer triples, scaled randomly
-        triples = [(3, 4, 5), (5, 12, 13), (7, 24, 25), (8, 15, 17), (9, 40, 41), (20, 21, 29), (12, 35, 37), (11, 60, 61), (28, 45, 53), (16, 63, 65), (33, 56, 65), (13, 84, 85), (36, 77, 85), (39, 80, 89)]
-        a, b, c_ans = random.choice(triples)
-        k = random.randint(1, 5)
-        a, b, c_ans = a * k, b * k, c_ans * k
-
-        # Randomly swap a and b for variety in problem statement
-        if random.choice([True, False]):
-            a, b = b, a
-
-        problem = f"Find hypotenuse: legs {a} and {b}"
+        a, b, c_ans = random_scaled_triple()
+        vertex_a, vertex_b, vertex_c = triangle_labels()
+        leg_one = f"{vertex_a}{vertex_b}"
+        leg_two = f"{vertex_b}{vertex_c}"
+        hypotenuse = f"{vertex_a}{vertex_c}"
+        problem = (
+            f"In right triangle {vertex_a}{vertex_b}{vertex_c}, "
+            f"{leg_one} and {leg_two} are perpendicular legs of lengths "
+            f"{a} and {b}. Find hypotenuse {hypotenuse}."
+        )
 
         a_sq = a * a
         b_sq = b * b
@@ -25,6 +27,9 @@ class PythagHypGenerator(ProblemGenerator):
         final_answer_str = str(c_ans)
 
         steps = [
+            step("PYTHAG_SETUP", f"legs={a},{b}",
+                 f"hypotenuse {hypotenuse}=?"),
+            step("PYTHAG_FORMULA", "a² + b² = c²"),
             step("E", a, 2, a_sq),      # Square leg a
             step("E", b, 2, b_sq),      # Square leg b
             step("A", a_sq, b_sq, sum_sq), # Add squares

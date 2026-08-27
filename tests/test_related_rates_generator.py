@@ -15,39 +15,43 @@ from helpers import DELIM
 
 def oracle_answer(example):
     p = example["problem"]
-    m = re.fullmatch(r"The radius of a circle grows at (\d+) cm/s\. How "
-                     r"fast is the area increasing when the radius is "
-                     r"(\d+) cm\? Give an exact answer\.", p)
+    m = re.search(r"The radius of a circle grows at (\d+) "
+                  r"(cm|m|ft|in)/(s|min)\. How fast is the area increasing "
+                  r"when the radius is (\d+) \2\? Give an exact answer\.$", p)
     if m:
-        k, r0 = int(m.group(1)), int(m.group(2))
-        return f"dA/dt = {2 * r0 * k}π cm²/s"
-    m = re.fullmatch(r"A (\d+) ft ladder leans against a wall\. The "
-                     r"base slides away from the wall at (\d+) ft/s\. "
-                     r"How fast is the top sliding down when the base "
-                     r"is (\d+) ft from the wall\?", p)
+        k, unit, time, r0 = (int(m.group(1)), m.group(2), m.group(3),
+                             int(m.group(4)))
+        return f"dA/dt = {2 * r0 * k}π {unit}²/{time}"
+    m = re.search(r"A (\d+) (cm|m|ft|in) ladder leans against a wall\. The "
+                  r"base slides away from the wall at (\d+) \2/(s|min)\. "
+                  r"How fast is the top sliding down when the base is "
+                  r"(\d+) \2 from the wall\?$", p)
     if m:
-        L, k, x0 = (int(v) for v in m.groups())
+        L, unit, k, time, x0 = (int(m.group(1)), m.group(2),
+                                 int(m.group(3)), m.group(4), int(m.group(5)))
         y2 = L * L - x0 * x0
         import math
         y0 = math.isqrt(y2)
         assert y0 * y0 == y2
-        return f"dy/dt = {Fraction(-x0 * k, y0)} ft/s"
-    m = re.fullmatch(r"Each edge of a cube grows at (\d+) cm/s\. How "
-                     r"fast is the volume increasing when the edge is "
-                     r"(\d+) cm\?", p)
+        return f"dy/dt = {Fraction(-x0 * k, y0)} {unit}/{time}"
+    m = re.search(r"Each edge of a cube grows at (\d+) "
+                  r"(cm|m|ft|in)/(s|min)\. How fast is the volume increasing "
+                  r"when the edge is (\d+) \2\?$", p)
     if m:
-        k, s0 = int(m.group(1)), int(m.group(2))
-        return f"dV/dt = {3 * s0 * s0 * k} cm³/s"
-    m = re.fullmatch(r"Water pours into a conical tank \(radius equals "
-                     r"half the depth\) at (\d+) m³/min\. How fast is "
-                     r"the depth rising when the water is (\d+) m "
-                     r"deep\? Give an exact answer\.", p)
+        k, unit, time, s0 = (int(m.group(1)), m.group(2), m.group(3),
+                             int(m.group(4)))
+        return f"dV/dt = {3 * s0 * s0 * k} {unit}³/{time}"
+    m = re.search(r"Water pours into a conical tank \(radius equals half the "
+                  r"depth\) at (\d+) (cm|m|ft|in)³/(s|min)\. How fast is the "
+                  r"depth rising when the water is (\d+) \2 deep\? Give an "
+                  r"exact answer\.$", p)
     assert m, p
-    k, h0 = int(m.group(1)), int(m.group(2))
+    k, unit, time, h0 = (int(m.group(1)), m.group(2), m.group(3),
+                          int(m.group(4)))
     rate = Fraction(4 * k, h0 * h0)
     rtxt = (f"{rate}/π" if rate.denominator == 1
             else f"{rate.numerator}/({rate.denominator}π)")
-    return f"dh/dt = {rtxt} m/min"
+    return f"dh/dt = {rtxt} {unit}/{time}"
 
 
 class TestRelatedRatesGenerator(unittest.TestCase):
@@ -80,7 +84,7 @@ class TestRelatedRatesGenerator(unittest.TestCase):
         gen = RelatedRatesGenerator("ladder")
         for _ in range(100):
             result = gen.generate()
-            m = re.search(r"= (-\d+(?:/\d+)?) ft/s",
+            m = re.search(r"= (-\d+(?:/\d+)?) (?:cm|m|ft|in)/(?:s|min)",
                           result["final_answer"])
             self.assertIsNotNone(m, result["final_answer"])
 
@@ -88,7 +92,28 @@ class TestRelatedRatesGenerator(unittest.TestCase):
         for _ in range(200):
             result = self.gen.generate()
             self.assertRegex(result["final_answer"],
-                             r"(cm²/s|ft/s|cm³/s|m/min)$")
+                             r"(cm|m|ft|in)(²|³)?/(s|min)$")
+
+    def test_arithmetic_steps(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "E":
+                    self.assertEqual(Fraction(fields[1]) ** int(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
     def test_all_variants_reachable(self):
         ops = set()

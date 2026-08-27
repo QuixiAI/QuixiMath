@@ -9,138 +9,240 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from generators.annuity_generator import AnnuityGenerator
-from generators.exponential_model_generator import dec, money
-from generators.finance_generator import exact
 from helpers import DELIM
 
 
-FV_RE = re.compile(
-    r"An ordinary annuity pays \$(\d+) at the end of each period for "
-    r"(\d+) periods at (\d+)% per period\. Find the future value\."
-)
-PV_RE = re.compile(
-    r"An ordinary annuity pays \$(\d+) at the end of each period for "
-    r"(\d+) periods at (\d+)% per period\. Find the present value\."
-)
-AMORT_RE = re.compile(
-    r"Build a (\d+)-payment amortization schedule for a loan with starting "
-    r"balance \$(\d+), payment \$(\d+), and period rate (\d+)%\. Find total "
-    r"interest and final balance\."
-)
+NAME = r"[A-Z][a-z]+"
+WORDS = r"[a-z ]+"
 
 
-def make_step(*parts):
-    parts = [str(part) for part in parts]
-    while parts and parts[-1] == "":
-        parts.pop()
-    return DELIM.join(parts)
+def rx(pattern):
+    return re.compile(pattern)
 
 
-def expected_future(problem):
-    match = FV_RE.fullmatch(problem)
-    payment = int(match.group(1))
-    periods = int(match.group(2))
-    rate_pct = int(match.group(3))
-    rate = Fraction(rate_pct, 100)
-    base = 1 + rate
-    growth = base ** periods
-    numerator = growth - 1
-    factor = numerator / rate
-    value = payment * factor
-    answer = f"future_value {money(value)}"
-    steps = [
-        make_step("ANNUITY_SETUP", "ordinary annuity future value",
-                  f"PMT={payment},r={rate_pct}%,n={periods}"),
-        make_step("PERCENT_TO_DEC", f"{rate_pct}%", dec(rate)),
-        make_step("ANNUITY_FORMULA", "FV = PMT*((1+r)^n - 1)/r"),
-        make_step("A", 1, dec(rate), exact(base)),
-        make_step("E", exact(base), periods, exact(growth)),
-        make_step("S", exact(growth), 1, exact(numerator)),
-        make_step("D", exact(numerator), dec(rate), exact(factor)),
-        make_step("M", payment, exact(factor), exact(value)),
-        make_step("Z", answer),
-    ]
-    return steps, answer
+# --- one regex per phrasing; the oracle never imports the templates -------
+FV_PATTERNS = [
+    rx(r"An ordinary annuity pays \$(?P<pmt>\d+) at the end of each "
+       r"(?P<unit>\w+) for (?P<n>\d+) \w+ at (?P<rate>\d+)% per \w+\. "
+       r"Find the future value\."),
+    rx(r"(?P<name>" + NAME + r") deposits \$(?P<pmt>\d+) into a "
+       r"(?P<fund>" + WORDS + r") at the end of each (?P<unit>\w+) for "
+       r"(?P<n>\d+) \w+\. The account earns (?P<rate>\d+)% per \w+\. "
+       r"What is the future value of the annuity\?"),
+    rx(r"At the end of every (?P<unit>\w+), (?P<name>" + NAME + r") adds "
+       r"\$(?P<pmt>\d+) to a (?P<fund>" + WORDS + r") that earns "
+       r"(?P<rate>\d+)% per \w+\. How much is in the " + WORDS +
+       r" right after the (?P<n>\d+)(?:st|nd|rd|th) deposit\?"),
+    rx(r"A (?P<fund>" + WORDS + r") receives an end-of-(?P<unit>\w+) "
+       r"payment of \$(?P<pmt>\d+) for (?P<n>\d+) \w+ and grows at "
+       r"(?P<rate>\d+)% per \w+\. Find the accumulated value of the "
+       r"annuity\."),
+    rx(r"(?P<name>" + NAME + r") makes (?P<n>\d+) end-of-(?P<unit>\w+) "
+       r"deposits of \$(?P<pmt>\d+) each into a (?P<fund>" + WORDS +
+       r") paying (?P<rate>\d+)% per \w+\. Find the future value of the "
+       r"annuity\."),
+]
+
+PV_PATTERNS = [
+    rx(r"An ordinary annuity pays \$(?P<pmt>\d+) at the end of each "
+       r"(?P<unit>\w+) for (?P<n>\d+) \w+ at (?P<rate>\d+)% per \w+\. "
+       r"Find the present value\."),
+    rx(r"(?P<name>" + NAME + r") will receive \$(?P<pmt>\d+) at the end "
+       r"of each (?P<unit>\w+) for (?P<n>\d+) \w+ from a (?P<fund>" +
+       WORDS + r") earning (?P<rate>\d+)% per \w+\. What is the present "
+       r"value of the annuity\?"),
+    rx(r"How much must be deposited now in a (?P<fund>" + WORDS +
+       r") earning (?P<rate>\d+)% per (?P<unit>\w+) so that it can pay "
+       r"out \$(?P<pmt>\d+) at the end of each \w+ for (?P<n>\d+) \w+\?"),
+    rx(r"A (?P<loan>" + WORDS + r") is repaid with (?P<n>\d+) "
+       r"end-of-(?P<unit>\w+) payments of \$(?P<pmt>\d+) at (?P<rate>\d+)% "
+       r"per \w+\. Find the present value of the payment stream\."),
+    rx(r"(?P<name>" + NAME + r") is offered \$(?P<pmt>\d+) at the end of "
+       r"each (?P<unit>\w+) for the next (?P<n>\d+) \w+\. At "
+       r"(?P<rate>\d+)% per \w+, what single amount today is worth the "
+       r"same\?"),
+]
+
+DUE_PATTERNS = [
+    rx(r"An annuity due pays \$(?P<pmt>\d+) at the beginning of each "
+       r"(?P<unit>\w+) for (?P<n>\d+) \w+ at (?P<rate>\d+)% per \w+\. "
+       r"Find the future value\."),
+    rx(r"(?P<name>" + NAME + r") deposits \$(?P<pmt>\d+) at the beginning "
+       r"of every (?P<unit>\w+) into a (?P<fund>" + WORDS + r") earning "
+       r"(?P<rate>\d+)% per \w+\. What is the value of the " + WORDS +
+       r" at the end of (?P<n>\d+) \w+\?"),
+    rx(r"Each (?P<unit>\w+) opens with a \$(?P<pmt>\d+) deposit into a "
+       r"(?P<fund>" + WORDS + r") that pays (?P<rate>\d+)% per \w+\. "
+       r"Find the future value of the annuity due after (?P<n>\d+) \w+\."),
+    rx(r"(?P<name>" + NAME + r") makes (?P<n>\d+) beginning-of-"
+       r"(?P<unit>\w+) payments of \$(?P<pmt>\d+) into a (?P<fund>" +
+       WORDS + r") at (?P<rate>\d+)% per \w+\. Find the future value of "
+       r"the annuity due\."),
+]
+
+PERP_PATTERNS = [
+    rx(r"A perpetuity pays \$(?P<pmt>\d+) at the end of each "
+       r"(?P<unit>\w+) forever\. At (?P<rate>\d+)% per \w+, find its "
+       r"present value\."),
+    rx(r"(?P<name>" + NAME + r") wants a (?P<fund>" + WORDS + r") that "
+       r"pays \$(?P<pmt>\d+) at the end of each (?P<unit>\w+) forever\. "
+       r"If the " + WORDS + r" earns (?P<rate>\d+)% per \w+, how much "
+       r"must be deposited today\?"),
+    rx(r"The (?P<fund>" + WORDS + r") at (?P<name>" + NAME + r") College "
+       r"must pay \$(?P<pmt>\d+) every (?P<unit>\w+) forever out of "
+       r"interest alone\. At (?P<rate>\d+)% per \w+, what principal is "
+       r"required\?"),
+    rx(r"Find the present value of a perpetuity of \$(?P<pmt>\d+) per "
+       r"(?P<unit>\w+) at (?P<rate>\d+)% per \w+\."),
+    rx(r"(?P<name>" + NAME + r") deposits a lump sum into a (?P<fund>" +
+       WORDS + r") paying (?P<rate>\d+)% per (?P<unit>\w+)\. If only the "
+       r"interest is withdrawn, the " + WORDS + r" can pay \$(?P<pmt>\d+) "
+       r"every \w+ forever\. How large is the lump sum\?"),
+]
+
+AMORT_PATTERNS = [
+    rx(r"Build a (?P<n>\d+)-payment amortization schedule for a loan with "
+       r"starting balance \$(?P<bal>\d+), payment \$(?P<pmt>\d+), and "
+       r"period rate (?P<rate>\d+)%\. Find total interest and final "
+       r"balance\."),
+    rx(r"(?P<name>" + NAME + r") owes \$(?P<bal>\d+) on a (?P<loan>" +
+       WORDS + r") charged (?P<rate>\d+)% per (?P<unit>\w+)\. The payment "
+       r"is \$(?P<pmt>\d+) per \w+\. After (?P<n>\d+) payments, find the "
+       r"total interest paid and the balance that remains\."),
+    rx(r"A (?P<loan>" + WORDS + r") of \$(?P<bal>\d+) charges "
+       r"(?P<rate>\d+)% interest per (?P<unit>\w+)\. With \$(?P<pmt>\d+) "
+       r"paid each \w+, amortize the first (?P<n>\d+) payments and give "
+       r"the total interest and the remaining balance\."),
+    rx(r"The balance on (?P<name>" + NAME + r")'s (?P<loan>" + WORDS +
+       r") is \$(?P<bal>\d+), the rate is (?P<rate>\d+)% per "
+       r"(?P<unit>\w+), and the payment due each \w+ is \$(?P<pmt>\d+)\. "
+       r"Fill in (?P<n>\d+) rows of the amortization schedule, then "
+       r"report the total interest and the ending balance\."),
+]
+
+ALL_PATTERNS = [
+    ("future_value", FV_PATTERNS),
+    ("present_value", PV_PATTERNS),
+    ("due", DUE_PATTERNS),
+    ("perpetuity", PERP_PATTERNS),
+    ("amortization", AMORT_PATTERNS),
+]
 
 
-def expected_present(problem):
-    match = PV_RE.fullmatch(problem)
-    payment = int(match.group(1))
-    periods = int(match.group(2))
-    rate_pct = int(match.group(3))
-    rate = Fraction(rate_pct, 100)
-    base = 1 + rate
-    growth = base ** periods
-    discount = Fraction(1, 1) / growth
-    numerator = 1 - discount
-    factor = numerator / rate
-    value = payment * factor
-    answer = f"present_value {money(value)}"
-    steps = [
-        make_step("ANNUITY_SETUP", "ordinary annuity present value",
-                  f"PMT={payment},r={rate_pct}%,n={periods}"),
-        make_step("PERCENT_TO_DEC", f"{rate_pct}%", dec(rate)),
-        make_step("ANNUITY_FORMULA", "PV = PMT*(1 - (1+r)^(-n))/r"),
-        make_step("A", 1, dec(rate), exact(base)),
-        make_step("E", exact(base), periods, exact(growth)),
-        make_step("D", 1, exact(growth), exact(discount)),
-        make_step("S", 1, exact(discount), exact(numerator)),
-        make_step("D", exact(numerator), dec(rate), exact(factor)),
-        make_step("M", payment, exact(factor), exact(value)),
-        make_step("Z", answer),
-    ]
-    return steps, answer
+def parse(problem):
+    """(variant, template_index, fields) for a problem text, or raise."""
+    hits = []
+    for variant, patterns in ALL_PATTERNS:
+        for index, pattern in enumerate(patterns):
+            match = pattern.fullmatch(problem)
+            if match:
+                hits.append((variant, index, match.groupdict()))
+    if len(hits) != 1:
+        raise AssertionError(f"{len(hits)} phrasings matched: {problem!r}")
+    return hits[0]
 
 
-def expected_amort(problem):
-    match = AMORT_RE.fullmatch(problem)
-    periods = int(match.group(1))
-    balance = Fraction(int(match.group(2)))
-    payment = int(match.group(3))
-    rate_pct = int(match.group(4))
-    rate = Fraction(rate_pct, 100)
-    steps = [
-        make_step("ANNUITY_SETUP", "amortization schedule",
-                  f"balance={int(balance)},payment={payment},r={rate_pct}%",
-                  f"periods={periods}"),
-        make_step("PERCENT_TO_DEC", f"{rate_pct}%", dec(rate)),
-        make_step("ANNUITY_FORMULA",
-                  "interest=balance*r; principal=payment-interest"),
-    ]
+def money(fr):
+    cents = fr * 100
+    assert cents.denominator == 1, fr
+    c = cents.numerator
+    return f"${c // 100}.{c % 100:02d}"
+
+
+# --- independent solvers: simulation, never the closed form --------------
+def sim_future_value(pmt, rate, periods):
+    """Roll the account forward one period at a time."""
+    balance = Fraction(0)
+    for _ in range(periods):
+        balance = balance * (1 + rate) + pmt
+    return balance
+
+
+def sim_due_value(pmt, rate, periods):
+    """Annuity due: the deposit lands before the period's growth."""
+    balance = Fraction(0)
+    for _ in range(periods):
+        balance = (balance + pmt) * (1 + rate)
+    return balance
+
+
+def sim_present_value(pmt, rate, periods):
+    """Discount the payment stream back one period at a time."""
+    value = Fraction(0)
+    for _ in range(periods):
+        value = (value + pmt) / (1 + rate)
+    return value
+
+
+def sim_schedule(balance, payment, rate, periods):
+    rows = []
     total_interest = Fraction(0)
-    for period in range(1, periods + 1):
+    for _ in range(periods):
         interest = balance * rate
         principal = payment - interest
-        new_balance = balance - principal
-        new_total = total_interest + interest
-        steps.extend([
-            make_step("M", exact(balance), dec(rate), exact(interest)),
-            make_step("S", payment, exact(interest), exact(principal)),
-            make_step("S", exact(balance), exact(principal), exact(new_balance)),
-            make_step("A", exact(total_interest), exact(interest),
-                      exact(new_total)),
-            make_step("AMORT_ROW", period, f"interest={money(interest)}",
-                      f"principal={money(principal)},balance={money(new_balance)}"),
-        ])
-        balance = new_balance
-        total_interest = new_total
-    answer = (
-        f"total_interest {money(total_interest)}; "
-        f"final_balance {money(balance)}"
-    )
-    steps.append(make_step("Z", answer))
-    return steps, answer
+        balance = balance - principal
+        total_interest += interest
+        rows.append((interest, principal, balance))
+    return rows, total_interest, balance
 
 
-def expected_flow(example):
-    problem = example["problem"]
-    if FV_RE.fullmatch(problem):
-        return expected_future(problem)
-    if PV_RE.fullmatch(problem):
-        return expected_present(problem)
-    if AMORT_RE.fullmatch(problem):
-        return expected_amort(problem)
-    raise AssertionError(problem)
+def oracle(problem):
+    """Recompute the expected final answer from the problem text alone."""
+    variant, _, fields = parse(problem)
+    rate = Fraction(int(fields["rate"]), 100)
+    pmt = Fraction(int(fields["pmt"]))
+    if variant == "perpetuity":
+        # Interest alone must cover the payment: value * rate == pmt.
+        value = pmt * 100 / int(fields["rate"])
+        assert value * rate == pmt
+        return variant, f"present_value {money(value)}", fields
+    if variant == "amortization":
+        rows, total_interest, final_balance = sim_schedule(
+            Fraction(int(fields["bal"])), pmt, rate, int(fields["n"]))
+        return variant, (
+            f"total_interest {money(total_interest)}; "
+            f"final_balance {money(final_balance)}"), fields
+    periods = int(fields["n"])
+    if variant == "future_value":
+        return variant, (
+            f"future_value {money(sim_future_value(pmt, rate, periods))}"
+        ), fields
+    if variant == "due":
+        return variant, (
+            f"future_value_due {money(sim_due_value(pmt, rate, periods))}"
+        ), fields
+    return variant, (
+        f"present_value {money(sim_present_value(pmt, rate, periods))}"
+    ), fields
+
+
+def check_step_arithmetic(case, steps):
+    for raw_step in steps:
+        fields = raw_step.split(DELIM)
+        code = fields[0]
+        if code == "A":
+            case.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+        elif code == "S":
+            case.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+        elif code == "M":
+            case.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+        elif code == "D":
+            case.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+        elif code == "E":
+            case.assertEqual(Fraction(fields[1]) ** int(fields[2]),
+                             Fraction(fields[3]), raw_step)
+        elif code == "CHECK":
+            lhs = Fraction(fields[2].rsplit("=", 1)[1])
+            rhs = Fraction(fields[3].rsplit("=", 1)[1])
+            case.assertEqual(lhs, rhs, raw_step)
+
+
+SETUP_RE = re.compile(r"PMT=(\d+),r=(\d+)%(?:,n=(\d+))?")
+AMORT_SETUP_RE = re.compile(r"balance=(\d+),payment=(\d+),r=(\d+)%")
 
 
 class TestAnnuityGenerator(unittest.TestCase):
@@ -157,54 +259,113 @@ class TestAnnuityGenerator(unittest.TestCase):
         self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
                          result["final_answer"])
 
-    def test_oracle_reconstructs_full_trace_from_problem_text(self):
-        for _ in range(500):
+    def test_oracle_from_problem_text(self):
+        seen = set()
+        for _ in range(1500):
             result = self.gen.generate()
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer, result["problem"])
-            self.assertEqual(result["steps"], expected_steps,
+            variant, answer, _ = oracle(result["problem"])
+            seen.add(variant)
+            self.assertEqual(result["operation"], f"annuity_{variant}",
                              result["problem"])
+            self.assertEqual(result["final_answer"], answer,
+                             result["problem"])
+            check_step_arithmetic(self, result["steps"])
+        self.assertEqual(seen, set(AnnuityGenerator.VARIANTS))
+
+    def test_every_phrasing_is_reachable_and_unambiguous(self):
+        counts = {}
+        for _ in range(4000):
+            variant, index, _ = parse(self.gen.generate()["problem"])
+            counts[(variant, index)] = counts.get((variant, index), 0) + 1
+        for variant, patterns in ALL_PATTERNS:
+            for index in range(len(patterns)):
+                self.assertIn((variant, index), counts,
+                              f"phrasing {variant}#{index} never generated")
+
+    def test_setup_step_matches_problem_text(self):
+        for _ in range(400):
+            result = self.gen.generate()
+            variant, _, fields = oracle(result["problem"])
+            setup = result["steps"][0].split(DELIM)
+            self.assertEqual(setup[0], "ANNUITY_SETUP")
+            if variant == "amortization":
+                match = AMORT_SETUP_RE.fullmatch(setup[2])
+                self.assertIsNotNone(match, setup)
+                self.assertEqual(match.group(1), fields["bal"])
+                self.assertEqual(match.group(2), fields["pmt"])
+                self.assertEqual(match.group(3), fields["rate"])
+                self.assertEqual(setup[3], f"periods={fields['n']}")
+            else:
+                match = SETUP_RE.fullmatch(setup[2])
+                self.assertIsNotNone(match, setup)
+                self.assertEqual(match.group(1), fields["pmt"])
+                self.assertEqual(match.group(2), fields["rate"])
+                if variant != "perpetuity":
+                    self.assertEqual(match.group(3), fields["n"])
+
+    def test_amortization_rows_match_simulation(self):
+        gen = AnnuityGenerator("amortization")
+        for _ in range(300):
+            result = gen.generate()
+            _, _, fields = oracle(result["problem"])
+            rows, _, _ = sim_schedule(
+                Fraction(int(fields["bal"])), Fraction(int(fields["pmt"])),
+                Fraction(int(fields["rate"]), 100), int(fields["n"]))
+            emitted = [s.split(DELIM) for s in result["steps"]
+                       if s.startswith("AMORT_ROW")]
+            self.assertEqual(len(emitted), len(rows), result["problem"])
+            for index, (fields_row, (interest, principal, balance)) in \
+                    enumerate(zip(emitted, rows), start=1):
+                self.assertEqual(fields_row[1], str(index))
+                self.assertEqual(fields_row[2],
+                                 f"interest={money(interest)}")
+                self.assertEqual(
+                    fields_row[3],
+                    f"principal={money(principal)},"
+                    f"balance={money(balance)}")
+                self.assertGreater(principal, 0, result["problem"])
+                self.assertGreater(balance, 0, result["problem"])
 
     def test_variants_are_available(self):
         for variant in AnnuityGenerator.VARIANTS:
-            result = AnnuityGenerator(variant).generate()
-            self.assertEqual(result["operation"], f"annuity_{variant}")
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer)
-            self.assertEqual(result["steps"], expected_steps)
+            for _ in range(30):
+                result = AnnuityGenerator(variant).generate()
+                self.assertEqual(result["operation"], f"annuity_{variant}")
+                parsed_variant, answer, _ = oracle(result["problem"])
+                self.assertEqual(parsed_variant, variant)
+                self.assertEqual(result["final_answer"], answer)
+                check_step_arithmetic(self, result["steps"])
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):
             AnnuityGenerator("bogus")
 
-    def test_arithmetic_steps(self):
+    def test_answers_are_exact_money(self):
+        money_re = re.compile(r"\$\d+\.\d{2}")
         for _ in range(300):
             result = self.gen.generate()
-            for raw_step in result["steps"]:
-                fields = raw_step.split(DELIM)
-                if fields[0] == "A":
-                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "S":
-                    self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "M":
-                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "D":
-                    self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "E":
-                    self.assertEqual(Fraction(fields[1]) ** int(fields[2]),
-                                     Fraction(fields[3]), raw_step)
+            amounts = money_re.findall(result["final_answer"])
+            self.assertTrue(amounts, result["final_answer"])
+            self.assertIsNone(
+                re.search(r"\de[+-]?\d", result["final_answer"]),
+                result["final_answer"])
 
     def test_pipe_safe(self):
-        for _ in range(300):
+        for _ in range(400):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
             self.assertNotIn(DELIM, result["final_answer"])
+
+    def test_seeded_determinism(self):
+        import random
+        random.seed(4242)
+        first = [self.gen.generate()["problem"] for _ in range(20)]
+        random.seed(4242)
+        second = [self.gen.generate()["problem"] for _ in range(20)]
+        self.assertEqual(first, second)
 
 
 if __name__ == "__main__":

@@ -3,8 +3,36 @@ import math
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
-TERMINATING_DENOMS = [2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50]
-REPEATING_DENOMS = [3, 6, 7, 9, 11, 12, 13, 14, 15, 18, 21, 22]
+# Every non-1 core is coprime to 10 and has a decimal period of at most 18.
+# Multiplying by 2^a*5^b adds at most two nonrepeating digits, so the visible
+# long division remains hand-sized while the fraction space is large.
+DECIMAL_CORES = [
+    1, 3, 7, 9, 11, 13, 17, 19, 21, 27, 31, 33, 37, 39, 41, 51,
+    53, 57, 63, 73, 77, 79, 81, 91, 93, 99,
+]
+
+PROBLEM_TEMPLATES = [
+    "Determine if {fraction} is terminating or repeating, and give the decimal.",
+    "Classify {fraction} as terminating or repeating and write its exact decimal.",
+    "Write {fraction} as an exact decimal and state whether it terminates or repeats.",
+    "For the fraction {fraction}, decide whether its decimal terminates or repeats, then give it exactly.",
+    "Find the exact decimal for {fraction} and identify it as terminating or repeating.",
+]
+
+
+def fraction_instance():
+    """Construct a reducible or reduced proper fraction with a short period."""
+    while True:
+        core = random.choice(DECIMAL_CORES)
+        reduced_den = core * (2 ** random.randint(0, 2)) * (5 ** random.randint(0, 2))
+        if reduced_den > 1:
+            break
+    while True:
+        reduced_num = random.randint(1, reduced_den - 1)
+        if math.gcd(reduced_num, reduced_den) == 1:
+            break
+    common_factor = random.randint(1, 5)
+    return reduced_num * common_factor, reduced_den * common_factor
 
 
 class RepeatingDecimalGenerator(ProblemGenerator):
@@ -19,8 +47,7 @@ class RepeatingDecimalGenerator(ProblemGenerator):
     """
 
     def generate(self) -> dict:
-        denom = random.choice(TERMINATING_DENOMS + REPEATING_DENOMS)
-        num = random.randint(1, denom - 1)
+        num, denom = fraction_instance()
 
         steps = []
         # Simplify fraction (skip the no-op when already reduced)
@@ -80,7 +107,8 @@ class RepeatingDecimalGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation="repeating_decimal",
-            problem=f"Determine if {num}/{denom} is terminating or repeating, and give the decimal.",
+            problem=random.choice(PROBLEM_TEMPLATES).format(
+                fraction=f"{num}/{denom}"),
             steps=steps,
             final_answer=final_answer,
         )

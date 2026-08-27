@@ -14,7 +14,7 @@ from helpers import DELIM
 
 def oracle_answer(example):
     """Independently expands the sigma from the problem text alone."""
-    m = re.fullmatch(
+    m = re.search(
         r"Expand and evaluate: Σ_\(k=(-?\d+)\)\^\((-?\d+)\) (.+)\.",
         example["problem"])
     assert m, example["problem"]
@@ -105,6 +105,15 @@ class TestSigmaNotationGenerator(unittest.TestCase):
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             SigmaNotationGenerator("bogus")
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

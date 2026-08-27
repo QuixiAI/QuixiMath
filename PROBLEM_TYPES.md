@@ -299,13 +299,24 @@ Generates prime factorization using repeated division (factor tree style).
 **Variants:** `prime_factorization`
 
 ```
-Problem: Prime factorize 418
+Problem: The museum has 1753 folders. Write 1753 as a product of primes using repeated division.
 Steps:
-  PF_STEP|418|2|209
-  PF_STEP|209|11|19
-  PF_PRIME|19
-  Z|2 × 11 × 19
-Answer: 2 × 11 × 19
+  CHECK|1753 mod 2|1|not divisible
+  CHECK|1753 mod 3|1|not divisible
+  CHECK|1753 mod 5|3|not divisible
+  CHECK|1753 mod 7|3|not divisible
+  CHECK|1753 mod 11|4|not divisible
+  CHECK|1753 mod 13|11|not divisible
+  CHECK|1753 mod 17|2|not divisible
+  CHECK|1753 mod 19|5|not divisible
+  CHECK|1753 mod 23|5|not divisible
+  CHECK|1753 mod 29|13|not divisible
+  CHECK|1753 mod 31|17|not divisible
+  CHECK|1753 mod 37|14|not divisible
+  CHECK|1753 mod 41|31|not divisible
+  PF_PRIME|1753
+  Z|1753
+Answer: 1753
 ```
 
 ### GCF — `GCFGenerator`  ·  elementary · difficulty 2
@@ -509,15 +520,15 @@ Converts rates like mph -> ft/s (and reverse) using factor-label steps with expl
 **Variants:** `convert_rate`
 
 ```
-Problem: Convert 125 m/s to km/hr
+Problem: The modeled speed of a athlete in a motion chart is changing units. Convert 245 m/s to km/hr.
 Steps:
   CONV_FACTOR|1 hr|3600 s
-  M|125|3600|450000
+  M|245|3600|882000
   CONV_FACTOR|1 km|1000 m
-  D|450000|1000|450
-  CONV_RESULT|125 m/s|450 km/hr
-  Z|450 km/hr
-Answer: 450 km/hr
+  D|882000|1000|882
+  CONV_RESULT|245 m/s|882 km/hr
+  Z|882 km/hr
+Answer: 882 km/hr
 ```
 
 ### Temperature Conversion — `TemperatureConversionGenerator`  ·  elementary · difficulty 3
@@ -575,16 +586,20 @@ Determines whether a fraction converts to a terminating or repeating decimal and
 **Variants:** `repeating_decimal`
 
 ```
-Problem: Determine if 4/6 is terminating or repeating, and give the decimal.
+Problem: For the fraction 252/296, decide whether its decimal terminates or repeats, then give it exactly.
 Steps:
-  F|4/6|2/3
-  PF_PRIME|3
-  DEC_TYPE|2/3|repeating
-  D|20|3|6
-  REPEAT_DETECT|remainder 2 repeats|repetend 6
-  DEC_VALUE|2/3|0.(6)
-  Z|0.(6) (repeating)
-Answer: 0.(6) (repeating)
+  F|252/296|63/74
+  PF_STEP|74|2|37
+  PF_PRIME|37
+  DEC_TYPE|63/74|repeating
+  D|630|74|8
+  D|380|74|5
+  D|100|74|1
+  D|260|74|3
+  REPEAT_DETECT|remainder 38 repeats|repetend 513
+  DEC_VALUE|63/74|0.8(513)
+  Z|0.8(513) (repeating)
+Answer: 0.8(513) (repeating)
 ```
 
 ### Proportion Word Problem — `ProportionWordProblemGenerator`  ·  elementary · difficulty 3
@@ -627,11 +642,11 @@ Single-event probability with uniform outcomes.
 **Variants:** `probability_simple`
 
 ```
-Problem: If an event has 13 favorable outcomes out of 15 equally likely outcomes, what is P?
+Problem: An exercise used by the game club specifies these outcome counts. If an event has 98 favorable outcomes out of 101 equally likely outcomes, what is P?
 Steps:
-  PROB_SETUP|13|15
-  Z|13/15
-Answer: 13/15
+  PROB_SETUP|98|101
+  Z|98/101
+Answer: 98/101
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1
@@ -794,13 +809,13 @@ Generates scale factor problems.
 **Variants:** `scale_find_actual`, `scale_find_scaled`
 
 ```
-Problem: A blueprint has a scale of 1 centimeter = 5 meters. If a wall is actually 25 meters long, how long is it on the blueprint?
+Problem: A blueprint for a cafe has a scale of 1 centimeter = 12 meters. If a wall is actually 204 meters long, how long is it on the blueprint?
 Steps:
-  SCALE_SETUP|1 centimeter|5 meters|5
-  SCALE_IDENTIFY|25 meters|scaled_dimension
-  SCALE_DIV|25|5|5
-  Z|5 centimeters
-Answer: 5 centimeters
+  SCALE_SETUP|1 centimeter|12 meters|12
+  SCALE_IDENTIFY|204 meters|scaled_dimension
+  SCALE_DIV|204|12|17
+  Z|17 centimeters
+Answer: 17 centimeters
 ```
 
 ### Similar Figures Scale — `SimilarFiguresScaleGenerator`  ·  middle · difficulty 3
@@ -826,14 +841,14 @@ Generates proportional relationship problems (a/b = c/x or a/b = x/c).
 **Variants:** `proportional_relationship`
 
 ```
-Problem: If 7 is to 7, what is proportional to 14?
+Problem: If 55 is to 25, what is proportional to 1250?
 Steps:
-  PROP_SETUP|7/7 = x/14
-  M|7|14|98
-  EQ_SETUP|x = 98/7
-  D|98|7|14
-  Z|14
-Answer: 14
+  PROP_SETUP|55/25 = x/1250
+  M|55|1250|68750
+  EQ_SETUP|x = 68750/25
+  D|68750|25|2750
+  Z|2750
+Answer: 2750
 ```
 
 ### One Step Equation — `OneStepEquationGenerator`  ·  middle · difficulty 3
@@ -1027,22 +1042,27 @@ Answer: All real numbers
 
 ### Exponent Evaluation — `ExponentEvaluationGenerator`  ·  middle · difficulty 3
 
-Generates exponent evaluation problems (compute a^n).
+Generates exponent evaluation problems: expand a power (or a short product / sum of powers) as repeated multiplication and combine.
 
-**Variants:** `exponent_evaluation`
+**Variants:** `exponent_evaluation`, `exponent_evaluation_product`, `exponent_evaluation_sum`
 
 ```
-Problem: Evaluate: (-5)^6
+Problem: In a math club puzzle Wesley must evaluate (-10)^4 - 7^4. Give the value.
 Steps:
-  EXP_SETUP|-5|6
-  EXP_EXPAND|(-5) × (-5) × (-5) × (-5) × (-5) × (-5)
-  EXP_PARTIAL|-5|-5|25
-  EXP_PARTIAL|25|-5|-125
-  EXP_PARTIAL|-125|-5|625
-  EXP_PARTIAL|625|-5|-3125
-  EXP_PARTIAL|-3125|-5|15625
-  Z|15625
-Answer: 15625
+  EXP_SETUP|-10|4
+  EXP_EXPAND|(-10) × (-10) × (-10) × (-10)
+  EXP_PARTIAL|-10|-10|100
+  EXP_PARTIAL|100|-10|-1000
+  EXP_PARTIAL|-1000|-10|10000
+  EXP_SETUP|7|4
+  EXP_EXPAND|7 × 7 × 7 × 7
+  EXP_PARTIAL|7|7|49
+  EXP_PARTIAL|49|7|343
+  EXP_PARTIAL|343|7|2401
+  REWRITE|10000 - 2401
+  S|10000|2401|7599
+  Z|7599
+Answer: 7599
 ```
 
 ### Exponent Rules — `ExponentRulesGenerator`  ·  middle · difficulty 4
@@ -1052,14 +1072,14 @@ Generates exponent rule problems.
 **Variants:** `exponent_negative_rule`, `exponent_power_rule`, `exponent_product_rule`, `exponent_quotient_rule`, `exponent_zero_rule`
 
 ```
-Problem: Simplify: b^(-2)
+Problem: Zara writes (b + 9)^(-17) on a scratchpad. Simplify it to one power.
 Steps:
-  EXP_RULE_SETUP|b^(-2)
+  EXP_RULE_SETUP|(b + 9)^(-17)
   EXP_RULE_IDENTIFY|negative_exponent|x^(-n) = 1/x^n
-  EXP_RULE_APPLY|negate|2|2
-  EXP_RULE_SIMPLIFY|1/b^2
-  Z|1/b^2
-Answer: 1/b^2
+  EXP_RULE_APPLY|negate|17|17
+  EXP_RULE_SIMPLIFY|1/(b + 9)^17
+  Z|1/(b + 9)^17
+Answer: 1/(b + 9)^17
 ```
 
 ### Exponent Mixed Rules — `ExponentMixedRulesGenerator`  ·  middle · difficulty 4
@@ -1090,13 +1110,13 @@ Generates scientific notation problems.
 **Variants:** `scientific_notation_convert_from`, `scientific_notation_convert_to`, `scientific_notation_divide`, `scientific_notation_multiply`
 
 ```
-Problem: Divide: (25 × 10^5) ÷ (5 × 10^3)
+Problem: During the community center, Zara is asked to Divide (9.45 × 10^-4) ÷ (6.3 × 10^5).
 Steps:
-  SCI_SETUP|(25 × 10^5) ÷ (5 × 10^3)
-  SCI_OPERATION|divide_coefficients|25|5|5
-  SCI_OPERATION|subtract_exponents|5|3|2
-  Z|5 × 10^2
-Answer: 5 × 10^2
+  SCI_SETUP|(9.45 × 10^-4) ÷ (6.3 × 10^5)
+  SCI_OPERATION|divide_coefficients|9.45|6.3|1.5
+  SCI_OPERATION|subtract_exponents|-4|5|-9
+  Z|1.5 × 10^-9
+Answer: 1.5 × 10^-9
 ```
 
 ### Roots And Radicals — `RootsAndRadicalsGenerator`  ·  middle · difficulty 4
@@ -1106,13 +1126,13 @@ Generates square root, cube root, and radical simplification problems.
 **Variants:** `cube_root_perfect`, `simplify_radical`, `square_root_perfect`
 
 ```
-Problem: Evaluate: ∛2744
+Problem: At the evening course, Quentin gets the prompt: Evaluate ∛3375.
 Steps:
-  ROOT_SETUP|∛2744
-  ROOT_IDENTIFY|2744|perfect_cube|14
-  ROOT_EXTRACT|14
-  Z|14
-Answer: 14
+  ROOT_SETUP|∛3375
+  ROOT_IDENTIFY|3375|perfect_cube|15
+  ROOT_EXTRACT|15
+  Z|15
+Answer: 15
 ```
 
 ### Angle Relationships — `AngleRelationshipsGenerator`  ·  middle · difficulty 4
@@ -1240,15 +1260,15 @@ Generates surface area of cylinder problems.
 **Variants:** `surface_area_cylinder`
 
 ```
-Problem: Find the surface area of a cylinder with radius 14 units and height 27 units.
+Problem: The design studio is checking a cylinder design. Find the surface area of a cylinder with radius 26 units and height 51 units.
 Steps:
-  SA_SETUP|cylinder|r=14, h=27
+  SA_SETUP|cylinder|r=26, h=51
   SA_FORMULA|SA = 2πr² + 2πrh
-  SA_BASES|2π(14)² = 2π × 196|392π
-  SA_LATERAL|2π × 14 × 27|756π
-  SA_TOTAL|SA = 392π + 756π|1148π
-  Z|1148π square units
-Answer: 1148π square units
+  SA_BASES|2π(26)² = 2π × 676|1352π
+  SA_LATERAL|2π × 26 × 51|2652π
+  SA_TOTAL|SA = 1352π + 2652π|4004π
+  Z|4004π square units
+Answer: 4004π square units
 ```
 
 ### Round Solids — `RoundSolidsGenerator`  ·  middle · difficulty 4
@@ -1258,15 +1278,15 @@ Volume and surface area of pyramids, cones, and spheres — the round and pointe
 **Variants:** `surface_area_cone`, `surface_area_pyramid`, `surface_area_sphere`, `volume_cone`, `volume_pyramid`, `volume_sphere`
 
 ```
-Problem: Find the surface area of a square pyramid with base side 8 units and slant height 3 units.
+Problem: In a lesson at the prototype bay, this solid is analyzed. Find the surface area of a square pyramid with base side 26 units and slant height 29 units.
 Steps:
   SA_FORMULA|SA = b² + 2bl (square base, slant height l)
-  E|8|2|64
-  M|8|3|24
-  M|2|24|48
-  A|64|48|112
-  Z|112 square units
-Answer: 112 square units
+  E|26|2|676
+  M|26|29|754
+  M|2|754|1508
+  A|676|1508|2184
+  Z|2184 square units
+Answer: 2184 square units
 ```
 
 ### Pythag Hyp — `PythagHypGenerator`  ·  middle · difficulty 4
@@ -1276,14 +1296,16 @@ Generates Pythagorean theorem problems (finding hypotenuse).
 **Variants:** `pythag_hyp`
 
 ```
-Problem: Find hypotenuse: legs 156 and 320
+Problem: In right triangle KRM, KR and RM are perpendicular legs of lengths 36 and 27. Find hypotenuse KM.
 Steps:
-  E|156|2|24336
-  E|320|2|102400
-  A|24336|102400|126736
-  ROOT|126736|356
-  Z|356
-Answer: 356
+  PYTHAG_SETUP|legs=36,27|hypotenuse KM=?
+  PYTHAG_FORMULA|a² + b² = c²
+  E|36|2|1296
+  E|27|2|729
+  A|1296|729|2025
+  ROOT|2025|45
+  Z|45
+Answer: 45
 ```
 
 ### Pythagorean Leg — `PythagoreanLegGenerator`  ·  middle · difficulty 4
@@ -1293,17 +1315,17 @@ Generates Pythagorean theorem problems to find a leg.
 **Variants:** `pythagorean_find_leg`
 
 ```
-Problem: In a right triangle, the hypotenuse is 340 units and one leg is 336 units. Find the length of the other leg.
+Problem: In right triangle KRM, hypotenuse KM is 45 units and leg KR is 36 units. Find leg RM.
 Steps:
-  PYTHAG_SETUP|c=340|a=336|b=?
+  PYTHAG_SETUP|KM=45|KR=36|RM=?
   PYTHAG_FORMULA|a² + b² = c²
-  PYTHAG_SUBSTITUTE|336² + b² = 340²
-  PYTHAG_SQUARE|336|112896
-  PYTHAG_SQUARE|340|115600
-  PYTHAG_SOLVE|b² = 115600 - 112896|2704
-  PYTHAG_ROOT|2704|52
-  Z|52 units
-Answer: 52 units
+  PYTHAG_SUBSTITUTE|36² + b² = 45²
+  PYTHAG_SQUARE|36|1296
+  PYTHAG_SQUARE|45|2025
+  PYTHAG_SOLVE|b² = 2025 - 1296|729
+  PYTHAG_ROOT|729|27
+  Z|27 units
+Answer: 27 units
 ```
 
 ### Pythagorean Word Problem — `PythagoreanWordProblemGenerator`  ·  middle · difficulty 4
@@ -1313,19 +1335,19 @@ Generates word problems involving the Pythagorean theorem.
 **Variants:** `pythagorean_word_problem`
 
 ```
-Problem: A rectangle has a length of 15 units and a width of 20 units. What is the length of its diagonal?
+Problem: A rectangle has a length of 36 units and a width of 27 units. What is the length of its diagonal? Use right-triangle diagram KRM, with the right angle at R.
 Steps:
-  PYTHAG_CONTEXT|rectangle_diagonal|length=15, width=20
-  PYTHAG_MODEL|length=15|width=20|diagonal=?
+  PYTHAG_CONTEXT|rectangle_diagonal|length=36, width=27|diagram=KRM
+  PYTHAG_MODEL|length=36|width=27|diagonal=?
   PYTHAG_FORMULA|d² = l² + w²
-  PYTHAG_SUBSTITUTE|d² = 15² + 20²
-  PYTHAG_CALCULATE|d² = 225 + 400 = 625|625
-  PYTHAG_CALCULATE|d = √625|25
-  Z|25 units
-Answer: 25 units
+  PYTHAG_SUBSTITUTE|d² = 36² + 27²
+  PYTHAG_CALCULATE|d² = 1296 + 729 = 2025|2025
+  PYTHAG_CALCULATE|d = √2025|45
+  Z|45 units
+Answer: 45 units
 ```
 
-### Mean — `MeanGenerator`  ·  middle · difficulty 3
+### Mean — `MeanGenerator`  ·  middle · difficulty 2
 
 Generates mean (average) calculation problems.
 
@@ -1342,7 +1364,7 @@ Steps:
 Answer: 56
 ```
 
-### Median — `MedianGenerator`  ·  middle · difficulty 3
+### Median — `MedianGenerator`  ·  middle · difficulty 2
 
 Generates median calculation problems.
 
@@ -1359,7 +1381,7 @@ Steps:
 Answer: 62
 ```
 
-### Mode — `ModeGenerator`  ·  middle · difficulty 3
+### Mode — `ModeGenerator`  ·  middle · difficulty 1
 
 Generates mode calculation problems.
 
@@ -1380,7 +1402,7 @@ Steps:
 Answer: 44 and 88
 ```
 
-### Range — `RangeGenerator`  ·  middle · difficulty 3
+### Range — `RangeGenerator`  ·  middle · difficulty 1
 
 Generates range calculation problems.
 
@@ -1432,15 +1454,15 @@ Generates compound probability problems with independent events.
 **Variants:** `compound_probability_independent`
 
 ```
-Problem: A bag contains 1 red, 5 blue, 5 green, 3 yellow marbles. A marble is drawn, replaced, and another marble is drawn. What is the probability of drawing a yellow marble first and a yellow marble second?
+Problem: A worksheet for Vera at a review group says: A tin contains red=2, purple=4, black=4, yellow=2 buttons. After every draw, the item is replaced and the tin is mixed. Target order: black, then purple. Determine the probability of the target events.
 Steps:
-  PROB_DESCRIBE|Draw with replacement: yellow then yellow
-  PROB_IDENTIFY|P(yellow)|3/14
-  PROB_IDENTIFY|P(yellow)|3/14
-  PROB_INDEPENDENT|Drawing with replacement means independent events
-  PROB_MULTIPLY|3/14|3/14|9/196
-  Z|9/196
-Answer: 9/196
+  PROB_DESCRIBE|Draw with replacement: black, then purple
+  PROB_IDENTIFY|P(draw 1 is black)|1/3
+  PROB_IDENTIFY|P(draw 2 is purple)|1/3
+  PROB_INDEPENDENT|Replacement restores the same distribution, so the draws are independent
+  PROB_MULTIPLY|1/3|1/3|1/9
+  Z|1/9
+Answer: 1/9
 ```
 
 ### Compound Probability Dependent — `CompoundProbabilityDependentGenerator`  ·  middle · difficulty 4
@@ -1450,15 +1472,16 @@ Generates compound probability problems with dependent events.
 **Variants:** `compound_probability_dependent`
 
 ```
-Problem: Two cards are drawn from a standard deck without replacement. What is the probability that both cards are spades?
+Problem: Aisha picks 2 discs at random, one after another and without replacement, from discs numbered 1 to 12. What is the probability that the picks are all less than 10?
 Steps:
-  PROB_DESCRIBE|Draw two spades cards without replacement
-  PROB_IDENTIFY|P(first spades)|1/4 = 13/52
+  PROB_DESCRIBE|Draw 2 of 1 to 12 without replacement, all less than 10
+  PROB_IDENTIFY|P(first less than 10)|9/12
   PROB_DEPENDENT|Drawing without replacement means dependent events
-  PROB_CONDITIONAL|P(second spades given first was spades)|4/17 = 12/51
-  PROB_MULTIPLY|13/52|12/51|1/17
-  Z|1/17
-Answer: 1/17
+  PROB_CONDITIONAL|P(less than 10 given first was less than 10)|8/11
+  PROB_MULTIPLY|9/12|8/11|72/132
+  PROB_SIMPLIFY|72/132|6/11
+  Z|6/11
+Answer: 6/11
 ```
 
 ### Geometric Probability — `GeometricProbabilityGenerator`  ·  middle · difficulty 4
@@ -1673,9 +1696,9 @@ Builds Pascal's triangle row by row - each entry as an explicit addition of the 
 **Variants:** `pascal_triangle_ncr`, `pascal_triangle_row`
 
 ```
-Problem: Use Pascal's triangle to find 9C1 (row 0 is 1).
+Problem: For the labeled set {a_531, ..., a_546}, use row 16 of Pascal's triangle to find 16C1. Take row 0 to be 1.
 Steps:
-  PASCAL_SETUP|9C1
+  PASCAL_SETUP|16C1
   PASCAL_ROW|0|1
   PASCAL_ROW|1|1, 1
   A|1|1|2
@@ -1722,9 +1745,100 @@ Steps:
   A|28|8|36
   A|8|1|9
   PASCAL_ROW|9|1, 9, 36, 84, 126, 126, 84, 36, 9, 1
-  TABLE_LOOKUP|row 9, entry 1|9
-  Z|9
-Answer: 9
+  A|1|9|10
+  A|9|36|45
+  A|36|84|120
+  A|84|126|210
+  A|126|126|252
+  A|126|84|210
+  A|84|36|120
+  A|36|9|45
+  A|9|1|10
+  PASCAL_ROW|10|1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1
+  A|1|10|11
+  A|10|45|55
+  A|45|120|165
+  A|120|210|330
+  A|210|252|462
+  A|252|210|462
+  A|210|120|330
+  A|120|45|165
+  A|45|10|55
+  A|10|1|11
+  PASCAL_ROW|11|1, 11, 55, 165, 330, 462, 462, 330, 165, 55, 11, 1
+  A|1|11|12
+  A|11|55|66
+  A|55|165|220
+  A|165|330|495
+  A|330|462|792
+  A|462|462|924
+  A|462|330|792
+  A|330|165|495
+  A|165|55|220
+  A|55|11|66
+  A|11|1|12
+  PASCAL_ROW|12|1, 12, 66, 220, 495, 792, 924, 792, 495, 220, 66, 12, 1
+  A|1|12|13
+  A|12|66|78
+  A|66|220|286
+  A|220|495|715
+  A|495|792|1287
+  A|792|924|1716
+  A|924|792|1716
+  A|792|495|1287
+  A|495|220|715
+  A|220|66|286
+  A|66|12|78
+  A|12|1|13
+  PASCAL_ROW|13|1, 13, 78, 286, 715, 1287, 1716, 1716, 1287, 715, 286, 78, 13, 1
+  A|1|13|14
+  A|13|78|91
+  A|78|286|364
+  A|286|715|1001
+  A|715|1287|2002
+  A|1287|1716|3003
+  A|1716|1716|3432
+  A|1716|1287|3003
+  A|1287|715|2002
+  A|715|286|1001
+  A|286|78|364
+  A|78|13|91
+  A|13|1|14
+  PASCAL_ROW|14|1, 14, 91, 364, 1001, 2002, 3003, 3432, 3003, 2002, 1001, 364, 91, 14, 1
+  A|1|14|15
+  A|14|91|105
+  A|91|364|455
+  A|364|1001|1365
+  A|1001|2002|3003
+  A|2002|3003|5005
+  A|3003|3432|6435
+  A|3432|3003|6435
+  A|3003|2002|5005
+  A|2002|1001|3003
+  A|1001|364|1365
+  A|364|91|455
+  A|91|14|105
+  A|14|1|15
+  PASCAL_ROW|15|1, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1
+  A|1|15|16
+  A|15|105|120
+  A|105|455|560
+  A|455|1365|1820
+  A|1365|3003|4368
+  A|3003|5005|8008
+  A|5005|6435|11440
+  A|6435|6435|12870
+  A|6435|5005|11440
+  A|5005|3003|8008
+  A|3003|1365|4368
+  A|1365|455|1820
+  A|455|105|560
+  A|105|15|120
+  A|15|1|16
+  PASCAL_ROW|16|1, 16, 120, 560, 1820, 4368, 8008, 11440, 12870, 11440, 8008, 4368, 1820, 560, 120, 16, 1
+  TABLE_LOOKUP|row 16, entry 1|16
+  Z|16
+Answer: 16
 ```
 
 ### Nets Surface Area — `NetsSurfaceAreaGenerator`  ·  middle · difficulty 4
@@ -1850,15 +1964,18 @@ Factorials, permutations, and combinations with the factorial arithmetic written
 **Variants:** `permutation_combination_combination`, `permutation_combination_factorial`, `permutation_combination_permutation`, `permutation_combination_word`
 
 ```
-Problem: In how many ways can 2 people be seated in a row of 2 chairs, chosen from a group of 10?
+Problem: In how many ways can 5 people be seated in a row of 5 chairs, chosen from a group of 16? The people are labeled p_83 through p_98.
 Steps:
-  PERM_SETUP|arrange 2 of 10|order matters
+  PERM_SETUP|arrange 5 of 16|order matters
   IDENTIFY|order matters|use P(n, r)
-  PERM_FORMULA|P(n, r) = n·(n-1)···(n-r+1), 2 factors
-  REWRITE|10 · 9
-  M|10|9|90
-  Z|90
-Answer: 90
+  PERM_FORMULA|P(n, r) = n·(n-1)···(n-r+1), 5 factors
+  REWRITE|16 · 15 · 14 · 13 · 12
+  M|16|15|240
+  M|240|14|3360
+  M|3360|13|43680
+  M|43680|12|524160
+  Z|524160
+Answer: 524160
 ```
 
 ### Binomial Probability — `BinomialProbabilityGenerator`  ·  middle · difficulty 4
@@ -1956,14 +2073,16 @@ Generates quadratic equation problems (ax^2 + bx + c = 0).
 **Variants:** `quadratic_eq`
 
 ```
-Problem: Solve x^2-6x = 0
+Problem: Solve 2n^2-48n+46 = 0
 Steps:
-  DISC|36|0|36
-  ROOT|36|6
-  Q1|6|6|2|6
-  Q2|6|6|2|0
-  Z|x = 0 or x = 6
-Answer: x = 0 or x = 6
+  EQ_SETUP|2n^2-48n+46 = 0|quadratic formula
+  THEOREM|quadratic formula|n = (-b ± √(b^2 - 4ac))/(2a)
+  DISC|2304|368|1936
+  ROOT|1936|44
+  Q1|48|44|4|23
+  Q2|48|44|4|1
+  Z|n = 1 or n = 23
+Answer: n = 1 or n = 23
 ```
 
 ### Percent Problem — `PercentProblemGenerator`  ·  high · difficulty 4
@@ -1973,17 +2092,29 @@ Generates various types of percentage problems with detailed division steps.
 **Variants:** `percent_find_part`, `percent_find_percent`, `percent_find_whole`
 
 ```
-Problem: 9 is what percent of 10?
+Problem: 177384 is what percent of 91200?
 Steps:
-  SETUP_PERCENT_EQ|percent_dec = 9 / 10
-  DIV_SETUP|9|10
-  D|90|10|9
-  M|9|10|90
-  S|90|90|0
-  PLACE_DP_Q|09|1|0.9
-  DEC_TO_PERCENT|0.9|90%
-  Z|90%
-Answer: 90%
+  SETUP_PERCENT_EQ|percent_dec = 177384 / 91200
+  DIV_SETUP|177384|91200
+  D|177384|91200|1
+  M|1|91200|91200
+  S|177384|91200|86184
+  B|86184|0|861840
+  D|861840|91200|9
+  M|9|91200|820800
+  S|861840|820800|41040
+  B|41040|0|410400
+  D|410400|91200|4
+  M|4|91200|364800
+  S|410400|364800|45600
+  B|45600|0|456000
+  D|456000|91200|5
+  M|5|91200|456000
+  S|456000|456000|0
+  PLACE_DP_Q|1945|1|1.945
+  DEC_TO_PERCENT|1.945|194.5%
+  Z|194.5%
+Answer: 194.5%
 ```
 
 ### Literal Equation — `LiteralEquationGenerator`  ·  high · difficulty 4
@@ -2103,14 +2234,14 @@ Generates problems to identify slope and y-intercept from an equation.
 **Variants:** `slope_intercept_identify`
 
 ```
-Problem: Identify the slope and y-intercept of the line: y = 2x + 3
+Problem: The survey office is checking a slope-intercept form. Identify the slope and y-intercept of the line: y = 94
 Steps:
-  SLOPE_INT_SETUP|y = 2x + 3
+  SLOPE_INT_SETUP|y = 94
   SLOPE_INT_MATCH|Compare to Slope-Intercept Form|y = mx + b
-  SLOPE_INT_IDENTIFY|Slope (m)|2
-  SLOPE_INT_IDENTIFY|y-intercept (b)|3
-  Z|m=2, b=3
-Answer: m=2, b=3
+  SLOPE_INT_IDENTIFY|Slope (m)|0
+  SLOPE_INT_IDENTIFY|y-intercept (b)|94
+  Z|m=0, b=94
+Answer: m=0, b=94
 ```
 
 ### Equation From Two Points — `EquationFromTwoPointsGenerator`  ·  high · difficulty 5
@@ -2323,19 +2454,19 @@ Factors the special forms by pattern recognition: - difference of squares: a² �
 **Variants:** `factor_difference_of_cubes`, `factor_difference_of_squares`, `factor_perfect_square`, `factor_sum_of_cubes`
 
 ```
-Problem: Factor: n^3 - 27
+Problem: A review sheet gives Mirko the expression 64p^3 - 343x^3. Factor it.
 Steps:
-  POLY_SETUP|n^3 - 27
+  POLY_SETUP|64p^3 - 343x^3
   FORM_IDENTIFY|difference_of_cubes|a^3 - b^3 = (a - b)(a^2 + ab + b^2)
-  CBRT|n^3|n
-  CBRT|27|3
-  E|n|2|n^2
-  M|n|3|3n
-  E|3|2|9
-  REWRITE|(n - 3)(n^2 + 3n + 9)
-  CHECK|expand|n^3 + 3n^2 + 9n - 3n^2 - 9n - 27|n^3 - 27
-  Z|(n - 3)(n^2 + 3n + 9)
-Answer: (n - 3)(n^2 + 3n + 9)
+  CBRT|64p^3|4p
+  CBRT|343x^3|7x
+  E|4p|2|16p^2
+  M|4p|7x|28px
+  E|7x|2|49x^2
+  REWRITE|(4p - 7x)(16p^2 + 28px + 49x^2)
+  CHECK|expand|64p^3 + 112p^2x + 196px^2 - 112p^2x - 196px^2 - 343x^3|64p^3 - 343x^3
+  Z|(4p - 7x)(16p^2 + 28px + 49x^2)
+Answer: (4p - 7x)(16p^2 + 28px + 49x^2)
 ```
 
 ### Factor Grouping — `FactorGroupingGenerator`  ·  high · difficulty 5
@@ -2388,20 +2519,20 @@ Solves quadratics with no linear term by taking square roots of both sides — r
 **Variants:** `quadratic_by_square_roots`
 
 ```
-Problem: Solve: (y + 1)^2 = 4
+Problem: Solve: (y + 34)^2 = 49
 Steps:
-  EQ_SETUP|(y + 1)^2 = 4
-  ROOT|4|2
-  SQRT_BOTH_SIDES|(y + 1)^2 = 4|y + 1 = ±2
-  PLUS_MINUS|y + 1 = ±2|y + 1 = 2 or y + 1 = -2
-  EQ_OP_BOTH|subtract|1|y|1
-  EQ_RESULT|y|1
-  EQ_OP_BOTH|subtract|1|y|-3
-  EQ_RESULT|y|-3
-  CHECK|substitute|((-3) + 1)^2 = 4|4
-  CHECK|substitute|(1 + 1)^2 = 4|4
-  Z|y = -3 or y = 1
-Answer: y = -3 or y = 1
+  EQ_SETUP|(y + 34)^2 = 49
+  ROOT|49|7
+  SQRT_BOTH_SIDES|(y + 34)^2 = 49|y + 34 = ±7
+  PLUS_MINUS|y + 34 = ±7|y + 34 = 7 or y + 34 = -7
+  EQ_OP_BOTH|subtract|34|y|-27
+  EQ_RESULT|y|-27
+  EQ_OP_BOTH|subtract|34|y|-41
+  EQ_RESULT|y|-41
+  CHECK|substitute|((-41) + 34)^2 = 49|49
+  CHECK|substitute|((-27) + 34)^2 = 49|49
+  Z|y = -41 or y = -27
+Answer: y = -41 or y = -27
 ```
 
 ### Completing Square — `CompletingSquareGenerator`  ·  high · difficulty 5
@@ -2445,15 +2576,17 @@ Simplifies radicals with variables: √(50x³) → 5x√(2x).
 **Variants:** `simplify_radical_variables`
 
 ```
-Problem: Simplify: √(490y)
+Problem: Simplify: √(53750t^2)
 Steps:
-  ROOT_SETUP|√(490y)
-  SQUARE_FACTOR|490|49 × 10|49
-  ROOT|49|7
-  REWRITE|7√(10y)
-  CHECK|square_back|(7√(10y))^2 = 49 · 10y = 490y|490y
-  Z|7√(10y)
-Answer: 7√(10y)
+  ROOT_SETUP|√(53750t^2)
+  SQUARE_FACTOR|53750|625 × 86|625
+  SQUARE_FACTOR|t^2|t^2|t^2
+  ROOT|625|25
+  ROOT|t^2|t
+  REWRITE|25t√86
+  CHECK|square_back|(25t√86)^2 = 625t^2 · 86 = 53750t^2|53750t^2
+  Z|25t√86
+Answer: 25t√86
 ```
 
 ### Radical Add Sub — `RadicalAddSubGenerator`  ·  high · difficulty 4
@@ -2507,16 +2640,14 @@ Divides radicals and rationalizes denominators.
 **Variants:** `radical_rationalize`
 
 ```
-Problem: Rationalize the denominator and simplify: √117/√13
+Problem: Rationalize the denominator and simplify: √7854/√357
 Steps:
-  ROOT_SETUP|√117/√13
+  ROOT_SETUP|√7854/√357
   FORM_IDENTIFY|quotient_of_radicals|√a/√b = √(a/b)
-  D|117|13|9
-  REWRITE|√9
-  ROOT|9|3
-  REWRITE|3
-  Z|3
-Answer: 3
+  D|7854|357|22
+  REWRITE|√22
+  Z|√22
+Answer: √22
 ```
 
 ### Rational Exponent — `RationalExponentGenerator`  ·  high · difficulty 4
@@ -2526,13 +2657,15 @@ Rational exponents ↔ radicals.
 **Variants:** `rational_exponent_evaluate`, `rational_exponent_from_radical`, `rational_exponent_to_radical`
 
 ```
-Problem: Write with a rational exponent: √(t^5)
+Problem: Write with a rational exponent: ∛(t_42^9)
 Steps:
-  EXP_RULE_SETUP|√(t^5)
+  EXP_RULE_SETUP|∛(t_42^9)
   FORM_IDENTIFY|rational_exponent|ⁿ√(a^m) = a^(m/n)
-  REWRITE|t^(5/2)
-  Z|t^(5/2)
-Answer: t^(5/2)
+  REWRITE|t_42^(9/3)
+  F|9/3|3
+  REWRITE|t_42^3
+  Z|t_42^3
+Answer: t_42^3
 ```
 
 ### Radical Equation — `RadicalEquationGenerator`  ·  high · difficulty 5
@@ -2848,25 +2981,21 @@ Answer: 18
 
 ### Geometric Sequence — `GeometricSequenceGenerator`  ·  high · difficulty 4
 
-Geometric sequences from four shown terms: the nth term, the partial sum (integer ratios), and the infinite sum when |r| < 1.
+Geometric sequences shown as three to five opening terms: the nth term, a partial sum, the infinite sum when |r| < 1, and a blanked-out missing term.
 
-**Variants:** `geometric_sequence_infinite_sum`, `geometric_sequence_nth_term`, `geometric_sequence_partial_sum`
+**Variants:** `geometric_sequence_infinite_sum`, `geometric_sequence_missing_term`, `geometric_sequence_nth_term`, `geometric_sequence_partial_sum`
 
 ```
-Problem: The geometric sequence -6, -18, -54, -162, ... continues. Find the sum of the first 5 terms.
+Problem: Let a_n be the geometric sequence 2, 12, 72, 432, __, ... with n starting at 1. Which number completes the sequence?
 Steps:
-  SEQ_SETUP|-6, -18, -54, -162, ...|sum of first 5 terms
-  COMMON_RATIO|-18/(-6)|3
-  CHECK|ratio|-54/(-18) = 3|3
-  SEQ_FORMULA|S_n = a_1(r^n - 1)/(r - 1)
-  SEQ_APPLY|S_5 = -6·(3^5 - 1)/(3 - 1)
-  E|3|5|243
-  S|243|1|242
-  M|-6|242|-1452
-  S|3|1|2
-  D|-1452|2|-726
-  Z|-726
-Answer: -726
+  SEQ_SETUP|2, 12, 72, 432, __, ...|the missing term 5
+  COMMON_RATIO|12/2|6
+  CHECK|ratio|72/12 = 6|6
+  SEQ_FORMULA|a_n = a_(n - 1)·r
+  SEQ_APPLY|a_5 = 432·6
+  M|432|6|2592
+  Z|2592
+Answer: 2592
 ```
 
 ### Recursive Explicit — `RecursiveExplicitGenerator`  ·  high · difficulty 4
@@ -2876,22 +3005,22 @@ Converts between recursive and explicit sequence definitions, both directions, f
 **Variants:** `explicit_to_recursive`, `recursive_to_explicit`
 
 ```
-Problem: The sequence is defined by a_n = 1·2^(n-1). Write a recursive definition.
+Problem: Sequence S_777 is defined by a_n = 7·(-6)^(n-1). Write a recursive definition.
 Steps:
-  SEQ_SETUP|a_n = 1·2^(n-1)|recursive definition
-  SUBST|n|1|1·2^0
-  E|2|0|1
-  M|1|1|1
-  EVAL|a_1|1
-  SUBST|n|2|1·2^1
-  E|2|1|2
-  M|1|2|2
-  EVAL|a_2|2
-  COMMON_RATIO|2/1|2
-  REWRITE|a_1 = 1; a_n = 2·a_(n-1)
-  CHECK|term 3|explicit 1·2^2 = 4, recursion 2·2 = 4|4
-  Z|a_1 = 1; a_n = 2·a_(n-1)
-Answer: a_1 = 1; a_n = 2·a_(n-1)
+  SEQ_SETUP|a_n = 7·(-6)^(n-1)|recursive definition
+  SUBST|n|1|7·(-6)^0
+  E|(-6)|0|1
+  M|7|1|7
+  EVAL|a_1|7
+  SUBST|n|2|7·(-6)^1
+  E|(-6)|1|-6
+  M|7|-6|-42
+  EVAL|a_2|-42
+  COMMON_RATIO|-42/7|-6
+  REWRITE|a_1 = 7; a_n = -6·a_(n-1)
+  CHECK|term 3|explicit 7·(-6)^2 = 252, recursion -6·-42 = 252|252
+  Z|a_1 = 7; a_n = -6·a_(n-1)
+Answer: a_1 = 7; a_n = -6·a_(n-1)
 ```
 
 ### Sigma Notation — `SigmaNotationGenerator`  ·  high · difficulty 4
@@ -2901,21 +3030,21 @@ Expands sigma notation term by term and evaluates the sum for small upper bounds
 **Variants:** `sigma_notation_linear`, `sigma_notation_power`, `sigma_notation_square`
 
 ```
-Problem: Expand and evaluate: Σ_(k=0)^(4) 3k^2.
+Problem: An exercise used by the design studio asks for this expansion. Expand and evaluate: Σ_(k=-9)^(-5) 14k^2.
 Steps:
-  SIGMA_SETUP|Σ_(k=0)^(4) 3k^2|expand and evaluate
-  SIGMA_TERM|k=0|3(0)^2|0
-  SIGMA_TERM|k=1|3(1)^2|3
-  SIGMA_TERM|k=2|3(2)^2|12
-  SIGMA_TERM|k=3|3(3)^2|27
-  SIGMA_TERM|k=4|3(4)^2|48
-  SIGMA_EXPAND|0 + 3 + 12 + 27 + 48
-  A|0|3|3
-  A|3|12|15
-  A|15|27|42
-  A|42|48|90
-  Z|90
-Answer: 90
+  SIGMA_SETUP|Σ_(k=-9)^(-5) 14k^2|expand and evaluate
+  SIGMA_TERM|k=-9|14(-9)^2|1134
+  SIGMA_TERM|k=-8|14(-8)^2|896
+  SIGMA_TERM|k=-7|14(-7)^2|686
+  SIGMA_TERM|k=-6|14(-6)^2|504
+  SIGMA_TERM|k=-5|14(-5)^2|350
+  SIGMA_EXPAND|1134 + 896 + 686 + 504 + 350
+  A|1134|896|2030
+  A|2030|686|2716
+  A|2716|504|3220
+  A|3220|350|3570
+  Z|3570
+Answer: 3570
 ```
 
 ### Complex Number Ops — `ComplexNumberOpsGenerator`  ·  high · difficulty 4
@@ -2975,22 +3104,24 @@ Answer: -1/5 - (1/10)i
 
 ### Complex Quadratic — `ComplexQuadraticGenerator`  ·  high · difficulty 5
 
-Solves monic quadratics with negative discriminant by the quadratic formula, producing complex conjugate roots.
+Solves quadratics with negative discriminant by the quadratic formula, producing complex conjugate roots.
 
 **Variants:** `quadratic_complex_roots`
 
 ```
-Problem: Solve: x^2 - 12x + 47 = 0.
+Problem: Determine the complex roots of w^2 + 8w + 52 = 7.
 Steps:
-  EQ_SETUP|x^2 - 12x + 47 = 0|solve
-  DISC|(-12)^2 - 4(1)(47)|-44
-  DISC_CLASSIFY|-44 < 0|two complex conjugate roots
-  SQRT_NEG|√(-44)|i√44
-  ROOT_SIMPLIFY|2i√11
-  Q1|12|2i√11|2|6 + i√11
-  Q2|12|2i√11|2|6 - i√11
-  Z|x = 6 + i√11 or x = 6 - i√11
-Answer: x = 6 + i√11 or x = 6 - i√11
+  EQ_SETUP|w^2 + 8w + 52 = 7|solve
+  S|52|7|45
+  REWRITE|w^2 + 8w + 45 = 0
+  DISC|8^2 - 4(1)(45)|-116
+  DISC_CLASSIFY|-116 < 0|two complex conjugate roots
+  SQRT_NEG|√(-116)|i√116
+  ROOT_SIMPLIFY|2i√29
+  Q1|-8|2i√29|2|-4 + i√29
+  Q2|-8|2i√29|2|-4 - i√29
+  Z|w = -4 + i√29 or w = -4 - i√29
+Answer: w = -4 + i√29 or w = -4 - i√29
 ```
 
 ### Polynomial Long Division — `PolynomialLongDivisionGenerator`  ·  high · difficulty 5
@@ -3126,28 +3257,48 @@ Finds all zeros of a monic cubic from one given zero: synthetic division deflate
 **Variants:** `polynomial_all_zeros`
 
 ```
-Problem: Given that x = 1 is a zero, find all zeros of P(x) = x^3 - 3x^2 - x + 3.
+Problem: Given that x = -2 is a zero, find all zeros of P(x) = x^3 + 14x^2 - 516x - 1080.
 Steps:
-  EQ_SETUP|x^3 - 3x^2 - x + 3 = 0|find all zeros; given x = 1
-  SYNDIV_SETUP|x^3 - 3x^2 - x + 3|r = 1
-  COEFFS|1, -3, -1, 3
+  EQ_SETUP|x^3 + 14x^2 - 516x - 1080 = 0|find all zeros; given x = -2
+  SYNDIV_SETUP|x^3 + 14x^2 - 516x - 1080|r = -2
+  COEFFS|1, 14, -516, -1080
   SYN_DROP|1
-  M|1|1|1
-  A|-3|1|-2
-  M|1|-2|-2
-  A|-1|-2|-3
-  M|1|-3|-3
-  A|3|-3|0
-  SYN_ROW|1, -2, -3, 0
+  M|-2|1|-2
+  A|14|-2|12
+  M|-2|12|-24
+  A|-516|-24|-540
+  M|-2|-540|1080
+  A|-1080|1080|0
+  SYN_ROW|1, 12, -540, 0
   R|0
-  REWRITE|x^2 - 2x - 3 = 0
-  FACTOR_PAIR_GOAL|m·n = -3|m + n = -2
-  TRY|(1, -3)|1·(-3)=-3, 1+(-3)=-2
-  ACCEPT|(1, -3)|product -3 ✓, sum -2 ✓
-  REWRITE|(x + 1)(x - 3) = 0
-  ZERO_PRODUCT|(x + 1)(x - 3) = 0|x + 1 = 0 or x - 3 = 0
-  Z|x = -1 or x = 1 or x = 3
-Answer: x = -1 or x = 1 or x = 3
+  REWRITE|x^2 + 12x - 540 = 0
+  FACTOR_PAIR_GOAL|m·n = -540|m + n = 12
+  TRY|(-1, 540)|(-1)·540=-540, (-1)+540=539
+  REJECT|(-1, 540)|sum is 539, need 12
+  TRY|(-2, 270)|(-2)·270=-540, (-2)+270=268
+  REJECT|(-2, 270)|sum is 268, need 12
+  TRY|(-3, 180)|(-3)·180=-540, (-3)+180=177
+  REJECT|(-3, 180)|sum is 177, need 12
+  TRY|(-4, 135)|(-4)·135=-540, (-4)+135=131
+  REJECT|(-4, 135)|sum is 131, need 12
+  TRY|(-5, 108)|(-5)·108=-540, (-5)+108=103
+  REJECT|(-5, 108)|sum is 103, need 12
+  TRY|(-6, 90)|(-6)·90=-540, (-6)+90=84
+  REJECT|(-6, 90)|sum is 84, need 12
+  TRY|(-9, 60)|(-9)·60=-540, (-9)+60=51
+  REJECT|(-9, 60)|sum is 51, need 12
+  TRY|(-10, 54)|(-10)·54=-540, (-10)+54=44
+  REJECT|(-10, 54)|sum is 44, need 12
+  TRY|(-12, 45)|(-12)·45=-540, (-12)+45=33
+  REJECT|(-12, 45)|sum is 33, need 12
+  TRY|(-15, 36)|(-15)·36=-540, (-15)+36=21
+  REJECT|(-15, 36)|sum is 21, need 12
+  TRY|(-18, 30)|(-18)·30=-540, (-18)+30=12
+  ACCEPT|(-18, 30)|product -540 ✓, sum 12 ✓
+  REWRITE|(x - 18)(x + 30) = 0
+  ZERO_PRODUCT|(x - 18)(x + 30) = 0|x - 18 = 0 or x + 30 = 0
+  Z|x = -30 or x = -2 or x = 18
+Answer: x = -30 or x = -2 or x = 18
 ```
 
 ### Rational Function Features — `RationalFunctionFeaturesGenerator`  ·  high · difficulty 4
@@ -3186,14 +3337,14 @@ Exponential models kept exact by hand: compound growth and decay with terminatin
 **Variants:** `exponential_continuous`, `exponential_decay`, `exponential_growth`, `exponential_half_life`
 
 ```
-Problem: An investment of $2000 earns 5% interest compounded continuously. Give its exact value in dollars after 2 years.
+Problem: $38900 is placed in an account paying 15% continuously compounded interest. Give the exact value in dollars after 3 years.
 Steps:
   MODEL|A = Pe^(rt)
-  PERCENT_TO_DEC|5%|0.05
-  M|0.05|2|0.1
-  MODEL_APPLY|A = 2000e^0.1
-  Z|2000e^0.1
-Answer: 2000e^0.1
+  PERCENT_TO_DEC|15%|0.15
+  M|0.15|3|0.45
+  MODEL_APPLY|A = 38900e^0.45
+  Z|38900e^0.45
+Answer: 38900e^0.45
 ```
 
 ### Log Conversion — `LogConversionGenerator`  ·  high · difficulty 4
@@ -3430,20 +3581,20 @@ Answer: EF = 35
 
 ### Geometric Mean — `GeometricMeanGenerator`  ·  high · difficulty 4
 
-Geometric mean relationships in a right triangle with the altitude drawn to the hypotenuse: h = √(p·q), leg = √(p·c), and the reverse solve q = h²/p. Radical answers are simplified.
+Geometric mean relationships in a right triangle with the altitude drawn to the hypotenuse: h = √(p·q), leg = √(p·c), the reverse solve q = h²/p, the hypotenuse solve c = leg²/p, and the bare mean proportional x = √(a·b). Radical answers are simplified.
 
-**Variants:** `geometric_mean_altitude`, `geometric_mean_find_segment`, `geometric_mean_leg`
+**Variants:** `geometric_mean_altitude`, `geometric_mean_find_segment`, `geometric_mean_hypotenuse`, `geometric_mean_leg`, `geometric_mean_proportional`
 
 ```
-Problem: In a right triangle, the altitude to the hypotenuse splits it into segments p = 8 and q = 2. Find the leg adjacent to the segment of length 8.
+Problem: A right triangle has a leg of 83 yards. The altitude from the right angle cuts off a piece of 1 yards at that leg's end of the hypotenuse. How long is the hypotenuse c?
 Steps:
-  GEO_SETUP|right triangle, altitude to hypotenuse; segments p = 8 (adjacent to the leg) and q = 2|the leg adjacent to p
-  A|8|2|10
-  THEOREM|geometric mean (leg)|leg = √(p·c)
-  M|8|10|80
-  ROOT_SIMPLIFY|√80 = 4√5
-  Z|leg = 4√5
-Answer: leg = 4√5
+  GEO_SETUP|right triangle, altitude to hypotenuse; leg = 83 with projection p = 1 on the hypotenuse|the hypotenuse c
+  THEOREM|geometric mean (leg)|leg^2 = p·c
+  E|83|2|6889
+  D|6889|1|6889
+  CHECK|substitute|p·c = 1·6889 = 6889|leg^2 = 83^2 = 6889
+  Z|c = 6889 yards
+Answer: c = 6889 yards
 ```
 
 ### Distance Formula — `DistanceFormulaGenerator`  ·  high · difficulty 3
@@ -3530,18 +3681,19 @@ Answer: (5, -6)
 
 Arc length and sector area, kept exact in terms of π: reduce the angle fraction θ/360 first, then apply it to 2πr or πr².
 
-**Variants:** `arc_measure`, `sector_measure`
+**Variants:** `arc_measure`, `arc_radians_measure`, `sector_measure`, `sector_radians_measure`
 
 ```
-Problem: A circle has radius 8. Find the area of the sector with central angle 30°. Give the exact answer in terms of π.
+Problem: A sector of a circular plate of radius 50 has central angle 7π/12 radians. Give its exact area in terms of π.
 Steps:
-  ARC_SETUP|circle r = 8, central angle 30°|sector area
-  SECTOR_FORMULA|A = (θ/360)·πr^2
-  FRAC_REDUCE|30/360|1/12
-  E|8|2|64
-  M|1/12|64|16/3
-  Z|16π/3
-Answer: 16π/3
+  ARC_SETUP|circle r = 50, central angle 7π/12 rad|sector area
+  SECTOR_FORMULA|A = (1/2)r^2θ
+  PI_COEFF|7π/12|7/12
+  E|50|2|2500
+  M|1/2|2500|1250
+  M|1250|7/12|4375/6
+  Z|4375π/6
+Answer: 4375π/6
 ```
 
 ### Circle Angle — `CircleAngleGenerator`  ·  high · difficulty 4
@@ -3615,14 +3767,14 @@ SOH-CAH-TOA with every needed trig value supplied in the problem (Principle 5 - 
 **Variants:** `right_triangle_trig_find_angle`, `right_triangle_trig_find_side`, `right_triangle_trig_write_ratio`
 
 ```
-Problem: In a right triangle, one acute angle measures 24° and the hypotenuse is 10. Given that sin 24° ≈ 0.4, find the opposite side.
+Problem: A review prepared by the architecture studio includes the following data. In a right triangle, one acute angle measures 53° and the hypotenuse is 330. Given that sin 53° ≈ 0.8, find the opposite side.
 Steps:
-  TRIG_SETUP|right triangle, angle 24°, hypotenuse = 10; given sin 24° ≈ 0.4|the opposite side
+  TRIG_SETUP|right triangle, angle 53°, hypotenuse = 330; given sin 53° ≈ 0.8|the opposite side
   TRIG_RATIO|sin|opposite/hypotenuse
-  REWRITE|x/10 = 0.4
-  M|10|0.4|4
-  Z|4
-Answer: 4
+  REWRITE|x/330 = 0.8
+  M|330|0.8|264
+  Z|264
+Answer: 264
 ```
 
 ### Special Right Triangle — `SpecialRightTriangleGenerator`  ·  high · difficulty 4
@@ -3838,15 +3990,15 @@ Polar <-> rectangular for points and equations, and parametric -> rectangular el
 **Variants:** `parametric_to_rect`, `polar_eq_to_rect`, `polar_to_rect_point`, `rect_to_polar_point`
 
 ```
-Problem: Eliminate the parameter: x = 8 cos t, y = 8 sin t.
+Problem: Eliminate the parameter: x = 28cos t - 18, y = 28sin t - 4.
 Steps:
-  PARAM_SETUP|x = 8 cos t, y = 8 sin t|eliminate t
+  PARAM_SETUP|x = 28cos t - 18, y = 28sin t - 4|eliminate t
   THEOREM|Pythagorean identity|cos^2 t + sin^2 t = 1
-  REWRITE|(x/8)^2 + (y/8)^2 = 1
-  E|8|2|64
-  REWRITE|x^2 + y^2 = 64
-  Z|x^2 + y^2 = 64
-Answer: x^2 + y^2 = 64
+  REWRITE|((x + 18)/28)^2 + ((y + 4)/28)^2 = 1
+  E|28|2|784
+  REWRITE|(x + 18)^2 + (y + 4)^2 = 784
+  Z|(x + 18)^2 + (y + 4)^2 = 784
+Answer: (x + 18)^2 + (y + 4)^2 = 784
 ```
 
 ### Vector Ops — `VectorOpsGenerator`  ·  high · difficulty 4
@@ -4135,20 +4287,20 @@ Answer: y' = 3(x^2 + x - 8)^2(2x + 1)
 
 ### Derivative Transcendental — `DerivativeTranscendentalGenerator`  ·  high · difficulty 5
 
-Derivatives of trig, exponential, and logarithmic functions with a linear inner function, the chain factor shown every time.
+Derivatives of trig, exponential, and logarithmic functions with a linear (or power) inner function, the chain factor shown every time.
 
 **Variants:** `derivative_transcendental_exp`, `derivative_transcendental_log`, `derivative_transcendental_trig`
 
 ```
-Problem: Differentiate y = e^(2x).
+Problem: Let y = 14 e^(9v + 4). Find y'.
 Steps:
-  DERIV_SETUP|y = e^(2x)|y'
-  DERIV_RULE|d/dx e^u = e^u·u'|u = 2x
-  POWER_RULE|2x|2
-  M|1|2|2
-  REWRITE|y' = 2 e^(2x)
-  Z|y' = 2 e^(2x)
-Answer: y' = 2 e^(2x)
+  DERIV_SETUP|y = 14 e^(9v + 4)|y'
+  DERIV_RULE|d/dx e^u = e^u·u'|u = 9v + 4
+  POWER_RULE|9v + 4|9
+  M|14|9|126
+  REWRITE|y' = 126 e^(9v + 4)
+  Z|y' = 126 e^(9v + 4)
+Answer: y' = 126 e^(9v + 4)
 ```
 
 ### Implicit Diff — `ImplicitDiffGenerator`  ·  high · difficulty 5
@@ -4233,18 +4385,18 @@ Related rates on the four classic setups, each with the relation stated, differe
 **Variants:** `related_rates_circle`, `related_rates_cone`, `related_rates_cube`, `related_rates_ladder`
 
 ```
-Problem: Water pours into a conical tank (radius equals half the depth) at 2 m³/min. How fast is the depth rising when the water is 8 m deep? Give an exact answer.
+Problem: At the training facility, a measurement is being recorded. Water pours into a conical tank (radius equals half the depth) at 17 ft³/min. How fast is the depth rising when the water is 18 ft deep? Give an exact answer.
 Steps:
-  RATE_SETUP|conical tank, radius = height/2; water in at dV/dt = 2 m³/min; depth h = 8 m|dh/dt
+  RATE_SETUP|conical tank, radius = height/2; water in at dV/dt = 17 ft³/min; depth h = 18 ft|dh/dt
   REWRITE|V = (1/3)πr^2·h with r = h/2, so V = πh^3/12
   IMPLICIT_DIFF|d/dt of V = πh^3/12|dV/dt = (πh^2/4)·dh/dt
-  SUBST|(h, dV/dt)|(8, 2)|2 = (π(8)^2/4)·dh/dt
-  E|8|2|64
-  EQ_OP_BOTH|multiply|4|8|π·64·dh/dt
-  EQ_OP_BOTH|divide|64π|dh/dt|1/(8π)
-  FRAC_REDUCE|8/64|1/8
-  Z|dh/dt = 1/(8π) m/min
-Answer: dh/dt = 1/(8π) m/min
+  SUBST|(h, dV/dt)|(18, 17)|17 = (π(18)^2/4)·dh/dt
+  E|18|2|324
+  EQ_OP_BOTH|multiply|4|68|π·324·dh/dt
+  EQ_OP_BOTH|divide|324π|dh/dt|17/(81π)
+  FRAC_REDUCE|68/324|17/81
+  Z|dh/dt = 17/(81π) ft/min
+Answer: dh/dt = 17/(81π) ft/min
 ```
 
 ### Linear Approx — `LinearApproxGenerator`  ·  high · difficulty 4
@@ -4467,21 +4619,27 @@ Area between curves with integer intersections by construction: set the curves e
 **Variants:** `area_between_line_parabola`, `area_between_parabola_pair`
 
 ```
-Problem: Find the area between y = x^2 and y = 98 - x^2.
+Problem: Find the area enclosed by the graphs of y = -x^2 + 4x - 11 and y = x^2 - 20x + 29.
 Steps:
-  AREA_SETUP|y = x^2 and y = 98 - x^2|area between the curves
-  EQ_SETUP|x^2 = 98 - x^2|find intersections
-  EQ_OP_BOTH|add|x^2|2x^2|98
-  EQ_OP_BOTH|divide|2|x^2|49
-  REWRITE|x = ±7
-  CHECK|midpoint x = 0|upper = 98, lower = 0|98 - x^2 is on top
-  REWRITE|A = ∫ from -7 to 7 of (98 - 2x^2) dx
-  ANTIDERIV|98 - 2x^2|F(x) = 98x - (2/3)x^3
-  EVAL|F(7)|1372/3
-  EVAL|F(-7)|-1372/3
-  S|1372/3|-1372/3|2744/3
-  Z|2744/3
-Answer: 2744/3
+  AREA_SETUP|y = x^2 - 20x + 29 and y = -x^2 + 4x - 11|area between the curves
+  EQ_SETUP|x^2 - 20x + 29 = -x^2 + 4x - 11|find intersections
+  MOVE_TERM|everything to the left|2x^2 - 24x + 40 = 0
+  EQ_OP_BOTH|divide|2|x^2 - 12x + 20|0
+  FACTOR_PAIR_GOAL|m·n = 20|m + n = -12
+  TRY|(-1, -20)|(-1)·(-20)=20, (-1)+(-20)=-21
+  REJECT|(-1, -20)|sum is -21, need -12
+  TRY|(-2, -10)|(-2)·(-10)=20, (-2)+(-10)=-12
+  ACCEPT|(-2, -10)|product 20 ✓, sum -12 ✓
+  ZERO_PRODUCT|(x - 2)(x - 10) = 0|x = 2 or x = 10
+  CHECK|midpoint x = 6|upper = -23, lower = -55|-x^2 + 4x - 11 is on top
+  REWRITE|A = ∫ from 2 to 10 of (-x^2 + 4x - 11 - (x^2 - 20x + 29)) dx
+  REWRITE|A = ∫ from 2 to 10 of (-2x^2 + 24x - 40) dx
+  ANTIDERIV|-2x^2 + 24x - 40|F(x) = -(2/3)x^3 + 12x^2 - 40x
+  EVAL|F(10)|400/3
+  EVAL|F(2)|-112/3
+  S|400/3|-112/3|512/3
+  Z|512/3
+Answer: 512/3
 ```
 
 ### Solid Revolution — `SolidRevolutionGenerator`  ·  high · difficulty 5
@@ -4609,28 +4767,29 @@ Answer: diverges
 
 ### Euler Method — `EulerMethodGenerator`  ·  high · difficulty 5
 
-Euler's method for dy/dx = ax + by as a pure scratchpad table: each row records x and y, then the slope is evaluated explicitly, scaled by h, and added on. Step sizes are terminating decimals so every value in the table is exact.
+Euler's method for dy/dx = ax + by + c as a pure scratchpad table: each row records x and y, then the slope is evaluated explicitly, scaled by h, and added on. Step sizes, coefficients, and initial conditions are terminating decimals and the table is rejected unless every entry stays short, so every value is exact and hand-writable.
 
-**Variants:** `euler_method_three_step`, `euler_method_two_step`
+**Variants:** `euler_method_four_step`, `euler_method_three_step`, `euler_method_two_step`
 
 ```
-Problem: Use Euler's method with step size h = 0.2 to approximate y(0.6) for dy/dx = -2x with y(0) = 5.
+Problem: The initial value problem du/dx = 0.5x - 3u - 1, u(-2) = -3 is solved numerically. Take 3 Euler steps of size h = 0.5 and report the approximation to u(-0.5).
 Steps:
-  ODE_SETUP|dy/dx = -2x, y(0) = 5|Euler's method with h = 0.2
-  TABLE_ENTRY|x = 0|y = 5
-  EVAL|f(0, 5)|-2(0) = 0
-  M|0.2|0|0
-  TABLE_ENTRY|x = 0.2|y = 5
-  EVAL|f(0.2, 5)|-2(0.2) = -0.4
-  M|0.2|-0.4|-0.08
-  S|5|0.08|4.92
-  TABLE_ENTRY|x = 0.4|y = 4.92
-  EVAL|f(0.4, 4.92)|-2(0.4) = -0.8
-  M|0.2|-0.8|-0.16
-  S|4.92|0.16|4.76
-  TABLE_ENTRY|x = 0.6|y = 4.76
-  Z|4.76
-Answer: 4.76
+  ODE_SETUP|du/dx = 0.5x - 3u - 1, u(-2) = -3|Euler's method with h = 0.5|3 steps to x = -0.5
+  TABLE_ENTRY|x = -2|u = -3
+  EVAL|f(-2, -3)|0.5(-2) - 3(-3) - 1 = 7
+  M|0.5|7|3.5
+  A|-3|3.5|0.5
+  TABLE_ENTRY|x = -1.5|u = 0.5
+  EVAL|f(-1.5, 0.5)|0.5(-1.5) - 3(0.5) - 1 = -3.25
+  M|0.5|-3.25|-1.625
+  S|0.5|1.625|-1.125
+  TABLE_ENTRY|x = -1|u = -1.125
+  EVAL|f(-1, -1.125)|0.5(-1) - 3(-1.125) - 1 = 1.875
+  M|0.5|1.875|0.9375
+  A|-1.125|0.9375|-0.1875
+  TABLE_ENTRY|x = -0.5|u = -0.1875
+  Z|-0.1875
+Answer: -0.1875
 ```
 
 ### Logistic Growth — `LogisticGrowthGenerator`  ·  high · difficulty 5
@@ -4654,27 +4813,27 @@ Answer: 19.2
 
 ### Parametric Calculus — `ParametricCalculusGenerator`  ·  high · difficulty 5
 
-Parametric derivatives and arc length, and polar area, all exact. Arc-length curves are built so the speed is a perfect square: x = 3mt^2, y = mt^3 - 3mt gives speed 3m(t^2 + 1). Polar circles r = 2a·cos(θ) use the half-angle identity and land on πa².
+Parametric derivatives and arc length, and polar area, all exact. Arc-length curves are built so the speed is a perfect square: x = 3mt^2, y = mt^3 - 3mt gives speed 3m(t^2 + 1). Polar circles r = c·cos(θ - φ) use the half-angle identity and land on πc²/4.
 
 **Variants:** `parametric_calculus_arc_length`, `parametric_calculus_dydx`, `parametric_calculus_polar_circle`, `parametric_calculus_polar_sector`
 
 ```
-Problem: Find the area enclosed by the polar curve r = 8cos(θ) for -π/2 ≤ θ ≤ π/2.
+Problem: Find the area enclosed by the polar curve r = 55cos(θ - 3π/20) for -7π/20 ≤ θ ≤ 13π/20.
 Steps:
-  POLAR_SETUP|r = 8cos(θ) for -π/2 ≤ θ ≤ π/2|enclosed area
+  POLAR_SETUP|r = 55cos(θ - 3π/20) for -7π/20 ≤ θ ≤ 13π/20|enclosed area
   POLAR_AREA_FORMULA|A = (1/2) ∫ r^2 dθ
-  EVAL|r^2|64cos^2(θ)
-  M|1/2|64|32
-  IDENT_SUB|cos^2(θ) = (1 + cos(2θ))/2
-  M|32|1/2|16
-  REWRITE|A = ∫ 16(1 + cos(2θ)) dθ
-  ANTIDERIV|16(1 + cos(2θ)) dθ|16θ + 8sin(2θ)
+  EVAL|r^2|3025cos^2(θ - 3π/20)
+  M|1/2|3025|3025/2
+  IDENT_SUB|u = θ - 3π/20|cos^2(u) = (1 + cos(2u))/2
+  M|3025/2|1/2|3025/4
+  REWRITE|A = ∫ (3025/4)(1 + cos(2(θ - 3π/20))) dθ
+  ANTIDERIV|(3025/4)(1 + cos(2(θ - 3π/20))) dθ|(3025/4)θ + (3025/8)sin(2(θ - 3π/20))
   EVAL|sin(π) = 0, sin(-π) = 0
-  SUBST|θ|π/2|16(π/2) + 8sin(π) = 8π
-  SUBST|θ|-π/2|16(-π/2) + 8sin(-π) = -8π
-  S|8π|-8π|16π
-  Z|16π
-Answer: 16π
+  SUBST|θ|13π/20|(3025/4)(13π/20) + (3025/8)sin(π) = 7865π/16
+  SUBST|θ|-7π/20|(3025/4)(-7π/20) + (3025/8)sin(-π) = -4235π/16
+  S|7865π/16|-4235π/16|3025π/4
+  Z|3025π/4
+Answer: 3025π/4
 ```
 
 ### Arc Length — `ArcLengthGenerator`  ·  high · difficulty 5
@@ -4710,17 +4869,17 @@ Convergence tests where the scratchpad's first move is CHOOSING the right test: 
 **Variants:** `series_convergence_alternating`, `series_convergence_comparison`, `series_convergence_geometric`, `series_convergence_nth_term`, `series_convergence_p_series`, `series_convergence_ratio`
 
 ```
-Problem: Determine whether Σ 8^n/n! for n ≥ 1 converges or diverges.
+Problem: A worksheet from the study hall gives the following series. Determine whether Σ n!/99^n for n ≥ 1 converges or diverges.
 Steps:
-  SERIES_SETUP|Σ 8^n/n!, n ≥ 1|converge or diverge?
+  SERIES_SETUP|Σ n!/99^n, n ≥ 1|converge or diverge?
   TEST_CHOOSE|ratio test|factorial present
-  REWRITE|a_(n+1)/a_n = (8^(n+1)/(n+1)!)·(n!/8^n)
-  CANCEL|8^(n+1)/8^n = 8|(n+1)!/n! = n + 1
-  REWRITE|a_(n+1)/a_n = 8/(n + 1)
-  LIMIT_SETUP|lim n→∞ 8/(n + 1) = 0
-  CHECK|ratio test|0 < 1|converges
-  Z|converges (ratio test, limit 0 < 1)
-Answer: converges (ratio test, limit 0 < 1)
+  REWRITE|a_(n+1)/a_n = ((n+1)!/99^(n+1))·(99^n/n!)
+  CANCEL|99^(n+1)/99^n = 99|(n+1)!/n! = n + 1
+  REWRITE|a_(n+1)/a_n = (n + 1)/99
+  LIMIT_SETUP|lim n→∞ (n + 1)/99 = ∞
+  CHECK|ratio test|∞ > 1|diverges
+  Z|diverges (ratio test, limit ∞ > 1)
+Answer: diverges (ratio test, limit ∞ > 1)
 ```
 
 ### Power Series — `PowerSeriesGenerator`  ·  high · difficulty 5
@@ -4730,16 +4889,17 @@ Radius and interval of convergence by the ratio test, with the endpoints checked
 **Variants:** `power_series_closed`, `power_series_half_open`, `power_series_infinite`, `power_series_open`, `power_series_zero_radius`
 
 ```
-Problem: Find the radius and interval of convergence of Σ n!·(x - 1)^n for n ≥ 1.
+Problem: Find the radius and interval of convergence of Σ 208·n!·(x - 47)^n for n ≥ 1.
 Steps:
-  SERIES_SETUP|Σ n!·(x - 1)^n, n ≥ 1|radius and interval of convergence
+  SERIES_SETUP|Σ 208·n!·(x - 47)^n, n ≥ 1|radius and interval of convergence
   TEST_CHOOSE|ratio test|power series
-  CANCEL|(n+1)!/n! = n + 1|abs(x - 1)^(n+1)/abs(x - 1)^n = abs(x - 1)
-  REWRITE|abs(a_(n+1)/a_n) = (n + 1)·abs(x - 1)
-  LIMIT_SETUP|lim n→∞ (n + 1)·abs(x - 1) = ∞ for abs(x - 1) > 0
-  CHECK|ratio test|L = ∞ unless x = 1|converges only at x = 1
-  Z|R = 0, x = 1 only
-Answer: R = 0, x = 1 only
+  CANCEL|abs(208/208) = 1|constant coefficient cancels
+  CANCEL|(n+1)!/n! = n + 1|abs(x - 47)^(n+1)/abs(x - 47)^n = abs(x - 47)
+  REWRITE|abs(a_(n+1)/a_n) = (n + 1)·abs(x - 47)
+  LIMIT_SETUP|lim n→∞ (n + 1)·abs(x - 47) = ∞ for abs(x - 47) > 0
+  CHECK|ratio test|L = ∞ unless x = 47|converges only at x = 47
+  Z|R = 0, x = 47 only
+Answer: R = 0, x = 47 only
 ```
 
 ### Taylor Series — `TaylorSeriesGenerator`  ·  high · difficulty 5
@@ -4887,24 +5047,24 @@ Chi-square tests worked cell by cell: a goodness-of-fit test against a uniform m
 **Variants:** `chi_square_gof_decision`, `chi_square_gof_stat`, `chi_square_independence_decision`, `chi_square_independence_stat`
 
 ```
-Problem: A 2×2 contingency table has counts 15, 35 in row 1 and 5, 45 in row 2 (N = 100). Test the two variables for independence. Using a critical value of 3.841 (df = 1), state the conclusion (reject H0 or fail to reject H0).
+Problem: A worksheet for Jonas at the learning center gives this information. Independence table data [rows method one, method two; columns success, failure; counts: 37, 43; 123, 197; N = 400; critical value of 3.841 (df = 1)]. State the conclusion: reject H0 or fail to reject H0.
 Steps:
-  CHI_SETUP|row 1: 15, 35; row 2: 5, 45; N = 100|independence; df = 1, critical value = 3.841
+  CHI_SETUP|row 1: 37, 43; row 2: 123, 197; N = 400|independence; df = 1, critical value = 3.841
   CHI_FORMULA|E = (row·col)/N; χ² = Σ (O - E)^2/E
-  EXP_CELL|(50·20)/100|10
-  EXP_CELL|(50·80)/100|40
-  EXP_CELL|(50·20)/100|10
-  EXP_CELL|(50·80)/100|40
-  CHI_TERM|15 - 10 = 5|5^2 = 25|25/10 = 2.5
-  CHI_TERM|35 - 40 = -5|(-5)^2 = 25|25/40 = 0.625
-  CHI_TERM|5 - 10 = -5|(-5)^2 = 25|25/10 = 2.5
-  CHI_TERM|45 - 40 = 5|5^2 = 25|25/40 = 0.625
-  A|2.5|0.625|3.125
-  A|3.125|2.5|5.625
-  A|5.625|0.625|6.25
-  CHECK|χ² vs critical value|6.25 > 3.841|reject H0
-  Z|reject H0 (6.25 > 3.841)
-Answer: reject H0 (6.25 > 3.841)
+  EXP_CELL|(80·160)/400|32
+  EXP_CELL|(80·240)/400|48
+  EXP_CELL|(320·160)/400|128
+  EXP_CELL|(320·240)/400|192
+  CHI_TERM|37 - 32 = 5|5^2 = 25|25/32 = 0.78125
+  CHI_TERM|43 - 48 = -5|(-5)^2 = 25|25/48 = 25/48
+  CHI_TERM|123 - 128 = -5|(-5)^2 = 25|25/128 = 0.1953125
+  CHI_TERM|197 - 192 = 5|5^2 = 25|25/192 = 25/192
+  A|0.78125|25/48|125/96
+  A|125/96|0.1953125|575/384
+  A|575/384|25/192|625/384
+  CHECK|χ² vs critical value|625/384 ≤ 3.841|fail to reject H0
+  Z|fail to reject H0 (625/384 ≤ 3.841)
+Answer: fail to reject H0 (625/384 ≤ 3.841)
 ```
 
 ### Conditional Probability — `ConditionalProbabilityGenerator`  ·  high · difficulty 5
@@ -5063,17 +5223,17 @@ Balanced-equation and stoichiometric conversion practice.
 **Variants:** `stoichiometry_balance_equation`, `stoichiometry_limiting_reagent`, `stoichiometry_mass_to_mass`, `stoichiometry_mass_to_volume`
 
 ```
-Problem: Given balanced equation N2 + 3 H2 -> 2 NH3, initial amounts are N2=1 mol and H2=5 mol. Find the limiting reactant and maximum NH3 produced.
+Problem: During trial 53175 at the learning center, this reaction is analyzed. Given balanced equation N2 + 3 H2 -> 2 NH3, initial amounts are N2=2 mol and H2=9 mol. Find the limiting reactant and maximum NH3 produced.
 Steps:
-  STOICH_SETUP|limiting_reagent|N2 + 3 H2 -> 2 NH3|given=N2=1 mol, H2=5 mol
+  STOICH_SETUP|limiting_reagent|N2 + 3 H2 -> 2 NH3|given=N2=2 mol, H2=9 mol
   STOICH_RATIO|N2->NH3|2/1=2
-  M|1|2|2
+  M|2|2|4
   STOICH_RATIO|H2->NH3|2/3=2/3
-  M|5|2/3|10/3
-  LIMIT_CHECK|NH3 from N2=2 mol|NH3 from H2=10/3 mol
-  LIMITING_REAGENT|N2|NH3=2 mol
-  Z|limiting=N2; NH3=2 mol
-Answer: limiting=N2; NH3=2 mol
+  M|9|2/3|6
+  LIMIT_CHECK|NH3 from N2=4 mol|NH3 from H2=6 mol
+  LIMITING_REAGENT|N2|NH3=4 mol
+  Z|limiting=N2; NH3=4 mol
+Answer: limiting=N2; NH3=4 mol
 ```
 
 ### Solution Chem — `SolutionChemGenerator`  ·  high · difficulty 3
@@ -5525,34 +5685,35 @@ Answer: p(λ)=λ^3 + 5λ^2 - λ - 5 = (λ + 5)*(λ + 1)*(λ - 1); eigenpairs λ=
 
 ### Diagonalization — `DiagonalizationGenerator`  ·  college · difficulty 4
 
-Diagonalize a 2x2 matrix with two distinct integer eigenvalues and use A^k = P*D^k*P^-1 to compute a matrix power. Matrices are built from a unimodular eigenvector matrix so every displayed matrix stays integral.
+Diagonalize a 2x2 matrix with two distinct integer eigenvalues. The matrix is built backward from a unimodular eigenvector matrix P and an integer diagonal D, so P, D, and P^-1 are all integral and every displayed number is exact.
 
-**Variants:** `diagonalization_power`
+**Variants:** `diagonalization_decompose`, `diagonalization_power`, `diagonalization_vector_power`
 
 ```
-Problem: Diagonalize A = [[4, -2], [1, 1]] and compute A^4.
+Problem: Given A = [[-53, 48], [-54, 49]] and x = [-1, 8], use A^2 = P·D^2·P^-1 to evaluate A^2x.
 Steps:
-  MAT_SETUP|A = [[4, -2], [1, 1]], k = 4|diagonalize and compute A^k
-  CHAR_POLY|p(λ) = λ^2 - 5λ + 6|(λ - 2)*(λ - 3)
-  EIGENVALUE|λ = 2|p(2) = 0
-  EIGENVECTOR|λ = 2|[1, 1]
-  CHECK|A*[1, 1]|[2, 2]|2*v = [2, 2]
-  EIGENVALUE|λ = 3|p(3) = 0
-  EIGENVECTOR|λ = 3|[2, 1]
-  CHECK|A*[2, 1]|[6, 3]|3*v = [6, 3]
-  DIAG_FORM|P = [[1, 2], [1, 1]]|D = [[2, 0], [0, 3]]|P^-1 = [[-1, 2], [1, -1]]
-  CHECK|P*D*P^-1|[[4, -2], [1, 1]]|matches A
-  E|2|4|16
-  E|3|4|81
-  D_POWER|D^4|[[16, 0], [0, 81]]
-  POWER_FORM|A^4 = P*D^4*P^-1
-  POWER_ENTRY|(1,1)|(-16) + 162|146
-  POWER_ENTRY|(1,2)|16*2 + (-162)|-130
-  POWER_ENTRY|(2,1)|(-16) + 81|65
-  POWER_ENTRY|(2,2)|16*2 + (-81)|-49
-  CHECK|direct A^4|[[146, -130], [65, -49]]|matches diagonalization
-  Z|P=[[1, 2], [1, 1]], D=[[2, 0], [0, 3]], P^-1=[[-1, 2], [1, -1]], A^4=[[146, -130], [65, -49]]
-Answer: P=[[1, 2], [1, 1]], D=[[2, 0], [0, 3]], P^-1=[[-1, 2], [1, -1]], A^4=[[146, -130], [65, -49]]
+  MAT_SETUP|A = [[-53, 48], [-54, 49]], x = [-1, 8], k = 2|compute A^k x by diagonalization
+  CHAR_POLY|p(λ) = λ^2 + 4λ - 5|(λ + 5)*(λ - 1)
+  EIGENVALUE|λ = -5|p(-5) = 0
+  EIGENVECTOR|λ = -5|[1, 1]
+  CHECK|A*[1, 1]|[-5, -5]|-5*v = [-5, -5]
+  EIGENVALUE|λ = 1|p(1) = 0
+  EIGENVECTOR|λ = 1|[8, 9]
+  CHECK|A*[8, 9]|[8, 9]|v = [8, 9]
+  DIAG_FORM|P = [[1, 8], [1, 9]]|D = [[-5, 0], [0, 1]]|P^-1 = [[9, -8], [-1, 1]]
+  CHECK|P*D*P^-1|[[-53, 48], [-54, 49]]|matches A
+  COORDS|c = P^-1 x|[-73, 9]
+  COMBO|x = -73*v1 + 9*v2|[-1, 8]
+  CHECK|P*[-73, 9]|[-1, 8]|matches x
+  E|-5|2|25
+  SCALE_MODE|λ = -5|25*(-73)|-1825
+  E|1|2|1
+  SCALE_MODE|λ = 1|9|9
+  VEC_ENTRY|(1)|(-1825) + 9*8|-1753
+  VEC_ENTRY|(2)|(-1825) + 9*9|-1744
+  CHECK|direct A^2x|[-1753, -1744]|matches eigenbasis result
+  Z|c=[-73, 9], A^2x=[-1753, -1744]
+Answer: c=[-73, 9], A^2x=[-1753, -1744]
 ```
 
 ### Gram Schmidt — `GramSchmidtGenerator`  ·  college · difficulty 4
@@ -5858,19 +6019,19 @@ Equilibria and stability for autonomous ODEs dy/dt = f(y).
 **Variants:** `stability_factored_polynomial`
 
 ```
-Problem: For dy/dt = (y + 5)(y + 1)(y - 1), find equilibria and classify stability by sign analysis.
+Problem: An exercise used by the graduate seminar asks for this stability analysis. For dy/dt = -(y + 2)(y - 9)(y - 13), find equilibria and classify stability by sign analysis.
 Steps:
-  ODE_SETUP|dy/dt = (y + 5)(y + 1)(y - 1)|equilibria and stability
-  EQUILIBRIA|f(y) = 0|y=-5, y=-1, y=1
-  SIGN_TEST|(-inf, -5)|y = -6|f(y) = -35 (negative)|down
-  SIGN_TEST|(-5, -1)|y = -3|f(y) = 16 (positive)|up
-  SIGN_TEST|(-1, 1)|y = 0|f(y) = -5 (negative)|down
-  SIGN_TEST|(1, inf)|y = 2|f(y) = 21 (positive)|up
-  STABILITY|y=-5|left down, right up|unstable
-  STABILITY|y=-1|left up, right down|stable
-  STABILITY|y=1|left down, right up|unstable
-  Z|equilibria: y=-5 unstable; y=-1 stable; y=1 unstable
-Answer: equilibria: y=-5 unstable; y=-1 stable; y=1 unstable
+  ODE_SETUP|dy/dt = -(y + 2)(y - 9)(y - 13)|equilibria and stability
+  EQUILIBRIA|f(y) = 0|y=-2, y=9, y=13
+  SIGN_TEST|(-inf, -2)|y = -3|f(y) = 192 (positive)|up
+  SIGN_TEST|(-2, 9)|y = 7/2|f(y) = -2299/8 (negative)|down
+  SIGN_TEST|(9, 13)|y = 11|f(y) = 52 (positive)|up
+  SIGN_TEST|(13, inf)|y = 14|f(y) = -80 (negative)|down
+  STABILITY|y=-2|left up, right down|stable
+  STABILITY|y=9|left down, right up|unstable
+  STABILITY|y=13|left up, right down|stable
+  Z|equilibria: y=-2 stable; y=9 unstable; y=13 stable
+Answer: equilibria: y=-2 stable; y=9 unstable; y=13 stable
 ```
 
 ### Set Operations — `SetOperationsGenerator`  ·  college · difficulty 2
@@ -5955,38 +6116,44 @@ Stars and bars counts and multinomial coefficients.
 **Variants:** `stars_and_bars_multinomial`, `stars_and_bars_nonnegative`, `stars_and_bars_positive`
 
 ```
-Problem: How many positive integer solutions are there to x1 + ... + x5 = 8?
+Problem: The learning center is checking the following combinatorial model. How many positive integer solutions are there to x1 + ... + x8 = 12?
 Steps:
-  SB_SETUP|x1+...+x5 = 8|xi >= 1
-  SHIFT|yi = xi - 1|y1+...+y5 = 3
+  SB_SETUP|x1+...+x8 = 12|xi >= 1
+  SHIFT|yi = xi - 1|y1+...+y8 = 4
   SB_FORMULA|C(n-1, k-1)
-  S|8|5|3
+  S|12|8|4
+  S|12|1|11
   S|8|1|7
-  S|5|1|4
-  COMB_SETUP|C(7, 4)|n!/(r!(n-r)!)
-  REWRITE|numerator|7 * 6 * 5 * 4
-  M|7|6|42
-  M|42|5|210
-  M|210|4|840
-  REWRITE|denominator|1 * 2 * 3 * 4
+  COMB_SETUP|C(11, 7)|n!/(r!(n-r)!)
+  REWRITE|numerator|11 * 10 * 9 * 8 * 7 * 6 * 5
+  M|11|10|110
+  M|110|9|990
+  M|990|8|7920
+  M|7920|7|55440
+  M|55440|6|332640
+  M|332640|5|1663200
+  REWRITE|denominator|1 * 2 * 3 * 4 * 5 * 6 * 7
   M|1|2|2
   M|2|3|6
   M|6|4|24
-  D|840|24|35
-  Z|solutions = 35
-Answer: solutions = 35
+  M|24|5|120
+  M|120|6|720
+  M|720|7|5040
+  D|1663200|5040|330
+  Z|solutions = 330
+Answer: solutions = 330
 ```
 
 ### Derangement — `DerangementGenerator`  ·  college · difficulty 3
 
-Derangement counts by the recurrence D_n=(n-1)(D_(n-1)+D_(n-2)).
+Derangement counting built on the recurrence D_n=(n-1)(D_(n-1)+D_(n-2)).
 
-**Variants:** `derangement_recurrence`
+**Variants:** `derangement_at_least_one`, `derangement_exactly_k`, `derangement_probability`, `derangement_recurrence`
 
 ```
-Problem: How many derangements are there of 10 distinct forms?
+Problem: Aiko handles the pickup window at the chess club. If the 7 numbered umbrellas are shuffled at random, how likely is it that not a single item returns to its own slot? Give the answer as a fraction in lowest terms.
 Steps:
-  DERANGE_SETUP|n = 10|no item fixed
+  DERANGE_SETUP|n = 7|no item fixed
   RECURRENCE|D_n|(n-1)(D_(n-1)+D_(n-2))
   INITIAL|D_0 = 1|D_1 = 0
   A|0|1|1
@@ -6007,17 +6174,13 @@ Steps:
   A|265|44|309
   M|6|309|1854
   DERANGE_VALUE|D_7|1854
-  A|1854|265|2119
-  M|7|2119|14833
-  DERANGE_VALUE|D_8|14833
-  A|14833|1854|16687
-  M|8|16687|133496
-  DERANGE_VALUE|D_9|133496
-  A|133496|14833|148329
-  M|9|148329|1334961
-  DERANGE_VALUE|D_10|1334961
-  Z|D_10 = 1334961
-Answer: D_10 = 1334961
+  FACT_FORMULA|7! = 1·2·3·4·5·6·7
+  FACT|7|5040
+  DERANGE_PROB|D_7/7!|1854/5040
+  GCD|gcd(1854,5040)|18
+  F|1854/5040|103/280
+  Z|103/280
+Answer: 103/280
 ```
 
 ### Recurrence — `RecurrenceGenerator`  ·  college · difficulty 4
@@ -6097,25 +6260,26 @@ Boolean truth-table normal forms and Karnaugh-map simplification.
 **Variants:** `boolean_algebra_cnf`, `boolean_algebra_dnf`, `boolean_algebra_kmap`
 
 ```
-Problem: Truth table for f(A,B,C): 000->0, 001->0, 010->1, 011->0, 100->0, 101->1, 110->0, 111->1. Write a conjunctive normal form (CNF).
+Problem: For the Boolean function h(A,B,C) the truth table is 000->1, 001->1, 010->0, 011->0, 100->0, 101->0, 110->0, 111->0. Write h as a conjunctive normal form (CNF).
 Steps:
-  BOOL_SETUP|variables A, B, C|CNF from f=0 rows
-  TRUTH_ROW|A=0, B=0, C=0|f=0
-  MAXTERM|000|A OR B OR C
-  TRUTH_ROW|A=0, B=0, C=1|f=0
-  MAXTERM|001|A OR B OR NOT C
-  TRUTH_ROW|A=0, B=1, C=0|f=1
-  TRUTH_ROW|A=0, B=1, C=1|f=0
+  BOOL_SETUP|variables A, B, C|CNF from h=0 rows
+  TRUTH_ROW|A=0, B=0, C=0|h=1
+  TRUTH_ROW|A=0, B=0, C=1|h=1
+  TRUTH_ROW|A=0, B=1, C=0|h=0
+  MAXTERM|010|A OR NOT B OR C
+  TRUTH_ROW|A=0, B=1, C=1|h=0
   MAXTERM|011|A OR NOT B OR NOT C
-  TRUTH_ROW|A=1, B=0, C=0|f=0
+  TRUTH_ROW|A=1, B=0, C=0|h=0
   MAXTERM|100|NOT A OR B OR C
-  TRUTH_ROW|A=1, B=0, C=1|f=1
-  TRUTH_ROW|A=1, B=1, C=0|f=0
+  TRUTH_ROW|A=1, B=0, C=1|h=0
+  MAXTERM|101|NOT A OR B OR NOT C
+  TRUTH_ROW|A=1, B=1, C=0|h=0
   MAXTERM|110|NOT A OR NOT B OR C
-  TRUTH_ROW|A=1, B=1, C=1|f=1
-  CNF_FORM|(A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
-  Z|CNF = (A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
-Answer: CNF = (A OR B OR C) AND (A OR B OR NOT C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR NOT B OR C)
+  TRUTH_ROW|A=1, B=1, C=1|h=0
+  MAXTERM|111|NOT A OR NOT B OR NOT C
+  CNF_FORM|(A OR NOT B OR C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR B OR NOT C) AND (NOT A OR NOT B OR C) AND (NOT A OR NOT B OR NOT C)
+  Z|CNF = (A OR NOT B OR C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR B OR NOT C) AND (NOT A OR NOT B OR C) AND (NOT A OR NOT B OR NOT C)
+Answer: CNF = (A OR NOT B OR C) AND (A OR NOT B OR NOT C) AND (NOT A OR B OR C) AND (NOT A OR B OR NOT C) AND (NOT A OR NOT B OR C) AND (NOT A OR NOT B OR NOT C)
 ```
 
 ### Graph Counting — `GraphCountingGenerator`  ·  college · difficulty 3
@@ -6516,41 +6680,48 @@ Answer: accepted; states = q0->q0->q1->q1->q1->q1->q1->q1
 
 NFA and epsilon-NFA simulation with active-state-set traces.
 
-**Variants:** `nfa_simulation_contains_ab`, `nfa_simulation_ends_with_ab`, `nfa_simulation_epsilon_optional_a`
+**Variants:** `nfa_simulation_contains_ab`, `nfa_simulation_contains_pattern`, `nfa_simulation_ends_with_ab`, `nfa_simulation_ends_with_pattern`, `nfa_simulation_epsilon_chain`, `nfa_simulation_epsilon_optional_a`, `nfa_simulation_random_epsilon_nfa`, `nfa_simulation_random_nfa`
 
 ```
-Problem: Run the NFA with states q0, q1, q2; alphabet a, b; start q0; accepting states q2; transitions q0:a->{q0,q1},b->{q0}; q1:a->{},b->{q2}; q2:a->{q2},b->{q2}; input baba. List the active-state sets after each symbol and give the result.
+Problem: Simulate the subset construction on the fly: states p3, p7, p8; alphabet a, b, c; start p3; accepting states p3, p7; transitions p3:a->{p7,p8},b->{p3},c->{p7}; p7:a->{},b->{},c->{p8}; p8:a->{p3,p8},b->{p8},c->{}; input bbcca. Give each active set and the verdict.
 Steps:
-  NFA_SETUP|states q0, q1, q2|alphabet a, b|start q0
-  NFA_ACCEPT|q2
-  NFA_TRANSITION|q0|a|{q0,q1}
-  NFA_TRANSITION|q0|b|{q0}
-  NFA_TRANSITION|q1|a|{}
-  NFA_TRANSITION|q1|b|{q2}
-  NFA_TRANSITION|q2|a|{q2}
-  NFA_TRANSITION|q2|b|{q2}
-  NFA_INPUT|baba
-  EPS_CLOSURE|{q0}|{q0}
-  NFA_ACTIVE|start|{q0}
+  NFA_SETUP|states p3, p7, p8|alphabet a, b, c|start p3
+  NFA_ACCEPT|p3, p7
+  NFA_TRANSITION|p3|a|{p7,p8}
+  NFA_TRANSITION|p3|b|{p3}
+  NFA_TRANSITION|p3|c|{p7}
+  NFA_TRANSITION|p7|a|{}
+  NFA_TRANSITION|p7|b|{}
+  NFA_TRANSITION|p7|c|{p8}
+  NFA_TRANSITION|p8|a|{p3,p8}
+  NFA_TRANSITION|p8|b|{p8}
+  NFA_TRANSITION|p8|c|{}
+  NFA_INPUT|bbcca
+  EPS_CLOSURE|{p3}|{p3}
+  NFA_ACTIVE|start|{p3}
   NFA_READ|pos 1|b
-  NFA_MOVE|{q0}|b|q0->{q0}|{q0}
-  EPS_CLOSURE|{q0}|{q0}
-  NFA_ACTIVE|after 1|{q0}
-  NFA_READ|pos 2|a
-  NFA_MOVE|{q0}|a|q0->{q0,q1}|{q0,q1}
-  EPS_CLOSURE|{q0,q1}|{q0,q1}
-  NFA_ACTIVE|after 2|{q0,q1}
-  NFA_READ|pos 3|b
-  NFA_MOVE|{q0,q1}|b|q0->{q0}; q1->{q2}|{q0,q2}
-  EPS_CLOSURE|{q0,q2}|{q0,q2}
-  NFA_ACTIVE|after 3|{q0,q2}
-  NFA_READ|pos 4|a
-  NFA_MOVE|{q0,q2}|a|q0->{q0,q1}; q2->{q2}|{q0,q1,q2}
-  EPS_CLOSURE|{q0,q1,q2}|{q0,q1,q2}
-  NFA_ACTIVE|after 4|{q0,q1,q2}
-  CHECK|active ∩ accept = q2|accepted
-  Z|accepted; sets = {q0} -> {q0} -> {q0,q1} -> {q0,q2} -> {q0,q1,q2}
-Answer: accepted; sets = {q0} -> {q0} -> {q0,q1} -> {q0,q2} -> {q0,q1,q2}
+  NFA_MOVE|{p3}|b|p3->{p3}|{p3}
+  EPS_CLOSURE|{p3}|{p3}
+  NFA_ACTIVE|after 1|{p3}
+  NFA_READ|pos 2|b
+  NFA_MOVE|{p3}|b|p3->{p3}|{p3}
+  EPS_CLOSURE|{p3}|{p3}
+  NFA_ACTIVE|after 2|{p3}
+  NFA_READ|pos 3|c
+  NFA_MOVE|{p3}|c|p3->{p7}|{p7}
+  EPS_CLOSURE|{p7}|{p7}
+  NFA_ACTIVE|after 3|{p7}
+  NFA_READ|pos 4|c
+  NFA_MOVE|{p7}|c|p7->{p8}|{p8}
+  EPS_CLOSURE|{p8}|{p8}
+  NFA_ACTIVE|after 4|{p8}
+  NFA_READ|pos 5|a
+  NFA_MOVE|{p8}|a|p8->{p3,p8}|{p3,p8}
+  EPS_CLOSURE|{p3,p8}|{p3,p8}
+  NFA_ACTIVE|after 5|{p3,p8}
+  CHECK|active ∩ accept = p3|accepted
+  Z|accepted; sets = {p3} -> {p3} -> {p3} -> {p7} -> {p8} -> {p3,p8}
+Answer: accepted; sets = {p3} -> {p3} -> {p3} -> {p7} -> {p8} -> {p3,p8}
 ```
 
 ### DFAMinimization — `DFAMinimizationGenerator`  ·  college · difficulty 4
@@ -6593,22 +6764,22 @@ Direct DFA construction for small regular expressions.
 **Variants:** `regex_to_automaton_a_star_b`, `regex_to_automaton_contains_ab`, `regex_to_automaton_ends_ab_or_ba`
 
 ```
-Problem: Build the direct DFA for regular expression (a|b)*ab(a|b)* over alphabet a,b. Report start, accepting states, and transition table.
+Problem: Build the direct DFA for regular expression (a|b)*ab(a|b)* over alphabet a,b. Report start, accepting states, and transition table. Use the state names q99347_0, q99347_1, q99347_2.
 Steps:
   REGEX_SETUP|(a or b)*ab(a or b)*|alphabet a,b|canonical progress DFA
-  REGEX_STATE|q0|no useful suffix
-  REGEX_STATE|q1|suffix a
-  REGEX_STATE|q2|seen ab
-  REGEX_ACCEPT|q2
-  REGEX_TRANSITION|q0|a|q1
-  REGEX_TRANSITION|q0|b|q0
-  REGEX_TRANSITION|q1|a|q1
-  REGEX_TRANSITION|q1|b|q2
-  REGEX_TRANSITION|q2|a|q2
-  REGEX_TRANSITION|q2|b|q2
+  REGEX_STATE|q99347_0|no useful suffix
+  REGEX_STATE|q99347_1|suffix a
+  REGEX_STATE|q99347_2|seen ab
+  REGEX_ACCEPT|q99347_2
+  REGEX_TRANSITION|q99347_0|a|q99347_1
+  REGEX_TRANSITION|q99347_0|b|q99347_0
+  REGEX_TRANSITION|q99347_1|a|q99347_1
+  REGEX_TRANSITION|q99347_1|b|q99347_2
+  REGEX_TRANSITION|q99347_2|a|q99347_2
+  REGEX_TRANSITION|q99347_2|b|q99347_2
   CHECK|complete table|3 states
-  Z|start=q0; accept=q2; transitions=q0:a->q1,b->q0; q1:a->q1,b->q2; q2:a->q2,b->q2
-Answer: start=q0; accept=q2; transitions=q0:a->q1,b->q0; q1:a->q1,b->q2; q2:a->q2,b->q2
+  Z|start=q99347_0; accept=q99347_2; transitions=q99347_0:a->q99347_1,b->q99347_0; q99347_1:a->q99347_1,b->q99347_2; q99347_2:a->q99347_2,b->q99347_2
+Answer: start=q99347_0; accept=q99347_2; transitions=q99347_0:a->q99347_1,b->q99347_0; q99347_1:a->q99347_1,b->q99347_2; q99347_2:a->q99347_2,b->q99347_2
 ```
 
 ### PDASimulation — `PDASimulationGenerator`  ·  college · difficulty 4
@@ -6642,30 +6813,49 @@ CYK parsing for a small Chomsky-normal-form grammar.
 **Variants:** `cyk_parser_membership`
 
 ```
-Problem: Run the CYK parser for string abb with grammar A->a; B->b; C->S B; S->A B or A C. Report the top cell and accept/reject.
+Problem: Run the CYK parser for string adea with grammar A->a or d or e; S->A Y; Y->e or A A or Y A. Report the top cell and accept/reject.
 Steps:
-  CYK_SETUP|string abb|length 3
-  CYK_RULE|A|a
-  CYK_RULE|B|b
-  CYK_RULE|C|S B
-  CYK_RULE|S|A B or A C
+  CYK_SETUP|string adea|length 4
+  CYK_RULE|A|a or d or e
+  CYK_RULE|S|A Y
+  CYK_RULE|Y|e or A A or Y A
   CYK_TERMINAL|cell 1,1|a|{A}
-  CYK_TERMINAL|cell 2,2|b|{B}
-  CYK_TERMINAL|cell 3,3|b|{B}
+  CYK_TERMINAL|cell 2,2|d|{A}
+  CYK_TERMINAL|cell 3,3|e|{A,Y}
+  CYK_TERMINAL|cell 4,4|a|{A}
   CYK_SPAN|2
-  CYK_SPLIT|cell 1,2|1,1 x 2,2|{A} x {B}
-  CYK_COMBINE|A B|{S}|cell 1,2
-  CYK_CELL|1,2|{S}
-  CYK_SPLIT|cell 2,3|2,2 x 3,3|{B} x {B}
-  CYK_CELL|2,3|{}
+  CYK_SPLIT|cell 1,2|1,1 x 2,2|{A} x {A}
+  CYK_COMBINE|A A|{Y}|cell 1,2
+  CYK_CELL|1,2|{Y}
+  CYK_SPLIT|cell 2,3|2,2 x 3,3|{A} x {A,Y}
+  CYK_COMBINE|A A|{Y}|cell 2,3
+  CYK_COMBINE|A Y|{S}|cell 2,3
+  CYK_CELL|2,3|{S,Y}
+  CYK_SPLIT|cell 3,4|3,3 x 4,4|{A,Y} x {A}
+  CYK_COMBINE|A A|{Y}|cell 3,4
+  CYK_COMBINE|Y A|{Y}|cell 3,4
+  CYK_CELL|3,4|{Y}
   CYK_SPAN|3
-  CYK_SPLIT|cell 1,3|1,1 x 2,3|{A} x {}
-  CYK_SPLIT|cell 1,3|1,2 x 3,3|{S} x {B}
-  CYK_COMBINE|S B|{C}|cell 1,3
-  CYK_CELL|1,3|{C}
-  CHECK|S in top cell|rejected
-  Z|rejected; top cell = {C}
-Answer: rejected; top cell = {C}
+  CYK_SPLIT|cell 1,3|1,1 x 2,3|{A} x {S,Y}
+  CYK_COMBINE|A Y|{S}|cell 1,3
+  CYK_SPLIT|cell 1,3|1,2 x 3,3|{Y} x {A,Y}
+  CYK_COMBINE|Y A|{Y}|cell 1,3
+  CYK_CELL|1,3|{S,Y}
+  CYK_SPLIT|cell 2,4|2,2 x 3,4|{A} x {Y}
+  CYK_COMBINE|A Y|{S}|cell 2,4
+  CYK_SPLIT|cell 2,4|2,3 x 4,4|{S,Y} x {A}
+  CYK_COMBINE|Y A|{Y}|cell 2,4
+  CYK_CELL|2,4|{S,Y}
+  CYK_SPAN|4
+  CYK_SPLIT|cell 1,4|1,1 x 2,4|{A} x {S,Y}
+  CYK_COMBINE|A Y|{S}|cell 1,4
+  CYK_SPLIT|cell 1,4|1,2 x 3,4|{Y} x {Y}
+  CYK_SPLIT|cell 1,4|1,3 x 4,4|{S,Y} x {A}
+  CYK_COMBINE|Y A|{Y}|cell 1,4
+  CYK_CELL|1,4|{S,Y}
+  CHECK|S in top cell|accepted
+  Z|accepted; top cell = {S,Y}
+Answer: accepted; top cell = {S,Y}
 ```
 
 ### DPLLTrace — `DPLLTraceGenerator`  ·  college · difficulty 4
@@ -6695,24 +6885,25 @@ Propositional resolution refutations for tiny unsatisfiable CNFs.
 **Variants:** `resolution_proof_binary_refutation`, `resolution_proof_chain_refutation`, `resolution_proof_unit_refutation`
 
 ```
-Problem: Give a resolution refutation for clauses C1=(A), C2=(not A OR B), C3=(not B), using the stated clause order and alphabetical complementary literals, skipping duplicate resolvents.
+Problem: Give a resolution refutation for clauses C1=(P99347), C2=(not P55126), C3=(not P99347 OR P55126), C4=(P5307 OR P33937), using the stated clause order and alphabetical complementary literals, skipping duplicate resolvents.
 Steps:
-  RES_SETUP|C1=(A), C2=(not A OR B), C3=(not B)
-  CLAUSE|C1|(A)
-  CLAUSE|C2|(not A OR B)
-  CLAUSE|C3|(not B)
-  RESOLVE|C1|C2|A
-  DERIVED|C4|(B)
-  RES_SKIP|C1|C2|(B)
-  RESOLVE|C2|C3|B
-  DERIVED|C5|(not A)
-  RES_SKIP|C1|C2|(B)
-  RESOLVE|C1|C5|A
-  DERIVED|C6|{}
-  RES_EMPTY|C6
+  RES_SETUP|C1=(P99347), C2=(not P55126), C3=(not P99347 OR P55126), C4=(P5307 OR P33937)
+  CLAUSE|C1|(P99347)
+  CLAUSE|C2|(not P55126)
+  CLAUSE|C3|(not P99347 OR P55126)
+  CLAUSE|C4|(P5307 OR P33937)
+  RESOLVE|C1|C3|P99347
+  DERIVED|C5|(P55126)
+  RES_SKIP|C1|C3|(P55126)
+  RESOLVE|C2|C3|not P55126
+  DERIVED|C6|(not P99347)
+  RES_SKIP|C1|C3|(P55126)
+  RESOLVE|C1|C6|P99347
+  DERIVED|C7|{}
+  RES_EMPTY|C7
   CHECK|empty clause|unsatisfiable
-  Z|unsatisfiable; empty clause = C6
-Answer: unsatisfiable; empty clause = C6
+  Z|unsatisfiable; empty clause = C7
+Answer: unsatisfiable; empty clause = C7
 ```
 
 ### Extended Euclid — `ExtendedEuclidGenerator`  ·  college · difficulty 3
@@ -7551,15 +7742,15 @@ Apply H, X, Y, Z, and CNOT gates to basis states, with exact measurement probabi
 **Variants:** `quantum_gate_cnot`, `quantum_gate_sequence`, `quantum_gate_single`
 
 ```
-Problem: Apply H then Y then Z to ket1 and give the final state and measurement probabilities.
+Problem: Apply H then Y then Z to e^(i493π/263)·ket1 and give the final state and measurement probabilities.
 Steps:
-  QUANTUM_SETUP|gates=H then Y then Z|input=ket1
-  APPLY_GATE|H|ket1|(ket0 - ket1)/sqrt(2)
-  APPLY_GATE|Y|(ket0 - ket1)/sqrt(2)|i(ket0 + ket1)/sqrt(2)
-  APPLY_GATE|Z|i(ket0 + ket1)/sqrt(2)|i(ket0 - ket1)/sqrt(2)
+  QUANTUM_SETUP|gates=H then Y then Z|input=e^(i493π/263)·ket1
+  APPLY_GATE|H|e^(i493π/263)·ket1|e^(i493π/263)·(ket0 - ket1)/sqrt(2)
+  APPLY_GATE|Y|e^(i493π/263)·(ket0 - ket1)/sqrt(2)|i·e^(i493π/263)·(ket0 + ket1)/sqrt(2)
+  APPLY_GATE|Z|i·e^(i493π/263)·(ket0 + ket1)/sqrt(2)|i·e^(i493π/263)·(ket0 - ket1)/sqrt(2)
   MEASURE_PROB|computational basis|P(0)=1/2|P(1)=1/2
-  Z|state = i(ket0 - ket1)/sqrt(2); P(0) = 1/2, P(1) = 1/2
-Answer: state = i(ket0 - ket1)/sqrt(2); P(0) = 1/2, P(1) = 1/2
+  Z|state = i·e^(i493π/263)·(ket0 - ket1)/sqrt(2); P(0) = 1/2, P(1) = 1/2
+Answer: state = i·e^(i493π/263)·(ket0 - ket1)/sqrt(2); P(0) = 1/2, P(1) = 1/2
 ```
 
 ### Conservation Law — `ConservationLawGenerator`  ·  college · difficulty 3
@@ -7608,17 +7799,18 @@ Hadron electric charge from quark constituents.
 **Variants:** `quark_composition_antibaryon`, `quark_composition_baryon`, `quark_composition_meson`
 
 ```
-Problem: Given quark charges u=2/3, d=-1/3, s=-1/3, c=2/3, b=-1/3 and antiquarks have opposite charge, compute the electric charge of an antibaryon with constituents anti_c anti_u anti_s.
+Problem: Given quark charges u=2/3, d=-1/3, s=-1/3, c=2/3, b=-1/3 and antiquarks have opposite charge, compute the total electric charge of 778 identical antibaryons, each with constituents anti_c anti_u anti_s.
 Steps:
-  QUARK_SETUP|antibaryon|anti_c anti_u anti_s|u=2/3,d=-1/3,s=-1/3,c=2/3,b=-1/3; anti=-charge
+  QUARK_SETUP|antibaryon,count=778|anti_c anti_u anti_s|u=2/3,d=-1/3,s=-1/3,c=2/3,b=-1/3; anti=-charge
   QUARK_CHARGE|anti_c|-2/3
   A|0|-2/3|-2/3
   QUARK_CHARGE|anti_u|-2/3
   A|-2/3|-2/3|-4/3
   QUARK_CHARGE|anti_s|1/3
   A|-4/3|1/3|-1
-  Z|Q = -1
-Answer: Q = -1
+  M|778|-1|-778
+  Z|Q = -778
+Answer: Q = -778
 ```
 
 ### Bisection — `BisectionGenerator`  ·  college · difficulty 2
@@ -7777,42 +7969,42 @@ Answer: forward f'(-1) = 7
 
 ### Runge Kutta — `RungeKuttaGenerator`  ·  college · difficulty 4
 
-One-step RK2 midpoint and classical RK4 tables for dy/dx = ax + by.
+One-step RK2 midpoint and classical RK4 tables for d(dep)/d(indep) = a·indep + b·dep + c.
 
 **Variants:** `runge_kutta_rk2`, `runge_kutta_rk4`
 
 ```
-Problem: Use RK4 with step size h = 1/4 to approximate y(1/4) for dy/dx = x - 2y with y(0) = 5.
+Problem: During a tutoring session, Jonas studies ODE [dQ/dt = 3t - 5; Q(1) = 3]. Apply RK4 with h = 1/4 to approximate Q(5/4).
 Steps:
-  ODE_SETUP|dy/dx = x - 2y, y(0) = 5|RK4, h = 1/4
+  ODE_SETUP|dQ/dt = 3t - 5, Q(1) = 3|RK4, h = 1/4
   D|1/4|2|1/8
-  RK_STAGE|k1|x=0|y=5
-  EVAL|f(0,5)|(0) - 2(5) = -10
-  A|0|1/8|1/8
-  M|1/8|-10|-5/4
-  S|5|5/4|15/4
-  RK_STAGE|k2|x=1/8|y=15/4
-  EVAL|f(1/8,15/4)|(1/8) - 2(15/4) = -59/8
-  M|1/8|-59/8|-59/64
-  S|5|59/64|261/64
-  RK_STAGE|k3|x=1/8|y=261/64
-  EVAL|f(1/8,261/64)|(1/8) - 2(261/64) = -257/32
-  A|0|1/4|1/4
-  M|1/4|-257/32|-257/128
-  S|5|257/128|383/128
-  RK_STAGE|k4|x=1/4|y=383/128
-  EVAL|f(1/4,383/128)|(1/4) - 2(383/128) = -367/64
-  M|2|-59/8|-59/4
-  M|2|-257/32|-257/16
-  A|-10|-59/4|-99/4
-  A|-99/4|-257/16|-653/16
-  A|-653/16|-367/64|-2979/64
-  RK_COMBINE|k1+2k2+2k3+k4|-2979/64
+  RK_STAGE|k1|t=1|Q=3
+  EVAL|f(1,3)|3(1) - 5 = -2
+  A|1|1/8|9/8
+  M|1/8|-2|-1/4
+  S|3|1/4|11/4
+  RK_STAGE|k2|t=9/8|Q=11/4
+  EVAL|f(9/8,11/4)|3(9/8) - 5 = -13/8
+  M|1/8|-13/8|-13/64
+  S|3|13/64|179/64
+  RK_STAGE|k3|t=9/8|Q=179/64
+  EVAL|f(9/8,179/64)|3(9/8) - 5 = -13/8
+  A|1|1/4|5/4
+  M|1/4|-13/8|-13/32
+  S|3|13/32|83/32
+  RK_STAGE|k4|t=5/4|Q=83/32
+  EVAL|f(5/4,83/32)|3(5/4) - 5 = -5/4
+  M|2|-13/8|-13/4
+  M|2|-13/8|-13/4
+  A|-2|-13/4|-21/4
+  A|-21/4|-13/4|-17/2
+  A|-17/2|-5/4|-39/4
+  RK_COMBINE|k1+2k2+2k3+k4|-39/4
   D|1/4|6|1/24
-  M|1/24|-2979/64|-993/512
-  S|5|993/512|1567/512
-  Z|1567/512
-Answer: 1567/512
+  M|1/24|-39/4|-13/32
+  S|3|13/32|83/32
+  Z|83/32
+Answer: 83/32
 ```
 
 ### Continuous Distribution — `ContinuousDistributionGenerator`  ·  college · difficulty 3
@@ -8663,16 +8855,16 @@ Relativistic rest energy, mass-shell energy, and velocity addition.
 **Variants:** `relativistic_energy_energy_momentum`, `relativistic_energy_rest_energy`, `relativistic_energy_velocity_addition`
 
 ```
-Problem: In c=1 units, a particle has momentum p=35 and mass m=12. Find E from E^2=p^2+m^2.
+Problem: Analysis case 763 was supplied by the engineering institute. In c=1 units, a particle has momentum p=560 and mass m=75. Find E from E^2=p^2+m^2.
 Steps:
-  REL_ENERGY_SETUP|energy_momentum|c=1|p=35, m=12
+  REL_ENERGY_SETUP|energy_momentum|c=1|p=560, m=75
   REL_ENERGY_FORMULA|E=sqrt(p^2+m^2)
-  E|35|2|1225
-  E|12|2|144
-  A|1225|144|1369
-  ROOT|sqrt(1369)|37
-  Z|E=37
-Answer: E=37
+  E|560|2|313600
+  E|75|2|5625
+  A|313600|5625|319225
+  ROOT|sqrt(319225)|565
+  Z|E=565
+Answer: E=565
 ```
 
 ### Doppler — `DopplerGenerator`  ·  college · difficulty 3
@@ -8987,34 +9179,35 @@ Answer: lengths=A:4,B:1,C:5,D:6,E:6,F:2,G:4,H:4; L=67/32 bits; H=67/32 bits; Kra
 
 ### LZCompression — `LZCompressionGenerator`  ·  college · difficulty 4
 
-LZ77 and LZ78 compression traces on short strings.
+LZ77 and LZ78 compression and decompression traces on short random strings over small random alphabets.
 
-**Variants:** `lz_compression_lz77`, `lz_compression_lz78`
+**Variants:** `lz_compression_lz77`, `lz_compression_lz77_decode`, `lz_compression_lz78`, `lz_compression_lz78_decode`
 
 ```
-Problem: Compress the string bananaban with LZ78 with dictionary index 0 as the empty phrase and $ as the end marker. Use the exact greedy rule stated by the method and list the emitted tokens.
+Problem: The tokens (0,u), (0,r), (0,m), (2,v), (0,v), (5,r) were produced by LZ78. Rebuild the original text. Each token is (dictionary index,next character), index 0 is the empty phrase, and $ is the end marker.
 Steps:
-  LZ_SETUP|LZ78|bananaban
+  LZ_SETUP|LZ78 decode|(0,u), (0,r), (0,m), (2,v), (0,v), (5,r)
   LZ78_DICT|0|empty
-  LZ78_MATCH|pos 0|phrase empty|index 0|next b
-  LZ78_EMIT|(0,b)
-  LZ78_DICT|1|b
-  LZ78_MATCH|pos 1|phrase empty|index 0|next a
-  LZ78_EMIT|(0,a)
-  LZ78_DICT|2|a
-  LZ78_MATCH|pos 2|phrase empty|index 0|next n
-  LZ78_EMIT|(0,n)
-  LZ78_DICT|3|n
-  LZ78_MATCH|pos 3|phrase a|index 2|next n
-  LZ78_EMIT|(2,n)
-  LZ78_DICT|4|an
-  LZ78_MATCH|pos 5|phrase a|index 2|next b
-  LZ78_EMIT|(2,b)
-  LZ78_DICT|5|ab
-  LZ78_MATCH|pos 7|phrase an|index 4|next $
-  LZ78_EMIT|(4,$)
-  Z|LZ78 = (0,b), (0,a), (0,n), (2,n), (2,b), (4,$)
-Answer: LZ78 = (0,b), (0,a), (0,n), (2,n), (2,b), (4,$)
+  LZ78_LOOKUP|index 0|phrase empty
+  LZ78_APPEND|empty + u|out = u
+  LZ78_DICT|1|u
+  LZ78_LOOKUP|index 0|phrase empty
+  LZ78_APPEND|empty + r|out = ur
+  LZ78_DICT|2|r
+  LZ78_LOOKUP|index 0|phrase empty
+  LZ78_APPEND|empty + m|out = urm
+  LZ78_DICT|3|m
+  LZ78_LOOKUP|index 2|phrase r
+  LZ78_APPEND|r + v|out = urmrv
+  LZ78_DICT|4|rv
+  LZ78_LOOKUP|index 0|phrase empty
+  LZ78_APPEND|empty + v|out = urmrvv
+  LZ78_DICT|5|v
+  LZ78_LOOKUP|index 5|phrase v
+  LZ78_APPEND|v + r|out = urmrvvvr
+  LZ78_DICT|6|vr
+  Z|text = urmrvvvr
+Answer: text = urmrvvvr
 ```
 
 ### Hamming Code — `HammingCodeGenerator`  ·  college · difficulty 4
@@ -9529,18 +9722,18 @@ Transformer and LoRA parameter counting.
 **Variants:** `param_count_lora_matrix`, `param_count_transformer_stack`
 
 ```
-Problem: Count LoRA parameters for a dense layer with d_in=1024, d_out=384, and rank r=2. Compare r(d_in+d_out) with full fine-tuning d_in*d_out.
+Problem: Count LoRA parameters for a dense layer with d_in=1664, d_out=1920, and rank r=54. Compare r(d_in+d_out) with full fine-tuning d_in*d_out.
 Steps:
-  PARAM_SETUP|type=lora|d_in=1024,d_out=384,rank=2
-  M|1024|384|393216
-  PARAM_PART|full_matrix|393216
-  A|1024|384|1408
-  M|2|1408|2816
-  LORA_COUNT|r*(d_in+d_out)|2816
-  D|2816|393216|11/1536
-  APPROX|lora/full|11/1536
-  Z|full=393216; lora=2816; ratio=11/1536
-Answer: full=393216; lora=2816; ratio=11/1536
+  PARAM_SETUP|type=lora|d_in=1664,d_out=1920,rank=54
+  M|1664|1920|3194880
+  PARAM_PART|full_matrix|3194880
+  A|1664|1920|3584
+  M|54|3584|193536
+  LORA_COUNT|r*(d_in+d_out)|193536
+  D|193536|3194880|63/1040
+  APPROX|lora/full|63/1040
+  Z|full=3194880; lora=193536; ratio=63/1040
+Answer: full=3194880; lora=193536; ratio=63/1040
 ```
 
 ### FLOPs Memory — `FLOPsMemoryGenerator`  ·  college · difficulty 4
@@ -9573,19 +9766,19 @@ Scaling-law arithmetic for model size, tokens, compute, and throughput.
 **Variants:** `scaling_law_compute`
 
 ```
-Problem: For scaling-law arithmetic with N=6700000000 parameters, D=10000000000 tokens, and training budget F=10000000000000000 FLOPs/s, compute C=6ND, Chinchilla-optimal tokens 20N, and tokens/s=F/(6N).
+Problem: For scaling-law arithmetic with N=59000000 parameters, D=63000000000 tokens, and training budget F=15000000000000000 FLOPs/s, compute C=6ND, Chinchilla-optimal tokens 20N, and tokens/s=F/(6N).
 Steps:
-  SCALING_SETUP|N=6700000000|D=10000000000|F=10000000000000000
-  M|6700000000|10000000000|67000000000000000000
-  M|6|67000000000000000000|402000000000000000000
-  SCALING_COMPUTE|6ND|402000000000000000000
-  M|20|6700000000|134000000000
-  CHINCHILLA|20N|134000000000
-  M|6|6700000000|40200000000
-  D|10000000000000000|40200000000|50000000/201
-  THROUGHPUT|tokens_per_second|50000000/201
-  Z|C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
-Answer: C=402000000000000000000; optimal_tokens=134000000000; tokens_per_second=50000000/201
+  SCALING_SETUP|N=59000000|D=63000000000|F=15000000000000000
+  M|59000000|63000000000|3717000000000000000
+  M|6|3717000000000000000|22302000000000000000
+  SCALING_COMPUTE|6ND|22302000000000000000
+  M|20|59000000|1180000000
+  CHINCHILLA|20N|1180000000
+  M|6|59000000|354000000
+  D|15000000000000000|354000000|2500000000/59
+  THROUGHPUT|tokens_per_second|2500000000/59
+  Z|C=22302000000000000000; optimal_tokens=1180000000; tokens_per_second=2500000000/59
+Answer: C=22302000000000000000; optimal_tokens=1180000000; tokens_per_second=2500000000/59
 ```
 
 ### LRSchedule — `LRScheduleGenerator`  ·  college · difficulty 2
@@ -9662,22 +9855,23 @@ Answer: q=(-33,-11,15); dequant=(-9/5,-7/10,3/5); sum_abs_error=3/100
 
 Annuity present/future value and short amortization schedules.
 
-**Variants:** `annuity_amortization`, `annuity_future_value`, `annuity_present_value`
+**Variants:** `annuity_amortization`, `annuity_due`, `annuity_future_value`, `annuity_perpetuity`, `annuity_present_value`
 
 ```
-Problem: An ordinary annuity pays $750 at the end of each period for 3 periods at 25% per period. Find the present value.
+Problem: Each period opens with a $4355 deposit into a money market account that pays 50% per period. Find the future value of the annuity due after 2 periods.
 Steps:
-  ANNUITY_SETUP|ordinary annuity present value|PMT=750,r=25%,n=3
-  PERCENT_TO_DEC|25%|0.25
-  ANNUITY_FORMULA|PV = PMT*(1 - (1+r)^(-n))/r
-  A|1|0.25|1.25
-  E|1.25|3|1.953125
-  D|1|1.953125|0.512
-  S|1|0.512|0.488
-  D|0.488|0.25|1.952
-  M|750|1.952|1464
-  Z|present_value $1464.00
-Answer: present_value $1464.00
+  ANNUITY_SETUP|annuity due future value|PMT=4355,r=50%,n=2
+  PERCENT_TO_DEC|50%|0.5
+  ANNUITY_FORMULA|FV(due) = PMT*((1+r)^n - 1)/r*(1+r)
+  A|1|0.5|1.5
+  E|1.5|2|2.25
+  S|2.25|1|1.25
+  D|1.25|0.5|2.5
+  M|4355|2.5|10887.5
+  M|10887.5|1.5|16331.25
+  CHECK|multiply_back|2.5×0.5+1=2.25|(1+r)^n=2.25
+  Z|future_value_due $16331.25
+Answer: future_value_due $16331.25
 ```
 
 ### Bond Pricing — `BondPricingGenerator`  ·  college · difficulty 4
@@ -9751,30 +9945,33 @@ Answer: IRR_estimate=147/125
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
 
-Matrix exponential for diagonalizable 2x2 matrices: e^(At) = P*e^(Dt)*P^-1. Eigenvalues are small distinct integers and P is unimodular, so the symbolic entries are exact linear combinations of e^(lambda t) terms.
+Matrix exponential for diagonalizable 2x2 matrices: e^(At) = P*e^(Dt)*P^-1. Eigenvalues are distinct integers in [-6, 6] and P is unimodular, so every symbolic entry is an exact integer combination of e^(lambda t) terms. A second variant applies e^(At) to an integer initial vector to solve x' = Ax, x(0) = x0.
 
-**Variants:** `matrix_exponential_diagonalizable`
+**Variants:** `matrix_exponential_diagonalizable`, `matrix_exponential_ivp`
 
 ```
-Problem: Find e^(At) for A = [[5, -4], [2, -1]] by diagonalization.
+Problem: Use e^(At) to solve x' = Ax where A = [[-4, 6], [-7, 9]] and x(0) = [6, -2].
 Steps:
-  MAT_SETUP|A = [[5, -4], [2, -1]]|compute e^(At)
-  EIGENVALUE|λ = 1|diagonal entry of D
-  EIGENVECTOR|λ = 1|[1, 1]
-  CHECK|A*[1, 1]|[1, 1]|v = [1, 1]
+  MAT_SETUP|A = [[-4, 6], [-7, 9]]|solve x' = Ax with x(0) = [6, -2]
+  EIGENVALUE|λ = 2|diagonal entry of D
+  EIGENVECTOR|λ = 2|[1, 1]
+  CHECK|A*[1, 1]|[2, 2]|2*v = [2, 2]
   EIGENVALUE|λ = 3|diagonal entry of D
-  EIGENVECTOR|λ = 3|[2, 1]
-  CHECK|A*[2, 1]|[6, 3]|3*v = [6, 3]
-  DIAG_FORM|P = [[1, 2], [1, 1]]|D = [[1, 0], [0, 3]]|P^-1 = [[-1, 2], [1, -1]]
-  EXP_DIAG|e^(Dt)|[[e^t, 0], [0, e^(3t)]]
+  EIGENVECTOR|λ = 3|[6, 7]
+  CHECK|A*[6, 7]|[18, 21]|3*v = [18, 21]
+  DIAG_FORM|P = [[1, 6], [1, 7]]|D = [[2, 0], [0, 3]]|P^-1 = [[7, -6], [-1, 1]]
+  EXP_DIAG|e^(Dt)|[[e^(2t), 0], [0, e^(3t)]]
   EXP_FORM|e^(At) = P*e^(Dt)*P^-1
-  EXP_ENTRY|(1,1)|-e^t + 2*e^(3t)|-e^t + 2*e^(3t)
-  EXP_ENTRY|(1,2)|2*e^t - 2*e^(3t)|2*e^t - 2*e^(3t)
-  EXP_ENTRY|(2,1)|-e^t + e^(3t)|-e^t + e^(3t)
-  EXP_ENTRY|(2,2)|2*e^t - e^(3t)|2*e^t - e^(3t)
-  CHECK|t = 0|[[1, 0], [0, 1]]|identity
-  Z|e^(At)=[[-e^t + 2*e^(3t), 2*e^t - 2*e^(3t)], [-e^t + e^(3t), 2*e^t - e^(3t)]]
-Answer: e^(At)=[[-e^t + 2*e^(3t), 2*e^t - 2*e^(3t)], [-e^t + e^(3t), 2*e^t - e^(3t)]]
+  EXP_ENTRY|(1,1)|7*e^(2t) - 6*e^(3t)|7*e^(2t) - 6*e^(3t)
+  EXP_ENTRY|(1,2)|-6*e^(2t) + 6*e^(3t)|-6*e^(2t) + 6*e^(3t)
+  EXP_ENTRY|(2,1)|7*e^(2t) - 7*e^(3t)|7*e^(2t) - 7*e^(3t)
+  EXP_ENTRY|(2,2)|-6*e^(2t) + 7*e^(3t)|-6*e^(2t) + 7*e^(3t)
+  EXP_APPLY|x(t) = e^(At)x(0)|x(0) = [6, -2]
+  SOL_ENTRY|x1(t)|(7*e^(2t) - 6*e^(3t))*6 + (-6*e^(2t) + 6*e^(3t))*(-2)|54*e^(2t) - 48*e^(3t)
+  SOL_ENTRY|x2(t)|(7*e^(2t) - 7*e^(3t))*6 + (-6*e^(2t) + 7*e^(3t))*(-2)|54*e^(2t) - 56*e^(3t)
+  CHECK|t = 0|[6, -2]|matches x(0) = [6, -2]
+  Z|x(t)=[54*e^(2t) - 48*e^(3t), 54*e^(2t) - 56*e^(3t)]
+Answer: x(t)=[54*e^(2t) - 48*e^(3t), 54*e^(2t) - 56*e^(3t)]
 ```
 
 ### SVD — `SVDGenerator`  ·  graduate · difficulty 4
@@ -9784,23 +9981,23 @@ Singular value decomposition of symmetric 2x2 matrices via A^T A. Matrices have 
 **Variants:** `svd_symmetric_2x2`
 
 ```
-Problem: Find an SVD A = U*Sigma*V^T for A = [[30, 13], [13, 30]] using A^T A.
+Problem: The lecture room is checking an exact matrix decomposition. Find an SVD A = U*Sigma*V^T for A = [[52, 49], [49, 52]] using A^T A.
 Steps:
-  MAT_SETUP|A = [[30, 13], [13, 30]]|SVD via A^T A
-  ATA|A^T A|[[1069, 780], [780, 1069]]
-  EIGENVALUE|λ1 = 1849|from (30 + 13)^2
-  EIGENVECTOR|λ1 = 1849|[1/√2, 1/√2]
-  ROOT|√1849|43
-  AV_VECTOR|A*v1|[43/√2, 43/√2]
+  MAT_SETUP|A = [[52, 49], [49, 52]]|SVD via A^T A
+  ATA|A^T A|[[5105, 5096], [5096, 5105]]
+  EIGENVALUE|λ1 = 10201|from (52 + 49)^2
+  EIGENVECTOR|λ1 = 10201|[1/√2, 1/√2]
+  ROOT|√10201|101
+  AV_VECTOR|A*v1|[101/√2, 101/√2]
   U_VECTOR|u1 = A*v1/σ1|[1/√2, 1/√2]
-  EIGENVALUE|λ2 = 289|from (30 - 13)^2
-  EIGENVECTOR|λ2 = 289|[1/√2, -1/√2]
-  ROOT|√289|17
-  AV_VECTOR|A*v2|[17/√2, -17/√2]
+  EIGENVALUE|λ2 = 9|from (52 - 49)^2
+  EIGENVECTOR|λ2 = 9|[1/√2, -1/√2]
+  ROOT|√9|3
+  AV_VECTOR|A*v2|[3/√2, -3/√2]
   U_VECTOR|u2 = A*v2/σ2|[1/√2, -1/√2]
-  CHECK|U*Sigma*V^T|[[30, 13], [13, 30]]|matches A
-  Z|U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
-Answer: U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[43, 0], [0, 17]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
+  CHECK|U*Sigma*V^T|[[52, 49], [49, 52]]|matches A
+  Z|U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[101, 0], [0, 3]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
+Answer: U=[[1/√2, 1/√2], [1/√2, -1/√2]]; Sigma=[[101, 0], [0, 3]]; V^T=[[1/√2, 1/√2], [1/√2, -1/√2]]
 ```
 
 ### Series Solution — `SeriesSolutionGenerator`  ·  graduate · difficulty 4
@@ -9810,32 +10007,32 @@ Power-series solutions of differential equations by coefficient matching.
 **Variants:** `series_solution_first_order_exp`
 
 ```
-Problem: Find the power-series solution through x^5 for y' = y with y(0) = 5880.
+Problem: The analysis seminar is checking a coefficient-matching calculation. Find the power-series solution through x^5 for y' = 2y with y(0) = 23400.
 Steps:
-  ODE_SETUP|y' = y, y(0) = 5880|power series through x^5
+  ODE_SETUP|y' = 2y, y(0) = 23400|power series through x^5
   SERIES_ASSUME|y|sum a_n x^n
   DERIV_SERIES|y'|sum (n+1)a_(n+1)x^n
-  REWRITE|y|sum a_n x^n
-  COEFF_MATCH|x^n|(n+1)a_(n+1) = a_n
-  RECURRENCE|a_(n+1)|a_n/(n+1)
-  INITIAL_COEFF|a_0|5880
-  M|1|5880|5880
-  D|5880|1|5880
-  COEFF|a_1|5880
-  M|1|5880|5880
-  D|5880|2|2940
-  COEFF|a_2|2940
-  M|1|2940|2940
-  D|2940|3|980
-  COEFF|a_3|980
-  M|1|980|980
-  D|980|4|245
-  COEFF|a_4|245
-  M|1|245|245
-  D|245|5|49
-  COEFF|a_5|49
-  Z|y = 5880 + 5880x + 2940x^2 + 980x^3 + 245x^4 + 49x^5 + O(x^6)
-Answer: y = 5880 + 5880x + 2940x^2 + 980x^3 + 245x^4 + 49x^5 + O(x^6)
+  REWRITE|2y|sum 2a_n x^n
+  COEFF_MATCH|x^n|(n+1)a_(n+1) = 2a_n
+  RECURRENCE|a_(n+1)|2a_n/(n+1)
+  INITIAL_COEFF|a_0|23400
+  M|2|23400|46800
+  D|46800|1|46800
+  COEFF|a_1|46800
+  M|2|46800|93600
+  D|93600|2|46800
+  COEFF|a_2|46800
+  M|2|46800|93600
+  D|93600|3|31200
+  COEFF|a_3|31200
+  M|2|31200|62400
+  D|62400|4|15600
+  COEFF|a_4|15600
+  M|2|15600|31200
+  D|31200|5|6240
+  COEFF|a_5|6240
+  Z|y = 23400 + 46800x + 46800x^2 + 31200x^3 + 15600x^4 + 6240x^5 + O(x^6)
+Answer: y = 23400 + 46800x + 46800x^2 + 31200x^3 + 15600x^4 + 6240x^5 + O(x^6)
 ```
 
 ### Generating Function — `GeneratingFunctionGenerator`  ·  graduate · difficulty 4
@@ -9903,22 +10100,26 @@ Answer: MGU = {X=h(a), Y=b}
 
 ### Lambda Reduction — `LambdaReductionGenerator`  ·  graduate · difficulty 4
 
-Small lambda-calculus beta-reduction traces with capture avoidance.
+Lambda-calculus beta-reduction traces on randomly built terms, reduced in leftmost-outermost order with capture-avoiding substitution.
 
-**Variants:** `lambda_reduction_alpha`, `lambda_reduction_constant`, `lambda_reduction_identity`
+**Variants:** `lambda_reduction_alpha`, `lambda_reduction_constant`, `lambda_reduction_duplicate`, `lambda_reduction_identity`
 
 ```
-Problem: Normalize (((lambda x. (lambda y. x)) a) b) using leftmost-outermost beta reduction; alpha-rename when needed.
+Problem: Normalize (((lambda b. (b b)) (lambda p. p)) (lambda p. p)) using leftmost-outermost beta reduction; alpha-rename when needed. Rename a captured bound variable to the first unused name from z, w, v, u.
 Steps:
-  LAMBDA_SETUP|(((lambda x. (lambda y. x)) a) b)|leftmost-outermost
-  BETA|(lambda x. lambda y. x) applied to a
-  SUBSTITUTE|x:=a in lambda y. x|lambda y. a
-  REWRITE|lambda y. a
-  BETA|(lambda y. a) applied to b
-  SUBSTITUTE|y:=b in a|a
-  REWRITE|a
-  Z|normal form = a
-Answer: normal form = a
+  LAMBDA_SETUP|(((lambda b. (b b)) (lambda p. p)) (lambda p. p))|leftmost-outermost
+  BETA|(lambda b. (b b)) applied to (lambda p. p)
+  SUBSTITUTE|b:=(lambda p. p) in (b b)|((lambda p. p) (lambda p. p))
+  REWRITE|(((lambda p. p) (lambda p. p)) (lambda p. p))
+  BETA|(lambda p. p) applied to (lambda p. p)
+  SUBSTITUTE|p:=(lambda p. p) in p|lambda p. p
+  REWRITE|((lambda p. p) (lambda p. p))
+  BETA|(lambda p. p) applied to (lambda p. p)
+  SUBSTITUTE|p:=(lambda p. p) in p|lambda p. p
+  REWRITE|lambda p. p
+  NO_REDEX|lambda p. p|no beta redex remains
+  Z|normal form = lambda p. p
+Answer: normal form = lambda p. p
 ```
 
 ### Quadratic Residue — `QuadraticResidueGenerator`  ·  graduate · difficulty 4
@@ -10268,32 +10469,34 @@ Answer: signature = (r=10, s=10); verification = valid
 
 ### LLLReduction — `LLLReductionGenerator`  ·  graduate · difficulty 4
 
-Two-dimensional LLL/Gauss lattice basis reduction.
+Two-dimensional LLL/Gauss lattice basis reduction on random integer bases, asking either for the reduced basis or for the shortest nonzero lattice vector.
 
-**Variants:** `lll_reduction_2d`
+**Variants:** `lll_reduction_2d`, `lll_reduction_2d_shortest`
 
 ```
-Problem: Use two-dimensional LLL (Gauss reduction) on basis [(6,1),(11,2)]. Round mu to the nearest integer.
+Problem: A lattice N has basis [(10,14),(-1,-13)]. Run two-dimensional LLL by hand, rounding mu to the nearest integer, to obtain the shortest nonzero vector of N with a positive first nonzero coordinate.
 Steps:
-  LLL_SETUP|[(6,1),(11,2)]
-  DOT|b2.b1|68
-  NORM2|b1|37
-  MU|68/37|round=2
-  SIZE_REDUCE|b2=(11, 2)|b2-2b1=(-1, 0)
-  DOT|b2.b1|-6
-  NORM2|b1|37
-  MU|-6/37|round=0
-  SWAP|norm b2=1|norm b1=37
-  DOT|b2.b1|-6
-  NORM2|b1|1
-  MU|-6|round=-6
-  SIZE_REDUCE|b2=(6, 1)|b2-(-6)b1=(0, 1)
-  DOT|b2.b1|0
-  NORM2|b1|1
-  MU|0|round=0
-  LLL_DONE|[(-1,0),(0,1)]
-  Z|reduced basis = [(-1,0),(0,1)]
-Answer: reduced basis = [(-1,0),(0,1)]
+  LLL_SETUP|[(10,14),(-1,-13)]
+  DOT|b2.b1|-192
+  NORM2|b1|296
+  MU|-24/37|round=-1
+  SIZE_REDUCE|b2=(-1, -13)|b2-(-1)b1=(9, 1)
+  DOT|b2.b1|104
+  NORM2|b1|296
+  MU|13/37|round=0
+  SWAP|norm b2=82|norm b1=296
+  DOT|b2.b1|104
+  NORM2|b1|82
+  MU|52/41|round=1
+  SIZE_REDUCE|b2=(10, 14)|b2-1b1=(1, 13)
+  DOT|b2.b1|22
+  NORM2|b1|82
+  MU|11/41|round=0
+  LLL_DONE|[(9,1),(1,13)]
+  CHECK|det_invariant|abs det original = 116|abs det reduced = 116
+  SHORTEST|(9,1)|norm^2=82
+  Z|shortest vector = (9,1); norm^2 = 82
+Answer: shortest vector = (9,1); norm^2 = 82
 ```
 
 ### Quaternion — `QuaternionGenerator`  ·  graduate · difficulty 4
@@ -10422,21 +10625,20 @@ Answer: qvq^-1 = (0,4,0,-4); vector = (4,0,-4)
 
 ### Complex Log — `ComplexLogGenerator`  ·  graduate · difficulty 4
 
-Principal and multivalued complex logarithms, plus the principal power i^i = exp(i Log i).
+Principal and multivalued complex logarithms, plus principal values of purely imaginary powers of unit complex numbers (the i^i family).
 
 **Variants:** `complex_log_log`, `complex_log_power_ii`
 
 ```
-Problem: Find the principal Log and all logarithms of z = 49 cis(300 deg).
+Problem: Compute the principal value Log(z) and all values of log(z) for z = 3/8 e^(i*132 deg).
 Steps:
-  LOG_SETUP|z=49 cis(300 deg)
-  S|300|360|-60
-  ANGLE_WRAP|300 deg|-60 deg
+  LOG_SETUP|z=3/8 cis(132 deg)
+  ARGUMENT|132 deg|132 deg
   LOG_FORMULA|log z = ln r + i(arg + 2pi*k)
-  PRINCIPAL_LOG|ln(49) - i*pi/3
-  MULTIVALUED_LOG|ln(49) + i*(-pi/3 + 2pi*k)|k in Z
-  Z|Log(z) = ln(49) - i*pi/3; log(z) = ln(49) + i*(-pi/3 + 2pi*k), k in Z
-Answer: Log(z) = ln(49) - i*pi/3; log(z) = ln(49) + i*(-pi/3 + 2pi*k), k in Z
+  PRINCIPAL_LOG|ln(3/8) + i*11pi/15
+  MULTIVALUED_LOG|ln(3/8) + i*(11pi/15 + 2pi*k)|k in Z
+  Z|Log(z) = ln(3/8) + i*11pi/15; log(z) = ln(3/8) + i*(11pi/15 + 2pi*k), k in Z
+Answer: Log(z) = ln(3/8) + i*11pi/15; log(z) = ln(3/8) + i*(11pi/15 + 2pi*k), k in Z
 ```
 
 ### Mobius Transform — `MobiusTransformGenerator`  ·  graduate · difficulty 4
@@ -10562,7 +10764,7 @@ Mechanical spherical-triangle calculations with supplied exact trig values.
 **Variants:** `spherical_triangle_cosines`, `spherical_triangle_sines`
 
 ```
-Problem: In a spherical triangle, side a=150 deg, side b=90 deg, and angle A=150 deg. Given sin(a)=1/2, sin(b)=1, and sin(A)=1/2, use the spherical law of sines to find sin(B).
+Problem: Chart record 34036 from the research station supplies exact trig values. In a spherical triangle, side a=150 deg, side b=90 deg, and angle A=150 deg. Given sin(a)=1/2, sin(b)=1, and sin(A)=1/2, use the spherical law of sines to find sin(B).
 Steps:
   SPHERICAL_TRIANGLE_SETUP|a=150 deg, b=90 deg, A=150 deg|find sin(B)
   SPHERICAL_SINE_LAW|sin(A)/sin(a)=sin(B)/sin(b)
@@ -10599,15 +10801,15 @@ Stereographic projection between the plane and the unit sphere, using the north 
 **Variants:** `stereographic_plane_to_sphere`, `stereographic_sphere_to_plane`
 
 ```
-Problem: Map sphere point (X,Y,Z)=(4/41,-24/41,33/41) with Z != 1 to the plane by inverse stereographic projection from the north pole.
+Problem: The modeling workshop is checking an exact coordinate map. Map sphere point (X,Y,Z)=(75/127,-10/127,102/127) with Z != 1 to the plane by inverse stereographic projection from the north pole.
 Steps:
-  STEREO_SETUP|sphere_to_plane|X=4/41|Y=-24/41|Z=33/41
+  STEREO_SETUP|sphere_to_plane|X=75/127|Y=-10/127|Z=102/127
   FORMULA|u=X/(1-Z); v=Y/(1-Z)
-  S|1|33/41|8/41
-  D|4/41|8/41|1/2
-  D|-24/41|8/41|-3
-  Z|plane point = (1/2, -3)
-Answer: plane point = (1/2, -3)
+  S|1|102/127|25/127
+  D|75/127|25/127|3
+  D|-10/127|25/127|-2/5
+  Z|plane point = (3, -2/5)
+Answer: plane point = (3, -2/5)
 ```
 
 ### Fundamental Form — `FundamentalFormGenerator`  ·  graduate · difficulty 4
@@ -10738,12 +10940,12 @@ Answer: inner product = 0
 
 ### Legendre Construction — `LegendreConstructionGenerator`  ·  graduate · difficulty 4
 
-Construct P_2 or P_3 by Gram-Schmidt on {1, x, x^2, x^3} over [-1, 1], then scale to the standard Legendre leading coefficient.
+Construct a Legendre polynomial - P_2 or P_3 by Gram-Schmidt on {1, x, x^2, x^3} over [-1, 1], or P_4/P_5/P_6 by one step of Bonnet's recurrence from the two preceding polynomials - then evaluate a short Legendre series exactly at a rational point.
 
-**Variants:** `legendre_construction_p2`, `legendre_construction_p3`
+**Variants:** `legendre_construction_p2`, `legendre_construction_p3`, `legendre_construction_recurrence`
 
 ```
-Problem: Use Gram-Schmidt on {1, x, x^2, x^3} over [-1,1] to construct the Legendre polynomial P_3 with leading coefficient 5/2. Then evaluate P_3(-1) exactly.
+Problem: Use Gram-Schmidt on {1, x, x^2, x^3} over [-1,1] to construct the Legendre polynomial P_3 with leading coefficient 5/2. Then evaluate S(x) = 4P_3(x) + 6P_2(x) + 7P_1(x) - P_0(x) at x = -1/8 exactly.
 Steps:
   LEGENDRE_SETUP|target=P_3|inner product integral_-1^1 f(x)g(x) dx
   INTEGRAL|<x,x>|2/3
@@ -10752,31 +10954,44 @@ Steps:
   PROJECTION|x^3 onto x|3/5
   POLY_SUB|x^3|3x/5|x^3 - 3x/5
   POLY_SCALE|x^3 - 3x/5|5/2|(5x^3 - 3x)/2
-  SUBST|x|-1|(5*(-1)^3 - 3*(-1))/2
-  EVAL|P_3(-1)|-1
-  Z|P_3(x) = (5x^3 - 3x)/2; P_3(-1) = -1
-Answer: P_3(x) = (5x^3 - 3x)/2; P_3(-1) = -1
+  SERIES_SETUP|S(x) = 4P_3(x) + 6P_2(x) + 7P_1(x) - P_0(x)|x=-1/8
+  EVAL|P_0(-1/8)|1
+  M|-1|1|-1
+  EVAL|P_1(-1/8)|-1/8
+  M|7|-1/8|-7/8
+  SUBST|x|-1/8|P_2 at x=-1/8
+  EVAL|P_2(-1/8)|-61/128
+  M|6|-61/128|-183/64
+  SUBST|x|-1/8|P_3 at x=-1/8
+  EVAL|P_3(-1/8)|187/1024
+  M|4|187/1024|187/256
+  A|-1|-7/8|-15/8
+  A|-15/8|-183/64|-303/64
+  A|-303/64|187/256|-1025/256
+  EVAL|S(-1/8)|-1025/256
+  Z|P_3(x) = (5x^3 - 3x)/2; S(-1/8) = -1025/256
+Answer: P_3(x) = (5x^3 - 3x)/2; S(-1/8) = -1025/256
 ```
 
 ### Partial Trace — `PartialTraceGenerator`  ·  graduate · difficulty 4
 
-Reduced density matrices by tracing out qubit B for two canonical two-qubit states.
+Reduced density matrices by tracing out qubit B for exact two-qubit state families.
 
 **Variants:** `partial_trace_bell_phi_plus`, `partial_trace_product_plus_zero`, `partial_trace_schmidt_diagonal`
 
 ```
-Problem: Trace out qubit B for product state plus0 = (ket00 + ket10)/sqrt(2).
+Problem: Trace out qubit B for phase-shifted product state plus(223π/123)0 = (ket00 + e^(i223π/123)ket10)/sqrt(2).
 Steps:
-  DENSITY_SETUP|state=plus0|psi=(ket00 + ket10)/sqrt(2)
-  OUTER_PRODUCT|rho=1/2(ket00bra00+ket00bra10+ket10bra00+ket10bra10)
+  DENSITY_SETUP|state=plus_phase_0|psi=(ket00 + e^(i223π/123)ket10)/sqrt(2)
+  OUTER_PRODUCT|rho=1/2(ket00bra00+e^(-i223π/123)ket00bra10+e^(i223π/123)ket10bra00+ket10bra10)
   PARTIAL_TRACE|ket00bra00|ket0bra0
   PARTIAL_TRACE|ket00bra10|ket0bra1
   PARTIAL_TRACE|ket10bra00|ket1bra0
   PARTIAL_TRACE|ket10bra10|ket1bra1
-  REDUCED_DENSITY|rho_A=[[1/2,1/2],[1/2,1/2]]
+  REDUCED_DENSITY|rho_A=[[1/2,e^(-i223π/123)/2],[e^(i223π/123)/2,1/2]]
   CHECK|Tr(rho_A^2)|1|pure separable
-  Z|rho_A = [[1/2,1/2],[1/2,1/2]]; entangled no
-Answer: rho_A = [[1/2,1/2],[1/2,1/2]]; entangled no
+  Z|rho_A = [[1/2,e^(-i223π/123)/2],[e^(i223π/123)/2,1/2]]; entangled no
+Answer: rho_A = [[1/2,e^(-i223π/123)/2],[e^(i223π/123)/2,1/2]]; entangled no
 ```
 
 ### Density Matrix — `DensityMatrixGenerator`  ·  graduate · difficulty 4
@@ -10904,24 +11119,21 @@ Answer: Delta x Delta p = sqrt(9801pi^2/12 - 1/2)
 
 ### Matrix Group Check — `MatrixGroupCheckGenerator`  ·  graduate · difficulty 3
 
-Matrix group membership checks for exact 2x2 rotation matrices.
+Matrix group membership checks with exact rational / integer arithmetic.
 
-**Variants:** `matrix_group_check_so2`, `matrix_group_check_su2`
+**Variants:** `matrix_group_check_gl2z`, `matrix_group_check_o2`, `matrix_group_check_sl2z`, `matrix_group_check_so2`, `matrix_group_check_su2`
 
 ```
-Problem: Check whether M=[[112/113,-15/113],[15/113,112/113]] is a member of SU2.
+Problem: Test M=[[-11,-4],[4,3]] for membership in SL2Z.
 Steps:
-  MATRIX_GROUP_SETUP|SU2|M=[[112/113,-15/113],[15/113,112/113]]
-  E|112/113|2|12544/12769
-  E|15/113|2|225/12769
-  A|12544/12769|225/12769|1
-  CHECK|U^dagger U|I|metric preserved
-  M|112/113|112/113|12544/12769
-  M|-15/113|15/113|-225/12769
-  S|12544/12769|-225/12769|1
-  CHECK|det M|1|special
-  Z|SU2 member yes; U^dagger U = I, det = 1
-Answer: SU2 member yes; U^dagger U = I, det = 1
+  MATRIX_GROUP_SETUP|SL2Z|M=[[-11,-4],[4,3]]
+  CHECK|entries|all integers|lattice condition
+  M|-11|3|-33
+  M|-4|4|-16
+  S|-33|-16|-17
+  CHECK|det M|-17|not unimodular
+  Z|SL2Z member no; integer entries, det = -17
+Answer: SL2Z member no; integer entries, det = -17
 ```
 
 ### Lie Exponential — `LieExponentialGenerator`  ·  graduate · difficulty 4
@@ -10961,23 +11173,23 @@ Verify su(2) structure constants with explicit matrix commutators.
 **Variants:** `structure_constant_su2`
 
 ```
-Problem: For spin-1/2 generators Jx=[[0,1/2],[1/2,0]], Jy=[[0,-i/2],[i/2,0]], Jz=[[1/2,0],[0,-1/2]], compute [A,B] for A=-4Jy and B=Jz and verify the structure constant.
+Problem: The research station is verifying an exact su(2) calculation. For spin-1/2 generators Jx=[[0,1/2],[1/2,0]], Jy=[[0,-i/2],[i/2,0]], Jz=[[1/2,0],[0,-1/2]], compute [A,B] for A=-18Jy and B=-4Jz and verify the structure constant.
 Steps:
-  STRUCTURE_SETUP|A=-4Jy|B=Jz|epsilon_yzx=1
-  MATRIX_VALUE|A|[[0, 2i], [-2i, 0]]
-  MATRIX_VALUE|B|[[1/2, 0], [0, -1/2]]
-  MATRIX_PRODUCT|AB|[[0, -i], [-i, 0]]
-  MATRIX_PRODUCT|BA|[[0, i], [i, 0]]
+  STRUCTURE_SETUP|A=-18Jy|B=-4Jz|epsilon_yzx=1
+  MATRIX_VALUE|A|[[0, 9i], [-9i, 0]]
+  MATRIX_VALUE|B|[[-2, 0], [0, 2]]
+  MATRIX_PRODUCT|AB|[[0, 18i], [18i, 0]]
+  MATRIX_PRODUCT|BA|[[0, -18i], [-18i, 0]]
   COMM_ENTRY|(1,1)|0 - 0|0
-  COMM_ENTRY|(1,2)|-i - i|-2i
-  COMM_ENTRY|(2,1)|-i - i|-2i
+  COMM_ENTRY|(1,2)|18i - -18i|36i
+  COMM_ENTRY|(2,1)|18i - -18i|36i
   COMM_ENTRY|(2,2)|0 - 0|0
-  COMMUTATOR|[A,B]|[[0, -2i], [-2i, 0]]
-  STRUCTURE_CONSTANT|epsilon_yzx|1|-4iJx
-  MATRIX_VALUE|-4iJx|[[0, -2i], [-2i, 0]]
-  CHECK|[A,B]|-4iJx|verified
-  Z|[A,B] = -4iJx = [[0, -2i], [-2i, 0]]
-Answer: [A,B] = -4iJx = [[0, -2i], [-2i, 0]]
+  COMMUTATOR|[A,B]|[[0, 36i], [36i, 0]]
+  STRUCTURE_CONSTANT|epsilon_yzx|1|72iJx
+  MATRIX_VALUE|72iJx|[[0, 36i], [36i, 0]]
+  CHECK|[A,B]|72iJx|verified
+  Z|[A,B] = 72iJx = [[0, 36i], [36i, 0]]
+Answer: [A,B] = 72iJx = [[0, 36i], [36i, 0]]
 ```
 
 ### Pauli Algebra — `PauliAlgebraGenerator`  ·  graduate · difficulty 3
@@ -11005,26 +11217,22 @@ Answer: Tr(AB) = 0
 
 ### Casimir — `CasimirGenerator`  ·  graduate · difficulty 4
 
-Verify the spin-1 Casimir using ladder-operator products: J^2 = Jz^2 + (J+J- + J-J+)/2 = j(j+1) hbar^2 I.
+Angular-momentum Casimir J^2 = Jz^2 + (J+J- + J-J+)/2 = j(j+1) hbar^2 I.
 
-**Variants:** `casimir_spin1`
+**Variants:** `casimir_eigenvalue_spin1`, `casimir_eigenvalue_spin11_2`, `casimir_eigenvalue_spin1_2`, `casimir_eigenvalue_spin2`, `casimir_eigenvalue_spin3`, `casimir_eigenvalue_spin3_2`, `casimir_eigenvalue_spin4`, `casimir_eigenvalue_spin5`, `casimir_eigenvalue_spin5_2`, `casimir_eigenvalue_spin6`, `casimir_eigenvalue_spin7_2`, `casimir_eigenvalue_spin9_2`, `casimir_element_spin1`, `casimir_element_spin11_2`, `casimir_element_spin1_2`, `casimir_element_spin2`, `casimir_element_spin3`, `casimir_element_spin3_2`, `casimir_element_spin4`, `casimir_element_spin5`, `casimir_element_spin5_2`, `casimir_element_spin6`, `casimir_element_spin7_2`, `casimir_spin1`, `casimir_verify_spin1_2`, `casimir_verify_spin2`, `casimir_verify_spin3_2`, `casimir_verify_spin5_2`
 
 ```
-Problem: Verify the spin-1 Casimir for hbar=19/4 using Jplus=hbar*sqrt2[[0,1,0],[0,0,1],[0,0,0]], Jminus=hbar*sqrt2[[0,0,0],[1,0,0],[0,1,0]], and Jz=hbar*[[1,0,0],[0,0,0],[0,0,-1]].
+Problem: Every state of a spin-1/2 lattice site is an eigenstate of J^2 with the same eigenvalue. With hbar=35/2, what is that eigenvalue and the multiplet dimension?
 Steps:
-  CASIMIR_SETUP|spin=1|hbar=19/4|J^2=Jz^2+(J+J-+J-J+)/2
-  E|19/4|2|361/16
-  MATRIX_PRODUCT|Jz^2|[[361/16, 0, 0], [0, 0, 0], [0, 0, 361/16]]
-  MATRIX_PRODUCT|J+J-|[[361/8, 0, 0], [0, 361/8, 0], [0, 0, 0]]
-  MATRIX_PRODUCT|J-J+|[[0, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
-  MATRIX_ADD|J+J- + J-J+|[[361/8, 0, 0], [0, 361/4, 0], [0, 0, 361/8]]
-  MATRIX_SCALE|1/2 ladder sum|[[361/16, 0, 0], [0, 361/8, 0], [0, 0, 361/16]]
-  MATRIX_ADD|Jz^2 + ladder half|[[361/8, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
-  A|1|1|2
-  M|2|361/16|361/8
-  CHECK|J^2|361/8I|verified
-  Z|J^2 = 361/8I = [[361/8, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
-Answer: J^2 = 361/8I = [[361/8, 0, 0], [0, 361/8, 0], [0, 0, 361/8]]
+  CASIMIR_SETUP|spin=1/2|hbar=35/2|J^2=j(j+1)hbar^2
+  A|1/2|1|3/2
+  M|1/2|3/2|3/4
+  E|35/2|2|1225/4
+  M|3/4|1225/4|3675/16
+  DIM|2*1/2+1|2
+  CHECK|trace|2 * 3675/16 = 3675/8|sum of 2 equal diagonal entries = 3675/8
+  Z|J^2 = 3675/16; dim = 2
+Answer: J^2 = 3675/16; dim = 2
 ```
 
 ### Index Gymnastics — `IndexGymnasticsGenerator`  ·  graduate · difficulty 4
@@ -11172,30 +11380,38 @@ Answer: w^i = [2,2,1,0]
 
 ### Riemann Tensor — `RiemannTensorGenerator`  ·  graduate · difficulty 5
 
-Riemann -> Ricci -> scalar curvature for a 2-sphere.
+Riemann -> Ricci -> scalar curvature for a 2-sphere at exact rational trigonometric points constructed from primitive Pythagorean triples.
 
 **Variants:** `riemann_tensor_sphere`
 
 ```
-Problem: For a 2-sphere of radius R=100 at phi=90 deg with sin^2(phi)=1 and cos^2(phi)=0, compute R^phi_theta phi theta, the Ricci entries, and scalar curvature.
+Problem: In a model prepared by the curvature study group, the following values are supplied. For a 2-sphere of radius R=110/13 at a point with sin(phi)=16/65 and cos(phi)=63/65, compute R^phi_theta phi theta, the Ricci entries, and scalar curvature.
 Steps:
-  RIEMANN_SETUP|sphere|R=100|phi=90 deg
-  CHRISTOFFEL_VALUE|Gamma^phi_thetatheta|0
-  CHRISTOFFEL_VALUE|Gamma^theta_phitheta|0
-  DERIV|d_phi Gamma^phi_thetatheta|1
-  M|0|0|0
-  S|1|0|1
-  RIEMANN_ENTRY|R^phi_theta phi theta|1
+  RIEMANN_SETUP|sphere|R=110/13|sin(phi)=16/65, cos(phi)=63/65
+  E|16/65|2|256/4225
+  E|63/65|2|3969/4225
+  M|16/65|63/65|1008/4225
+  M|-1|1008/4225|-1008/4225
+  D|63/65|16/65|63/16
+  S|256/4225|3969/4225|-3713/4225
+  CHRISTOFFEL_VALUE|Gamma^phi_thetatheta|-1008/4225
+  CHRISTOFFEL_VALUE|Gamma^theta_phitheta|63/16
+  DERIV|d_phi Gamma^phi_thetatheta|-3713/4225
+  M|-1008/4225|63/16|-3969/4225
+  S|-3713/4225|-3969/4225|256/4225
+  RIEMANN_ENTRY|R^phi_theta phi theta|256/4225
   RIEMANN_ENTRY|R^theta_phi theta phi|1
   RICCI_ENTRY|R_phiphi|1
-  RICCI_ENTRY|R_thetatheta|1
-  E|100|2|10000
-  D|1|10000|1/10000
+  RICCI_ENTRY|R_thetatheta|256/4225
+  E|110/13|2|12100/169
+  D|1|12100/169|169/12100
   INVERSE_METRIC|g^phiphi=1/R^2|g^thetatheta=1/(R^2 sin^2(phi))
-  CHECK|g^thetatheta R_thetatheta|1/10000|sin^2 cancels
-  A|1/10000|1/10000|1/5000
-  Z|scalar curvature = 1/5000
-Answer: scalar curvature = 1/5000
+  D|169/12100|256/4225|28561/123904
+  M|28561/123904|256/4225|169/12100
+  CHECK|g^thetatheta R_thetatheta|169/12100|sin^2 cancels
+  A|169/12100|169/12100|169/6050
+  Z|scalar curvature = 169/6050
+Answer: scalar curvature = 169/6050
 ```
 
 ### Four Vector — `FourVectorGenerator`  ·  graduate · difficulty 3
@@ -11295,21 +11511,21 @@ Answer: F/A = -91π^2/120
 
 Natural-unit conversion chains with hbar = c = 1.
 
-**Variants:** `natural_units_energy`, `natural_units_length`, `natural_units_mass`, `natural_units_time`
+**Variants:** `natural_units_cross_section`, `natural_units_energy`, `natural_units_length`, `natural_units_mass`, `natural_units_time`
 
 ```
-Problem: In natural units with hbar=c=1, a time scale t=25/29 GeV^-1 is given. Compute length L=t, energy E=1/t, and mass m=E.
+Problem: Natural units (hbar=c=1) are in use and a particle evolves on the time scale t=17/33 keV^-1. Report L=t, E=1/t, and m=E.
 Steps:
-  NATURAL_SETUP|time|hbar=1,c=1|t=25/29 GeV^-1
-  UNIT_RULE|c=1|L=t|GeV^-1
-  M|25/29|1|25/29
-  UNIT_RULE|hbar=1|E=1/L|GeV
-  D|1|25/29|29/25
-  UNIT_RULE|c=1|m=E|mass uses GeV
-  M|29/25|1|29/25
-  M|29/25|25/29|1
-  Z|L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
-Answer: L = 25/29 GeV^-1, E = 29/25 GeV, m = 29/25 GeV
+  NATURAL_SETUP|time|hbar=1,c=1|t=17/33 keV^-1
+  UNIT_RULE|c=1|L=t|keV^-1
+  M|17/33|1|17/33
+  UNIT_RULE|hbar=1|E=1/L|keV
+  D|1|17/33|33/17
+  UNIT_RULE|c=1|m=E|mass uses keV
+  M|33/17|1|33/17
+  M|33/17|17/33|1
+  Z|L = 17/33 keV^-1, E = 33/17 keV, m = 33/17 keV
+Answer: L = 17/33 keV^-1, E = 33/17 keV, m = 33/17 keV
 ```
 
 ### Invariant Mass — `InvariantMassGenerator`  ·  graduate · difficulty 4
@@ -11900,7 +12116,7 @@ Spin-1/2 calculations with Pauli matrices and exact probabilities.
 **Variants:** `spin_half_apply_pauli`, `spin_half_eigenvalue`, `spin_half_measurement_probability`
 
 ```
-Problem: Show that psi=(ket0 - ket1)/sqrt(2) is an eigenstate of sigma_x and find the eigenvalue.
+Problem: Experiment run 34036 was prepared at the instrument center. Show that psi=(ket0 - ket1)/sqrt(2) is an eigenstate of sigma_x and find the eigenvalue.
 Steps:
   SPIN_SETUP|eigenvalue|operator=sigma_x|psi=(ket0 - ket1)/sqrt(2)
   PAULI_MATRIX|sigma_x|[[0,1],[1,0]]
@@ -12167,30 +12383,30 @@ Answer: encoded=111000; decoded=100; distance=1
 
 ### Reed Solomon — `ReedSolomonGenerator`  ·  graduate · difficulty 4
 
-Toy Reed-Solomon RS(4,2) over F_7 by line evaluation.
+Toy Reed-Solomon RS(4,2) over a small prime field by line evaluation.
 
 **Variants:** `reed_solomon_correct`, `reed_solomon_encode`
 
 ```
-Problem: A Reed-Solomon RS(4,2) word over F_7 is made by evaluating m(x)=m0+m1*x at x=1,2,3,4. Received word is [6,0,4,1] with at most one error. Recover the message and corrected codeword.
+Problem: A Reed-Solomon RS(4,2) word over F_149 is made by evaluating m(x)=m0+m1*x at x=11,67,125,131. Received word is [67,114,19,132] with at most one error. Recover the message and corrected codeword.
 Steps:
-  RS_SETUP|F_7|RS(4,2)|one error allowed
-  RS_RECEIVED|[6,0,4,1]
-  RS_PAIR|x=1,2|y=6,0
-  RS_LINE|m0=5|m1=1|agree=2
-  RS_PAIR|x=1,3|y=6,4
-  RS_LINE|m0=0|m1=6|agree=2
-  RS_PAIR|x=1,4|y=6,1
-  RS_LINE|m0=3|m1=3|agree=2
-  RS_PAIR|x=2,3|y=0,4
-  RS_LINE|m0=6|m1=4|agree=3
-  RS_PAIR|x=2,4|y=0,1
-  RS_LINE|m0=6|m1=4|agree=3
-  RS_PAIR|x=3,4|y=4,1
-  RS_LINE|m0=6|m1=4|agree=3
-  RS_CORRECT|position=1|[3,0,4,1]
-  Z|message = [6,4]; codeword = [3,0,4,1]; error_position = 1
-Answer: message = [6,4]; codeword = [3,0,4,1]; error_position = 1
+  RS_SETUP|F_149|RS(4,2)|points 11,67,125,131; one error allowed
+  RS_RECEIVED|[67,114,19,132]
+  RS_PAIR|x=11,67|y=67,114
+  RS_LINE|m0=103|m1=78|agree=3
+  RS_PAIR|x=11,125|y=67,19
+  RS_LINE|m0=103|m1=78|agree=3
+  RS_PAIR|x=11,131|y=67,132
+  RS_LINE|m0=30|m1=44|agree=2
+  RS_PAIR|x=67,125|y=114,19
+  RS_LINE|m0=103|m1=78|agree=3
+  RS_PAIR|x=67,131|y=114,132
+  RS_LINE|m0=16|m1=126|agree=2
+  RS_PAIR|x=125,131|y=19,132
+  RS_LINE|m0=24|m1=143|agree=2
+  RS_CORRECT|position=4|[67,114,19,40]
+  Z|message = [103,78]; codeword = [67,114,19,40]; error_position = 4
+Answer: message = [103,78]; codeword = [67,114,19,40]; error_position = 4
 ```
 
 ### Gradient Step — `GradientStepGenerator`  ·  graduate · difficulty 4

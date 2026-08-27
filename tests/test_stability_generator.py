@@ -92,7 +92,7 @@ def parse_f(expr):
 
 
 def parse_problem(problem):
-    match = re.fullmatch(
+    match = re.search(
         r"For dy/dt = (.+), find equilibria and classify stability by "
         r"sign analysis\.",
         problem,
@@ -219,6 +219,7 @@ class TestStabilityGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

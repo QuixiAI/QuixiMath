@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 import random
+import re
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -60,22 +61,19 @@ class TestQuadraticGenerator(unittest.TestCase):
             # Check if problem string looks reasonable
             self.assertIn("Solve", result["problem"])
             self.assertIn("=", result["problem"])
-            self.assertIn("x^2", result["problem"]) # Check for x squared term
+            self.assertRegex(result["problem"], r"[xytnz]\^2")
 
             # A0 convention: 'x = r1 or x = r2', roots ascending
-            import re
-            m = re.fullmatch(r"x = (-?\d+) or x = (-?\d+)",
+            m = re.fullmatch(r"([xytnz]) = (-?\d+) or \1 = (-?\d+)",
                              result["final_answer"])
             self.assertIsNotNone(m, result["final_answer"])
-            r_low, r_high = int(m.group(1)), int(m.group(2))
+            var = m.group(1)
+            r_low, r_high = int(m.group(2)), int(m.group(3))
             self.assertLess(r_low, r_high)
 
             # Oracle: both roots satisfy the parsed equation exactly
-            pm = re.fullmatch(
-                r"Solve (-?\d*)x\^2([+-]\d*)?x?([+-]\d+)? = 0",
-                result["problem"].replace(" ", " "))
             coeffs = re.fullmatch(
-                r"(-?\d*)x\^2(?:([+-]\d*)x)?([+-]\d+)? = 0",
+                rf"(-?\d*){var}\^2(?:([+-]\d*){var})?([+-]\d+)? = 0",
                 result["problem"].replace("Solve ", ""))
             self.assertIsNotNone(coeffs, result["problem"])
             a_txt, b_txt, c_txt = coeffs.groups()
@@ -86,6 +84,29 @@ class TestQuadraticGenerator(unittest.TestCase):
             for root in (r_low, r_high):
                 self.assertEqual(a * root * root + b * root + c, 0,
                                  result["problem"])
+
+    def test_formula_arithmetic_and_pipe_safety(self):
+        for _ in range(500):
+            result = self.generator.generate()
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                self.assertLessEqual(len(fields) - 1, 4, raw_step)
+                if fields[0] == "DISC":
+                    self.assertEqual(int(fields[1]) - int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "ROOT":
+                    self.assertEqual(int(fields[2]) ** 2, int(fields[1]),
+                                     raw_step)
+                elif fields[0] == "Q1":
+                    self.assertEqual(
+                        int(fields[1]) + int(fields[2]),
+                        int(fields[3]) * int(fields[4]), raw_step,
+                    )
+                elif fields[0] == "Q2":
+                    self.assertEqual(
+                        int(fields[1]) - int(fields[2]),
+                        int(fields[3]) * int(fields[4]), raw_step,
+                    )
 
 
 if __name__ == '__main__':

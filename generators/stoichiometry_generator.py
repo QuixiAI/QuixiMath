@@ -5,6 +5,28 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+PLACES = [
+    "chemistry lab", "science classroom", "technical college",
+    "university laboratory", "training center", "research station",
+    "materials lab", "teaching lab", "study hall", "learning center",
+    "engineering lab", "quality-control lab", "lecture room", "museum lab",
+    "industrial lab", "tutoring center", "problem-solving workshop",
+    "analysis lab", "research institute", "field laboratory",
+]
+
+CONTEXTS = [
+    "Laboratory record {record} comes from the {place}.",
+    "The {place} labels this calculation as run {record}.",
+    "A worksheet case {record} from the {place} gives the following data.",
+    "During trial {record} at the {place}, this reaction is analyzed.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(
+        record=random.randint(100, 99999), place=random.choice(PLACES))
+
+
 ATOMIC_MASS = {
     "H": 1,
     "C": 12,
@@ -188,6 +210,7 @@ class StoichiometryGenerator(ProblemGenerator):
             problem, steps, answer = self._generate_mass_to_volume()
         else:
             problem, steps, answer = self._generate_limiting_reagent()
+        problem = f"{context_text()} {problem}"
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
@@ -224,7 +247,7 @@ class StoichiometryGenerator(ProblemGenerator):
         target = template["target"]
         given_mm = molar_mass(given, template.get("molar_masses"))
         target_mm = molar_mass(target, template.get("molar_masses"))
-        given_mass = given_mm * random.randint(1, 12)
+        given_mass = given_mm * random.randint(1, 20)
         given_coef = coefficient_for(template, given)
         target_coef = coefficient_for(template, target)
         ratio = Fraction(target_coef, given_coef)
@@ -258,7 +281,7 @@ class StoichiometryGenerator(ProblemGenerator):
         given = template["given"]
         target = template["target"]
         given_mm = molar_mass(given, template.get("molar_masses"))
-        given_mass = given_mm * random.randint(1, 10)
+        given_mass = given_mm * random.randint(1, 20)
         molar_volume = 24
         given_coef = coefficient_for(template, given)
         target_coef = coefficient_for(template, target)
@@ -299,8 +322,8 @@ class StoichiometryGenerator(ProblemGenerator):
         ratio1 = Fraction(target_coef, r1_coef)
         ratio2 = Fraction(target_coef, r2_coef)
         while True:
-            amount1 = random.randint(1, 12)
-            amount2 = random.randint(1, 12)
+            amount1 = random.randint(1, 30)
+            amount2 = random.randint(1, 30)
             product1 = amount1 * ratio1
             product2 = amount2 * ratio2
             if product1 != product2:

@@ -1,4 +1,6 @@
 import random
+from fractions import Fraction
+from math import gcd
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.geometric_mean_generator import sqrt_txt
@@ -27,6 +29,40 @@ def scaled(txt, r):
     root = int(t[1])  # √2 or √3
     k = r // 2
     return f"{sign}{k}√{root}" if k > 1 else f"{sign}√{root}"
+
+
+def linear_text(coefficient, body, constant=0):
+    """Render coefficient*body + constant without unit coefficients."""
+    if coefficient == 1:
+        rendered = body
+    elif coefficient == -1:
+        rendered = f"-{body}"
+    else:
+        rendered = f"{coefficient}{body}"
+    if constant > 0:
+        return f"{rendered} + {constant}"
+    if constant < 0:
+        return f"{rendered} - {-constant}"
+    return rendered
+
+
+def shifted(variable, center):
+    """The coordinate variable-center with clean signs."""
+    if center > 0:
+        return f"{variable} - {center}"
+    if center < 0:
+        return f"{variable} + {-center}"
+    return variable
+
+
+def squared_shift(variable, center):
+    inner = shifted(variable, center)
+    return f"{variable}^2" if center == 0 else f"({inner})^2"
+
+
+def circle_equation(center_x, center_y, radius_squared):
+    return (f"{squared_shift('x', center_x)} + "
+            f"{squared_shift('y', center_y)} = {radius_squared}")
 
 
 class PolarParametricGenerator(ProblemGenerator):
@@ -64,19 +100,28 @@ class PolarParametricGenerator(ProblemGenerator):
         return getattr(self, f"_{variant}")()
 
     def _polar_point(self):
-        theta = random.choice(list(TRIG_TXT))
-        r = random.choice([2, 4, 6, 8, 10, 12])
-        ct, st = TRIG_TXT[theta]
+        base_theta = random.choice(list(TRIG_TXT))
+        turns = random.randint(-100, 100)
+        theta = base_theta + 360 * turns
+        r = 2 * random.randint(1, 40)
+        ct, st = TRIG_TXT[base_theta]
         x, y = scaled(ct, r), scaled(st, r)
         steps = [
             step("POLAR_SETUP", f"(r, θ) = ({r}, {theta}°)",
                  "rectangular coordinates"),
             step("POLAR_FORMULA", "x = r cos θ, y = r sin θ"),
-            step("TABLE_LOOKUP", f"cos {theta}°", ct),
-            step("TABLE_LOOKUP", f"sin {theta}°", st),
+        ]
+        if turns:
+            steps.append(step(
+                "REWRITE", f"{theta}° = {turns}·360° + {base_theta}°",
+                f"coterminal angle {base_theta}°",
+            ))
+        steps.extend([
+            step("TABLE_LOOKUP", f"cos {base_theta}°", ct),
+            step("TABLE_LOOKUP", f"sin {base_theta}°", st),
             step("REWRITE", f"x = {r} · ({ct}) = {x}"),
             step("REWRITE", f"y = {r} · ({st}) = {y}"),
-        ]
+        ])
         answer = f"({x}, {y})"
         steps.append(step("Z", answer))
         return self._pack("polar_to_rect_point",
@@ -85,40 +130,43 @@ class PolarParametricGenerator(ProblemGenerator):
                           steps, answer)
 
     def _rect_point(self):
-        a = random.randint(2, 9)
-        kind = random.choice(["diag", "axis"])
-        if kind == "axis":
-            theta = random.choice([0, 90, 180, 270])
-            x, y = {0: (a, 0), 90: (0, a), 180: (-a, 0),
-                    270: (0, -a)}[theta]
-            r_txt = str(a)
-            steps = [
-                step("POLAR_SETUP", f"(x, y) = ({x}, {y})",
-                     "polar (r ≥ 0, 0° ≤ θ < 360°)"),
-                step("POLAR_FORMULA", "r = √(x^2 + y^2), point on an "
-                     "axis"),
-                step("EVAL", "r", a),
-                step("QUADRANT", f"({x}, {y})", f"θ = {theta}°"),
-            ]
+        while True:
+            m = random.randint(2, 30)
+            n = random.randint(1, m - 1)
+            if gcd(m, n) == 1 and (m - n) % 2 == 1:
+                break
+        leg_a = m * m - n * n
+        leg_b = 2 * m * n
+        if random.random() < 0.5:
+            leg_a, leg_b = leg_b, leg_a
+        scale = random.randint(1, 20)
+        sign_x = random.choice([-1, 1])
+        sign_y = random.choice([-1, 1])
+        x, y = sign_x * scale * leg_a, sign_y * scale * leg_b
+        radius = scale * (m * m + n * n)
+        slope = Fraction(abs(y), abs(x))
+        reference = f"arctan({slope})"
+        if x > 0 and y > 0:
+            theta = reference
+        elif x < 0 < y:
+            theta = f"180° - {reference}"
+        elif x < 0 and y < 0:
+            theta = f"180° + {reference}"
         else:
-            theta = random.choice([45, 135, 225, 315])
-            sx = 1 if theta in (45, 315) else -1
-            sy = 1 if theta in (45, 135) else -1
-            x, y = sx * a, sy * a
-            r_txt = f"{a}√2"
-            steps = [
-                step("POLAR_SETUP", f"(x, y) = ({x}, {y})",
-                     "polar (r ≥ 0, 0° ≤ θ < 360°)"),
-                step("POLAR_FORMULA", "r = √(x^2 + y^2), tan θ = y/x"),
-                step("E", x, 2, x * x),
-                step("E", y, 2, y * y),
-                step("A", x * x, y * y, 2 * a * a),
-                step("ROOT_SIMPLIFY", f"√{2 * a * a} = {r_txt}"),
-                step("D", y, x, y // x),
-                step("TABLE_LOOKUP", "tan 45°", "1"),
-                step("QUADRANT", f"({x}, {y})", f"θ = {theta}°"),
-            ]
-        answer = f"({r_txt}, {theta}°)"
+            theta = f"360° - {reference}"
+        radial_square = x * x + y * y
+        steps = [
+            step("POLAR_SETUP", f"(x, y) = ({x}, {y})",
+                 "polar (r ≥ 0, 0° ≤ θ < 360°)"),
+            step("POLAR_FORMULA", "r = √(x^2 + y^2), tan θ = y/x"),
+            step("E", x, 2, x * x),
+            step("E", y, 2, y * y),
+            step("A", x * x, y * y, radial_square),
+            step("ROOT_SIMPLIFY", f"√{radial_square} = {radius}"),
+            step("D", abs(y), abs(x), str(slope)),
+            step("QUADRANT", f"({x}, {y})", f"θ = {theta}"),
+        ]
+        answer = f"({radius}, {theta})"
         steps.append(step("Z", answer))
         return self._pack("rect_to_polar_point",
                           f"Convert the point ({x}, {y}) to polar "
@@ -126,87 +174,114 @@ class PolarParametricGenerator(ProblemGenerator):
                           f"Give exact values.", steps, answer)
 
     def _polar_equation(self):
+        pole_x = random.randint(-20, 20)
+        pole_y = random.randint(-20, 20)
+        local_x = shifted("x", pole_x)
+        local_y = shifted("y", pole_y)
         if random.random() < 0.5:
-            k = random.randint(2, 9)
-            answer = f"x^2 + y^2 = {k * k}"
+            k = random.randint(2, 80)
+            answer = circle_equation(pole_x, pole_y, k * k)
             steps = [
-                step("POLAR_SETUP", f"r = {k}", "rectangular equation"),
-                step("SUBST", "r", "√(x^2 + y^2)",
-                     f"√(x^2 + y^2) = {k}"),
+                step("POLAR_SETUP", f"r = {k}",
+                     f"pole=({pole_x}, {pole_y})", "rectangular equation"),
+                step("SUBST", "r",
+                     f"√({squared_shift('x', pole_x)} + "
+                     f"{squared_shift('y', pole_y)})",
+                     f"√({squared_shift('x', pole_x)} + "
+                     f"{squared_shift('y', pole_y)}) = {k}"),
                 step("E", k, 2, k * k),
                 step("REWRITE", answer),
             ]
             problem = (f"Convert the polar equation r = {k} to "
-                       f"rectangular form.")
+                       f"rectangular form when the pole is "
+                       f"({pole_x}, {pole_y}).")
         else:
-            a = random.randint(2, 6)
-            answer = f"(x - {a})^2 + y^2 = {a * a}"
+            a = random.randint(2, 40)
+            answer = circle_equation(pole_x + a, pole_y, a * a)
             steps = [
                 step("POLAR_SETUP", f"r = {2 * a} cos θ",
-                     "rectangular equation"),
+                     f"pole=({pole_x}, {pole_y})", "rectangular equation"),
                 step("EQ_OP_BOTH", "multiply", "r", "r^2",
                      f"{2 * a} r cos θ"),
-                step("SUBST", "r^2", "x^2 + y^2",
-                     f"x^2 + y^2 = {2 * a} r cos θ"),
-                step("SUBST", "r cos θ", "x",
-                     f"x^2 + y^2 = {2 * a}x"),
-                step("MOVE_TERM", f"{2 * a}x to the left",
-                     f"x^2 - {2 * a}x + y^2 = 0"),
+                step("SUBST", "r^2",
+                     f"({local_x})^2 + ({local_y})^2",
+                     f"({local_x})^2 + ({local_y})^2 = "
+                     f"{2 * a} r cos θ"),
+                step("SUBST", "r cos θ", local_x,
+                     f"({local_x})^2 + ({local_y})^2 = "
+                     f"{2 * a}({local_x})"),
+                step("MOVE_TERM", f"{2 * a}({local_x}) to the left",
+                     f"({local_x})^2 - {2 * a}({local_x}) + "
+                     f"({local_y})^2 = 0"),
                 step("COMPLETE_SQUARE", f"half of -{2 * a} = -{a}",
                      f"(-{a})^2 = {a * a}"),
                 step("REWRITE", answer),
             ]
             problem = (f"Convert the polar equation r = {2 * a} cos θ "
-                       f"to rectangular form.")
+                       f"to rectangular form when the pole is "
+                       f"({pole_x}, {pole_y}).")
         steps.append(step("Z", answer))
         return self._pack("polar_eq_to_rect", problem, steps, answer)
 
     def _parametric(self):
         if random.random() < 0.55:
-            a = random.choice([v for v in range(-5, 6) if v != 0])
-            b = random.choice([v for v in range(-4, 5)
-                               if v not in (-1, 0, 1)])
-            c = random.randint(-6, 6)
-            const = b * a + c
-            # x = t - a  ->  t = x + a
-            xdef = f"t {'-' if a > 0 else '+'} {abs(a)}"
-            ydef = (f"{b}t {'+' if c >= 0 else '-'} {abs(c)}"
-                    if c else f"{b}t")
-            t_expr = f"x {'+' if a > 0 else '-'} {abs(a)}"
-            dist = f"{b}x {'+' if b * a > 0 else '-'} {abs(b * a)}"
-            ans_const = const
-            answer = (f"y = {b}x {'+' if ans_const > 0 else '-'} "
-                      f"{abs(ans_const)}" if ans_const
-                      else f"y = {b}x")
+            x_coefficient = random.randint(1, 12)
+            y_coefficient = random.choice([
+                value for value in range(-12, 13) if value != 0
+            ])
+            x_constant = random.randint(-20, 20)
+            y_constant = random.randint(-20, 20)
+            xdef = linear_text(x_coefficient, "t", x_constant)
+            ydef = linear_text(y_coefficient, "t", y_constant)
+            px = x_coefficient * y_coefficient
+            pc = x_coefficient * y_constant
+            bq = y_coefficient * x_constant
+            const = pc - bq
+            local_x = shifted("x", x_constant)
+            left = linear_text(x_coefficient, "y")
+            px_t = linear_text(px, "t")
+            pt = linear_text(x_coefficient, "t")
+            answer = f"{left} = {linear_text(y_coefficient, 'x', const)}"
             steps = [
                 step("PARAM_SETUP", f"x = {xdef}, y = {ydef}",
                      "eliminate t"),
-                step("REWRITE", f"t = {t_expr}"),
-                step("SUBST", "t", t_expr,
-                     f"y = {b}({t_expr})"
-                     f"{' + ' + str(c) if c > 0 else ''}"
-                     f"{' - ' + str(-c) if c < 0 else ''}"),
-                step("DIST", b, t_expr, dist),
+                step("M", x_coefficient, y_coefficient, px),
+                step("M", x_coefficient, y_constant, pc),
+                step("EQ_OP_BOTH", "multiply", x_coefficient,
+                     f"{left} = {linear_text(px, 't', pc)}"),
+                step("REWRITE", f"{pt} = {local_x}"),
+                step("SUBST", px_t,
+                     linear_text(y_coefficient, f"({pt})"),
+                     f"{left} = "
+                     f"{linear_text(y_coefficient, f'({local_x})', pc)}"),
+                step("M", y_coefficient, x_constant, bq),
+                step("DIST", y_coefficient, local_x,
+                     linear_text(y_coefficient, "x", -bq)),
+                step("S", pc, bq, const),
+                step("REWRITE", answer),
             ]
-            if c:
-                steps.append(step("A", b * a, c, const))
-            steps.append(step("REWRITE", answer))
             problem = (f"Eliminate the parameter: x = {xdef}, "
                        f"y = {ydef}.")
         else:
-            a = random.randint(2, 9)
-            answer = f"x^2 + y^2 = {a * a}"
+            a = random.randint(2, 40)
+            center_x = random.randint(-20, 20)
+            center_y = random.randint(-20, 20)
+            xdef = linear_text(a, "cos t", center_x)
+            ydef = linear_text(a, "sin t", center_y)
+            answer = circle_equation(center_x, center_y, a * a)
             steps = [
-                step("PARAM_SETUP", f"x = {a} cos t, y = {a} sin t",
+                step("PARAM_SETUP", f"x = {xdef}, y = {ydef}",
                      "eliminate t"),
                 step("THEOREM", "Pythagorean identity",
                      "cos^2 t + sin^2 t = 1"),
-                step("REWRITE", f"(x/{a})^2 + (y/{a})^2 = 1"),
+                step("REWRITE",
+                     f"(({shifted('x', center_x)})/{a})^2 + "
+                     f"(({shifted('y', center_y)})/{a})^2 = 1"),
                 step("E", a, 2, a * a),
                 step("REWRITE", answer),
             ]
-            problem = (f"Eliminate the parameter: x = {a} cos t, "
-                       f"y = {a} sin t.")
+            problem = (f"Eliminate the parameter: x = {xdef}, "
+                       f"y = {ydef}.")
         steps.append(step("Z", answer))
         return self._pack("parametric_to_rect", problem, steps, answer)
 

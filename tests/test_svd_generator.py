@@ -22,9 +22,9 @@ ORTHO_MATRIX = f"[[{S}, {S}], [{S}, -{S}]]"
 
 
 def parse_problem_matrix(problem):
-    (matrix_txt,) = re.fullmatch(
+    (matrix_txt,) = re.search(
         r"Find an SVD A = U\*Sigma\*V\^T for A = (\[\[.*\]\]) "
-        r"using A\^T A\.",
+        r"using A\^T A\.$",
         problem,
     ).groups()
     return ast.literal_eval(matrix_txt)
@@ -182,6 +182,8 @@ class TestSVDGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

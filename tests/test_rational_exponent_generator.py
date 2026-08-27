@@ -3,6 +3,7 @@ import random
 import re
 import sys
 import unittest
+from fractions import Fraction
 from math import gcd
 
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,18 +27,22 @@ def oracle_answer(example):
     expr = p.split(": ", 1)[1]
 
     if op == "rational_exponent_to_radical":
-        m0 = re.fullmatch(r"(\d+)\^\((\d+)/(\d+)\)", expr)
+        m0 = re.fullmatch(r"(\d+)·(\d+)\^\((\d+)/(\d+)\)", expr)
         if m0:  # numeric base: 7^(2/3) -> ∛49
-            b, m, n = (int(v) for v in m0.groups())
+            coefficient, b, m, n = (int(v) for v in m0.groups())
             assert gcd(m, n) == 1
-            return f"{ROOT_SYM[n]}{b ** m}"
-        m0 = re.fullmatch(r"([a-z])\^\((\d+)/(\d+)\)", expr)
+            return f"{coefficient}·{ROOT_SYM[n]}{b ** m}"
+        m0 = re.fullmatch(
+            r"([a-z](?:_\d+)?)\^\((\d+)/(\d+)\)", expr
+        )
         var, m, n = m0.group(1), int(m0.group(2)), int(m0.group(3))
         assert gcd(m, n) == 1
         return radical_txt(n, var, m)
 
     if op == "rational_exponent_from_radical":
-        m0 = re.fullmatch(r"([√∛∜])\(?([a-z])(?:\^(\d+))?\)?", expr)
+        m0 = re.fullmatch(
+            r"([√∛∜])\(?([a-z](?:_\d+)?)(?:\^(\d+))?\)?", expr
+        )
         assert m0, expr
         n = SYM_TO_N[m0.group(1)]
         var = m0.group(2)
@@ -48,15 +53,18 @@ def oracle_answer(example):
             return var if mr == 1 else f"{var}^{mr}"
         return f"{var}^({mr}/{nr})"
 
-    m0 = re.fullmatch(r"(\d+)\^\((-?)(\d+)/(\d+)\)", expr)
+    m0 = re.fullmatch(
+        r"(\d+)·(\d+)\^\((-?)(\d+)/(\d+)\)", expr
+    )
     assert m0, expr
-    base = int(m0.group(1))
-    neg = m0.group(2) == "-"
-    m, n = int(m0.group(3)), int(m0.group(4))
+    coefficient, base = int(m0.group(1)), int(m0.group(2))
+    neg = m0.group(3) == "-"
+    m, n = int(m0.group(4)), int(m0.group(5))
     k = round(base ** (1 / n))
     assert k ** n == base, expr
     value = k ** m
-    return f"1/{value}" if neg else str(value)
+    result = coefficient * (Fraction(1, value) if neg else value)
+    return str(result)
 
 
 class TestRationalExponentGenerator(unittest.TestCase):
@@ -95,6 +103,9 @@ class TestRationalExponentGenerator(unittest.TestCase):
                     self.assertEqual(int(f[2]) ** 3, int(f[1]), s)
                 elif f[0] == "E":
                     self.assertEqual(int(f[1]) ** int(f[2]), int(f[3]), s)
+                elif f[0] == "M":
+                    self.assertEqual(Fraction(f[1]) * Fraction(f[2]),
+                                     Fraction(f[3]), s)
                 elif f[0] == "F":
                     parts = f[1].split("/")
                     a, b = int(parts[0]), int(parts[1])
@@ -112,11 +123,18 @@ class TestRationalExponentGenerator(unittest.TestCase):
     def test_negative_exponents_appear(self):
         gen = RationalExponentGenerator("evaluate")
         answers = [gen.generate()["final_answer"] for _ in range(80)]
-        self.assertTrue(any(a.startswith("1/") for a in answers))
+        self.assertTrue(any("/" in a for a in answers))
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             RationalExponentGenerator("bogus")
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

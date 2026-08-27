@@ -16,33 +16,71 @@ from helpers import DELIM
 
 
 def oracle_answer(example):
-    p_txt = example["problem"]
-    m = re.fullmatch(r"Find the area between y = x\^2 and "
-                     r"y = (\d+) - x\^2\.", p_txt)
-    if m:
-        import math
-        c = int(m.group(1))
-        k = math.isqrt(c // 2)
-        assert 2 * k * k == c
-        return str(Fraction(8 * k ** 3, 3))
-    m = re.fullmatch(r"Find the area between y = x\^2 and "
-                     r"y = (.+)\.", p_txt)
-    assert m, p_txt
-    line = m.group(1)
-    mm = re.fullmatch(r"(-?\d*)x(?: ([+-]) (\d+))?|(-?\d+)", line)
-    if mm.group(4) is not None:
-        slope, inter = 0, int(mm.group(4))
-    else:
-        g = mm.group(1)
-        slope = int(g + "1") if g in ("", "-") else int(g)
-        inter = int(mm.group(3) or 0) * \
-            (1 if (mm.group(2) or "+") == "+" else -1)
-    # intersections: x² - slope·x - inter = 0
+    first, second = curves_from_problem(example["problem"])
+    f, g = parse_quadratic(first), parse_quadratic(second)
+    difference = tuple(a - b for a, b in zip(f, g))
     roots = sorted(t for t in range(-30, 31)
-                   if t * t - slope * t - inter == 0)
+                   if eval_poly(difference, Fraction(t)) == 0)
     assert len(roots) == 2
-    p, q = roots
-    return str(Fraction((q - p) ** 3, 6))
+    p, q = map(Fraction, roots)
+    midpoint = Fraction(p + q, 2)
+    if eval_poly(difference, midpoint) < 0:
+        difference = tuple(-value for value in difference)
+    # Integrate the upper-minus-lower quadratic exactly over [p, q].
+    c2, c1, c0 = difference
+    def antiderivative(x):
+        return c2 * x ** 3 / 3 + c1 * x ** 2 / 2 + c0 * x
+    return str(antiderivative(q) - antiderivative(p))
+
+
+CURVE_PATTERNS = (
+    r"Find the area between y = (?P<f>.+) and y = (?P<g>.+)\.",
+    r"Find the area of the region bounded by the curves y = (?P<f>.+) and "
+    r"y = (?P<g>.+)\.",
+    r"The curves y = (?P<f>.+) and y = (?P<g>.+) enclose a region\. "
+    r"Find its area\.",
+    r"Compute the exact area of the region between y = (?P<f>.+) and "
+    r"y = (?P<g>.+)\.",
+    r"Find the area enclosed by the graphs of y = (?P<f>.+) and "
+    r"y = (?P<g>.+)\.",
+    r"Two curves, y = (?P<f>.+) and y = (?P<g>.+), intersect at two "
+    r"points\. Find the area of the region between them\.",
+)
+
+
+def curves_from_problem(problem):
+    for pattern in CURVE_PATTERNS:
+        match = re.fullmatch(pattern, problem)
+        if match:
+            return match.group("f"), match.group("g")
+    raise AssertionError(problem)
+
+
+def parse_quadratic(text):
+    """Return coefficients of x^2, x, 1 from the printed curve."""
+    coefficients = {2: 0, 1: 0, 0: 0}
+    for raw in text.replace(" - ", " + -").split(" + "):
+        term = raw.strip()
+        match = re.fullmatch(r"(-?\d*)x(?:\^(2))?|(-?\d+)", term)
+        assert match, text
+        if match.group(3) is not None:
+            coefficients[0] += int(match.group(3))
+            continue
+        raw_coefficient = match.group(1)
+        if raw_coefficient == "":
+            coefficient = 1
+        elif raw_coefficient == "-":
+            coefficient = -1
+        else:
+            coefficient = int(raw_coefficient)
+        power = 2 if match.group(2) else 1
+        coefficients[power] += coefficient
+    return coefficients[2], coefficients[1], coefficients[0]
+
+
+def eval_poly(coefficients, x):
+    c2, c1, c0 = coefficients
+    return c2 * x * x + c1 * x + c0
 
 
 class TestAreaBetweenCurvesGenerator(unittest.TestCase):

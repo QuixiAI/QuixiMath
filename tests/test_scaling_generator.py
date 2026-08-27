@@ -1,7 +1,9 @@
 import unittest
 import random
+import re
 import sys
 import os
+from fractions import Fraction
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,6 +13,46 @@ if repo_root not in sys.path:
 
 from generators.scaling_generator import ScalingGenerator, SimilarFiguresScaleGenerator
 from helpers import DELIM
+
+
+NUMBER = r"\d+(?:\.\d+|/\d+)?"
+
+
+def unit_plural(unit, value):
+    if value == 1:
+        return unit
+    return unit + "es" if unit == "inch" else unit + "s"
+
+
+def number_text(value):
+    value = Fraction(value)
+    if value.denominator == 1:
+        return str(value.numerator)
+    if value.denominator in (2, 4):
+        whole, remainder = divmod(value.numerator, value.denominator)
+        tail = {Fraction(1, 4): "25", Fraction(1, 2): "5",
+                Fraction(3, 4): "75"}[Fraction(remainder, value.denominator)]
+        return f"{whole}.{tail}"
+    return str(value)
+
+
+def scaling_oracle(problem):
+    scale_match = re.search(
+        r"scale of 1 (inch|centimeter) = (\d+) "
+        r"(miles|kilometers|feet|meters)", problem)
+    assert scale_match, problem
+    scale_unit, factor_text, actual_unit = scale_match.groups()
+    factor = int(factor_text)
+    if "what is the actual" in problem:
+        unit_pattern = "inch(?:es)?" if scale_unit == "inch" else "centimeters?"
+        values = re.findall(rf"({NUMBER}) {unit_pattern}", problem)
+        scaled = Fraction(values[-1])
+        return f"{number_text(scaled * factor)} {actual_unit}"
+    actual_values = re.findall(rf"({NUMBER}) {actual_unit}", problem)
+    actual = Fraction(actual_values[-1])
+    scaled = actual / factor
+    assert scaled.denominator == 1
+    return f"{scaled} {unit_plural(scale_unit, scaled)}"
 
 
 class TestScalingGenerator(unittest.TestCase):
@@ -72,6 +114,27 @@ class TestScalingGenerator(unittest.TestCase):
                 # Should have SCALE_DIV step
                 has_div_step = any(s.startswith(f"SCALE_DIV{DELIM}") for s in result["steps"])
                 self.assertTrue(has_div_step, "Missing SCALE_DIV step for find_scaled problem")
+
+    def test_oracle_from_problem_text(self):
+        for _ in range(500):
+            result = self.generator.generate()
+            self.assertEqual(scaling_oracle(result["problem"]),
+                             result["final_answer"], result["problem"])
+
+    def test_exact_step_arithmetic_and_pipe_safety(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                self.assertLessEqual(len(fields) - 1, 4, raw_step)
+                if fields[0] == "SCALE_MULT":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "SCALE_DIV":
+                    self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
 
 
 class TestSimilarFiguresScaleGenerator(unittest.TestCase):

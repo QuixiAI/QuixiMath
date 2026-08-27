@@ -1,6 +1,51 @@
 import random
+from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+MAP_AREAS = [
+    "coastal region", "mountain district", "river valley", "island chain",
+    "national park", "county", "rail corridor", "walking trail",
+    "historic district", "lake region", "desert route", "forest reserve",
+    "campus", "transit network", "harbor", "farm region", "city center",
+    "wildlife refuge", "survey zone", "cycling route",
+]
+
+BLUEPRINT_PROJECTS = [
+    "library", "school", "workshop", "museum", "clinic", "community hall",
+    "studio", "laboratory", "apartment", "office", "station", "theater",
+    "warehouse", "classroom", "gymnasium", "visitor center", "cafe",
+    "observatory", "gallery", "training center",
+]
+
+MODEL_OBJECTS = [
+    "tower", "bridge", "building", "aircraft", "ship", "monument",
+    "wind turbine", "rocket", "stadium", "lighthouse", "crane", "train",
+    "water tank", "radio mast", "museum exhibit", "arch", "greenhouse",
+    "factory", "observatory", "pavilion",
+]
+
+
+def pluralize(unit, value):
+    if Fraction(value) == 1:
+        return unit
+    if unit.endswith("ch") or unit.endswith("s"):
+        return unit + "es"
+    return unit + "s"
+
+
+def number_text(value):
+    value = Fraction(value)
+    if value.denominator == 1:
+        return str(value.numerator)
+    if value.denominator in (2, 4):
+        whole, remainder = divmod(value.numerator, value.denominator)
+        digits = {Fraction(1, 4): "25", Fraction(1, 2): "5",
+                  Fraction(3, 4): "75"}
+        tail = digits[Fraction(remainder, value.denominator)]
+        return f"{whole}.{tail}"
+    return str(value)
 
 
 class ScalingGenerator(ProblemGenerator):
@@ -38,10 +83,10 @@ class ScalingGenerator(ProblemGenerator):
 
         # Choose context
         all_contexts = self.MAP_CONTEXTS + self.MODEL_CONTEXTS
-        scale_unit, actual_unit, scale_factors, context_type = random.choice(all_contexts)
+        scale_unit, actual_unit, _scale_factors, context_type = random.choice(all_contexts)
 
         # Choose scale factor
-        scale_factor = random.choice(scale_factors)
+        scale_factor = random.randint(2, 150)
 
         if problem_type == "find_actual":
             return self._generate_find_actual(scale_unit, actual_unit, scale_factor, context_type)
@@ -51,44 +96,41 @@ class ScalingGenerator(ProblemGenerator):
     def _generate_find_actual(self, scale_unit, actual_unit, scale_factor, context_type) -> dict:
         """Generate a problem where we find the actual dimension from scaled."""
         # Generate a scaled measurement
-        scaled_value = random.choice([0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8])
+        scaled_value = Fraction(random.randint(1, 80), 4)
 
         # Calculate actual value
         actual_value = scaled_value * scale_factor
 
-        # Build problem text based on context
-        # Handle plural forms correctly (inch -> inches, not inchs)
-        def pluralize(unit, value):
-            if value == 1:
-                return unit
-            if unit.endswith("ch") or unit.endswith("s"):
-                return unit + "es"
-            return unit + "s"
-
         if context_type == "map":
+            subject = random.choice(MAP_AREAS)
             problem = (
-                f"A map has a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
-                f"If two cities are {scaled_value} {pluralize(scale_unit, scaled_value)} apart on the map, "
+                f"A map of a {subject} has a scale of 1 {scale_unit} = "
+                f"{scale_factor} {actual_unit}. If two landmarks are "
+                f"{number_text(scaled_value)} "
+                f"{pluralize(scale_unit, scaled_value)} apart on the map, "
                 f"what is the actual distance between them?"
             )
         elif context_type == "blueprint":
+            subject = random.choice(BLUEPRINT_PROJECTS)
             problem = (
-                f"A blueprint has a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
-                f"If a room measures {scaled_value} {pluralize(scale_unit, scaled_value)} on the blueprint, "
+                f"A blueprint for a {subject} has a scale of 1 {scale_unit} = "
+                f"{scale_factor} {actual_unit}. If a room measures "
+                f"{number_text(scaled_value)} "
+                f"{pluralize(scale_unit, scaled_value)} on the blueprint, "
                 f"what is the actual length of the room?"
             )
         else:  # model
+            subject = random.choice(MODEL_OBJECTS)
             problem = (
-                f"A scale model uses a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
-                f"If the model is {scaled_value} {pluralize(scale_unit, scaled_value)} tall, "
+                f"A scale model of a {subject} uses a scale of 1 {scale_unit} "
+                f"= {scale_factor} {actual_unit}. If the model is "
+                f"{number_text(scaled_value)} "
+                f"{pluralize(scale_unit, scaled_value)} tall, "
                 f"what is the actual height?"
             )
 
         # Format answer
-        if actual_value == int(actual_value):
-            actual_str = f"{int(actual_value)} {actual_unit}"
-        else:
-            actual_str = f"{actual_value} {actual_unit}"
+        actual_str = f"{number_text(actual_value)} {actual_unit}"
 
         # Build steps
         steps = []
@@ -97,11 +139,14 @@ class ScalingGenerator(ProblemGenerator):
         steps.append(step("SCALE_SETUP", f"1 {scale_unit}", f"{scale_factor} {actual_unit}", scale_factor))
 
         # Step 2: Identify given and what to find
-        steps.append(step("SCALE_IDENTIFY", f"{scaled_value} {pluralize(scale_unit, scaled_value)}", "actual_dimension"))
+        steps.append(step("SCALE_IDENTIFY",
+                          f"{number_text(scaled_value)} "
+                          f"{pluralize(scale_unit, scaled_value)}",
+                          "actual_dimension"))
 
         # Step 3: Multiply (render whole results without the .0)
-        actual_num = int(actual_value) if actual_value == int(actual_value) else actual_value
-        steps.append(step("SCALE_MULT", scaled_value, scale_factor, actual_num))
+        steps.append(step("SCALE_MULT", number_text(scaled_value), scale_factor,
+                          number_text(actual_value)))
 
         # Final answer
         steps.append(step("Z", actual_str))
@@ -117,7 +162,7 @@ class ScalingGenerator(ProblemGenerator):
     def _generate_find_scaled(self, scale_unit, actual_unit, scale_factor, context_type) -> dict:
         """Generate a problem where we find the scaled dimension from actual."""
         # Generate an actual measurement (must be divisible by scale factor)
-        multiplier = random.randint(1, 10)
+        multiplier = random.randint(1, 50)
         actual_value = scale_factor * multiplier
 
         # Calculate scaled value (exact integer — it is the multiplier)
@@ -125,29 +170,32 @@ class ScalingGenerator(ProblemGenerator):
 
         # Build problem text
         if context_type == "map":
+            subject = random.choice(MAP_AREAS)
             problem = (
-                f"A map has a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
-                f"If the actual distance between two cities is {actual_value} {actual_unit}, "
+                f"A map of a {subject} has a scale of 1 {scale_unit} = "
+                f"{scale_factor} {actual_unit}. If the actual distance between "
+                f"two landmarks is {actual_value} {actual_unit}, "
                 f"how far apart are they on the map?"
             )
         elif context_type == "blueprint":
+            subject = random.choice(BLUEPRINT_PROJECTS)
             problem = (
-                f"A blueprint has a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
+                f"A blueprint for a {subject} has a scale of 1 {scale_unit} = "
+                f"{scale_factor} {actual_unit}. "
                 f"If a wall is actually {actual_value} {actual_unit} long, "
                 f"how long is it on the blueprint?"
             )
         else:  # model
+            subject = random.choice(MODEL_OBJECTS)
             problem = (
-                f"A scale model uses a scale of 1 {scale_unit} = {scale_factor} {actual_unit}. "
-                f"If the actual building is {actual_value} {actual_unit} tall, "
+                f"A scale model of a {subject} uses a scale of 1 {scale_unit} "
+                f"= {scale_factor} {actual_unit}. If the actual object is "
+                f"{actual_value} {actual_unit} tall, "
                 f"how tall should the model be?"
             )
 
         # Format answer
-        if scaled_value == int(scaled_value):
-            scaled_str = f"{int(scaled_value)} {scale_unit}{'s' if scaled_value != 1 else ''}"
-        else:
-            scaled_str = f"{scaled_value} {scale_unit}s"
+        scaled_str = f"{scaled_value} {pluralize(scale_unit, scaled_value)}"
 
         # Build steps
         steps = []

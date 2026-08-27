@@ -49,11 +49,13 @@ class RecursiveExplicitGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        return getattr(self, f"_{variant}")()
+        label = random.randint(1, 1000)
+        return getattr(self, f"_{variant}")(label)
 
-    def _rec_to_exp_arith(self):
-        a1 = random.randint(-9, 9)
-        d = random.choice([v for v in range(-9, 10) if v not in (-1, 0, 1)])
+    def _rec_to_exp_arith(self, label):
+        a1 = random.randint(-50, 50)
+        d = random.choice([v for v in range(-20, 21)
+                           if v not in (-1, 0, 1)])
         terms = [a1 + i * d for i in range(4)]
         rec_rule = f"a_n = a_(n-1) + {d}" if d > 0 \
             else f"a_n = a_(n-1) - {-d}"
@@ -75,13 +77,14 @@ class RecursiveExplicitGenerator(ProblemGenerator):
                           f"{d}·4 {'+' if const >= 0 else '-'} "
                           f"{abs(const)} = {check_val}", terms[3]))
         steps.append(step("Z", answer))
-        problem = (f"The sequence is defined by a_1 = {a1} and {rec_rule} "
+        problem = (f"Sequence S_{label} is defined by a_1 = {a1} and {rec_rule} "
                    f"for n > 1. Write an explicit formula for a_n.")
         return self._pack("recursive_to_explicit", problem, steps, answer)
 
-    def _rec_to_exp_geo(self):
-        a1 = random.choice([v for v in range(-6, 7) if v != 0])
-        r = random.choice([2, 3, 4, -2])
+    def _rec_to_exp_geo(self, label):
+        a1 = random.choice([v for v in range(-20, 21) if v != 0])
+        r = random.choice([v for v in range(-6, 7)
+                           if v not in (-1, 0, 1)])
         terms = [a1 * r ** i for i in range(4)]
         rec_rule = f"a_n = {r}·a_(n-1)"
         answer = f"a_n = {geo_txt(a1, r)}"
@@ -97,13 +100,14 @@ class RecursiveExplicitGenerator(ProblemGenerator):
         steps.append(step("CHECK", "term 4",
                           f"{a1}·{rt}^3 = {terms[3]}", terms[3]))
         steps.append(step("Z", answer))
-        problem = (f"The sequence is defined by a_1 = {a1} and {rec_rule} "
+        problem = (f"Sequence S_{label} is defined by a_1 = {a1} and {rec_rule} "
                    f"for n > 1. Write an explicit formula for a_n.")
         return self._pack("recursive_to_explicit", problem, steps, answer)
 
-    def _exp_to_rec_arith(self):
-        d = random.choice([v for v in range(-9, 10) if v not in (-1, 0, 1)])
-        const = random.randint(-9, 9)
+    def _exp_to_rec_arith(self, label):
+        d = random.choice([v for v in range(-20, 21)
+                           if v not in (-1, 0, 1)])
+        const = random.randint(-50, 50)
         a1, a2, a3 = d + const, 2 * d + const, 3 * d + const
         formula = f"a_n = {lin_n(d, const)}"
         rec = (f"a_1 = {a1}; a_n = a_(n-1) + {d}" if d > 0
@@ -125,13 +129,14 @@ class RecursiveExplicitGenerator(ProblemGenerator):
                           f"{a3}, recursion {a2} "
                           f"{'+' if d > 0 else '-'} {abs(d)} = {a3}", a3))
         steps.append(step("Z", rec))
-        problem = (f"The sequence is defined by {formula}. "
+        problem = (f"Sequence S_{label} is defined by {formula}. "
                    f"Write a recursive definition.")
         return self._pack("explicit_to_recursive", problem, steps, rec)
 
-    def _exp_to_rec_geo(self):
-        a = random.choice([v for v in range(-6, 7) if v != 0])
-        r = random.choice([2, 3, 4, -2])
+    def _exp_to_rec_geo(self, label):
+        a = random.choice([v for v in range(-20, 21) if v != 0])
+        r = random.choice([v for v in range(-6, 7)
+                           if v not in (-1, 0, 1)])
         a1, a2, a3 = a, a * r, a * r * r
         formula = f"a_n = {geo_txt(a, r)}"
         rec = f"a_1 = {a1}; a_n = {r}·a_(n-1)"
@@ -149,7 +154,7 @@ class RecursiveExplicitGenerator(ProblemGenerator):
                           f"explicit {a}·{rt}^2 = {a3}, "
                           f"recursion {r}·{a2} = {a3}", a3))
         steps.append(step("Z", rec))
-        problem = (f"The sequence is defined by {formula}. "
+        problem = (f"Sequence S_{label} is defined by {formula}. "
                    f"Write a recursive definition.")
         return self._pack("explicit_to_recursive", problem, steps, rec)
 

@@ -12,35 +12,55 @@ from generators.runge_kutta_generator import RungeKuttaGenerator
 from helpers import DELIM
 
 
-PROBLEM_RE = re.compile(
-    r"Use (RK2 midpoint|RK4) with step size h = ([^ ]+) to approximate "
-    r"y\(([^)]+)\) for dy/dx = (.+) with y\(0\) = ([^.]+)\."
+ODE_RE = re.compile(
+    r"ODE \[d(?P<dep>[A-Za-z])/d(?P<indep>[A-Za-z]) = (?P<rhs>.*?); "
+    r"(?P=dep)\((?P<x0>-?\d+(?:/\d+)?)\) = "
+    r"(?P<y0>-?\d+(?:/\d+)?)\]"
 )
 
 
-def parse_f(expr):
-    expr = re.sub(r"(?<![A-Za-z0-9])x", "1*x", expr)
-    expr = re.sub(r"(?<![A-Za-z0-9])y", "1*y", expr)
-    expr = re.sub(r"(-?\d+)([xy])", r"\1*\2", expr)
-    return eval("lambda x, y: " + expr)
+def parse_f(expr, indep, dep):
+    """Parse the printed affine RHS without importing generator helpers."""
+    coefficients = {indep: 0, dep: 0}
+    constant = 0
+    for term in expr.replace(" - ", " + -").split(" + "):
+        term = term.strip()
+        if term.endswith(indep) or term.endswith(dep):
+            variable = term[-1]
+            raw = term[:-1]
+            coefficient = {"": 1, "-": -1}.get(raw)
+            if coefficient is None:
+                coefficient = int(raw)
+            coefficients[variable] += coefficient
+        else:
+            constant += int(term)
+    return lambda x, y: (coefficients[indep] * x
+                         + coefficients[dep] * y + constant)
 
 
 def parse_problem(problem):
-    match = PROBLEM_RE.fullmatch(problem)
-    assert match is not None, problem
+    match = ODE_RE.search(problem)
+    assert match, problem
+    method = re.search(r"\b(RK2 midpoint|RK4)\b", problem)
+    step_size = re.search(r"\bh = (-?\d+(?:/\d+)?)", problem)
+    assert method and step_size, problem
+    dep = match.group("dep")
+    targets = re.findall(rf"{dep}\((-?\d+(?:/\d+)?)\)", problem)
+    assert len(targets) >= 2, problem
     return {
-        "variant": "rk2" if match.group(1) == "RK2 midpoint" else "rk4",
-        "h": Fraction(match.group(2)),
-        "target": Fraction(match.group(3)),
-        "f": parse_f(match.group(4)),
-        "y0": Fraction(match.group(5)),
+        "variant": "rk2" if method.group(1) == "RK2 midpoint" else "rk4",
+        "h": Fraction(step_size.group(1)),
+        "target": Fraction(targets[-1]),
+        "x0": Fraction(match.group("x0")),
+        "f": parse_f(match.group("rhs"), match.group("indep"), dep),
+        "y0": Fraction(match.group("y0")),
     }
 
 
 def rk_answer(parts):
     h = parts["h"]
     f = parts["f"]
-    x0 = Fraction(0)
+    x0 = parts["x0"]
     y0 = parts["y0"]
     if parts["variant"] == "rk2":
         k1 = f(x0, y0)
@@ -67,9 +87,10 @@ class TestRungeKuttaGenerator(unittest.TestCase):
                          result["final_answer"])
 
     def test_oracle_recomputes_answer_from_problem_text(self):
-        for _ in range(500):
+        for _ in range(1000):
             result = self.gen.generate()
             parts = parse_problem(result["problem"])
+            self.assertEqual(parts["target"], parts["x0"] + parts["h"])
             self.assertEqual(str(rk_answer(parts)), result["final_answer"],
                              result["problem"])
 
@@ -116,6 +137,25 @@ class TestRungeKuttaGenerator(unittest.TestCase):
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
             self.assertNotIn(DELIM, result["final_answer"])
+
+    def test_widened_axes_appear(self):
+        starts = set()
+        variables = set()
+        constants = False
+        problems = set()
+        for _ in range(800):
+            result = self.gen.generate()
+            parts = parse_problem(result["problem"])
+            starts.add(parts["x0"])
+            match = ODE_RE.search(result["problem"])
+            variables.add((match.group("indep"), match.group("dep")))
+            rhs = match.group("rhs")
+            constants |= bool(re.search(r"(?:^| [+-] )\d+$", rhs))
+            problems.add(result["problem"])
+        self.assertGreater(len(starts), 5)
+        self.assertGreater(len(variables), 5)
+        self.assertTrue(constants)
+        self.assertGreater(len(problems), 790)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,29 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+PLACES = [
+    "differential equations class", "analysis seminar", "technical college",
+    "engineering classroom", "university workshop", "research group",
+    "modeling lab", "science classroom", "training center", "study hall",
+    "mathematics department", "lecture room", "exam review",
+    "problem-solving club", "numerical methods class", "tutoring center",
+    "graduate seminar", "learning center", "research station", "computer lab",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following initial-value problem.",
+    "During a session at the {place}, this differential equation is studied.",
+    "An exercise used by the {place} asks for this series solution.",
+    "The {place} is checking a coefficient-matching calculation.",
+    "A review prepared at the {place} includes this equation.",
+    "In a lesson at the {place}, the following IVP is analyzed.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
 def term_txt(coeff, power):
     if power == 0:
         return str(abs(coeff))
@@ -68,8 +91,8 @@ class SeriesSolutionGenerator(ProblemGenerator):
         self.variant = variant
 
     def generate(self) -> dict:
-        k = random.choice([-3, -2, -1, 1, 2, 3])
-        a0 = 120 * random.randint(1, 60)
+        k = random.choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+        a0 = 120 * random.randint(1, 200)
         coeffs = [a0]
         steps = [
             step("ODE_SETUP", f"{left_txt(k)}, y(0) = {a0}",
@@ -97,7 +120,8 @@ class SeriesSolutionGenerator(ProblemGenerator):
         answer = f"y = {poly_txt(coeffs)} + O(x^6)"
         steps.append(step("Z", answer))
         problem = (
-            f"Find the power-series solution through x^5 for {left_txt(k)} "
+            f"{context_text()} Find the power-series solution through x^5 "
+            f"for {left_txt(k)} "
             f"with y(0) = {a0}."
         )
         return dict(

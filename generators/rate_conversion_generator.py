@@ -3,6 +3,33 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+SUBJECTS = [
+    "ambulance", "athlete", "boat", "bus", "cyclist", "delivery van",
+    "drone", "ferry", "freight train", "hiker", "horse", "kayak",
+    "motorcycle", "patrol car", "pedestrian", "robot", "runner",
+    "sailboat", "school bus", "scooter", "ship", "skater", "sprinter",
+    "subway train", "taxi", "tractor", "tram", "truck", "walker",
+    "watercraft",
+]
+
+CONTEXT_TEMPLATES = [
+    "A {setting} models a {subject}. Convert {value} {from_unit} to {to_unit}.",
+    "For a {subject} in a {setting}, convert {value} {from_unit} to {to_unit}.",
+    "A {setting} tracks a {subject}. Convert {value} {from_unit} to {to_unit}.",
+    "The modeled speed of a {subject} in a {setting} is changing units. Convert {value} {from_unit} to {to_unit}.",
+    "To compare a {subject} in a {setting}, convert {value} {from_unit} to {to_unit}.",
+    "A {setting} lists a {subject}'s rate. Convert {value} {from_unit} to {to_unit}.",
+]
+
+SETTINGS = [
+    "classroom example", "computer model", "data table", "design study",
+    "engineering sketch", "exercise", "lab model", "mapping problem",
+    "motion chart", "practice problem", "rate table", "robotics model",
+    "route model", "science activity", "sensor simulation", "speed study",
+    "test scenario", "training example", "transport model", "worksheet",
+]
+
+
 class RateConversionGenerator(ProblemGenerator):
     """
     Converts rates like mph -> ft/s (and reverse) using factor-label steps
@@ -55,7 +82,7 @@ class RateConversionGenerator(ProblemGenerator):
         ]
 
         scenario = random.choice(scenarios)
-        value = random.randint(1, 25) * scenario["value_mult"]
+        value = random.randint(1, 50) * scenario["value_mult"]
         steps = []
 
         def multiply(val, factor):
@@ -75,7 +102,16 @@ class RateConversionGenerator(ProblemGenerator):
         time_factor_step = step("CONV_FACTOR", f"1 {time_big}",
                                 f"{time_k} {time_small}")
 
-        problem = f"Convert {value} {scenario['from_unit']} to {scenario['to_unit']}"
+        template = CONTEXT_TEMPLATES[random.randrange(len(CONTEXT_TEMPLATES))]
+        subject = SUBJECTS[random.randrange(len(SUBJECTS))]
+        setting = SETTINGS[random.randrange(len(SETTINGS))]
+        problem = template.format(
+            subject=subject,
+            setting=setting,
+            value=value,
+            from_unit=scenario["from_unit"],
+            to_unit=scenario["to_unit"],
+        )
 
         current = value
         if scenario["length_first"]:

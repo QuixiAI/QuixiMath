@@ -23,17 +23,11 @@ class ScalingLawGenerator(ProblemGenerator):
     """
 
     def generate(self) -> dict:
-        params = random.choice([
-            50_000_000, 125_000_000, 350_000_000, 760_000_000,
-            1_300_000_000, 2_700_000_000, 6_700_000_000,
-        ])
-        tokens = random.choice([
-            1_000_000_000, 2_000_000_000, 5_000_000_000,
-            10_000_000_000, 20_000_000_000, 50_000_000_000,
-        ])
-        flops_per_second = random.choice([
-            10**15, 2 * 10**15, 5 * 10**15, 10**16, 2 * 10**16,
-        ])
+        # Two-digit mantissas keep the arithmetic readable while the three
+        # independent scale choices provide a large mathematical space.
+        params = random.randint(10, 99) * 1_000_000
+        tokens = random.randint(10, 99) * 1_000_000_000
+        flops_per_second = random.randint(10, 99) * 10**15
         nd = params * tokens
         compute = 6 * nd
         optimal_tokens = 20 * params

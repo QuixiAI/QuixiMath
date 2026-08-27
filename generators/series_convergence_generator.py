@@ -4,6 +4,37 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+P_VALUES = sorted({
+    Fraction(numerator, denominator)
+    for denominator in range(1, 11)
+    for numerator in range(1, 51)
+    if (Fraction(numerator, denominator) <= Fraction(3, 4)
+        or Fraction(3, 2) <= Fraction(numerator, denominator) <= 5)
+})
+
+PLACES = [
+    "calculus class", "analysis seminar", "technical college",
+    "mathematics workshop", "university classroom", "training center",
+    "research group", "science classroom", "study hall", "tutoring center",
+    "problem-solving club", "engineering class", "lecture room",
+    "exam review", "modeling group", "computer lab", "graduate seminar",
+    "learning center", "mathematics department", "research station",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following series.",
+    "During a session at the {place}, this series is assigned.",
+    "An exercise used by the {place} asks about this series.",
+    "The {place} is checking the following convergence question.",
+    "A review prepared at the {place} includes this series.",
+    "In a lesson at the {place}, the following series is analyzed.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
 def pow_txt(p):
     """1/n^p with the standard renders for p = 1, 1/2, 3/2, ..."""
     if p == 1:
@@ -51,8 +82,8 @@ class SeriesConvergenceGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "nth_term":
-            a, c = random.randint(1, 5), random.randint(1, 5)
-            b, d = random.randint(0, 6), random.randint(1, 6)
+            a, c = random.randint(1, 20), random.randint(1, 20)
+            b, d = random.randint(0, 20), random.randint(1, 20)
             lim = Fraction(a, c)
             an = "n" if a == 1 else f"{a}n"
             cn = "n" if c == 1 else f"{c}n"
@@ -74,13 +105,11 @@ class SeriesConvergenceGenerator(ProblemGenerator):
             problem = (f"Determine whether Σ {body} for n ≥ 1 "
                        f"converges or diverges.")
         elif variant == "geometric":
-            a = random.choice([v for v in range(-9, 10) if v != 0])
-            r = random.choice([Fraction(1, 2), Fraction(-1, 2),
-                               Fraction(1, 3), Fraction(-1, 3),
-                               Fraction(2, 3), Fraction(-2, 3),
-                               Fraction(3, 4), Fraction(1, 4),
-                               Fraction(3, 2), Fraction(-3, 2),
-                               Fraction(2), Fraction(-2)])
+            a = random.choice([v for v in range(-50, 51) if v != 0])
+            while True:
+                r = Fraction(random.randint(-12, 12), random.randint(2, 12))
+                if r:
+                    break
             r_txt = f"({r})" if r.denominator > 1 or r < 0 else str(r)
             body = f"{a}·{r_txt}^n"
             steps = [
@@ -109,9 +138,7 @@ class SeriesConvergenceGenerator(ProblemGenerator):
                        f"converges or diverges; if it converges, "
                        f"find the sum.")
         elif variant == "p_series":
-            p = random.choice([Fraction(1, 2), Fraction(1),
-                               Fraction(3, 2), Fraction(2),
-                               Fraction(3), Fraction(4)])
+            p = random.choice(P_VALUES)
             body = pow_txt(p)
             conv = p > 1
             steps = [
@@ -128,7 +155,7 @@ class SeriesConvergenceGenerator(ProblemGenerator):
             problem = (f"Determine whether Σ {body} for n ≥ 1 "
                        f"converges or diverges.")
         elif variant == "ratio":
-            c = random.randint(2, 9)
+            c = random.randint(2, 100)
             over = random.random() < 0.5
             body = f"{c}^n/n!" if over else f"n!/{c}^n"
             ratio = f"{c}/(n + 1)" if over else f"(n + 1)/{c}"
@@ -155,9 +182,7 @@ class SeriesConvergenceGenerator(ProblemGenerator):
             problem = (f"Determine whether Σ {body} for n ≥ 1 "
                        f"converges or diverges.")
         elif variant == "alternating":
-            p = random.choice([Fraction(1, 2), Fraction(1),
-                               Fraction(3, 2), Fraction(2),
-                               Fraction(3)])
+            p = random.choice(P_VALUES)
             body = f"(-1)^(n+1)·{pow_txt(p)}"
             abs_conv = p > 1
             steps = [
@@ -181,7 +206,7 @@ class SeriesConvergenceGenerator(ProblemGenerator):
                        f"converges absolutely, converges "
                        f"conditionally, or diverges.")
         else:
-            k = random.randint(1, 9)
+            k = random.randint(1, 100)
             direct = random.random() < 0.5
             if direct:
                 body = f"1/(n^2 + {k})"
@@ -218,6 +243,8 @@ class SeriesConvergenceGenerator(ProblemGenerator):
             problem = (f"Determine whether Σ {body} for n ≥ 1 "
                        f"converges or diverges.")
         steps.append(step("Z", answer))
+
+        problem = f"{context_text()} {problem}"
 
         return dict(
             problem_id=jid(),

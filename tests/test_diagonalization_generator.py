@@ -21,13 +21,67 @@ def fmt_matrix(M):
                            for row in M) + "]"
 
 
-def parse_problem(problem):
-    matrix_txt, k_txt = re.fullmatch(
-        r"Diagonalize A = (\[\[.*\]\]) and compute A\^(\d+)\.",
-        problem,
-    ).groups()
-    return ast.literal_eval(matrix_txt), int(k_txt)
+# --------------------------------------------------------------- phrasings
 
+MATRIX = r"\[\[-?\d+, -?\d+\], \[-?\d+, -?\d+\]\]"
+VECTOR = r"\[-?\d+, -?\d+\]"
+
+PHRASINGS = [
+    # power
+    (r"Diagonalize A = (?P<A>{M}) and compute A\^(?P<k>\d+)\.", "power"),
+    (r"Let A = (?P<A>{M})\. Write A = P·D·P\^-1 with D diagonal, then use "
+     r"that form to find A\^(?P<k>\d+)\.", "power"),
+    (r"Find an eigenvector matrix P and a diagonal matrix D with "
+     r"A = P·D·P\^-1 for A = (?P<A>{M}), and evaluate A\^(?P<k>\d+)\.",
+     "power"),
+    (r"Use diagonalization to raise A = (?P<A>{M}) to the power "
+     r"(?P<k>\d+)\.", "power"),
+    (r"For A = (?P<A>{M}), give the diagonalization P, D, P\^-1 and the "
+     r"matrix A\^(?P<k>\d+)\.", "power"),
+    # decompose
+    (r"Diagonalize A = (?P<A>{M})\.", "decompose"),
+    (r"Let A = (?P<A>{M})\. Find P, D, and P\^-1 with A = P·D·P\^-1 and D "
+     r"diagonal\.", "decompose"),
+    (r"Find the eigenvalues and eigenvectors of A = (?P<A>{M}) and use them "
+     r"to write A = P·D·P\^-1\.", "decompose"),
+    (r"Write A = (?P<A>{M}) in the form P·D·P\^-1 with D diagonal\.",
+     "decompose"),
+    (r"Give an eigendecomposition A = P·D·P\^-1 for A = (?P<A>{M})\.",
+     "decompose"),
+    # vector_power
+    (r"Let A = (?P<A>{M}) and x = (?P<x>{V})\. Use the diagonalization of A "
+     r"to compute A\^(?P<k>\d+)x\.", "vector_power"),
+    (r"Diagonalize A = (?P<A>{M}), expand x = (?P<x>{V}) in the eigenbasis, "
+     r"and find A\^(?P<k>\d+)x\.", "vector_power"),
+    (r"For A = (?P<A>{M}), write x = (?P<x>{V}) as a combination of "
+     r"eigenvectors and compute A\^(?P<k>\d+)x\.", "vector_power"),
+    (r"A state vector x = (?P<x>{V}) is advanced (?P<k>\d+) steps by "
+     r"A = (?P<A>{M})\. Using eigenvectors, find A\^\d+x\.", "vector_power"),
+    (r"Given A = (?P<A>{M}) and x = (?P<x>{V}), use A\^(?P<k>\d+) = "
+     r"P·D\^\d+·P\^-1 to evaluate A\^\d+x\.", "vector_power"),
+]
+
+COMPILED = [
+    (re.compile(body.replace("{M}", MATRIX).replace("{V}", VECTOR)), kind)
+    for body, kind in PHRASINGS
+]
+
+
+def parse_problem(problem):
+    """Returns (kind, A, k, x, phrasing_index) for any phrasing."""
+    for index, (pattern, kind) in enumerate(COMPILED):
+        match = pattern.fullmatch(problem)
+        if match is None:
+            continue
+        groups = match.groupdict()
+        A = ast.literal_eval(groups["A"])
+        k = int(groups["k"]) if groups.get("k") else None
+        x = ast.literal_eval(groups["x"]) if groups.get("x") else None
+        return kind, A, k, x, index
+    raise AssertionError(f"unparsed problem: {problem}")
+
+
+# ----------------------------------------------------- independent linear alg
 
 def matmul(A, B):
     return [
@@ -43,6 +97,7 @@ def matvec(A, v):
 
 
 def matrix_power(A, k):
+    """Repeated multiplication -- independent of any diagonalization."""
     result = [[1, 0], [0, 1]]
     for _ in range(k):
         result = matmul(result, A)
@@ -163,16 +218,24 @@ def oracle_parts(A, k):
     P = columns_to_matrix(vectors)
     P_inv = inverse_2x2(P)
     D = [[lambdas[0], 0], [0, lambdas[1]]]
-    Dk = [[lambdas[0] ** k, 0], [0, lambdas[1] ** k]]
-    Ak = matmul(matmul(P, Dk), P_inv)
-    return lambdas, P, P_inv, D, Dk, Ak
+    Dk = None if k is None else [[lambdas[0] ** k, 0], [0, lambdas[1] ** k]]
+    Ak = None if k is None else matrix_power(A, k)
+    return lambdas, vectors, P, P_inv, D, Dk, Ak
 
 
 def oracle_answer(example):
-    A, k = parse_problem(example["problem"])
-    _, P, P_inv, D, _, Ak = oracle_parts(A, k)
-    return (f"P={fmt_matrix(P)}, D={fmt_matrix(D)}, "
-            f"P^-1={fmt_matrix(P_inv)}, A^{k}={fmt_matrix(Ak)}")
+    """Recompute the answer from the problem text with repeated products."""
+    kind, A, k, x, _ = parse_problem(example["problem"])
+    lambdas, vectors, P, P_inv, D, Dk, Ak = oracle_parts(A, k)
+    if kind == "decompose":
+        return (f"P={fmt_matrix(P)}, D={fmt_matrix(D)}, "
+                f"P^-1={fmt_matrix(P_inv)}")
+    if kind == "power":
+        return (f"P={fmt_matrix(P)}, D={fmt_matrix(D)}, "
+                f"P^-1={fmt_matrix(P_inv)}, A^{k}={fmt_matrix(Ak)}")
+    c = matvec(P_inv, x)
+    y = matvec(Ak, x)
+    return f"c={c}, A^{k}x={y}"
 
 
 def eval_integer_expr(expr):
@@ -190,8 +253,8 @@ def parse_scalar_vector(text):
 
 
 def check_step_arithmetic(example):
-    A, k = parse_problem(example["problem"])
-    lambdas, P, P_inv, D, Dk, Ak = oracle_parts(A, k)
+    kind, A, k, x, _ = parse_problem(example["problem"])
+    lambdas, vectors, P, P_inv, D, Dk, Ak = oracle_parts(A, k)
     factored = "*".join(factor_text(lam) for lam in lambdas)
     for raw_step in example["steps"]:
         parts = raw_step.split(DELIM)
@@ -232,8 +295,30 @@ def check_step_arithmetic(example):
             i, j = ast.literal_eval(parts[1])
             if Ak[i - 1][j - 1] != int(parts[3]):
                 return False
+        elif parts[0] == "COORDS":
+            if ast.literal_eval(parts[2]) != matvec(P_inv, x):
+                return False
+        elif parts[0] == "COMBO":
+            if ast.literal_eval(parts[2]) != x:
+                return False
+        elif parts[0] == "SCALE_MODE":
+            if eval_integer_expr(parts[2]) != Fraction(parts[3]):
+                return False
+        elif parts[0] == "VEC_ENTRY":
+            if eval_integer_expr(parts[2]) != Fraction(parts[3]):
+                return False
+            row = int(parts[1].strip("()"))
+            if matvec(Ak, x)[row - 1] != int(parts[3]):
+                return False
+        elif parts[0] == "CHECK" and parts[1].startswith("P*["):
+            coords = ast.literal_eval(parts[1][2:])
+            if ast.literal_eval(parts[2]) != matvec(P, coords):
+                return False
         elif parts[0] == "CHECK" and parts[1] == f"direct A^{k}":
             if ast.literal_eval(parts[2]) != matrix_power(A, k):
+                return False
+        elif parts[0] == "CHECK" and parts[1] == f"direct A^{k}x":
+            if ast.literal_eval(parts[2]) != matvec(matrix_power(A, k), x):
                 return False
     return True
 
@@ -244,31 +329,78 @@ class TestDiagonalizationGenerator(unittest.TestCase):
         self.gen = DiagonalizationGenerator()
 
     def test_output_contract(self):
-        result = self.gen.generate()
-        for key in ("problem_id", "operation", "problem", "steps",
-                    "final_answer"):
-            self.assertIn(key, result)
-        self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
-        self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
-                         result["final_answer"])
+        for _ in range(60):
+            result = self.gen.generate()
+            for key in ("problem_id", "operation", "problem", "steps",
+                        "final_answer"):
+                self.assertIn(key, result)
+            self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
+            self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
+                             result["final_answer"])
 
     def test_oracle_answer_from_problem_text(self):
-        for _ in range(500):
+        for _ in range(600):
             result = self.gen.generate()
             self.assertEqual(result["final_answer"], oracle_answer(result),
                              result["problem"])
 
     def test_step_arithmetic(self):
-        for _ in range(300):
+        for _ in range(400):
             result = self.gen.generate()
             self.assertTrue(check_step_arithmetic(result), result["steps"])
 
-    def test_power_entries_cover_matrix(self):
-        for _ in range(100):
+    def test_p_is_unimodular_and_matches_eigenvectors(self):
+        for _ in range(300):
             result = self.gen.generate()
+            _, A, _, _, _ = parse_problem(result["problem"])
+            lambdas, vectors, P, _, _, _, _ = oracle_parts(A, None)
+            det = P[0][0] * P[1][1] - P[0][1] * P[1][0]
+            self.assertIn(det, (1, -1), (A, P))
+            self.assertNotEqual(lambdas[0], lambdas[1])
+            for lam, vec in zip(lambdas, vectors):
+                self.assertEqual(matvec(A, vec),
+                                 [lam * v for v in vec])
+
+    def test_power_entries_cover_matrix(self):
+        gen = DiagonalizationGenerator("power")
+        for _ in range(100):
+            result = gen.generate()
             entries = [s for s in result["steps"]
                        if s.startswith(f"POWER_ENTRY{DELIM}")]
             self.assertEqual(len(entries), 4)
+
+    def test_vector_power_entries_cover_vector(self):
+        gen = DiagonalizationGenerator("vector_power")
+        for _ in range(100):
+            result = gen.generate()
+            entries = [s for s in result["steps"]
+                       if s.startswith(f"VEC_ENTRY{DELIM}")]
+            self.assertEqual(len(entries), 2)
+            self.assertTrue(any(s.startswith(f"COORDS{DELIM}")
+                                for s in result["steps"]))
+
+    def test_all_variants_and_operations(self):
+        expected = {
+            "power": "diagonalization_power",
+            "decompose": "diagonalization_decompose",
+            "vector_power": "diagonalization_vector_power",
+        }
+        for variant, operation in expected.items():
+            gen = DiagonalizationGenerator(variant)
+            for _ in range(30):
+                result = gen.generate()
+                self.assertEqual(result["operation"], operation)
+                kind, _, _, _, _ = parse_problem(result["problem"])
+                self.assertEqual(kind, variant)
+        seen = {self.gen.generate()["operation"] for _ in range(300)}
+        self.assertEqual(seen, set(expected.values()))
+
+    def test_all_phrasings_parse(self):
+        seen = set()
+        for _ in range(1500):
+            _, _, _, _, index = parse_problem(self.gen.generate()["problem"])
+            seen.add(index)
+        self.assertEqual(seen, set(range(len(COMPILED))))
 
     def test_no_degenerate_rendering(self):
         bad = re.compile(r"--|\+ -|- -|\^1\b|(?<!\d)1λ|(?<!\d)1\*")
@@ -279,13 +411,29 @@ class TestDiagonalizationGenerator(unittest.TestCase):
             for raw_step in result["steps"]:
                 self.assertIsNone(bad.search(raw_step), raw_step)
 
-    def test_pipe_safe(self):
+    def test_operands_stay_hand_sized(self):
         for _ in range(300):
             result = self.gen.generate()
+            values = [abs(int(v))
+                      for v in re.findall(r"-?\d+", result["final_answer"])]
+            self.assertLessEqual(max(values), 20000, result["final_answer"])
+
+    def test_pipe_safe(self):
+        for _ in range(400):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
                 self.assertNotIn(f"{DELIM}{DELIM}", raw_step)
+
+    def test_capacity_is_wide(self):
+        texts = {self.gen.generate()["problem"] for _ in range(800)}
+        self.assertGreaterEqual(len(texts), 790)
+
+    def test_fixed_variant_constructor(self):
+        with self.assertRaises(ValueError):
+            DiagonalizationGenerator("bogus")
 
 
 if __name__ == "__main__":

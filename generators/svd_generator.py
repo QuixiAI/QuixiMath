@@ -5,6 +5,27 @@ from helpers import step, jid
 from generators.matrix_ops_generator import mat
 
 
+PLACES = [
+    "linear algebra class", "data analysis lab", "technical college",
+    "engineering seminar", "university classroom", "research group",
+    "computer vision lab", "modeling workshop", "statistics department",
+    "robotics lab", "training center", "science classroom", "lecture room",
+    "matrix methods course", "signal lab", "design studio", "study hall",
+    "numerical methods class", "research station", "learning center",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following matrix.",
+    "During a session at the {place}, this matrix is analyzed.",
+    "An exercise used by the {place} asks for this factorization.",
+    "The {place} is checking an exact matrix decomposition.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
 ROOT2 = "√2"
 S = f"1/{ROOT2}"
 VEC_PLUS = f"[{S}, {S}]"
@@ -51,7 +72,7 @@ class SVDGenerator(ProblemGenerator):
     """
 
     def generate(self) -> dict:
-        a = random.randint(3, 30)
+        a = random.randint(3, 100)
         b = random.randint(1, a - 1)
         A = [[a, b], [b, a]]
         ata = ata_for(A)
@@ -84,7 +105,8 @@ class SVDGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation="svd_symmetric_2x2",
-            problem=(f"Find an SVD A = U*Sigma*V^T for A = {mat(A)} "
+            problem=(f"{context_text()} Find an SVD A = U*Sigma*V^T for "
+                     f"A = {mat(A)} "
                      f"using A^T A."),
             steps=steps,
             final_answer=answer,

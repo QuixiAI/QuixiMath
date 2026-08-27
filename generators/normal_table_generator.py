@@ -1,18 +1,11 @@
-import math
 import random
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
-
-
-def phi(z):
-    """Standard normal CDF rounded to 4 decimals (table convention)."""
-    return round(0.5 * (1 + math.erf(z / math.sqrt(2))), 4)
-
-
-def p4(x):
-    """Renders a probability with 4 decimals: 0.0968."""
-    return f"{x:.4f}"
+# The supplied-table helpers live in prob_common (plans/probability_plan.md §4);
+# they stay importable from this module for the generators and tests that
+# already reach for them here.
+from prob_common import p4, phi, phi_table
 
 
 class NormalTableGenerator(ProblemGenerator):
@@ -53,11 +46,7 @@ class NormalTableGenerator(ProblemGenerator):
 
     def _table(self, zs):
         """Renders the excerpt for the needed |z| values plus two decoys."""
-        need = sorted({abs(z) for z in zs})
-        decoys = [round(z, 1) for z in (need[0] + 0.2, need[-1] + 0.3)]
-        rows = sorted(set(need + [d for d in decoys if 0 < d <= 3.4]))
-        cells = "; ".join(f"z={z:.2f}: {p4(phi(z))}" for z in rows)
-        return f"Standard normal table, Φ(z) = P(Z < z): {cells}"
+        return phi_table(zs)
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)

@@ -2,6 +2,8 @@ import unittest
 import random
 import sys
 import os
+import math
+import re
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 repo_root = os.path.dirname(current_dir)
@@ -10,6 +12,52 @@ if repo_root not in sys.path:
 
 from generators.pythag_leg_generator import PythagoreanLegGenerator, PythagoreanWordProblemGenerator
 from helpers import DELIM
+
+
+def leg_oracle(problem):
+    match = re.fullmatch(
+        r"In right triangle [A-Z]{3}, hypotenuse [A-Z]{2} is (\d+) "
+        r"units and leg [A-Z]{2} is (\d+) units\. Find leg [A-Z]{2}\.",
+        problem,
+    )
+    assert match, problem
+    hypotenuse, known_leg = map(int, match.groups())
+    square = hypotenuse * hypotenuse - known_leg * known_leg
+    root = math.isqrt(square)
+    assert root * root == square, problem
+    return f"{root} units"
+
+
+def word_oracle(problem):
+    ladder_height = re.match(
+        r"A (\d+)-foot ladder is placed against a wall\. The base of "
+        r"the ladder is (\d+) feet from the wall\.",
+        problem,
+    )
+    if ladder_height:
+        hypotenuse, leg = map(int, ladder_height.groups())
+        return f"{math.isqrt(hypotenuse ** 2 - leg ** 2)} feet"
+    ladder_base = re.match(
+        r"A (\d+)-foot ladder reaches (\d+) feet up a wall\.", problem
+    )
+    if ladder_base:
+        hypotenuse, leg = map(int, ladder_base.groups())
+        return f"{math.isqrt(hypotenuse ** 2 - leg ** 2)} feet"
+    rectangle = re.match(
+        r"A rectangle has a length of (\d+) units and a width of "
+        r"(\d+) units\.",
+        problem,
+    )
+    if rectangle:
+        a, b = map(int, rectangle.groups())
+        return f"{math.isqrt(a * a + b * b)} units"
+    distance = re.match(
+        r"A person walks (\d+) meters east and then (\d+) meters north\.",
+        problem,
+    )
+    assert distance, problem
+    a, b = map(int, distance.groups())
+    return f"{math.isqrt(a * a + b * b)} meters"
 
 
 class TestPythagoreanLegGenerator(unittest.TestCase):
@@ -44,12 +92,19 @@ class TestPythagoreanLegGenerator(unittest.TestCase):
             self.assertTrue(has_root, "Missing PYTHAG_ROOT step")
 
     def test_answer_is_valid(self):
-        """Test that answers form valid Pythagorean triples."""
-        for _ in range(20):
+        """A9 oracle: recover both known sides from the prompt."""
+        for _ in range(500):
             result = self.generator.generate()
-            # Extract numbers from the problem
-            answer = result["final_answer"].replace(" units", "")
-            self.assertTrue(answer.isdigit(), f"Answer should be a positive integer, got {answer}")
+            self.assertEqual(leg_oracle(result["problem"]),
+                             result["final_answer"], result["problem"])
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "PYTHAG_SQUARE":
+                    self.assertEqual(int(fields[1]) ** 2, int(fields[2]),
+                                     raw_step)
+                elif fields[0] == "PYTHAG_ROOT":
+                    self.assertEqual(int(fields[2]) ** 2, int(fields[1]),
+                                     raw_step)
 
 
 class TestPythagoreanWordProblemGenerator(unittest.TestCase):
@@ -71,6 +126,21 @@ class TestPythagoreanWordProblemGenerator(unittest.TestCase):
             has_model = any(s.startswith(f"PYTHAG_MODEL{DELIM}") for s in result["steps"])
             self.assertTrue(has_context, "Missing PYTHAG_CONTEXT step")
             self.assertTrue(has_model, "Missing PYTHAG_MODEL step")
+
+    def test_oracle_from_word_problem_text(self):
+        """A9 oracle: independently solve every real-world context."""
+        for _ in range(600):
+            result = self.generator.generate()
+            self.assertEqual(word_oracle(result["problem"]),
+                             result["final_answer"], result["problem"])
+
+    def test_pipe_safety_both_generators(self):
+        for generator in (PythagoreanLegGenerator(), self.generator):
+            for _ in range(200):
+                result = generator.generate()
+                for raw_step in result["steps"]:
+                    self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                         raw_step)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+import math
 import random
 from fractions import Fraction
 
@@ -5,30 +6,54 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-MASS_SHELL_TRIPLES = [
-    (3, 4, 5),
-    (5, 12, 13),
-    (8, 15, 17),
-    (7, 24, 25),
-    (20, 21, 29),
-    (9, 40, 41),
-    (12, 35, 37),
+PLACES = [
+    "accelerator lab", "university laboratory", "simulation center",
+    "research station", "physics classroom", "detector facility",
+    "computing lab", "observatory", "engineering institute",
+    "particle laboratory", "training center", "science museum",
+    "modeling group", "technical college", "prototype facility",
+    "measurement lab", "theory group", "instrument center",
+    "research institute", "analysis laboratory",
 ]
 
-SPEEDS = [
-    Fraction(1, 5),
-    Fraction(2, 5),
-    Fraction(3, 5),
-    Fraction(1, 3),
-    Fraction(2, 3),
-    Fraction(-1, 5),
-    Fraction(-2, 5),
-    Fraction(-1, 3),
+CONTEXTS = [
+    "Simulation run {run} was prepared at the {place}.",
+    "The {place} recorded model {run}.",
+    "Laboratory run {run} comes from the {place}.",
+    "Analysis case {run} was supplied by the {place}.",
 ]
 
 
 def fraction_text(value):
     return str(Fraction(value))
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(
+        run=random.randint(100, 9999), place=random.choice(PLACES))
+
+
+def proper_velocity():
+    """Return a hand-friendly exact speed strictly between -1 and 1."""
+    denominator = random.randint(2, 15)
+    numerator = random.randint(-(denominator - 1), denominator - 1)
+    return Fraction(numerator, denominator)
+
+
+def mass_shell_triple():
+    """Construct a scaled Pythagorean triple using Euclid's formula."""
+    while True:
+        outer = random.randint(2, 10)
+        inner = random.randint(1, outer - 1)
+        if math.gcd(outer, inner) == 1 and (outer - inner) % 2 == 1:
+            break
+    scale = random.randint(1, 10)
+    leg_a = scale * (outer * outer - inner * inner)
+    leg_b = scale * (2 * outer * inner)
+    hypotenuse = scale * (outer * outer + inner * inner)
+    if random.choice([False, True]):
+        leg_a, leg_b = leg_b, leg_a
+    return leg_a, leg_b, hypotenuse
 
 
 class RelativisticEnergyGenerator(ProblemGenerator):
@@ -55,12 +80,13 @@ class RelativisticEnergyGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        context = context_text()
         if variant == "rest_energy":
-            problem, steps, answer = self._generate_rest_energy()
+            problem, steps, answer = self._generate_rest_energy(context)
         elif variant == "energy_momentum":
-            problem, steps, answer = self._generate_energy_momentum()
+            problem, steps, answer = self._generate_energy_momentum(context)
         else:
-            problem, steps, answer = self._generate_velocity_addition()
+            problem, steps, answer = self._generate_velocity_addition(context)
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
@@ -70,9 +96,9 @@ class RelativisticEnergyGenerator(ProblemGenerator):
             final_answer=answer,
         )
 
-    def _generate_rest_energy(self):
-        mass = random.randint(1, 30)
-        c = random.randint(2, 20)
+    def _generate_rest_energy(self, context):
+        mass = random.randint(1, 100)
+        c = random.randint(2, 50)
         c_sq = c ** 2
         energy = mass * c_sq
         steps = [
@@ -83,15 +109,14 @@ class RelativisticEnergyGenerator(ProblemGenerator):
         ]
         answer = f"E={energy} J"
         problem = (
-            f"Using E=m*c^2, find the rest energy for mass m={mass} kg "
+            f"{context} Using E=m*c^2, find the rest energy for mass "
+            f"m={mass} kg "
             f"and c={c} m/s."
         )
         return problem, steps, answer
 
-    def _generate_energy_momentum(self):
-        momentum, mass, energy = random.choice(MASS_SHELL_TRIPLES)
-        if random.choice([False, True]):
-            momentum, mass = mass, momentum
+    def _generate_energy_momentum(self, context):
+        momentum, mass, energy = mass_shell_triple()
         p_sq = momentum ** 2
         m_sq = mass ** 2
         e_sq = p_sq + m_sq
@@ -106,18 +131,15 @@ class RelativisticEnergyGenerator(ProblemGenerator):
         ]
         answer = f"E={energy}"
         problem = (
-            f"In c=1 units, a particle has momentum p={momentum} and "
+            f"{context} In c=1 units, a particle has momentum p={momentum} and "
             f"mass m={mass}. Find E from E^2=p^2+m^2."
         )
         return problem, steps, answer
 
-    def _generate_velocity_addition(self):
-        while True:
-            u = random.choice(SPEEDS)
-            v = random.choice(SPEEDS)
-            denominator = 1 + u * v
-            if denominator != 0:
-                break
+    def _generate_velocity_addition(self, context):
+        u = proper_velocity()
+        v = proper_velocity()
+        denominator = 1 + u * v
         numerator = u + v
         product = u * v
         velocity = numerator / denominator
@@ -135,7 +157,7 @@ class RelativisticEnergyGenerator(ProblemGenerator):
         ]
         answer = f"w={fraction_text(velocity)}"
         problem = (
-            f"In c=1 units, velocities u={fraction_text(u)} and "
+            f"{context} In c=1 units, velocities u={fraction_text(u)} and "
             f"v={fraction_text(v)} are collinear. Compute the relativistic "
             "velocity sum w."
         )

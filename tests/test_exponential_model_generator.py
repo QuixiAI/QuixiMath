@@ -16,31 +16,46 @@ from generators.exponential_model_generator import (
 from helpers import DELIM
 
 
+GROWTH_WORDS = ("grows", "appreciates", "increases", "rises", "gains")
+DECAY_WORDS = ("loses", "depreciates", "declines", "drops", "falls")
+
+
 def oracle_answer(example):
-    """Recomputes each model exactly from the problem text."""
+    """A9 oracle: recompute every model exactly from the problem text.
+
+    Parses whatever phrasing was chosen, then rebuilds the answer with
+    exact Fraction arithmetic (repeated halving for half-life, a direct
+    power for compound growth/decay).
+    """
     p = example["problem"]
-    m = re.fullmatch(r"An investment of \$(\d+) grows (\d+)% per year\. "
-                     r"What is it worth after (\d+) years\?", p)
-    if m:
-        P, r, t = (int(v) for v in m.groups())
-        return _money(P * (1 + Fraction(r, 100)) ** t)
-    m = re.fullmatch(r"A machine worth \$(\d+) loses (\d+)% of its value "
-                     r"each year\. What is it worth after (\d+) years\?", p)
-    if m:
-        P, r, t = (int(v) for v in m.groups())
-        return _money(P * (1 - Fraction(r, 100)) ** t)
-    m = re.fullmatch(r"A sample of (\d+) g has a half-life of (\d+) "
-                     r"years\. How much remains after (\d+) years\?", p)
-    if m:
-        m0, h, t = (int(v) for v in m.groups())
-        assert t % h == 0
-        return f"{m0 // 2 ** (t // h)} g"
-    m = re.fullmatch(r"An investment of \$(\d+) earns (\d+)% interest "
-                     r"compounded continuously\. Give its exact value "
-                     r"in dollars after (\d+) years\.", p)
-    assert m, p
-    P, r, t = (int(v) for v in m.groups())
-    return f"{P}e^{dec(Fraction(r * t, 100))}"
+
+    if "half-life" in p:
+        h = int(re.search(r"half-life[^\d]*(\d+)", p).group(1))
+        m_txt, unit = re.search(r"(\d+) (mg|kg|g)\b", p).groups()
+        tu = re.search(r"\d+ (years|days|hours)", p).group(1)
+        times = [int(v) for v in re.findall(rf"(\d+) {tu}\b", p)]
+        elapsed = {v for v in times if v != h}
+        assert len(elapsed) == 1, p
+        t = elapsed.pop()
+        assert t % h == 0, p
+        remaining = int(m_txt)
+        for _ in range(t // h):
+            assert remaining % 2 == 0, p
+            remaining //= 2
+        return f"{remaining} {unit}"
+
+    P = int(re.search(r"\$(\d+)", p).group(1))
+    r = int(re.search(r"(\d+)%", p).group(1))
+    t = int(re.search(r"(\d+) years", p).group(1))
+
+    if "continuously" in p:
+        return f"{P}e^{dec(Fraction(r * t, 100))}"
+
+    grew = any(w in p for w in GROWTH_WORDS)
+    fell = any(w in p for w in DECAY_WORDS)
+    assert grew != fell, p
+    base = 1 + Fraction(r, 100) * (1 if grew else -1)
+    return _money(P * base ** t)
 
 
 def _money(fr):
@@ -114,6 +129,47 @@ class TestExponentialModelGenerator(unittest.TestCase):
         self.assertEqual(ops, {"exponential_growth", "exponential_decay",
                                "exponential_half_life",
                                "exponential_continuous"})
+
+    def test_every_phrasing_is_parsed(self):
+        """All phrasings must round-trip through the independent parser."""
+        seen = set()
+        for _ in range(1500):
+            result = self.gen.generate()
+            self.assertEqual(oracle_answer(result), result["final_answer"],
+                             result["problem"])
+            seen.add(result["problem"].split()[0])
+        self.assertGreaterEqual(len(seen), 8)
+
+    def test_every_variant_oracle(self):
+        for variant in ExponentialModelGenerator.VARIANTS:
+            gen = ExponentialModelGenerator(variant)
+            for _ in range(300):
+                result = gen.generate()
+                self.assertEqual(oracle_answer(result),
+                                 result["final_answer"], result["problem"])
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            for s in result["steps"]:
+                self.assertLessEqual(len(s.split(DELIM)), 5, s)
+
+    def test_half_life_answer_units(self):
+        gen = ExponentialModelGenerator("half_life")
+        units = set()
+        for _ in range(300):
+            result = gen.generate()
+            self.assertRegex(result["final_answer"], r"^\d+ (mg|kg|g)$")
+            units.add(result["final_answer"].split()[1])
+        self.assertEqual(units, {"g", "mg", "kg"})
+
+    def test_determinism_under_seed(self):
+        random.seed(23)
+        first = [self.gen.generate()["problem"] for _ in range(30)]
+        random.seed(23)
+        second = [self.gen.generate()["problem"] for _ in range(30)]
+        self.assertEqual(first, second)
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

@@ -2,7 +2,9 @@ import unittest
 import sys
 import os
 import random
-from decimal import Decimal # Needed for checking final answer type
+import re
+from decimal import Decimal, InvalidOperation
+from fractions import Fraction
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +14,37 @@ if repo_root not in sys.path:
 
 from generators.percent_problem_generator import PercentProblemGenerator
 from helpers import DELIM
+
+
+def decimal_text(value):
+    """Exact plain-decimal rendering for a terminating Fraction."""
+    decimal = Decimal(value.numerator) / Decimal(value.denominator)
+    rendered = format(decimal, "f")
+    if "." in rendered:
+        rendered = rendered.rstrip("0").rstrip(".")
+    return rendered or "0"
+
+
+def oracle_answer(problem):
+    """Solve a percent question using only the quantities in its text."""
+    match = re.fullmatch(r"What is ([0-9.]+)% of ([0-9]+)\?", problem)
+    if match:
+        percent = Fraction(match.group(1))
+        whole = int(match.group(2))
+        return decimal_text(percent * whole / 100)
+    match = re.fullmatch(
+        r"([0-9]+) is what percent of ([0-9]+)\?", problem
+    )
+    if match:
+        part, whole = map(int, match.groups())
+        return f"{decimal_text(Fraction(100 * part, whole))}%"
+    match = re.fullmatch(
+        r"([0-9]+) is ([0-9.]+)% of what number\?", problem
+    )
+    assert match, problem
+    part = int(match.group(1))
+    percent = Fraction(match.group(2))
+    return decimal_text(Fraction(100 * part, 1) / percent)
 
 class TestPercentProblemGenerator(unittest.TestCase):
 
@@ -74,7 +107,6 @@ class TestPercentProblemGenerator(unittest.TestCase):
             self.assertIn(f"SETUP_PERCENT_EQ{DELIM}", steps_str, "Missing SETUP_PERCENT_EQ")
             self.assertIn(f"REARRANGE_EQ{DELIM}", steps_str, "Missing REARRANGE_EQ")
             # Check for division steps
-            self.assertIn(f"DEC_SHIFT{DELIM}", steps_str, "Missing DEC_SHIFT")
             self.assertIn(f"DIV_SETUP{DELIM}", steps_str, "Missing DIV_SETUP")
             self.assertTrue(any(s.startswith(f"D{DELIM}") for s in result["steps"]), "Missing D step")
             self.assertTrue(any(s.startswith(f"M{DELIM}") for s in result["steps"]), "Missing M step")
@@ -119,6 +151,36 @@ class TestPercentProblemGenerator(unittest.TestCase):
                      Decimal(final_answer)
                  except InvalidOperation:
                      self.fail(f"Find Part/Whole answer '{final_answer}' is not a valid Decimal.")
+
+    def test_oracle_recomputes_answer_from_problem_text(self):
+        """A9 oracle: independently solve all three percent forms."""
+        for _ in range(1000):
+            result = self.generator.generate()
+            self.assertEqual(oracle_answer(result["problem"]),
+                             result["final_answer"], result["problem"])
+
+    def test_long_division_arithmetic(self):
+        for _ in range(500):
+            result = self.generator.generate()
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "D":
+                    self.assertEqual(int(fields[1]) // int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "M":
+                    self.assertEqual(int(fields[1]) * int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "S":
+                    self.assertEqual(int(fields[1]) - int(fields[2]),
+                                     int(fields[3]), raw_step)
+
+    def test_pipe_safe_and_plain_numbers(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            self.assertNotIn("E", result["final_answer"].upper())
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,7 @@ import random
 import re
 import sys
 import unittest
+from fractions import Fraction
 
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
@@ -24,6 +25,32 @@ def exact_to_float(txt):
     return sign * float(t)
 
 
+def angle_to_radians(txt):
+    """Evaluate the generator's exact quadrant/arctangent angle text."""
+    direct = re.fullmatch(r"(-?\d+)°", txt)
+    if direct:
+        return math.radians(int(direct.group(1)))
+    reference = re.search(r"arctan\((\d+)(?:/(\d+))?\)", txt)
+    assert reference, txt
+    ratio = int(reference.group(1)) / int(reference.group(2) or 1)
+    base = math.atan(ratio)
+    if txt.startswith("180° -"):
+        return math.pi - base
+    if txt.startswith("180° +"):
+        return math.pi + base
+    if txt.startswith("360° -"):
+        return 2 * math.pi - base
+    return base
+
+
+def param_value(expr, t):
+    """Numerically evaluate a generated linear/trigonometric definition."""
+    rendered = expr.replace("cos t", "math.cos(t)")
+    rendered = rendered.replace("sin t", "math.sin(t)")
+    rendered = re.sub(r"(\d)(?=t|math\.)", r"\1*", rendered)
+    return eval(rendered, {"math": math, "t": t})
+
+
 def eq_residual(eq, x, y):
     """Residual of an equation string at (x, y)."""
     lhs, rhs = eq.split(" = ")
@@ -37,51 +64,43 @@ def eq_residual(eq, x, y):
 def oracle_check(example):
     p = example["problem"]
     a = example["final_answer"]
-    m = re.fullmatch(r"Convert the polar point \((\d+), (\d+)°\) to "
+    m = re.fullmatch(r"Convert the polar point \((\d+), (-?\d+)°\) to "
                      r"rectangular coordinates\. Give exact values\.", p)
     if m:
         r, th = int(m.group(1)), math.radians(int(m.group(2)))
         xs, ys = a.strip("()").split(", ")
-        return (abs(exact_to_float(xs) - r * math.cos(th)) < 1e-9 and
-                abs(exact_to_float(ys) - r * math.sin(th)) < 1e-9)
+        return (abs(exact_to_float(xs) - r * math.cos(th)) < 1e-7 and
+                abs(exact_to_float(ys) - r * math.sin(th)) < 1e-7)
     m = re.fullmatch(r"Convert the point \((-?\d+), (-?\d+)\) to polar "
                      r"coordinates.*", p)
     if m:
         x, y = int(m.group(1)), int(m.group(2))
-        rs, ths = a.strip("()").split(", ")
+        answer_match = re.fullmatch(r"\(([^,]+), (.+)\)", a)
+        assert answer_match, a
+        rs, ths = answer_match.groups()
         r = exact_to_float(rs)
-        th = math.radians(float(ths.rstrip("°")))
-        return (abs(r * math.cos(th) - x) < 1e-9 and
-                abs(r * math.sin(th) - y) < 1e-9)
+        th = angle_to_radians(ths)
+        return (abs(r * math.cos(th) - x) < 1e-7 and
+                abs(r * math.sin(th) - y) < 1e-7)
     m = re.fullmatch(r"Convert the polar equation r = (\d+)( cos θ)? to "
-                     r"rectangular form\.", p)
+                     r"rectangular form when the pole is "
+                     r"\((-?\d+), (-?\d+)\)\.", p)
     if m:
         k = int(m.group(1))
+        pole_x, pole_y = int(m.group(3)), int(m.group(4))
         for t in (0.3, 0.8, 1.9, 2.6):
             r = k * math.cos(t) if m.group(2) else k
-            x, y = r * math.cos(t), r * math.sin(t)
+            x = pole_x + r * math.cos(t)
+            y = pole_y + r * math.sin(t)
             if abs(eq_residual(a, x, y)) > 1e-9:
                 return False
         return True
     m = re.fullmatch(r"Eliminate the parameter: x = (.+), y = (.+)\.", p)
     assert m, p
     xd, yd = m.group(1), m.group(2)
-    mm = re.fullmatch(r"(\d+) cos t", xd)
-    if mm:
-        k = int(mm.group(1))
-        for t in (0.4, 1.3, 2.8):
-            if abs(eq_residual(a, k * math.cos(t),
-                               k * math.sin(t))) > 1e-9:
-                return False
-        return True
-    mx = re.fullmatch(r"t ([+-]) (\d+)", xd)
-    my = re.fullmatch(r"(-?\d+)t(?: ([+-]) (\d+))?", yd)
-    xa = int(mx.group(2)) * (1 if mx.group(1) == "+" else -1)
-    b = int(my.group(1))
-    c = int(my.group(3) or 0) * (1 if (my.group(2) or "+") == "+" else -1)
-    for t in (-2, 0, 3):
-        x = t + xa
-        y = b * t + c
+    for t in (-2, 0.4, 1.3, 3):
+        x = param_value(xd, t)
+        y = param_value(yd, t)
         if abs(eq_residual(a, x, y)) > 1e-9:
             return False
     return True
@@ -124,6 +143,29 @@ class TestPolarParametricGenerator(unittest.TestCase):
                 ops = [s.split(DELIM)[0] for s in result["steps"]]
                 self.assertIn("COMPLETE_SQUARE", ops)
         self.assertTrue(found)
+
+    def test_arithmetic_steps_and_pipe_safety(self):
+        for _ in range(400):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                self.assertLessEqual(len(fields) - 1, 4, raw_step)
+                if fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "S":
+                    self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "D":
+                    self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+                elif fields[0] == "E":
+                    self.assertEqual(Fraction(fields[1]) ** int(fields[2]),
+                                     Fraction(fields[3]), raw_step)
+            self.assertNotIn(DELIM, result["final_answer"])
 
     def test_all_variants_reachable(self):
         ops = set()

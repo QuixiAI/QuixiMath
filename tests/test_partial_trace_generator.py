@@ -13,12 +13,13 @@ from helpers import DELIM
 
 
 BELL_RE = re.compile(
-    r"Trace out qubit B for Bell state Phi\+ = "
-    r"\(ket00 \+ ket11\)/sqrt\(2\)\."
+    r"Trace out qubit B for phase-shifted Bell state Phi\(([^)]+)\) = "
+    r"\(ket00 \+ e\^\(i([^)]+)\)ket11\)/sqrt\(2\)\."
 )
 PRODUCT_RE = re.compile(
-    r"Trace out qubit B for product state plus0 = "
-    r"\(ket00 \+ ket10\)/sqrt\(2\)\."
+    r"Trace out qubit B for phase-shifted product state "
+    r"plus\(([^)]+)\)0 = "
+    r"\(ket00 \+ e\^\(i([^)]+)\)ket10\)/sqrt\(2\)\."
 )
 
 
@@ -35,15 +36,20 @@ SCHMIDT_RE = re.compile(
 
 
 def parse_problem(problem):
-    if BELL_RE.fullmatch(problem):
-        return "bell_phi_plus", None
+    match = BELL_RE.fullmatch(problem)
+    if match:
+        assert match.group(1) == match.group(2), problem
+        return "bell_phi_plus", match.group(1)
     match = SCHMIDT_RE.fullmatch(problem)
     if match:
         return "schmidt_diagonal", (int(match.group(1)),
+                                    match.group(2),
                                     int(match.group(3)),
                                     int(match.group(4)))
-    assert PRODUCT_RE.fullmatch(problem), problem
-    return "product_plus_zero", None
+    match = PRODUCT_RE.fullmatch(problem)
+    assert match, problem
+    assert match.group(1) == match.group(2), problem
+    return "product_plus_zero", match.group(1)
 
 
 def expected_flow(example):
@@ -51,7 +57,7 @@ def expected_flow(example):
     if variant == "schmidt_diagonal":
         # independent check: weights normalize, rho_A diagonal with a/(a+b)
         from fractions import Fraction
-        a, b, total = params
+        a, _sign, b, total = params
         assert a + b == total, example["problem"]
         pa, pb = Fraction(a, total), Fraction(b, total)
         rho = f"[[{pa},0],[0,{pb}]]"
@@ -60,13 +66,17 @@ def expected_flow(example):
         assert pa + pb == 1
         return None, answer
     if variant == "bell_phi_plus":
+        phase = params
+        positive_phase = f"e^(i{phase})"
+        negative_phase = f"e^(-i{phase})"
+        psi = f"(ket00 + {positive_phase}ket11)/sqrt(2)"
         rho = "[[1/2,0],[0,1/2]]"
         answer = f"rho_A = {rho}; entangled yes"
         steps = [
-            make_step("DENSITY_SETUP", "state=Phi+",
-                      "psi=(ket00 + ket11)/sqrt(2)"),
+            make_step("DENSITY_SETUP", "state=Phi_phase", f"psi={psi}"),
             make_step("OUTER_PRODUCT",
-                      "rho=1/2(ket00bra00+ket00bra11+ket11bra00+ket11bra11)"),
+                      f"rho=1/2(ket00bra00+{negative_phase}ket00bra11+"
+                      f"{positive_phase}ket11bra00+ket11bra11)"),
             make_step("PARTIAL_TRACE", "ket00bra00", "ket0bra0"),
             make_step("PARTIAL_TRACE", "ket00bra11", "0"),
             make_step("PARTIAL_TRACE", "ket11bra00", "0"),
@@ -76,13 +86,18 @@ def expected_flow(example):
             make_step("Z", answer),
         ]
     else:
-        rho = "[[1/2,1/2],[1/2,1/2]]"
+        phase = params
+        positive_phase = f"e^(i{phase})"
+        negative_phase = f"e^(-i{phase})"
+        psi = f"(ket00 + {positive_phase}ket10)/sqrt(2)"
+        rho = (f"[[1/2,{negative_phase}/2],"
+               f"[{positive_phase}/2,1/2]]")
         answer = f"rho_A = {rho}; entangled no"
         steps = [
-            make_step("DENSITY_SETUP", "state=plus0",
-                      "psi=(ket00 + ket10)/sqrt(2)"),
+            make_step("DENSITY_SETUP", "state=plus_phase_0", f"psi={psi}"),
             make_step("OUTER_PRODUCT",
-                      "rho=1/2(ket00bra00+ket00bra10+ket10bra00+ket10bra10)"),
+                      f"rho=1/2(ket00bra00+{negative_phase}ket00bra10+"
+                      f"{positive_phase}ket10bra00+ket10bra10)"),
             make_step("PARTIAL_TRACE", "ket00bra00", "ket0bra0"),
             make_step("PARTIAL_TRACE", "ket00bra10", "ket0bra1"),
             make_step("PARTIAL_TRACE", "ket10bra00", "ket1bra0"),
@@ -118,7 +133,7 @@ class TestPartialTraceGenerator(unittest.TestCase):
                                  result["problem"])
 
     def test_variants_are_available(self):
-        for variant in ("bell_phi_plus", "product_plus_zero"):
+        for variant in PartialTraceGenerator.VARIANTS:
             result = PartialTraceGenerator(variant).generate()
             self.assertEqual(result["operation"], f"partial_trace_{variant}")
             self.assertEqual(parse_problem(result["problem"])[0], variant)

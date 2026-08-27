@@ -53,9 +53,9 @@ def coeff_var_text(k, var):
 
 
 def parse_problem(problem):
-    match = re.fullmatch(
+    match = re.search(
         r"Find the power-series solution through x\^5 for (y' = .+) "
-        r"with y\(0\) = (\d+)\.",
+        r"with y\(0\) = (\d+)\.$",
         problem,
     )
     assert match is not None, problem
@@ -184,6 +184,8 @@ class TestSeriesSolutionGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

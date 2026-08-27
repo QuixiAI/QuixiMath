@@ -35,7 +35,7 @@ Current repo snapshot:
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
 - **1,149 distinct operation variant labels** across the catalog
-- **1,602 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- **1,619 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
 - Catalog grade-band distribution: **36 elementary**, **64 middle**,
   **148 high**, **153 college**, **109 graduate**
 

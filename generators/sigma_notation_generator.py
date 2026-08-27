@@ -3,6 +3,27 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+PLACES = [
+    "algebra class", "calculus workshop", "technical college",
+    "science classroom", "engineering lab", "training center",
+    "university seminar", "modeling group", "research station",
+    "mathematics club", "tutoring center", "study hall", "lecture room",
+    "statistics class", "computer lab", "design studio", "robotics lab",
+    "exam review", "problem-solving workshop", "learning center",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following sum.",
+    "During a session at the {place}, this notation is assigned.",
+    "An exercise used by the {place} asks for this expansion.",
+    "The {place} is checking the following finite sum.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
 class SigmaNotationGenerator(ProblemGenerator):
     """
     Expands sigma notation term by term and evaluates the sum for small
@@ -33,10 +54,10 @@ class SigmaNotationGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
 
         if variant == "linear":
-            a = random.randint(1, 5)
-            b = random.randint(-4, 9)
-            lo = random.choice([1, 1, 1, 0, 2, 3])
-            count = random.randint(4, 6)
+            a = random.randint(1, 20)
+            b = random.randint(-20, 20)
+            lo = random.randint(-10, 10)
+            count = random.randint(3, 7)
             head = "k" if a == 1 else f"{a}k"
             if b == 0:
                 expr = head
@@ -54,9 +75,9 @@ class SigmaNotationGenerator(ProblemGenerator):
             def term_val(k):
                 return a * k + b
         elif variant == "square":
-            a = random.choice([1, 1, 2, 3])
-            lo = random.choice([0, 1, 2, 3, 4])
-            count = random.randint(4, 6)
+            a = random.randint(1, 20)
+            lo = random.randint(-10, 10)
+            count = random.randint(3, 7)
             shown = "k^2" if a == 1 else f"{a}k^2"
 
             def term_expr(k):
@@ -65,10 +86,10 @@ class SigmaNotationGenerator(ProblemGenerator):
             def term_val(k):
                 return a * k * k
         else:
-            base = random.choice([2, 2, 3, 3, 4, 5])
-            c = random.choice([1, 1, 1, 2, 3])
-            lo = random.choice([0, 0, 1])
-            count = random.randint(4, 5) if base <= 3 else 4
+            base = random.randint(2, 4)
+            c = random.randint(1, 20)
+            lo = random.randint(0, 3)
+            count = random.randint(3, min(5, 7 - lo))
             shown = f"{base}^k" if c == 1 else f"{c}·{base}^k"
 
             def term_expr(k):
@@ -97,7 +118,7 @@ class SigmaNotationGenerator(ProblemGenerator):
         return dict(
             problem_id=jid(),
             operation=f"sigma_notation_{variant}",
-            problem=f"Expand and evaluate: {notation}.",
+            problem=f"{context_text()} Expand and evaluate: {notation}.",
             steps=steps,
             final_answer=str(running),
         )

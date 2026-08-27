@@ -5,6 +5,27 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+PLACES = [
+    "differential equations class", "analysis seminar", "technical college",
+    "engineering classroom", "university workshop", "research group",
+    "modeling lab", "science classroom", "training center", "study hall",
+    "mathematics department", "lecture room", "exam review",
+    "problem-solving club", "numerical methods class", "tutoring center",
+    "graduate seminar", "learning center", "research station", "computer lab",
+]
+
+CONTEXTS = [
+    "A worksheet from the {place} gives the following autonomous equation.",
+    "During a session at the {place}, this phase line is studied.",
+    "An exercise used by the {place} asks for this stability analysis.",
+    "The {place} is checking an equilibrium classification.",
+]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
 def factor_txt(root):
     if root == 0:
         return "y"
@@ -89,7 +110,7 @@ class StabilityGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         count = random.choice([2, 3])
-        roots = sorted(random.sample(range(-5, 6), count))
+        roots = sorted(random.sample(range(-15, 16), count))
         leading = random.choice([-1, 1])
         signs = []
         steps = [
@@ -117,7 +138,8 @@ class StabilityGenerator(ProblemGenerator):
         answer = answer_txt(roots, classes)
         steps.append(step("Z", answer))
         problem = (
-            f"For dy/dt = {f_txt(leading, roots)}, find equilibria and "
+            f"{context_text()} For dy/dt = {f_txt(leading, roots)}, find "
+            f"equilibria and "
             f"classify stability by sign analysis."
         )
         return dict(

@@ -48,13 +48,13 @@ def oracle_check(example):
     """Both representations must generate the same first six terms."""
     p = example["problem"]
     m = re.fullmatch(
-        r"The sequence is defined by a_1 = (-?\d+) and (.+) for n > 1\. "
+        r"Sequence S_\d+ is defined by a_1 = (-?\d+) and (.+) for n > 1\. "
         r"Write an explicit formula for a_n\.", p)
     if m:
         given = unroll_recursive(f"a_1 = {m.group(1)}; {m.group(2)}")
         converted = unroll_explicit(example["final_answer"])
         return given == converted
-    m = re.fullmatch(r"The sequence is defined by (a_n = .+)\. "
+    m = re.fullmatch(r"Sequence S_\d+ is defined by (a_n = .+)\. "
                      r"Write a recursive definition\.", p)
     assert m, p
     given = unroll_explicit(m.group(1))
@@ -130,6 +130,13 @@ class TestRecursiveExplicitGenerator(unittest.TestCase):
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
             RecursiveExplicitGenerator("bogus")
+
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == "__main__":

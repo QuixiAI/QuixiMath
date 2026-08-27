@@ -6,14 +6,32 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
+PHASE_FACTORS = tuple(sorted({
+    Fraction(numerator, denominator)
+    for denominator in range(1, 301)
+    for numerator in range(0, 2 * denominator)
+}))
+
+
+def phase_text(value):
+    """Render a nonnegative exact multiple of pi."""
+    value = Fraction(value)
+    if value == 0:
+        return "0"
+    if value.denominator == 1:
+        return "π" if value == 1 else f"{value.numerator}π"
+    head = "π" if value.numerator == 1 else f"{value.numerator}π"
+    return f"{head}/{value.denominator}"
+
+
 class PartialTraceGenerator(ProblemGenerator):
     """
-    Reduced density matrices by tracing out qubit B for two canonical
-    two-qubit states.
+    Reduced density matrices by tracing out qubit B for exact two-qubit
+    state families.
 
     Variants:
-    - bell_phi_plus: mixed reduced state, entangled.
-    - product_plus_zero: pure reduced state, separable.
+    - bell_phi_plus: phase-shifted Phi Bell family; mixed and entangled.
+    - product_plus_zero: phase-shifted plus state tensor ket0; separable.
     - schmidt_diagonal: sqrt(a)ket00 ± sqrt(b)ket11 with exact weights.
 
     Op-codes used:
@@ -47,11 +65,16 @@ class PartialTraceGenerator(ProblemGenerator):
         )
 
     def _generate_bell(self):
+        phase = phase_text(random.choice(PHASE_FACTORS))
+        positive_phase = f"e^(i{phase})"
+        negative_phase = f"e^(-i{phase})"
+        psi = f"(ket00 + {positive_phase}ket11)/sqrt(2)"
         rho = "[[1/2,0],[0,1/2]]"
         steps = [
-            step("DENSITY_SETUP", "state=Phi+",
-                 "psi=(ket00 + ket11)/sqrt(2)"),
-            step("OUTER_PRODUCT", "rho=1/2(ket00bra00+ket00bra11+ket11bra00+ket11bra11)"),
+            step("DENSITY_SETUP", "state=Phi_phase", f"psi={psi}"),
+            step("OUTER_PRODUCT",
+                 f"rho=1/2(ket00bra00+{negative_phase}ket00bra11+"
+                 f"{positive_phase}ket11bra00+ket11bra11)"),
             step("PARTIAL_TRACE", "ket00bra00", "ket0bra0"),
             step("PARTIAL_TRACE", "ket00bra11", "0"),
             step("PARTIAL_TRACE", "ket11bra00", "0"),
@@ -61,8 +84,8 @@ class PartialTraceGenerator(ProblemGenerator):
         ]
         answer = f"rho_A = {rho}; entangled yes"
         problem = (
-            "Trace out qubit B for Bell state Phi+ = "
-            "(ket00 + ket11)/sqrt(2)."
+            f"Trace out qubit B for phase-shifted Bell state Phi({phase}) "
+            f"= {psi}."
         )
         return problem, steps, answer
 
@@ -70,8 +93,8 @@ class PartialTraceGenerator(ProblemGenerator):
         # sqrt(a)ket00 ± sqrt(b)ket11, normalized by sqrt(a+b); a != b so
         # this never duplicates the Bell variant
         while True:
-            a = random.randint(1, 6)
-            b = random.randint(1, 6)
+            a = random.randint(1, 250)
+            b = random.randint(1, 250)
             if a != b and gcd(a, b) == 1:
                 break
         sign = random.choice(["+", "-"])
@@ -97,11 +120,17 @@ class PartialTraceGenerator(ProblemGenerator):
         return problem, steps, answer
 
     def _generate_product(self):
-        rho = "[[1/2,1/2],[1/2,1/2]]"
+        phase = phase_text(random.choice(PHASE_FACTORS))
+        positive_phase = f"e^(i{phase})"
+        negative_phase = f"e^(-i{phase})"
+        psi = f"(ket00 + {positive_phase}ket10)/sqrt(2)"
+        rho = (f"[[1/2,{negative_phase}/2],"
+               f"[{positive_phase}/2,1/2]]")
         steps = [
-            step("DENSITY_SETUP", "state=plus0",
-                 "psi=(ket00 + ket10)/sqrt(2)"),
-            step("OUTER_PRODUCT", "rho=1/2(ket00bra00+ket00bra10+ket10bra00+ket10bra10)"),
+            step("DENSITY_SETUP", "state=plus_phase_0", f"psi={psi}"),
+            step("OUTER_PRODUCT",
+                 f"rho=1/2(ket00bra00+{negative_phase}ket00bra10+"
+                 f"{positive_phase}ket10bra00+ket10bra10)"),
             step("PARTIAL_TRACE", "ket00bra00", "ket0bra0"),
             step("PARTIAL_TRACE", "ket00bra10", "ket0bra1"),
             step("PARTIAL_TRACE", "ket10bra00", "ket1bra0"),
@@ -111,7 +140,7 @@ class PartialTraceGenerator(ProblemGenerator):
         ]
         answer = f"rho_A = {rho}; entangled no"
         problem = (
-            "Trace out qubit B for product state plus0 = "
-            "(ket00 + ket10)/sqrt(2)."
+            f"Trace out qubit B for phase-shifted product state "
+            f"plus({phase})0 = {psi}."
         )
         return problem, steps, answer

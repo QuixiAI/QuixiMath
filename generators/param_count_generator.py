@@ -51,9 +51,11 @@ class ParamCountGenerator(ProblemGenerator):
         )
 
     def _generate_transformer(self):
-        vocab = random.choice([8000, 12000, 16000, 24000, 32000])
-        d_model = random.choice([128, 192, 256, 384, 512, 768])
-        layers = random.randint(2, 24)
+        # Keep the dimensions round enough for hand calculation while giving
+        # the generator a genuinely broad architecture space.
+        vocab = 1000 * random.randint(4, 64)
+        d_model = 64 * random.randint(2, 32)
+        layers = random.randint(2, 64)
         mlp_mult = 4
         d2 = d_model * d_model
         attention = 4 * d2
@@ -97,9 +99,9 @@ class ParamCountGenerator(ProblemGenerator):
         return problem, steps, answer
 
     def _generate_lora(self):
-        d_in = random.choice([128, 192, 256, 384, 512, 768, 1024])
-        d_out = random.choice([128, 192, 256, 384, 512, 768, 1024])
-        rank = random.choice([2, 4, 8, 16, 32])
+        d_in = 32 * random.randint(4, 64)
+        d_out = 32 * random.randint(4, 64)
+        rank = random.randint(1, 64)
         full = d_in * d_out
         dim_sum = d_in + d_out
         lora = rank * dim_sum

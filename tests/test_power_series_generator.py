@@ -23,6 +23,9 @@ def parse_center(x_txt):
 
 def make_mult(body):
     """Return (a, mult(n, u)) where t_{n+1} = t_n * mult and u = x-a."""
+    scaled = re.fullmatch(r"(-?\d+)·(.+)", body)
+    assert scaled and int(scaled.group(1)) != 0, body
+    body = scaled.group(2)
     m = re.fullmatch(r"n!·(.+)\^n", body)
     if m:
         return parse_center(m.group(1)), lambda n, u: (n + 1) * u

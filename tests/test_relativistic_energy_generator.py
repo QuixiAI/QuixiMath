@@ -1,3 +1,4 @@
+import math
 import os
 import re
 import sys
@@ -13,15 +14,15 @@ from helpers import DELIM
 
 
 REST_RE = re.compile(
-    r"Using E=m\*c\^2, find the rest energy for mass m=(\d+) kg and "
+    r".* Using E=m\*c\^2, find the rest energy for mass m=(\d+) kg and "
     r"c=(\d+) m/s\."
 )
 MASS_RE = re.compile(
-    r"In c=1 units, a particle has momentum p=(\d+) and mass m=(\d+)\. "
+    r".* In c=1 units, a particle has momentum p=(\d+) and mass m=(\d+)\. "
     r"Find E from E\^2=p\^2\+m\^2\."
 )
 VELOCITY_RE = re.compile(
-    r"In c=1 units, velocities u=([^ ]+) and v=([^ ]+) are collinear\. "
+    r".* In c=1 units, velocities u=([^ ]+) and v=([^ ]+) are collinear\. "
     r"Compute the relativistic velocity sum w\."
 )
 
@@ -58,7 +59,7 @@ def expected_mass(problem):
     p_sq = momentum ** 2
     m_sq = mass ** 2
     e_sq = p_sq + m_sq
-    energy = int(e_sq ** 0.5)
+    energy = math.isqrt(e_sq)
     assert energy * energy == e_sq
     steps = [
         make_step("REL_ENERGY_SETUP", "energy_momentum", "c=1",

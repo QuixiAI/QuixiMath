@@ -4,24 +4,6 @@ from base_generator import ProblemGenerator
 from helpers import step, jid
 
 
-CASES = {
-    "unit_refutation": [
-        ("A",),
-        ("not A",),
-    ],
-    "chain_refutation": [
-        ("A",),
-        ("not A", "B"),
-        ("not B",),
-    ],
-    "binary_refutation": [
-        ("A", "B"),
-        ("not A",),
-        ("not B",),
-    ],
-}
-
-
 PROBLEM_TEMPLATES = [
     ("Use propositional resolution on CNF {formula}. Resolve the earliest "
      "available complementary literal that gives a new clause, alphabetically, "
@@ -62,6 +44,27 @@ def resolve(c1, c2, lit):
     return tuple(sorted(seen, key=lambda x: x.replace("not ", "")))
 
 
+def build_clauses(variant):
+    """Construct an alpha-varied unsatisfiable core plus a harmless clause."""
+    names = [f"P{value}" for value in random.sample(range(1, 100000), 5)]
+    first, second = names[:2]
+    if variant == "unit_refutation":
+        clauses = [(first,), (f"not {first}",)]
+        unused = names[1:]
+    elif variant == "chain_refutation":
+        clauses = [(first,), (f"not {first}", second), (f"not {second}",)]
+        unused = names[2:]
+    else:
+        clauses = [(first, second), (f"not {first}",), (f"not {second}",)]
+        unused = names[2:]
+    random.shuffle(clauses)
+    # The positive-only clause uses fresh variables, so it changes the CNF
+    # without shortening or obstructing the selected refutation core.
+    distractor_size = random.randint(1, len(unused))
+    clauses.append(tuple(unused[:distractor_size]))
+    return clauses
+
+
 class ResolutionProofGenerator(ProblemGenerator):
     """
     Propositional resolution refutations for tiny unsatisfiable CNFs.
@@ -81,7 +84,8 @@ class ResolutionProofGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        clauses = list(CASES[variant])
+        initial_clauses = build_clauses(variant)
+        clauses = list(initial_clauses)
         steps = [step("RES_SETUP", formula_text(clauses))]
         for i, clause in enumerate(clauses, start=1):
             steps.append(step("CLAUSE", f"C{i}", clause_text(clause)))
@@ -119,7 +123,7 @@ class ResolutionProofGenerator(ProblemGenerator):
         steps.append(step("CHECK", "empty clause", "unsatisfiable"))
         answer = f"unsatisfiable; empty clause = C{len(clauses)}"
         problem = random.choice(PROBLEM_TEMPLATES).format(
-            formula=formula_text(CASES[variant])
+            formula=formula_text(initial_clauses)
         )
         steps.append(step("Z", answer))
         return dict(

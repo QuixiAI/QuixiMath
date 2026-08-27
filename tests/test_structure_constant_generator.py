@@ -14,7 +14,7 @@ from helpers import DELIM
 
 
 PROBLEM_RE = re.compile(
-    r"For spin-1/2 generators .* compute \[A,B\] for A=([^ ]+) "
+    r".* For spin-1/2 generators .* compute \[A,B\] for A=([^ ]+) "
     r"and B=([^ ]+) and verify the structure constant\."
 )
 SCALED_LABEL_RE = re.compile(r"(-?)(?:(\d+))?J([xyz])")
@@ -264,6 +264,7 @@ class TestStructureConstantGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

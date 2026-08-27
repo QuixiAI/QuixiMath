@@ -116,6 +116,13 @@ class TestRadicalRationalizeGenerator(unittest.TestCase):
         with self.assertRaises(ValueError):
             RadicalRationalizeGenerator("bogus")
 
+    def test_pipe_safety(self):
+        for _ in range(300):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -14,11 +14,11 @@ from helpers import DELIM
 
 
 PLANE_RE = re.compile(
-    r"Map plane point \(u,v\)=\(([^,]+),([^)]+)\) to the unit sphere "
+    r".* Map plane point \(u,v\)=\(([^,]+),([^)]+)\) to the unit sphere "
     r"by stereographic projection from the north pole\."
 )
 SPHERE_RE = re.compile(
-    r"Map sphere point \(X,Y,Z\)=\(([^,]+),([^,]+),([^)]+)\) with "
+    r".* Map sphere point \(X,Y,Z\)=\(([^,]+),([^,]+),([^)]+)\) with "
     r"Z != 1 to the plane by inverse stereographic projection from "
     r"the north pole\."
 )
@@ -205,6 +205,7 @@ class TestStereographicGenerator(unittest.TestCase):
     def test_pipe_safe(self):
         for _ in range(300):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["problem"])
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)

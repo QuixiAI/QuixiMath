@@ -13,41 +13,96 @@ from generators.factor_special_forms_generator import FactorSpecialFormsGenerato
 from helpers import DELIM
 
 
-def parse_poly(s, var):
-    """Polynomial string -> {power: coef} (handles ^2, ^3, bare, const)."""
+def parse_poly(s, var=None):
+    """Polynomial string -> {multivariate monomial: coefficient}."""
     out = {}
     for part in s.replace(" - ", " + -").split(" + "):
         part = part.strip()
-        m = re.fullmatch(rf"(-?\d*)(?:{var}(?:\^(\d+))?)?", part)
+        m = re.fullmatch(r"(-?\d*)((?:[a-z](?:\^\d+)?)*)", part)
         assert m and part, (s, part)
-        coef = {"": 1, "-": -1}.get(m.group(1), None)
-        if coef is None:
-            coef = int(m.group(1))
-        power = 0
-        if var in part:
-            power = int(m.group(2)) if m.group(2) else 1
-        out[power] = out.get(power, 0) + coef
-    return {p: c for p, c in out.items() if c != 0}
+        raw_coefficient, variables = m.groups()
+        if raw_coefficient == "":
+            coefficient = 1
+        elif raw_coefficient == "-":
+            coefficient = -1
+        else:
+            coefficient = int(raw_coefficient)
+        powers = {}
+        for variable, power in re.findall(r"([a-z])(?:\^(\d+))?", variables):
+            powers[variable] = powers.get(variable, 0) + int(power or 1)
+        monomial = tuple(sorted(powers.items()))
+        out[monomial] = out.get(monomial, 0) + coefficient
+    out = {monomial: coefficient for monomial, coefficient in out.items()
+           if coefficient != 0}
+    if var is None:
+        return out
+    converted = {}
+    for monomial, coefficient in out.items():
+        assert all(variable == var for variable, _ in monomial), (s, var)
+        power = sum(power for _, power in monomial)
+        converted[power] = coefficient
+    return converted
 
 
 def poly_mul(p1, p2):
+    if all(isinstance(key, int) for key in p1) and \
+            all(isinstance(key, int) for key in p2):
+        out = {}
+        for power1, coefficient1 in p1.items():
+            for power2, coefficient2 in p2.items():
+                power = power1 + power2
+                out[power] = (out.get(power, 0)
+                              + coefficient1 * coefficient2)
+        return {power: coefficient for power, coefficient in out.items()
+                if coefficient != 0}
     out = {}
-    for e1, c1 in p1.items():
-        for e2, c2 in p2.items():
-            out[e1 + e2] = out.get(e1 + e2, 0) + c1 * c2
-    return {p: c for p, c in out.items() if c != 0}
+    for monomial1, coefficient1 in p1.items():
+        for monomial2, coefficient2 in p2.items():
+            powers = dict(monomial1)
+            for variable, power in monomial2:
+                powers[variable] = powers.get(variable, 0) + power
+            monomial = tuple(sorted(powers.items()))
+            out[monomial] = (out.get(monomial, 0)
+                             + coefficient1 * coefficient2)
+    return {monomial: coefficient
+            for monomial, coefficient in out.items() if coefficient != 0}
 
 
-def expand_answer(ans, var):
-    """'(2x + 3)(4x^2 - 6x + 9)' or '(2x + 3)^2' -> {power: coef}."""
+def expand_answer(ans, var=None):
+    """Expand the printed one- or two-variable factorization exactly."""
     factors = re.findall(r"\(([^)]+)\)(?:\^(\d+))?", ans)
     assert factors, ans
-    result = {0: 1}
+    result = {0: 1} if var is not None else {(): 1}
     for inner, exp in factors:
         p = parse_poly(inner, var)
         for _ in range(int(exp) if exp else 1):
             result = poly_mul(result, p)
     return result
+
+
+PROBLEM_PATTERNS = (
+    r"Factor: (?P<poly>.+)",
+    r"Factor completely: (?P<poly>.+)",
+    r"Write (?P<poly>.+) in factored form\.",
+    r"Rewrite (?P<poly>.+) as a product of factors\.",
+    r"Factor the expression (?P<poly>.+) over the integers\.",
+    r"[A-Za-z]+ is asked to factor (?P<poly>.+) completely\. Give the "
+    r"factored form\.",
+    r"[A-Za-z]+ sees (?P<poly>.+) on a worksheet\. Factor it completely\.",
+    r"A review sheet gives [A-Za-z]+ the expression (?P<poly>.+)\. "
+    r"Factor it\.",
+    r"[A-Za-z]+ needs (?P<poly>.+) written as a product\. Factor it "
+    r"completely\.",
+)
+
+
+def polynomial_from_problem(problem):
+    """Extract the polynomial independently from every public phrasing."""
+    for pattern in PROBLEM_PATTERNS:
+        match = re.fullmatch(pattern, problem)
+        if match:
+            return match.group("poly")
+    raise AssertionError(f"unparsed problem: {problem!r}")
 
 
 class TestFactorSpecialFormsGenerator(unittest.TestCase):
@@ -68,10 +123,9 @@ class TestFactorSpecialFormsGenerator(unittest.TestCase):
         polynomial exactly, and the roots must be coprime (no hidden GCF)."""
         for _ in range(400):
             result = self.gen.generate()
-            original_txt = result["problem"].split(": ", 1)[1]
-            var = next(v for v in "xyn" if v in original_txt)
-            original = parse_poly(original_txt, var)
-            expanded = expand_answer(result["final_answer"], var)
+            original_txt = polynomial_from_problem(result["problem"])
+            original = parse_poly(original_txt)
+            expanded = expand_answer(result["final_answer"])
             self.assertEqual(expanded, original, result["final_answer"])
             coefs = [abs(c) for c in original.values()]
             g = 0
@@ -83,8 +137,7 @@ class TestFactorSpecialFormsGenerator(unittest.TestCase):
         """The PST middle-term CHECK and expansion CHECKs must be true."""
         for _ in range(400):
             result = self.gen.generate()
-            original_txt = result["problem"].split(": ", 1)[1]
-            var = next(v for v in "xyn" if v in original_txt)
+            original_txt = polynomial_from_problem(result["problem"])
             for s in result["steps"]:
                 f = s.split(DELIM)
                 if f[0] == "ROOT" and f[1].isdigit():
@@ -94,8 +147,7 @@ class TestFactorSpecialFormsGenerator(unittest.TestCase):
                 elif f[0] == "CHECK" and f[1] == "middle_term":
                     self.assertEqual(f[2].rsplit("= ", 1)[1], f[3], s)
                 elif f[0] == "CHECK" and f[1] in ("foil", "expand"):
-                    self.assertEqual(parse_poly(f[2], var),
-                                     parse_poly(f[3], var), s)
+                    self.assertEqual(parse_poly(f[2]), parse_poly(f[3]), s)
 
     def test_all_variants_reachable(self):
         seen = {self.gen.generate()["operation"] for _ in range(120)}

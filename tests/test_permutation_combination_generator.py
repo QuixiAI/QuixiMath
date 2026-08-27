@@ -19,7 +19,7 @@ def oracle_check(example):
     """A9 oracle: recompute the count from the problem text."""
     p = example["problem"]
     ans = int(example["final_answer"])
-    m = re.fullmatch(r"Evaluate (\d+)!\.", p)
+    m = re.search(r"Evaluate (\d+)!", p)
     if m:
         return ans == math.factorial(int(m.group(1)))
     m = re.search(r"Compute P\((\d+), (\d+)\)", p)
@@ -57,13 +57,17 @@ class TestPermutationCombinationGenerator(unittest.TestCase):
                             (result["problem"], result["final_answer"]))
 
     def test_running_products_are_correct(self):
-        """Every M step's product equals its two factors multiplied."""
+        """Every multiplication and final combination division is exact."""
         for _ in range(300):
             result = self.gen.generate()
             for s in result["steps"]:
                 if s.startswith(f"M{DELIM}"):
                     _, a, b, c = s.split(DELIM)
                     self.assertEqual(int(a) * int(b), int(c), s)
+                elif s.startswith(f"D{DELIM}"):
+                    _, a, b, c = s.split(DELIM)
+                    self.assertEqual(int(a) // int(b), int(c), s)
+                    self.assertEqual(int(a) % int(b), 0, s)
 
     def test_word_identifies_order(self):
         gen = PermutationCombinationGenerator("word")

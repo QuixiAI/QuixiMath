@@ -2,6 +2,7 @@ import unittest
 import sys
 import os
 import random
+import re
 
 # Ensure repo root is on sys.path for package imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -11,6 +12,28 @@ if repo_root not in sys.path:
 
 from generators.proportional_relationship_generator import ProportionalRelationshipGenerator
 from helpers import DELIM
+
+
+def oracle_answer(problem):
+    """Solve either proportion orientation from the problem text alone."""
+    match = re.fullmatch(
+        r"If (\d+) is to (\d+), what is (\d+) proportional to\?",
+        problem,
+    )
+    if match:
+        a, b, c = map(int, match.groups())
+        numerator = b * c
+        assert numerator % a == 0, problem
+        return str(numerator // a)
+    match = re.fullmatch(
+        r"If (\d+) is to (\d+), what is proportional to (\d+)\?",
+        problem,
+    )
+    assert match, problem
+    a, b, c = map(int, match.groups())
+    numerator = a * c
+    assert numerator % b == 0, problem
+    return str(numerator // b)
 
 class TestProportionalRelationshipGenerator(unittest.TestCase):
 
@@ -27,11 +50,7 @@ class TestProportionalRelationshipGenerator(unittest.TestCase):
         self.assertIn("problem_id", result)
         self.assertIsInstance(result["problem_id"], str)
         self.assertIn("operation", result)
-        # Note: The generator currently sets operation="decimal_div", which seems wrong.
-        # Test should ideally check for "proportional_relationship" but will fail with current code.
-        # self.assertEqual(result["operation"], "proportional_relationship")
-        # For now, let's check it's one of the known operations, acknowledging the bug.
-        self.assertIn(result["operation"], ["proportional_relationship", "decimal_div"]) # Acknowledge bug
+        self.assertEqual(result["operation"], "proportional_relationship")
 
         self.assertIn("problem", result)
         self.assertIsInstance(result["problem"], str)
@@ -82,6 +101,30 @@ class TestProportionalRelationshipGenerator(unittest.TestCase):
         # This test verifies the generator returns the correct operation name.
         result = self.generator.generate()
         self.assertEqual(result["operation"], "proportional_relationship", "Operation name should be 'proportional_relationship'")
+
+    def test_oracle_and_arithmetic_steps(self):
+        """A9 oracle plus independent checks of cross multiplication."""
+        for _ in range(1000):
+            result = self.generator.generate()
+            self.assertEqual(oracle_answer(result["problem"]),
+                             result["final_answer"], result["problem"])
+            for raw_step in result["steps"]:
+                fields = raw_step.split(DELIM)
+                if fields[0] == "M":
+                    self.assertEqual(int(fields[1]) * int(fields[2]),
+                                     int(fields[3]), raw_step)
+                elif fields[0] == "D":
+                    self.assertEqual(int(fields[1]) // int(fields[2]),
+                                     int(fields[3]), raw_step)
+                    self.assertEqual(int(fields[1]) % int(fields[2]), 0,
+                                     raw_step)
+
+    def test_pipe_safe(self):
+        for _ in range(300):
+            result = self.generator.generate()
+            for raw_step in result["steps"]:
+                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
+                                     raw_step)
 
 
 if __name__ == '__main__':

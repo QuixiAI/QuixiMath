@@ -1,11 +1,29 @@
+import math
 import random
 from fractions import Fraction
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.exponential_model_generator import dec
 
-TRIPLES = [(3, 4, 5), (6, 8, 10), (5, 12, 13), (9, 12, 15),
-           (8, 15, 17), (12, 16, 20), (7, 24, 25), (20, 21, 29)]
+PLACES = [
+    "surveying class", "architecture studio", "robotics lab",
+    "navigation workshop", "engineering classroom", "construction lab",
+    "science museum", "technical college", "design studio",
+    "field station", "training center", "mapping office", "research lab",
+    "observatory", "modeling classroom", "fabrication shop",
+    "university lab", "instrument room", "prototype bay", "survey site",
+]
+
+CONTEXTS = [
+    "At the {place}, a right-triangle calculation is being checked.",
+    "During a session at the {place}, the following triangle is studied.",
+    "A worksheet from the {place} gives this triangle.",
+    "In a model prepared by the {place}, the following data apply.",
+    "An exercise used at the {place} asks about this triangle.",
+    "The {place} records a new right-triangle measurement.",
+    "A review prepared by the {place} includes the following data.",
+    "In a lesson at the {place}, this triangle is analyzed.",
+]
 
 # angle label, function, exact-arithmetic value (≈ real value)
 GIVEN_VALUES = [
@@ -15,6 +33,27 @@ GIVEN_VALUES = [
     (53, "sin", Fraction(4, 5)), (53, "cos", Fraction(3, 5)),
     (24, "sin", Fraction(2, 5)), (66, "cos", Fraction(2, 5)),
 ]
+
+
+def context_text():
+    return random.choice(CONTEXTS).format(place=random.choice(PLACES))
+
+
+def pythagorean_triple():
+    """Construct a modest scaled Pythagorean triple with either leg marked."""
+    while True:
+        outer = random.randint(2, 8)
+        inner = random.randint(1, outer - 1)
+        if math.gcd(outer, inner) == 1 and (outer - inner) % 2 == 1:
+            break
+    primitive_hypotenuse = outer * outer + inner * inner
+    scale = random.randint(1, max(1, min(8, 150 // primitive_hypotenuse)))
+    leg_a = scale * (outer * outer - inner * inner)
+    leg_b = scale * 2 * outer * inner
+    hypotenuse = scale * primitive_hypotenuse
+    if random.choice([False, True]):
+        leg_a, leg_b = leg_b, leg_a
+    return leg_a, leg_b, hypotenuse
 
 
 class RightTriangleTrigGenerator(ProblemGenerator):
@@ -50,9 +89,10 @@ class RightTriangleTrigGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        context = context_text()
 
         if variant == "write_ratio":
-            a, b, c = random.choice(TRIPLES)
+            a, b, c = pythagorean_triple()
             fn = random.choice(["sin", "cos", "tan"])
             num, den = {"sin": (a, c), "cos": (b, c),
                         "tan": (a, b)}[fn]
@@ -69,13 +109,14 @@ class RightTriangleTrigGenerator(ProblemGenerator):
                 steps.append(step("FRAC_REDUCE", f"{num}/{den}", val))
             answer = f"{fn} A = {val}"
             steps.append(step("Z", answer))
-            problem = (f"In a right triangle, the leg opposite angle A "
+            problem = (f"{context} In a right triangle, the leg opposite "
+                       f"angle A "
                        f"is {a}, the leg adjacent to A is {b}, and the "
                        f"hypotenuse is {c}. Write {fn} A as a fraction "
                        f"in lowest terms.")
         elif variant == "find_side":
             deg, fn, val = random.choice(GIVEN_VALUES)
-            known = val.denominator * random.choice([2, 3, 4, 5, 6, 8, 10])
+            known = val.denominator * random.randint(1, 100)
             x = known * val
             assert x.denominator == 1
             side_names = {"sin": ("opposite side", "hypotenuse"),
@@ -92,12 +133,13 @@ class RightTriangleTrigGenerator(ProblemGenerator):
             ]
             answer = str(x.numerator)
             steps.append(step("Z", answer))
-            problem = (f"In a right triangle, one acute angle measures "
+            problem = (f"{context} In a right triangle, one acute angle "
+                       f"measures "
                        f"{deg}° and the {have} is {known}. Given that "
                        f"{fn} {deg}° ≈ {dec(val)}, find the {want}.")
         else:
             deg, fn, val = random.choice(GIVEN_VALUES)
-            scale = random.choice([2, 3, 4, 5, 8, 10])
+            scale = random.randint(1, 100)
             num = val.numerator * scale
             den = val.denominator * scale
             names = {"sin": ("opposite side", "hypotenuse"),
@@ -115,7 +157,8 @@ class RightTriangleTrigGenerator(ProblemGenerator):
             ]
             answer = f"A = {deg}°"
             steps.append(step("Z", answer))
-            problem = (f"In a right triangle, the {n1} is {num} and the "
+            problem = (f"{context} In a right triangle, the {n1} is {num} "
+                       f"and the "
                        f"{n2} is {den}. Given that {fn} {deg}° ≈ "
                        f"{dec(val)}, find the measure of angle A.")
 
