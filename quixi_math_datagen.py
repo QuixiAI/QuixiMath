@@ -539,6 +539,7 @@ from generators.operation_properties_generator import OperationPropertiesGenerat
 from generators.set_membership_subset_generator import SetMembershipSubsetGenerator
 from generators.set_builder_roster_generator import SetBuilderRosterGenerator
 from generators.venn_region_count_generator import VennRegionCountGenerator
+from generators.counterexample_search_generator import CounterexampleSearchGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -640,6 +641,7 @@ ALL_GENERATORS = [
     IntegerOperationsGenerator(),
     SetBuilderRosterGenerator(),
     VennRegionCountGenerator(),
+    CounterexampleSearchGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),

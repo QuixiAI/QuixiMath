@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**517 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**518 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -942,6 +942,43 @@ Steps:
   CHECK|sum of regions|114|card(U)
   Z|only A = 24; only B = 13; only C = 1; A and B only = 8; A and C only = 16; B and C only = 15; all three = 12; none = 25
 Answer: only A = 24; only B = 13; only C = 1; A and B only = 8; A and C only = 16; B and C only = 15; all three = 12; none = 25
+```
+
+### Counterexample Search — `CounterexampleSearchGenerator`  ·  middle · difficulty 2
+
+Generate bounded searches whose answer is forced by the problem text.
+
+**Variants:** `counterexample_search_algebraic_claim`, `counterexample_search_arithmetic_claim`, `counterexample_search_set_claim`
+
+```
+Problem: Claim: for every integer n ≥ 24, n^2 + 7n + 7 is prime. Scan consecutive integers in increasing order. Refute the prime-value claim with the earliest scanned n.
+Steps:
+  M|24|24|576
+  M|7|24|168
+  A|576|168|744
+  A|744|7|751
+  DIV_CHECK|751|2|remainder 1
+  DIV_CHECK|751|3|remainder 1
+  DIV_CHECK|751|5|remainder 1
+  DIV_CHECK|751|7|remainder 2
+  DIV_CHECK|751|11|remainder 3
+  DIV_CHECK|751|13|remainder 10
+  DIV_CHECK|751|17|remainder 3
+  DIV_CHECK|751|19|remainder 10
+  DIV_CHECK|751|23|remainder 15
+  TRY|n = 24|claim holds
+  REJECT|n = 24|not a counterexample
+  M|25|25|625
+  M|7|25|175
+  A|625|175|800
+  A|800|7|807
+  DIV_CHECK|807|2|remainder 1
+  DIV_CHECK|807|3|remainder 0
+  TRY|n = 25|claim fails
+  ACCEPT|n = 25|counterexample
+  COUNTEREXAMPLE|n = 25|807 = 3 × 269
+  Z|n = 25 (807 = 3 × 269)
+Answer: n = 25 (807 = 3 × 269)
 ```
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
