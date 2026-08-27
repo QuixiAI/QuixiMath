@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**535 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**536 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2832,6 +2832,21 @@ Steps:
   FOLD|rev("hhdedehee")|eehededhh
   Z|eehededhh
 Answer: eehededhh
+```
+
+### Direct Proof Algebra — `DirectProofAlgebraGenerator`  ·  high · difficulty 4
+
+Generate symbolic direct-proof records with exact canonical targets.
+
+**Variants:** `direct_proof_algebra_consecutive_product_even`, `direct_proof_algebra_contradiction_setup`, `direct_proof_algebra_contrapositive_setup`, `direct_proof_algebra_divisibility_transitive`, `direct_proof_algebra_parity_product`, `direct_proof_algebra_parity_sum`
+
+```
+Problem: Claim: √19 is irrational. Setup symbols: q, b, j. Write the assumption that begins the contradiction argument.
+Steps:
+  ASSUME|assume √19 = b/j in lowest terms
+  SETUP|assume √19 = b/j in lowest terms; derive 19j² = b²
+  Z|assume √19 = b/j in lowest terms; derive 19j² = b²
+Answer: assume √19 = b/j in lowest terms; derive 19j² = b²
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

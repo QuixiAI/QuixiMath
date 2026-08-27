@@ -557,6 +557,7 @@ from generators.relation_operations_generator import RelationOperationsGenerator
 from generators.relation_closure_generator import RelationClosureGenerator
 from generators.partial_order_generator import PartialOrderGenerator
 from generators.recursive_definition_unfold_generator import RecursiveDefinitionUnfoldGenerator
+from generators.direct_proof_algebra_generator import DirectProofAlgebraGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -747,6 +748,7 @@ ALL_GENERATORS = [
     RelationClosureGenerator(),
     PartialOrderGenerator(),
     RecursiveDefinitionUnfoldGenerator(),
+    DirectProofAlgebraGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

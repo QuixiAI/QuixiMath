@@ -274,6 +274,7 @@ CURRICULUM = {
     "FunctionPropertiesGenerator": {"grade_level": HIGH, "difficulty": 3},
     "EquivalenceRelationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "RecursiveDefinitionUnfoldGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "DirectProofAlgebraGenerator": {"grade_level": HIGH, "difficulty": 4},
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},
     "PercentProblemGenerator": {"grade_level": HIGH, "difficulty": 4},
     "LiteralEquationGenerator": {"grade_level": HIGH, "difficulty": 4},
