@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**537 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**538 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6184,6 +6184,22 @@ Steps:
   CHECK|direct set result|{n}|decoded bits match
   Z|00000001000 = {n}
 Answer: 00000001000 = {n}
+```
+
+### Set Algebra Laws — `SetAlgebraLawsGenerator`  ·  college · difficulty 3
+
+Generate forced set-law traces with independent membership checks.
+
+**Variants:** `set_algebra_laws_dual_of_logic`, `set_algebra_laws_simplify`, `set_algebra_laws_to_union_of_intersections`
+
+```
+Problem: Set names: Q, B, K are arbitrary subsets of U. Correspondence: p↦Q, q↦B. Logic identity: p ∨ F ≡ p. Set expression: Q ∪ ∅. Apply the logic/set duality to the displayed expression.
+Steps:
+  LAW|identity|Q ∪ ∅|Q
+  REWRITE|Q
+  CHECK|membership columns|10101010|10101010
+  Z|Q
+Answer: Q
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

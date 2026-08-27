@@ -559,6 +559,7 @@ from generators.partial_order_generator import PartialOrderGenerator
 from generators.recursive_definition_unfold_generator import RecursiveDefinitionUnfoldGenerator
 from generators.direct_proof_algebra_generator import DirectProofAlgebraGenerator
 from generators.characteristic_vector_generator import CharacteristicVectorGenerator
+from generators.set_algebra_laws_generator import SetAlgebraLawsGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -751,6 +752,7 @@ ALL_GENERATORS = [
     RecursiveDefinitionUnfoldGenerator(),
     DirectProofAlgebraGenerator(),
     CharacteristicVectorGenerator(),
+    SetAlgebraLawsGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
