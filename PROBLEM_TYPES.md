@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**543 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**544 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6357,6 +6357,28 @@ Steps:
   CHECK|line 6: q|rule schema satisfied
   Z|line 6: q
 Answer: line 6: q
+```
+
+### Semantic Tableau — `SemanticTableauGenerator`  ·  college · difficulty 4
+
+Generate truth trees with a forced expansion and branch order.
+
+**Variants:** `semantic_tableau_countermodel`, `semantic_tableau_satisfiability`, `semantic_tableau_validity`
+
+```
+Problem: Formula: (b → q) ∨ (i → ¬b). Task: test satisfiability using a tableau rooted at φ. Policy: expand α before β; within a rule class use the oldest line first and the leftmost branch first. Determine whether at least one saturated branch remains open.
+Steps:
+  TABLEAU_ROOT|(¬b ∨ q) ∨ (¬i ∨ ¬b)
+  BETA|line 1|1L: 2: ¬b ∨ q|1R: 3: ¬i ∨ ¬b
+  BETA|line 2|1LL: 4: ¬b|1LR: 5: q
+  BETA|line 3|1RL: 6: ¬i|1RR: 7: ¬b
+  BRANCH_OPEN|1LL|b=F, i=F, q=F
+  BRANCH_OPEN|1LR|b=F, i=F, q=T
+  BRANCH_OPEN|1RL|b=F, i=F, q=F
+  BRANCH_OPEN|1RR|b=F, i=F, q=F
+  CHECK|(b → q) ∨ (i → ¬b)|T|b=F, i=F, q=F
+  Z|open; satisfiable; model b=F, i=F, q=F
+Answer: open; satisfiable; model b=F, i=F, q=F
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

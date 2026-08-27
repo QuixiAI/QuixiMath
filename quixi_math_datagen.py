@@ -565,6 +565,7 @@ from generators.quantifier_finite_domain_generator import QuantifierFiniteDomain
 from generators.prenex_normal_form_generator import PrenexNormalFormGenerator
 from generators.english_to_logic_generator import EnglishToLogicGenerator
 from generators.natural_deduction_generator import NaturalDeductionGenerator
+from generators.semantic_tableau_generator import SemanticTableauGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -763,6 +764,7 @@ ALL_GENERATORS = [
     PrenexNormalFormGenerator(),
     EnglishToLogicGenerator(),
     NaturalDeductionGenerator(),
+    SemanticTableauGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
