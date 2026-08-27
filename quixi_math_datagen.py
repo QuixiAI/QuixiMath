@@ -533,6 +533,7 @@ from generators.compound_probability_generator import (
     CompoundProbabilityDependentGenerator,
 )
 from generators.attribute_sorting_generator import AttributeSortingGenerator
+from generators.one_to_one_correspondence_generator import OneToOneCorrespondenceGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -564,6 +565,7 @@ ALL_GENERATORS = [
     MultiDigitMultiplicationGenerator(),
     AbacusAdditionGenerator(),
     AttributeSortingGenerator(),
+    OneToOneCorrespondenceGenerator(),
 
     # --- Decimals ---
     DecimalAddSubGenerator('+'),

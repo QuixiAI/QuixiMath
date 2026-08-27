@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**511 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**512 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -153,6 +153,29 @@ Steps:
   REGION|none|∅
   Z|all three: ∅; A and B only: ∅; A and C only: {9, 14, 19, 23}; B and C only: ∅; A only: {31, 33, 38, 49, 55}; B only: ∅; C only: {7}; none: ∅
 Answer: all three: ∅; A and B only: ∅; A and C only: {9, 14, 19, 23}; B and C only: ∅; A only: {31, 33, 38, 49, 55}; B only: ∅; C only: {7}; none: ∅
+```
+
+### One To One Correspondence — `OneToOneCorrespondenceGenerator`  ·  elementary · difficulty 1
+
+Generate forced one-to-one pairings over canonically printed rosters.
+
+**Variants:** `one_to_one_correspondence_cardinal_class`, `one_to_one_correspondence_compare_by_pairing`, `one_to_one_correspondence_count_by_pairing`
+
+```
+Problem: Objects = {brush, clip, cup, eraser, notebook, ruler, spoon, stamp, sticker}. Labels = {1, 2, 3, 4, 5, 6, 7, 8, 9}. Use the counting labels to establish the cardinal number of Objects.
+Steps:
+  PAIR|brush|1
+  PAIR|clip|2
+  PAIR|cup|3
+  PAIR|eraser|4
+  PAIR|notebook|5
+  PAIR|ruler|6
+  PAIR|spoon|7
+  PAIR|stamp|8
+  PAIR|sticker|9
+  COUNT|Objects|9
+  Z|card(Objects) = 9; paired all 9 objects
+Answer: card(Objects) = 9; paired all 9 objects
 ```
 
 ### Decimal Add Sub — `DecimalAddSubGenerator`  ·  elementary · difficulty 3
