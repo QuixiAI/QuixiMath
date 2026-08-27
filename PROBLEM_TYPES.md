@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**538 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**539 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2847,6 +2847,24 @@ Steps:
   SETUP|assume √19 = b/j in lowest terms; derive 19j² = b²
   Z|assume √19 = b/j in lowest terms; derive 19j² = b²
 Answer: assume √19 = b/j in lowest terms; derive 19j² = b²
+```
+
+### Quantifier Negation — `QuantifierNegationGenerator`  ·  high · difficulty 3
+
+Generate independently checkable predicate-negation traces.
+
+**Variants:** `quantifier_negation_english`, `quantifier_negation_nested`, `quantifier_negation_symbolic`, `quantifier_negation_with_counterexample`
+
+```
+Problem: Domain: integers n with 2 ≤ n ≤ 7056120. Claim: every prime n in the domain is odd. Negate the claim and report its least counterexample.
+Steps:
+  NEG_QUANT|¬∀n|∃n ¬
+  NEG_CONNECTIVE|¬(Prime(n) → Odd(n))|Prime(n) ∧ ¬Odd(n)
+  REWRITE|∃n (Prime(n) ∧ ¬Odd(n))
+  WITNESS|n=2|Prime(2)=T|Odd(2)=F
+  CHECK|2 is in the domain|claim fails at n=2
+  Z|∃n (Prime(n) ∧ ¬Odd(n)); n = 2
+Answer: ∃n (Prime(n) ∧ ¬Odd(n)); n = 2
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

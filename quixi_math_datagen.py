@@ -560,6 +560,7 @@ from generators.recursive_definition_unfold_generator import RecursiveDefinition
 from generators.direct_proof_algebra_generator import DirectProofAlgebraGenerator
 from generators.characteristic_vector_generator import CharacteristicVectorGenerator
 from generators.set_algebra_laws_generator import SetAlgebraLawsGenerator
+from generators.quantifier_negation_generator import QuantifierNegationGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -753,6 +754,7 @@ ALL_GENERATORS = [
     DirectProofAlgebraGenerator(),
     CharacteristicVectorGenerator(),
     SetAlgebraLawsGenerator(),
+    QuantifierNegationGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
