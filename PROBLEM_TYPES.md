@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**528 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**529 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2742,6 +2742,22 @@ Steps:
   TABLE_COMPARE|match
   Z|identity; columns match
 Answer: identity; columns match
+```
+
+### Set Counting — `SetCountingGenerator`  ·  high · difficulty 3
+
+Generate exact finite combinatorics with explicit arithmetic chains.
+
+**Variants:** `set_counting_bijections`, `set_counting_functions`, `set_counting_injections`, `set_counting_k_subsets`, `set_counting_partitions`, `set_counting_reflexive_relations`, `set_counting_relations`, `set_counting_subsets`, `set_counting_subsets_containing`, `set_counting_symmetric_relations`
+
+```
+Problem: A = {b, i, p, q}. B = {10, 26, 27, 30}. Choose independently whether each ordered pair belongs to a relation.
+Steps:
+  COUNT_RULE|relations|2^(card(A)·card(B))
+  M|4|4|16
+  E|2|16|65536
+  Z|65536
+Answer: 65536
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

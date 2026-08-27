@@ -550,6 +550,7 @@ from generators.logical_equivalence_laws_generator import LogicalEquivalenceLaws
 from generators.syllogism_generator import SyllogismGenerator
 from generators.set_expression_generator import SetExpressionGenerator
 from generators.set_identity_membership_table_generator import SetIdentityMembershipTableGenerator
+from generators.set_counting_generator import SetCountingGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -733,6 +734,7 @@ ALL_GENERATORS = [
     SyllogismGenerator(),
     SetExpressionGenerator(),
     SetIdentityMembershipTableGenerator(),
+    SetCountingGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
