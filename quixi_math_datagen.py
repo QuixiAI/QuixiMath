@@ -532,6 +532,7 @@ from generators.compound_probability_generator import (
     CompoundProbabilityIndependentGenerator,
     CompoundProbabilityDependentGenerator,
 )
+from generators.attribute_sorting_generator import AttributeSortingGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -562,6 +563,7 @@ ALL_GENERATORS = [
     MultiDigitSubtractionGenerator(),
     MultiDigitMultiplicationGenerator(),
     AbacusAdditionGenerator(),
+    AttributeSortingGenerator(),
 
     # --- Decimals ---
     DecimalAddSubGenerator('+'),

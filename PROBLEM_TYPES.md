@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**510 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**511 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -102,6 +102,57 @@ Steps:
   AB_ADD|+900|12321|13221
   Z|13221
 Answer: 13221
+```
+
+### Attribute Sorting — `AttributeSortingGenerator`  ·  elementary · difficulty 1
+
+Generate explicit attribute checks followed by canonical region rosters.
+
+**Variants:** `attribute_sorting_neither_region`, `attribute_sorting_three_attributes`, `attribute_sorting_two_attributes`
+
+```
+Problem: Numbers: [7, 9, 14, 19, 23, 31, 33, 38, 49, 55]. Attributes: A = greater than 8; B = multiple of 6; C = less than 26. Check each number against the attributes, then give the requested region rosters.
+Steps:
+  ATTR_CHECK|7|A: greater than 8|no
+  ATTR_CHECK|7|B: multiple of 6|no
+  ATTR_CHECK|7|C: less than 26|yes
+  ATTR_CHECK|9|A: greater than 8|yes
+  ATTR_CHECK|9|B: multiple of 6|no
+  ATTR_CHECK|9|C: less than 26|yes
+  ATTR_CHECK|14|A: greater than 8|yes
+  ATTR_CHECK|14|B: multiple of 6|no
+  ATTR_CHECK|14|C: less than 26|yes
+  ATTR_CHECK|19|A: greater than 8|yes
+  ATTR_CHECK|19|B: multiple of 6|no
+  ATTR_CHECK|19|C: less than 26|yes
+  ATTR_CHECK|23|A: greater than 8|yes
+  ATTR_CHECK|23|B: multiple of 6|no
+  ATTR_CHECK|23|C: less than 26|yes
+  ATTR_CHECK|31|A: greater than 8|yes
+  ATTR_CHECK|31|B: multiple of 6|no
+  ATTR_CHECK|31|C: less than 26|no
+  ATTR_CHECK|33|A: greater than 8|yes
+  ATTR_CHECK|33|B: multiple of 6|no
+  ATTR_CHECK|33|C: less than 26|no
+  ATTR_CHECK|38|A: greater than 8|yes
+  ATTR_CHECK|38|B: multiple of 6|no
+  ATTR_CHECK|38|C: less than 26|no
+  ATTR_CHECK|49|A: greater than 8|yes
+  ATTR_CHECK|49|B: multiple of 6|no
+  ATTR_CHECK|49|C: less than 26|no
+  ATTR_CHECK|55|A: greater than 8|yes
+  ATTR_CHECK|55|B: multiple of 6|no
+  ATTR_CHECK|55|C: less than 26|no
+  REGION|all three|∅
+  REGION|A and B only|∅
+  REGION|A and C only|{9, 14, 19, 23}
+  REGION|B and C only|∅
+  REGION|A only|{31, 33, 38, 49, 55}
+  REGION|B only|∅
+  REGION|C only|{7}
+  REGION|none|∅
+  Z|all three: ∅; A and B only: ∅; A and C only: {9, 14, 19, 23}; B and C only: ∅; A only: {31, 33, 38, 49, 55}; B only: ∅; C only: {7}; none: ∅
+Answer: all three: ∅; A and B only: ∅; A and C only: {9, 14, 19, 23}; B and C only: ∅; A only: {31, 33, 38, 49, 55}; B only: ∅; C only: {7}; none: ∅
 ```
 
 ### Decimal Add Sub — `DecimalAddSubGenerator`  ·  elementary · difficulty 3
