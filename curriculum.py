@@ -33,6 +33,7 @@ CURRICULUM = {
     "AbacusAdditionGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "AttributeSortingGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
     "OneToOneCorrespondenceGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
+    "LogicalConnectiveEvalGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "DecimalAddSubGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "DecimalMultGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "DecimalDivGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},

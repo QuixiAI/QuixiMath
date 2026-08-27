@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**512 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**513 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -176,6 +176,24 @@ Steps:
   COUNT|Objects|9
   Z|card(Objects) = 9; paired all 9 objects
 Answer: card(Objects) = 9; paired all 9 objects
+```
+
+### Logical Connective Eval — `LogicalConnectiveEvalGenerator`  ·  elementary · difficulty 2
+
+Generate arithmetic atoms and a forced connective-evaluation trace.
+
+**Variants:** `logical_connective_eval_and_or`, `logical_connective_eval_nested`, `logical_connective_eval_not`
+
+```
+Problem: Let p: 35 is odd. Let q: 20 is prime. Evaluate ¬q. Check each proposition, then evaluate the logical expression.
+Steps:
+  DIV_CHECK|35|2|remainder 1
+  STMT_EVAL|p|35 is odd|T
+  DIV_CHECK|20|2|remainder 0
+  STMT_EVAL|q|20 is prime|F
+  CONNECTIVE|¬q|T
+  Z|p = T; q = F; ¬q = T
+Answer: p = T; q = F; ¬q = T
 ```
 
 ### Decimal Add Sub — `DecimalAddSubGenerator`  ·  elementary · difficulty 3
