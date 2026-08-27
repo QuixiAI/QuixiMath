@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**523 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**524 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2537,6 +2537,32 @@ Steps:
   PARSE|((r → p) ↔ q) ↔ p|binary ↔
   Z|((r → p) ↔ q) ↔ p
 Answer: ((r → p) ↔ q) ↔ p
+```
+
+### Argument Form — `ArgumentFormGenerator`  ·  high · difficulty 3
+
+Instantiate argument schemas and prove their validity status row by row.
+
+**Variants:** `argument_form_english`, `argument_form_fallacy`, `argument_form_named_rule`, `argument_form_truth_table_validity`
+
+```
+Problem: Vocabulary: p means "the sequence has common difference 17"; q means "the result is less than 123". Argument clauses: if the sequence has common difference 17, then the result is less than 123; it is not the case that the sequence has common difference 17; therefore it is not the case that the result is less than 123. Give the rule/fallacy verdict and any counterexample assignment.
+Steps:
+  ARG_SETUP|p → q; ¬p|¬q
+  TRUTH_ROW|p=T, q=T
+  PREMISES_ALL_T|p=T, q=T|no
+  TRUTH_ROW|p=T, q=F
+  PREMISES_ALL_T|p=T, q=F|no
+  TRUTH_ROW|p=F, q=T
+  PREMISES_ALL_T|p=F, q=T|yes
+  CONCLUSION_AT|p=F, q=T|F
+  TRUTH_ROW|p=F, q=F
+  PREMISES_ALL_T|p=F, q=F|yes
+  CONCLUSION_AT|p=F, q=F|T
+  COUNTEREXAMPLE|p=F, q=T|premises all T|conclusion F
+  VALIDITY|invalid|denying the antecedent
+  Z|invalid; denying the antecedent; counterexample p=F, q=T
+Answer: invalid; denying the antecedent; counterexample p=F, q=T
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

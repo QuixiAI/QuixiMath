@@ -265,6 +265,7 @@ CURRICULUM = {
     # ===== HIGH SCHOOL =====
     "TruthTableGenerator": {"grade_level": HIGH, "difficulty": 2},
     "WFFParsingGenerator": {"grade_level": HIGH, "difficulty": 2},
+    "ArgumentFormGenerator": {"grade_level": HIGH, "difficulty": 3},
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},
     "PercentProblemGenerator": {"grade_level": HIGH, "difficulty": 4},
     "LiteralEquationGenerator": {"grade_level": HIGH, "difficulty": 4},
