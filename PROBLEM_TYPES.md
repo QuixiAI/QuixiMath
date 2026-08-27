@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**525 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**526 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2583,6 +2583,25 @@ Steps:
   CHECK|truth columns|TTTTTTTF|TTTTTTTF
   Z|(((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
 Answer: (((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
+```
+
+### Syllogism — `SyllogismGenerator`  ·  high · difficulty 2
+
+Generate all categorical moods and figures with exact model checks.
+
+**Variants:** `syllogism_mood_figure`, `syllogism_validity`, `syllogism_venn_test`
+
+```
+Problem: Premises: Some painters are not jewelers; All jewelers are musicians. Conclusion: Some musicians are painters. Report the categorical form and say whether it is valid.
+Steps:
+  MOOD|OAI|figure 4
+  VENN_MARK|painters ∩ ¬jewelers|x1
+  VENN_SHADE|jewelers − musicians|empty
+  CONCLUSION_CHECK|not forced
+  COUNTERMODEL|musicians=FFF, jewelers=FFF, painters=TFF
+  CHECK|countermodel|premises=T,T|conclusion=F
+  Z|invalid; OAI-4
+Answer: invalid; OAI-4
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

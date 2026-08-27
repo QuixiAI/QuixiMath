@@ -547,6 +547,7 @@ from generators.truth_table_generator import TruthTableGenerator
 from generators.wff_parsing_generator import WFFParsingGenerator
 from generators.argument_form_generator import ArgumentFormGenerator
 from generators.logical_equivalence_laws_generator import LogicalEquivalenceLawsGenerator
+from generators.syllogism_generator import SyllogismGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -727,6 +728,7 @@ ALL_GENERATORS = [
     WFFParsingGenerator(),
     ArgumentFormGenerator(),
     LogicalEquivalenceLawsGenerator(),
+    SyllogismGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
