@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**540 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**541 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6298,6 +6298,28 @@ Steps:
   QUANT_RESULT|∀x ∀y ∃z|true|atomic column=TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
   Z|true; atomic column = TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
 Answer: true; atomic column = TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTFTTTFTTTTTTTTTTTTTTTTTTFT
+```
+
+### Prenex Normal Form — `PrenexNormalFormGenerator`  ·  college · difficulty 4
+
+Generate forced, capture-free prenex conversions.
+
+**Variants:** `prenex_normal_form_negation_then_prenex`, `prenex_normal_form_pull_out`, `prenex_normal_form_rename_then_pull`
+
+```
+Problem: Formula: (∃v ∀w B(v, w, z) ∨ ∀v J(v, z)). Policy: pull quantifiers left-to-right. Required renaming: v→v1. Perform capture-free prenex conversion in the prescribed order.
+Steps:
+  RENAME|∀v|∀v1
+  REWRITE|(∃v ∀w B(v, w, z) ∨ ∀v1 J(v1, z))
+  PULL|∃v|from left past ∨
+  REWRITE|∃v (∀w B(v, w, z) ∨ ∀v1 J(v1, z))
+  PULL|∀w|from left past ∨
+  REWRITE|∃v ∀w (B(v, w, z) ∨ ∀v1 J(v1, z))
+  PULL|∀v1|from right past ∨
+  REWRITE|∃v ∀w ∀v1 (B(v, w, z) ∨ J(v1, z))
+  CHECK|matrix quantifier-free|(B(v, w, z) ∨ J(v1, z))
+  Z|∃v ∀w ∀v1 (B(v, w, z) ∨ J(v1, z))
+Answer: ∃v ∀w ∀v1 (B(v, w, z) ∨ J(v1, z))
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

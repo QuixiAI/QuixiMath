@@ -562,6 +562,7 @@ from generators.characteristic_vector_generator import CharacteristicVectorGener
 from generators.set_algebra_laws_generator import SetAlgebraLawsGenerator
 from generators.quantifier_negation_generator import QuantifierNegationGenerator
 from generators.quantifier_finite_domain_generator import QuantifierFiniteDomainGenerator
+from generators.prenex_normal_form_generator import PrenexNormalFormGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -757,6 +758,7 @@ ALL_GENERATORS = [
     SetAlgebraLawsGenerator(),
     QuantifierNegationGenerator(),
     QuantifierFiniteDomainGenerator(),
+    PrenexNormalFormGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
