@@ -70,6 +70,7 @@ CURRICULUM = {
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
     "IntegerOperationsGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SetBuilderRosterGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "VennRegionCountGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "UnitRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "RatioTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "TipBillSplitGenerator": {"grade_level": MIDDLE, "difficulty": 3},

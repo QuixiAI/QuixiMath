@@ -538,6 +538,7 @@ from generators.logical_connective_eval_generator import LogicalConnectiveEvalGe
 from generators.operation_properties_generator import OperationPropertiesGenerator
 from generators.set_membership_subset_generator import SetMembershipSubsetGenerator
 from generators.set_builder_roster_generator import SetBuilderRosterGenerator
+from generators.venn_region_count_generator import VennRegionCountGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -638,6 +639,7 @@ ALL_GENERATORS = [
     # --- Integer Operations ---
     IntegerOperationsGenerator(),
     SetBuilderRosterGenerator(),
+    VennRegionCountGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),

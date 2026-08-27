@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**516 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**517 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -900,6 +900,48 @@ Steps:
   ROSTER|S|{4, 6, 7, 8, 10}
   Z|{4, 6, 7, 8, 10}
 Answer: {4, 6, 7, 8, 10}
+```
+
+### Venn Region Count — `VennRegionCountGenerator`  ·  middle · difficulty 3
+
+Generate backward-constructed Venn counts and pencil-and-paper solves.
+
+**Variants:** `venn_region_count_three_set`, `venn_region_count_two_set`, `venn_region_count_word_problem`
+
+```
+Problem: card(U) = 114; card(A) = 60; card(B) = 48; card(C) = 44; card(A ∩ B) = 20; card(A ∩ C) = 28; card(B ∩ C) = 27; card(A ∩ B ∩ C) = 12. Use the inclusive intersections to solve all Venn regions.
+Steps:
+  REGION_EQ|A ∩ B ∩ C|12
+  S|20|12|8
+  REGION|A and B only|8
+  S|28|12|16
+  REGION|A and C only|16
+  S|27|12|15
+  REGION|B and C only|15
+  S|60|8|52
+  S|52|16|36
+  S|36|12|24
+  S|48|8|40
+  S|40|15|25
+  S|25|12|13
+  S|44|16|28
+  S|28|15|13
+  S|13|12|1
+  REGION|only A|24
+  REGION|only B|13
+  REGION|only C|1
+  REGION|all three|12
+  A|24|13|37
+  A|37|1|38
+  A|38|8|46
+  A|46|16|62
+  A|62|15|77
+  A|77|12|89
+  S|114|89|25
+  REGION|none|25
+  CHECK|sum of regions|114|card(U)
+  Z|only A = 24; only B = 13; only C = 1; A and B only = 8; A and C only = 16; B and C only = 15; all three = 12; none = 25
+Answer: only A = 24; only B = 13; only C = 1; A and B only = 8; A and C only = 16; B and C only = 15; all three = 12; none = 25
 ```
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
