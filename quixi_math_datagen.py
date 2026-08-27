@@ -537,6 +537,7 @@ from generators.one_to_one_correspondence_generator import OneToOneCorrespondenc
 from generators.logical_connective_eval_generator import LogicalConnectiveEvalGenerator
 from generators.operation_properties_generator import OperationPropertiesGenerator
 from generators.set_membership_subset_generator import SetMembershipSubsetGenerator
+from generators.set_builder_roster_generator import SetBuilderRosterGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -636,6 +637,7 @@ ALL_GENERATORS = [
 
     # --- Integer Operations ---
     IntegerOperationsGenerator(),
+    SetBuilderRosterGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),

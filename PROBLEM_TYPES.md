@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**515 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**516 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -849,6 +849,57 @@ Steps:
   INT_APPLY_SIGN|1|positive|1
   Z|1
 Answer: 1
+```
+
+### Set Builder Roster — `SetBuilderRosterGenerator`  ·  middle · difficulty 2
+
+Generate finite set-builder scans with no hidden predicate arithmetic.
+
+**Variants:** `set_builder_roster_cardinality`, `set_builder_roster_compound_condition`, `set_builder_roster_integer_range`, `set_builder_roster_parity_divisibility`, `set_builder_roster_squares_primes`
+
+```
+Problem: Set S = {x ∈ ℤ : 2 < x < 12 and (7 divides x or x is even)}. Test each integer in the range and give the set in roster form.
+Steps:
+  DOMAIN|x = 3..11|{3, 4, 5, 6, 7, 8, 9, 10, 11}
+  DIV_CHECK|3|7|quotient 0, remainder 3
+  DIV_CHECK|3|2|remainder 1
+  TRY|x = 3|2 < x < 12 and (7 divides x or x is even)|false
+  REJECT|x = 3
+  DIV_CHECK|4|7|quotient 0, remainder 4
+  DIV_CHECK|4|2|remainder 0
+  TRY|x = 4|2 < x < 12 and (7 divides x or x is even)|true
+  ACCEPT|x = 4
+  DIV_CHECK|5|7|quotient 0, remainder 5
+  DIV_CHECK|5|2|remainder 1
+  TRY|x = 5|2 < x < 12 and (7 divides x or x is even)|false
+  REJECT|x = 5
+  DIV_CHECK|6|7|quotient 0, remainder 6
+  DIV_CHECK|6|2|remainder 0
+  TRY|x = 6|2 < x < 12 and (7 divides x or x is even)|true
+  ACCEPT|x = 6
+  DIV_CHECK|7|7|quotient 1, remainder 0
+  DIV_CHECK|7|2|remainder 1
+  TRY|x = 7|2 < x < 12 and (7 divides x or x is even)|true
+  ACCEPT|x = 7
+  DIV_CHECK|8|7|quotient 1, remainder 1
+  DIV_CHECK|8|2|remainder 0
+  TRY|x = 8|2 < x < 12 and (7 divides x or x is even)|true
+  ACCEPT|x = 8
+  DIV_CHECK|9|7|quotient 1, remainder 2
+  DIV_CHECK|9|2|remainder 1
+  TRY|x = 9|2 < x < 12 and (7 divides x or x is even)|false
+  REJECT|x = 9
+  DIV_CHECK|10|7|quotient 1, remainder 3
+  DIV_CHECK|10|2|remainder 0
+  TRY|x = 10|2 < x < 12 and (7 divides x or x is even)|true
+  ACCEPT|x = 10
+  DIV_CHECK|11|7|quotient 1, remainder 4
+  DIV_CHECK|11|2|remainder 1
+  TRY|x = 11|2 < x < 12 and (7 divides x or x is even)|false
+  REJECT|x = 11
+  ROSTER|S|{4, 6, 7, 8, 10}
+  Z|{4, 6, 7, 8, 10}
+Answer: {4, 6, 7, 8, 10}
 ```
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
