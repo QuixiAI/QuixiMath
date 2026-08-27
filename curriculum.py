@@ -271,6 +271,7 @@ CURRICULUM = {
     "SetExpressionGenerator": {"grade_level": HIGH, "difficulty": 3},
     "SetIdentityMembershipTableGenerator": {"grade_level": HIGH, "difficulty": 3},
     "SetCountingGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "FunctionPropertiesGenerator": {"grade_level": HIGH, "difficulty": 3},
     "QuadraticGenerator": {"grade_level": HIGH, "difficulty": 5},
     "PercentProblemGenerator": {"grade_level": HIGH, "difficulty": 4},
     "LiteralEquationGenerator": {"grade_level": HIGH, "difficulty": 4},

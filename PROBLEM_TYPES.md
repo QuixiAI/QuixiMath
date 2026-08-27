@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**529 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**530 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2758,6 +2758,30 @@ Steps:
   E|2|16|65536
   Z|65536
 Answer: 65536
+```
+
+### Function Properties — `FunctionPropertiesGenerator`  ·  high · difficulty 3
+
+Generate exact finite-function reasoning from printed tables.
+
+**Variants:** `function_properties_classify`, `function_properties_compose_tables`, `function_properties_count_by_property`, `function_properties_fixed_points`, `function_properties_image_preimage`, `function_properties_inverse_table`
+
+```
+Problem: A = {b, i, m, p, q}. B = {10, 16, 26, 27, 30}. Table f: b→26, i→16, m→30, p→10, q→27. Reverse this bijection to obtain its inverse function.
+Steps:
+  MAP|b|f(b) = 26
+  MAP|i|f(i) = 16
+  MAP|m|f(m) = 30
+  MAP|p|f(p) = 10
+  MAP|q|f(q) = 27
+  NO_COLLISION|all outputs distinct
+  INVERSE_PAIR|(b, 26)|(26, b)
+  INVERSE_PAIR|(i, 16)|(16, i)
+  INVERSE_PAIR|(m, 30)|(30, m)
+  INVERSE_PAIR|(p, 10)|(10, p)
+  INVERSE_PAIR|(q, 27)|(27, q)
+  Z|f⁻¹ = 10→p, 16→i, 26→b, 27→q, 30→m
+Answer: f⁻¹ = 10→p, 16→i, 26→b, 27→q, 30→m
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5

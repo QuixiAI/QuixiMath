@@ -551,6 +551,7 @@ from generators.syllogism_generator import SyllogismGenerator
 from generators.set_expression_generator import SetExpressionGenerator
 from generators.set_identity_membership_table_generator import SetIdentityMembershipTableGenerator
 from generators.set_counting_generator import SetCountingGenerator
+from generators.function_properties_generator import FunctionPropertiesGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -735,6 +736,7 @@ ALL_GENERATORS = [
     SetExpressionGenerator(),
     SetIdentityMembershipTableGenerator(),
     SetCountingGenerator(),
+    FunctionPropertiesGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
