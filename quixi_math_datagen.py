@@ -555,6 +555,7 @@ from generators.function_properties_generator import FunctionPropertiesGenerator
 from generators.equivalence_relation_generator import EquivalenceRelationGenerator
 from generators.relation_operations_generator import RelationOperationsGenerator
 from generators.relation_closure_generator import RelationClosureGenerator
+from generators.partial_order_generator import PartialOrderGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -743,6 +744,7 @@ ALL_GENERATORS = [
     EquivalenceRelationGenerator(),
     RelationOperationsGenerator(),
     RelationClosureGenerator(),
+    PartialOrderGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**533 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**534 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6091,6 +6091,25 @@ Steps:
   CHECK|transitive|no missing pair
   Z|{(3, 3), (3, 17), (3, 32), (3, 33), (17, 3), (17, 17), (17, 32), (17, 33), (32, 3), (32, 17), (32, 32), (32, 33), (33, 3), (33, 17), (33, 32), (33, 33)}
 Answer: {(3, 3), (3, 17), (3, 32), (3, 33), (17, 3), (17, 17), (17, 32), (17, 33), (32, 3), (32, 17), (32, 32), (32, 33), (33, 3), (33, 17), (33, 32), (33, 33)}
+```
+
+### Partial Order — `PartialOrderGenerator`  ·  college · difficulty 4
+
+Generate finite-poset tasks with canonical witnesses and tie-breaks.
+
+**Variants:** `partial_order_bounds_lub_glb`, `partial_order_chains_antichains`, `partial_order_extremal_elements`, `partial_order_hasse_edges`, `partial_order_lattice_check`, `partial_order_linear_extension`
+
+```
+Problem: Carrier A = {3, 17, 26, 32, 33, 51}. Hasse edges H = {(3, 51), (17, 26), (17, 32), (17, 33), (32, 51), (33, 51)}. Order rule: reflexive-transitive closure of H. Find the linear extension by choosing the smallest available element.
+Steps:
+  TOPO_PICK|available {3, 17}|pick 3
+  TOPO_PICK|available {17}|pick 17
+  TOPO_PICK|available {26, 32, 33}|pick 26
+  TOPO_PICK|available {32, 33}|pick 32
+  TOPO_PICK|available {33}|pick 33
+  TOPO_PICK|available {51}|pick 51
+  Z|3, 17, 26, 32, 33, 51
+Answer: 3, 17, 26, 32, 33, 51
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
