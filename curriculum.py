@@ -300,6 +300,7 @@ CURRICULUM = {
     "RelationOperationsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RelationClosureGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PartialOrderGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "CharacteristicVectorGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

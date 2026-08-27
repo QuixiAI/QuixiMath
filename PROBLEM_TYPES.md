@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**536 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**537 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6157,6 +6157,33 @@ Steps:
   TOPO_PICK|available {51}|pick 51
   Z|3, 17, 26, 32, 33, 51
 Answer: 3, 17, 26, 32, 33, 51
+```
+
+### Characteristic Vector — `CharacteristicVectorGenerator`  ·  college · difficulty 2
+
+Generate exact set/vector conversions in an explicit finite order.
+
+**Variants:** `characteristic_vector_bitwise_op`, `characteristic_vector_decode`, `characteristic_vector_duality`, `characteristic_vector_encode`
+
+```
+Problem: Ordered universe U = {b, e, g, i, j, l, m, n, p, q, v}. A = {e, g, j, m, n, v}. B = {i, n, p, q}. Set operation: A ∩ B. Boolean form: χ_A ∧ χ_B. Find the shared result of the set and Boolean forms.
+Steps:
+  BIT|b|A=0|B=0
+  BIT|e|A=1|B=0
+  BIT|g|A=1|B=0
+  BIT|i|A=0|B=1
+  BIT|j|A=1|B=0
+  BIT|l|A=0|B=0
+  BIT|m|A=1|B=0
+  BIT|n|A=1|B=1
+  BIT|p|A=0|B=1
+  BIT|q|A=0|B=1
+  BIT|v|A=1|B=0
+  BITWISE|∧|01101011001|00010001110|00000001000
+  DECODE|00000001000|{n}
+  CHECK|direct set result|{n}|decoded bits match
+  Z|00000001000 = {n}
+Answer: 00000001000 = {n}
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
