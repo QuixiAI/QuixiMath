@@ -554,7 +554,7 @@ def element_key(value):
     if isinstance(value, (frozenset, set)):
         members = tuple(element_key(v)
                         for v in sorted(value, key=element_key))
-        return (3, (nesting_depth(value), members, element_text(value)))
+        return (3, (nesting_depth(value), members))
     raise TypeError("no canonical order for %r" % (value,))
 
 

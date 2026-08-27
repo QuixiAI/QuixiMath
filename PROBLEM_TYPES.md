@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**544 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**545 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6379,6 +6379,25 @@ Steps:
   CHECK|(b → q) ∨ (i → ¬b)|T|b=F, i=F, q=F
   Z|open; satisfiable; model b=F, i=F, q=F
 Answer: open; satisfiable; model b=F, i=F, q=F
+```
+
+### Hereditarily Finite Set — `HereditarilyFiniteSetGenerator`  ·  college · difficulty 3
+
+Generate exact exercises on pure finite sets.
+
+**Variants:** `hereditarily_finite_set_big_union`, `hereditarily_finite_set_kuratowski_decode`, `hereditarily_finite_set_kuratowski_encode`, `hereditarily_finite_set_rank`, `hereditarily_finite_set_successor`
+
+```
+Problem: X = {{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{{∅}}}, {∅, {∅}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}}, {{{∅, {∅}}}, {{∅}, {{{∅}}}}}, {{∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}}, {{{∅}, {{∅}}, {{{∅}}}}}, {{{{{∅}}}}}}. Form the union of all sets belonging to X.
+Steps:
+  UNION_ELEMENT|{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{{∅}}}, {∅, {∅}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}}|contributes {{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{{∅}}}, {∅, {∅}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}}
+  UNION_ELEMENT|{{{∅, {∅}}}, {{∅}, {{{∅}}}}}|contributes {{{∅, {∅}}}, {{∅}, {{{∅}}}}}
+  UNION_ELEMENT|{{∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}}|contributes {{∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}}
+  UNION_ELEMENT|{{{∅}, {{∅}}, {{{∅}}}}}|contributes {{{∅}, {{∅}}, {{{∅}}}}}
+  UNION_ELEMENT|{{{{{∅}}}}}|contributes {{{{{∅}}}}}
+  CHECK|flatten one level|{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
+  Z|{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
+Answer: {{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

@@ -67,10 +67,12 @@ def sort_key(value):
         return (2, (len(value),) + tuple(sort_key(item) for item in value))
     if is_set(value):
         # Depth first, then element by element (which orders {a} before
-        # {a, b}), then the rendered text as a final tie-break.
+        # {a, b}).  The recursive member keys uniquely determine a finite set;
+        # rendering it again as a tie-break is redundant and exponentially
+        # expensive for nested sets.
         members = tuple(sort_key(item)
                         for item in sorted(value, key=sort_key))
-        return (3, (set_depth(value), members, roster(value)))
+        return (3, (set_depth(value), members))
     raise TypeError("no canonical order for %r" % (value,))
 
 

@@ -308,6 +308,7 @@ CURRICULUM = {
     "EnglishToLogicGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "NaturalDeductionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "SemanticTableauGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "HereditarilyFiniteSetGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
