@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**530 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**531 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2782,6 +2782,24 @@ Steps:
   INVERSE_PAIR|(q, 27)|(27, q)
   Z|f⁻¹ = 10→p, 16→i, 26→b, 27→q, 30→m
 Answer: f⁻¹ = 10→p, 16→i, 26→b, 27→q, 30→m
+```
+
+### Equivalence Relation — `EquivalenceRelationGenerator`  ·  high · difficulty 3
+
+Generate finite equivalence relations through their class blocks.
+
+**Variants:** `equivalence_relation_check_and_classes`, `equivalence_relation_congruence_classes`, `equivalence_relation_count_pairs`, `equivalence_relation_from_partition`, `equivalence_relation_same_property`
+
+```
+Problem: A = {43, 48, 61, 71, 72, 75}. Rule: xRy iff x and y have the same digit sum. Find all blocks of the same-property relation.
+Steps:
+  CLASS|digit sum 7|{43, 61}
+  CLASS|digit sum 12|{48, 75}
+  CLASS|digit sum 8|{71}
+  CLASS|digit sum 9|{72}
+  PARTITION|{{43, 61}, {48, 75}, {71}, {72}}
+  Z|{{43, 61}, {48, 75}, {71}, {72}}
+Answer: {{43, 61}, {48, 75}, {71}, {72}}
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
