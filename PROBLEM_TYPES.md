@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**521 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**522 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2469,6 +2469,49 @@ Answer: D|72|8|9
 ```
 
 ## High School
+
+### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
+
+Generate canonical truth tables with independent per-node evaluations.
+
+**Variants:** `truth_table_classify`, `truth_table_column`, `truth_table_equivalence`, `truth_table_two_variable`
+
+```
+Problem: Formula: ((p → p) ↔ p) ↔ ((p → q) ∨ (q ↔ p)). Variables: p, q. Row order: TT, TF, FT, FF. Compute the two-variable result column.
+Steps:
+  TT_SETUP|variables p, q|4
+  TRUTH_ROW|row 1|p=T, q=T
+  EVAL_SUB|p=T, q=T|formula: p → p|T
+  EVAL_SUB|p=T, q=T|formula: (p → p) ↔ p|T
+  EVAL_SUB|p=T, q=T|formula: p → q|T
+  EVAL_SUB|p=T, q=T|formula: q ↔ p|T
+  EVAL_SUB|p=T, q=T|formula: (p → q) ∨ (q ↔ p)|T
+  EVAL_SUB|p=T, q=T|formula: ((p → p) ↔ p) ↔ ((p → q) ∨ (q ↔ p))|T
+  TRUTH_ROW|row 2|p=T, q=F
+  EVAL_SUB|p=T, q=F|formula: p → p|T
+  EVAL_SUB|p=T, q=F|formula: (p → p) ↔ p|T
+  EVAL_SUB|p=T, q=F|formula: p → q|F
+  EVAL_SUB|p=T, q=F|formula: q ↔ p|F
+  EVAL_SUB|p=T, q=F|formula: (p → q) ∨ (q ↔ p)|F
+  EVAL_SUB|p=T, q=F|formula: ((p → p) ↔ p) ↔ ((p → q) ∨ (q ↔ p))|F
+  TRUTH_ROW|row 3|p=F, q=T
+  EVAL_SUB|p=F, q=T|formula: p → p|T
+  EVAL_SUB|p=F, q=T|formula: (p → p) ↔ p|F
+  EVAL_SUB|p=F, q=T|formula: p → q|T
+  EVAL_SUB|p=F, q=T|formula: q ↔ p|F
+  EVAL_SUB|p=F, q=T|formula: (p → q) ∨ (q ↔ p)|T
+  EVAL_SUB|p=F, q=T|formula: ((p → p) ↔ p) ↔ ((p → q) ∨ (q ↔ p))|F
+  TRUTH_ROW|row 4|p=F, q=F
+  EVAL_SUB|p=F, q=F|formula: p → p|T
+  EVAL_SUB|p=F, q=F|formula: (p → p) ↔ p|F
+  EVAL_SUB|p=F, q=F|formula: p → q|T
+  EVAL_SUB|p=F, q=F|formula: q ↔ p|T
+  EVAL_SUB|p=F, q=F|formula: (p → q) ∨ (q ↔ p)|T
+  EVAL_SUB|p=F, q=F|formula: ((p → p) ↔ p) ↔ ((p → q) ∨ (q ↔ p))|F
+  TT_COLUMN|formula|TFFF
+  Z|TFFF
+Answer: TFFF
+```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
 
