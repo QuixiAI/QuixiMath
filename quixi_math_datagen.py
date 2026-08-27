@@ -556,6 +556,7 @@ from generators.equivalence_relation_generator import EquivalenceRelationGenerat
 from generators.relation_operations_generator import RelationOperationsGenerator
 from generators.relation_closure_generator import RelationClosureGenerator
 from generators.partial_order_generator import PartialOrderGenerator
+from generators.recursive_definition_unfold_generator import RecursiveDefinitionUnfoldGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -745,6 +746,7 @@ ALL_GENERATORS = [
     RelationOperationsGenerator(),
     RelationClosureGenerator(),
     PartialOrderGenerator(),
+    RecursiveDefinitionUnfoldGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
