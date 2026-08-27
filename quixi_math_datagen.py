@@ -553,6 +553,7 @@ from generators.set_identity_membership_table_generator import SetIdentityMember
 from generators.set_counting_generator import SetCountingGenerator
 from generators.function_properties_generator import FunctionPropertiesGenerator
 from generators.equivalence_relation_generator import EquivalenceRelationGenerator
+from generators.relation_operations_generator import RelationOperationsGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -739,6 +740,7 @@ ALL_GENERATORS = [
     SetCountingGenerator(),
     FunctionPropertiesGenerator(),
     EquivalenceRelationGenerator(),
+    RelationOperationsGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

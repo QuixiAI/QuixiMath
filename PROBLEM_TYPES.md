@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**531 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**532 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6052,6 +6052,22 @@ Answer: x=1; [A]=8, [B]=2
 ```
 
 ## College
+
+### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
+
+Generate exact relation operations on hand-sized finite carriers.
+
+**Variants:** `relation_operations_composition`, `relation_operations_domain_range`, `relation_operations_inverse`, `relation_operations_matrix`, `relation_operations_restriction`
+
+```
+Problem: A = {b, i, m, p, q}. B = {12, 16, 19, 29}. R = {(b, 29), (i, 12), (m, 16), (p, 12), (q, 12), (q, 16), (q, 19)}. Compute both coordinate projections of the relation.
+Steps:
+  REL_SETUP|A = {b, i, m, p, q}|B = {12, 16, 19, 29}|R = {(b, 29), (i, 12), (m, 16), (p, 12), (q, 12), (q, 16), (q, 19)}
+  DOMAIN|{b, i, m, p, q}
+  RANGE|{12, 16, 19, 29}
+  Z|domain = {b, i, m, p, q}; range = {12, 16, 19, 29}
+Answer: domain = {b, i, m, p, q}; range = {12, 16, 19, 29}
+```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
 
