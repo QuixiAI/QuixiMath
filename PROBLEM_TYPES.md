@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**524 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**525 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2563,6 +2563,26 @@ Steps:
   VALIDITY|invalid|denying the antecedent
   Z|invalid; denying the antecedent; counterexample p=F, q=T
 Answer: invalid; denying the antecedent; counterexample p=F, q=T
+```
+
+### Logical Equivalence Laws — `LogicalEquivalenceLawsGenerator`  ·  high · difficulty 4
+
+Generate forced law traces whose answers are independently truth-checkable.
+
+**Variants:** `logical_equivalence_laws_implication_free`, `logical_equivalence_laws_nand_only`, `logical_equivalence_laws_simplify`, `logical_equivalence_laws_to_cnf`, `logical_equivalence_laws_to_dnf`
+
+```
+Problem: Formula: ((r ∨ p) ∨ q) ∨ p. Give the recursive Sheffer-only rewrite.
+Steps:
+  LAW|Sheffer disjunction|r ∨ p|(r ↑ r) ↑ (p ↑ p)
+  REWRITE|(((r ↑ r) ↑ (p ↑ p)) ∨ q) ∨ p
+  LAW|Sheffer disjunction|((r ↑ r) ↑ (p ↑ p)) ∨ q|(((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)
+  REWRITE|((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ∨ p
+  LAW|Sheffer disjunction|((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ∨ p|(((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
+  REWRITE|(((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
+  CHECK|truth columns|TTTTTTTF|TTTTTTTF
+  Z|(((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
+Answer: (((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q)) ↑ ((((r ↑ r) ↑ (p ↑ p)) ↑ ((r ↑ r) ↑ (p ↑ p))) ↑ (q ↑ q))) ↑ (p ↑ p)
 ```
 
 ### Quadratic — `QuadraticGenerator`  ·  high · difficulty 5
