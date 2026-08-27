@@ -7924,30 +7924,64 @@ Answer: satisfiable; A=True, B=True
 
 ### Resolution Proof — `ResolutionProofGenerator`  ·  college · difficulty 4
 
-Propositional resolution refutations for tiny unsatisfiable CNFs.
+Generate exact canonical resolution refutations.
 
-**Variants:** `resolution_proof_binary_refutation`, `resolution_proof_chain_refutation`, `resolution_proof_unit_refutation`
+**Variants:** `resolution_proof_binary_refutation`, `resolution_proof_chain_refutation`, `resolution_proof_random_unsatisfiable`, `resolution_proof_unit_refutation`
 
 ```
-Problem: Give a resolution refutation for clauses C1=(P99347), C2=(not P55126), C3=(not P99347 OR P55126), C4=(P5307 OR P33937), using the stated clause order and alphabetical complementary literals, skipping duplicate resolvents.
+Problem: CNF clauses: C1=(¬P33937 ∨ ¬P5307), C2=(P33937 ∨ P5307), C3=(P33937 ∨ ¬P5307), C4=(¬P33937 ∨ P5307), C5=(P63692 ∨ P67014). Policy: scan clause pairs by increasing indices; within a pair scan complementary variables alphabetically; append the first new non-tautological resolvent and restart; skip duplicates. Apply the pair-and-pivot scan until contradiction is explicit.
 Steps:
-  RES_SETUP|C1=(P99347), C2=(not P55126), C3=(not P99347 OR P55126), C4=(P5307 OR P33937)
-  CLAUSE|C1|(P99347)
-  CLAUSE|C2|(not P55126)
-  CLAUSE|C3|(not P99347 OR P55126)
-  CLAUSE|C4|(P5307 OR P33937)
-  RESOLVE|C1|C3|P99347
-  DERIVED|C5|(P55126)
-  RES_SKIP|C1|C3|(P55126)
-  RESOLVE|C2|C3|not P55126
-  DERIVED|C6|(not P99347)
-  RES_SKIP|C1|C3|(P55126)
-  RESOLVE|C1|C6|P99347
-  DERIVED|C7|{}
-  RES_EMPTY|C7
+  RES_SETUP|C1=(¬P33937 ∨ ¬P5307), C2=(P33937 ∨ P5307), C3=(P33937 ∨ ¬P5307), C4=(¬P33937 ∨ P5307), C5=(P63692 ∨ P67014)
+  CLAUSE|C1|(¬P33937 ∨ ¬P5307)
+  CLAUSE|C2|(P33937 ∨ P5307)
+  CLAUSE|C3|(P33937 ∨ ¬P5307)
+  CLAUSE|C4|(¬P33937 ∨ P5307)
+  CLAUSE|C5|(P63692 ∨ P67014)
+  RES_SKIP|C1|C2|(P5307 ∨ ¬P5307)
+  RES_SKIP|C1|C2|(P33937 ∨ ¬P33937)
+  RESOLVE|C1|C3|¬P33937
+  DERIVED|C6|(¬P5307)
+  RES_SKIP|C1|C2|(P5307 ∨ ¬P5307)
+  RES_SKIP|C1|C2|(P33937 ∨ ¬P33937)
+  RES_SKIP|C1|C3|(¬P5307)
+  RESOLVE|C1|C4|¬P5307
+  DERIVED|C7|(¬P33937)
+  RES_SKIP|C1|C2|(P5307 ∨ ¬P5307)
+  RES_SKIP|C1|C2|(P33937 ∨ ¬P33937)
+  RES_SKIP|C1|C3|(¬P5307)
+  RES_SKIP|C1|C4|(¬P33937)
+  RESOLVE|C2|C3|P5307
+  DERIVED|C8|(P33937)
+  RES_SKIP|C1|C2|(P5307 ∨ ¬P5307)
+  RES_SKIP|C1|C2|(P33937 ∨ ¬P33937)
+  RES_SKIP|C1|C3|(¬P5307)
+  RES_SKIP|C1|C4|(¬P33937)
+  RES_SKIP|C1|C8|(¬P5307)
+  RES_SKIP|C2|C3|(P33937)
+  RESOLVE|C2|C4|P33937
+  DERIVED|C9|(P5307)
+  RES_SKIP|C1|C2|(P5307 ∨ ¬P5307)
+  RES_SKIP|C1|C2|(P33937 ∨ ¬P33937)
+  RES_SKIP|C1|C3|(¬P5307)
+  RES_SKIP|C1|C4|(¬P33937)
+  RES_SKIP|C1|C8|(¬P5307)
+  RES_SKIP|C1|C9|(¬P33937)
+  RES_SKIP|C2|C3|(P33937)
+  RES_SKIP|C2|C4|(P5307)
+  RES_SKIP|C2|C6|(P33937)
+  RES_SKIP|C2|C7|(P5307)
+  RES_SKIP|C3|C4|(P5307 ∨ ¬P5307)
+  RES_SKIP|C3|C4|(P33937 ∨ ¬P33937)
+  RES_SKIP|C3|C7|(¬P5307)
+  RES_SKIP|C3|C9|(P33937)
+  RES_SKIP|C4|C6|(¬P33937)
+  RES_SKIP|C4|C8|(P5307)
+  RESOLVE|C6|C9|¬P5307
+  DERIVED|C10|□
+  RES_EMPTY|C10
   CHECK|empty clause|unsatisfiable
-  Z|unsatisfiable; empty clause = C7
-Answer: unsatisfiable; empty clause = C7
+  Z|unsatisfiable; empty clause = C10
+Answer: unsatisfiable; empty clause = C10
 ```
 
 ### Extended Euclid — `ExtendedEuclidGenerator`  ·  college · difficulty 3

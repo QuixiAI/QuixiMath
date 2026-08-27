@@ -174,10 +174,12 @@ def _resolve(c1, c2, literal):
 
 
 def resolution_proof_oracle(problem):
-    formula = re.search(r"C1=.*?(?:\.| Resolve|, using|$)", problem).group(0)
+    formula = problem.split(". Policy:", 1)[0]
     clauses = []
     for raw in re.findall(r"C\d+=\(([^)]*)\)", formula):
-        clauses.append(tuple(raw.split(" OR ")))
+        clauses.append(tuple(
+            ("not " + value[1:] if value.startswith("¬") else value)
+            for value in raw.split(" ∨ ")))
     while clauses[-1]:
         seen = set(clauses)
         found = None
@@ -185,13 +187,15 @@ def resolution_proof_oracle(problem):
             for j, c2 in enumerate(clauses):
                 if i >= j:
                     continue
-                for literal in sorted(c1, key=_literal_key):
+                for literal in sorted(c1, key=lambda value: (
+                        _literal_key(value), value.startswith("not "))):
                     if _complement(literal) in c2:
                         resolvent = _resolve(c1, c2, literal)
-                        if resolvent not in seen:
+                        tautology = any(_complement(value) in resolvent
+                                        for value in resolvent)
+                        if resolvent not in seen and not tautology:
                             found = resolvent
                             break
-                        break
                 if found is not None:
                     break
             if found is not None:
