@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**546 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**547 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6413,6 +6413,28 @@ Steps:
   CHECK|decimal|6 ≤ 3 is false
   Z|false; no c (6 > 3)
 Answer: false; no c (6 > 3)
+```
+
+### Integers As Pairs — `IntegersAsPairsGenerator`  ·  college · difficulty 3
+
+Generate exact quotient-construction arithmetic for integers.
+
+**Variants:** `integers_as_pairs_add`, `integers_as_pairs_canonical_representative`, `integers_as_pairs_equivalence_check`, `integers_as_pairs_multiply`, `integers_as_pairs_order`
+
+```
+Problem: Multiply (194, 107) · (10, 66). Rule: (a, b) · (c, d) = (ac + bd, ad + bc). Find the canonical pair and ordinary value of the product.
+Steps:
+  PAIR_RULE|(a, b) · (c, d)|(ac + bd, ad + bc)
+  M|194|10|1940
+  M|107|66|7062
+  A|1940|7062|9002
+  M|194|66|12804
+  M|107|10|1070
+  A|12804|1070|13874
+  REDUCE|(9002, 13874)|(0, 4872)
+  CHECK|87 · −56|−4872
+  Z|(0, 4872) ~ −4872
+Answer: (0, 4872) ~ −4872
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
