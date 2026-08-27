@@ -569,6 +569,7 @@ from generators.semantic_tableau_generator import SemanticTableauGenerator
 from generators.hereditarily_finite_set_generator import HereditarilyFiniteSetGenerator
 from generators.peano_arithmetic_generator import PeanoArithmeticGenerator
 from generators.integers_as_pairs_generator import IntegersAsPairsGenerator
+from generators.rationals_as_pairs_generator import RationalsAsPairsGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -771,6 +772,7 @@ ALL_GENERATORS = [
     HereditarilyFiniteSetGenerator(),
     PeanoArithmeticGenerator(),
     IntegersAsPairsGenerator(),
+    RationalsAsPairsGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

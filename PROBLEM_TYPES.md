@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**547 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**548 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6435,6 +6435,29 @@ Steps:
   CHECK|87 · −56|−4872
   Z|(0, 4872) ~ −4872
 Answer: (0, 4872) ~ −4872
+```
+
+### Rationals As Pairs — `RationalsAsPairsGenerator`  ·  college · difficulty 3
+
+Generate exact quotient-construction arithmetic for rationals.
+
+**Variants:** `rationals_as_pairs_add`, `rationals_as_pairs_canonical_form`, `rationals_as_pairs_equivalence_check`, `rationals_as_pairs_multiply`, `rationals_as_pairs_order`
+
+```
+Problem: Pair: (188, 108). Canonical form has positive denominator and gcd(abs(a), b) = 1. Reduce the pair to canonical rational form.
+Steps:
+  PAIR_RULE|divide both coordinates by gcd
+  GCD_START|188|108
+  GCD_DIV|188|108|1|80
+  GCD_DIV|108|80|1|28
+  GCD_DIV|80|28|2|24
+  GCD_DIV|28|24|1|4
+  GCD_DIV|24|4|6|0
+  GCD_DONE|4
+  REDUCE|(188, 108)|(47, 27)|divide by 4
+  CHECK|47/27
+  Z|(47, 27) = 47/27
+Answer: (47, 27) = 47/27
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

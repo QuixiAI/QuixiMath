@@ -311,6 +311,7 @@ CURRICULUM = {
     "HereditarilyFiniteSetGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PeanoArithmeticGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "IntegersAsPairsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "RationalsAsPairsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
