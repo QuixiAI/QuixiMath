@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**519 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**520 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -995,6 +995,54 @@ Steps:
   FORM|reverse|¬p → ¬(r ∨ p)
   Z|¬(r ∨ p) → ¬p; ¬p → ¬(r ∨ p)
 Answer: ¬(r ∨ p) → ¬p; ¬p → ¬(r ∨ p)
+```
+
+### Knights Knaves — `KnightsKnavesGenerator`  ·  middle · difficulty 3
+
+Generate uniquely solvable cases from a reusable statement grammar.
+
+**Variants:** `knights_knaves_one_statement_each`, `knights_knaves_three_islanders`, `knights_knaves_two_islanders`
+
+```
+Problem: Puzzle format: three islanders. Each person is either a knight who always tells the truth or a knave who always lies. Nico says "at least one of Nico and Iris is a knight." Bea says "at least one of Nico and Bea is a knight." Iris says "Bea and Iris are different types." Check assignments with names in listed order and knight before knave. Find the unique assignment consistent with every statement.
+Steps:
+  CASE|Nico=knight, Bea=knight, Iris=knight
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|T|consistent
+  STATEMENT_EVAL|Iris says Bea and Iris are different types|F|contradiction
+  REJECT|Nico=knight, Bea=knight, Iris=knight|contradiction
+  CASE|Nico=knight, Bea=knight, Iris=knave
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|T|consistent
+  STATEMENT_EVAL|Iris says Bea and Iris are different types|T|contradiction
+  REJECT|Nico=knight, Bea=knight, Iris=knave|contradiction
+  CASE|Nico=knight, Bea=knave, Iris=knight
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|T|contradiction
+  REJECT|Nico=knight, Bea=knave, Iris=knight|contradiction
+  CASE|Nico=knight, Bea=knave, Iris=knave
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|T|contradiction
+  REJECT|Nico=knight, Bea=knave, Iris=knave|contradiction
+  CASE|Nico=knave, Bea=knight, Iris=knight
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|contradiction
+  REJECT|Nico=knave, Bea=knight, Iris=knight|contradiction
+  CASE|Nico=knave, Bea=knight, Iris=knave
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|F|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|T|consistent
+  STATEMENT_EVAL|Iris says Bea and Iris are different types|T|contradiction
+  REJECT|Nico=knave, Bea=knight, Iris=knave|contradiction
+  CASE|Nico=knave, Bea=knave, Iris=knight
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|T|contradiction
+  REJECT|Nico=knave, Bea=knave, Iris=knight|contradiction
+  CASE|Nico=knave, Bea=knave, Iris=knave
+  STATEMENT_EVAL|Nico says at least one of Nico and Iris is a knight|F|consistent
+  STATEMENT_EVAL|Bea says at least one of Nico and Bea is a knight|F|consistent
+  STATEMENT_EVAL|Iris says Bea and Iris are different types|F|consistent
+  ACCEPT|Nico=knave, Bea=knave, Iris=knave|all statements fit
+  CHECK|unique surviving case|Nico knave, Bea knave, Iris knave
+  Z|Nico knave, Bea knave, Iris knave
+Answer: Nico knave, Bea knave, Iris knave
 ```
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3

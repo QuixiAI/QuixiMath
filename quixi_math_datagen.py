@@ -541,6 +541,7 @@ from generators.set_builder_roster_generator import SetBuilderRosterGenerator
 from generators.venn_region_count_generator import VennRegionCountGenerator
 from generators.counterexample_search_generator import CounterexampleSearchGenerator
 from generators.conditional_forms_generator import ConditionalFormsGenerator
+from generators.knights_knaves_generator import KnightsKnavesGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -644,6 +645,7 @@ ALL_GENERATORS = [
     VennRegionCountGenerator(),
     CounterexampleSearchGenerator(),
     ConditionalFormsGenerator(),
+    KnightsKnavesGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),
