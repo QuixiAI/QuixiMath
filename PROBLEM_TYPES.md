@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**514 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**515 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -211,6 +211,22 @@ Steps:
   CHECK|665 + 0|665|rewrite = 665
   Z|rewritten: 665; value = 665; property = additive identity property
 Answer: rewritten: 665; value = 665; property = additive identity property
+```
+
+### Set Membership Subset — `SetMembershipSubsetGenerator`  ·  elementary · difficulty 2
+
+Generate explicit finite-set scans in the canonical set dialect.
+
+**Variants:** `set_membership_subset_count`, `set_membership_subset_element_vs_subset`, `set_membership_subset_equality`, `set_membership_subset_membership`, `set_membership_subset_subset`
+
+```
+Problem: Set A = {3, 17, 27, 33, 34}. Focus value n = 25. Check all three claims about n and the singleton {n}.
+Steps:
+  ELEMENT_SCAN|25|A|not found
+  SUBSET_CHECK|{25}|subset of A?|no
+  ELEMENT_SCAN|{25}|A|not found
+  Z|25 ∈ A: no; {25} ⊆ A: no; {25} ∈ A: no
+Answer: 25 ∈ A: no; {25} ⊆ A: no; {25} ∈ A: no
 ```
 
 ### Decimal Add Sub — `DecimalAddSubGenerator`  ·  elementary · difficulty 3

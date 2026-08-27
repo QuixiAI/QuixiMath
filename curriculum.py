@@ -35,6 +35,7 @@ CURRICULUM = {
     "OneToOneCorrespondenceGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
     "LogicalConnectiveEvalGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "OperationPropertiesGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "SetMembershipSubsetGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "DecimalAddSubGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "DecimalMultGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "DecimalDivGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
