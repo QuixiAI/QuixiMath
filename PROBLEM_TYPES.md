@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**541 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**542 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6320,6 +6320,23 @@ Steps:
   CHECK|matrix quantifier-free|(B(v, w, z) ∨ J(v1, z))
   Z|∃v ∀w ∀v1 (B(v, w, z) ∨ J(v1, z))
 Answer: ∃v ∀w ∀v1 (B(v, w, z) ∨ J(v1, z))
+```
+
+### English To Logic — `EnglishToLogicGenerator`  ·  college · difficulty 2
+
+Generate template-invertible English-to-predicate-logic records.
+
+**Variants:** `english_to_logic_existential`, `english_to_logic_restricted_quantifier`, `english_to_logic_two_place`, `english_to_logic_universal`
+
+```
+Problem: Sentence: Every librarian greets every athlete. Predicate key: S(x): x is a librarian; R(y): y is an athlete; N(x, y): x greets y. Preserve the English quantifier scope in predicate logic.
+Steps:
+  PREDICATES|S(x): x is a librarian; R(y): y is an athlete; N(x, y): x greets y
+  QUANT_CHOICE|every → ∀; every → ∀
+  SHAPE|subject/object noun phrases restrict their quantifiers
+  REWRITE|∀x (S(x) → ∀y (R(y) → N(x, y)))
+  Z|∀x (S(x) → ∀y (R(y) → N(x, y)))
+Answer: ∀x (S(x) → ∀y (R(y) → N(x, y)))
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
