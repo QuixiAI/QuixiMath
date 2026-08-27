@@ -648,6 +648,7 @@ ALL_GENERATORS = [
     ConditionalFormsGenerator(),
     KnightsKnavesGenerator(),
     LogicGridPuzzleGenerator(),
+    SetOperationsGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),
@@ -911,7 +912,6 @@ ALL_GENERATORS = [
     ODESystemGenerator(),
     SeriesSolutionGenerator(),
     StabilityGenerator(),
-    SetOperationsGenerator(),
     RelationCheckGenerator(),
     InclusionExclusionGenerator(),
     StarsAndBarsGenerator(),

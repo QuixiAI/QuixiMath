@@ -1111,6 +1111,25 @@ Steps:
 Answer: Nico: rabbit, smoothie; Ben: canary, water; Iris: turtle, tea
 ```
 
+### Set Operations — `SetOperationsGenerator`  ·  middle · difficulty 2
+
+Generate complete finite-set scratchpads in the shared set dialect.
+
+**Variants:** `set_operations_algebra`, `set_operations_cartesian_product`, `set_operations_complement`, `set_operations_integer_elements`, `set_operations_power_set`, `set_operations_symmetric_difference`, `set_operations_two_step`
+
+```
+Problem: A = {3, 17, 26, 27, 32, 33}. B = {14, 23, 31, 33, 38}. C = {7, 9, 19, 40}. Expression: A Δ (B − C). Reduce one subexpression at a time.
+Steps:
+  SET_SETUP|A = {3, 17, 26, 27, 32, 33}|B = {14, 23, 31, 33, 38}|C = {7, 9, 19, 40}
+  SUBEXPR|B − C|{14, 23, 31, 33, 38}
+  REWRITE|A Δ {14, 23, 31, 33, 38}
+  SUBEXPR|A Δ (B − C)|{3, 14, 17, 23, 26, 27, 31, 32, 38}
+  REWRITE|{3, 14, 17, 23, 26, 27, 31, 32, 38}
+  COUNT|result size|9
+  Z|{3, 14, 17, 23, 26, 27, 31, 32, 38}
+Answer: {3, 14, 17, 23, 26, 27, 31, 32, 38}
+```
+
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
 
 Generates unit rate calculation problems.
@@ -6417,26 +6436,6 @@ Steps:
   STABILITY|y=13|left up, right down|stable
   Z|equilibria: y=-2 stable; y=9 unstable; y=13 stable
 Answer: equilibria: y=-2 stable; y=9 unstable; y=13 stable
-```
-
-### Set Operations — `SetOperationsGenerator`  ·  college · difficulty 2
-
-Finite set algebra, power sets, and Cartesian products.
-
-**Variants:** `set_operations_algebra`, `set_operations_cartesian_product`, `set_operations_power_set`
-
-```
-Problem: Find the power set P(S) for S = {a, c, d}.
-Steps:
-  SET_SETUP|S = {a, c, d}|power set
-  E|2|3|8
-  SUBSET_SIZE|0|{}
-  SUBSET_SIZE|1|{a}, {c}, {d}
-  SUBSET_SIZE|2|{a, c}, {a, d}, {c, d}
-  SUBSET_SIZE|3|{a, c, d}
-  POWER_SET_RESULT|{{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
-  Z|P(S) = {{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
-Answer: P(S) = {{}, {a}, {c}, {d}, {a, c}, {a, d}, {c, d}, {a, c, d}}
 ```
 
 ### Relation Check — `RelationCheckGenerator`  ·  college · difficulty 2
