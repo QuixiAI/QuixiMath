@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**532 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**533 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6067,6 +6067,30 @@ Steps:
   RANGE|{12, 16, 19, 29}
   Z|domain = {b, i, m, p, q}; range = {12, 16, 19, 29}
 Answer: domain = {b, i, m, p, q}; range = {12, 16, 19, 29}
+```
+
+### Relation Closure — `RelationClosureGenerator`  ·  college · difficulty 3
+
+Generate exact closure records on small finite directed graphs.
+
+**Variants:** `relation_closure_equivalence_closure`, `relation_closure_reflexive`, `relation_closure_symmetric`, `relation_closure_transitive_by_paths`, `relation_closure_transitive_warshall`
+
+```
+Problem: A = {3, 17, 32, 33}. R = {(3, 33), (17, 3), (17, 17), (17, 32), (32, 33), (33, 3), (33, 17)}. Repeat a→b and b→c imply a→c to a fixed point.
+Steps:
+  REL_SETUP|A = {3, 17, 32, 33}|R = {(3, 33), (17, 3), (17, 17), (17, 32), (32, 33), (33, 3), (33, 17)}
+  PATH|3→33→3|add (3, 3)
+  PATH|3→33→17|add (3, 17)
+  PATH|3→17→32|add (3, 32)
+  PATH|17→3→33|add (17, 33)
+  PATH|32→33→3|add (32, 3)
+  PATH|32→3→17|add (32, 17)
+  PATH|32→3→32|add (32, 32)
+  PATH|33→3→32|add (33, 32)
+  PATH|33→3→33|add (33, 33)
+  CHECK|transitive|no missing pair
+  Z|{(3, 3), (3, 17), (3, 32), (3, 33), (17, 3), (17, 17), (17, 32), (17, 33), (32, 3), (32, 17), (32, 32), (32, 33), (33, 3), (33, 17), (33, 32), (33, 33)}
+Answer: {(3, 3), (3, 17), (3, 32), (3, 33), (17, 3), (17, 17), (17, 32), (17, 33), (32, 3), (32, 17), (32, 32), (32, 33), (33, 3), (33, 17), (33, 32), (33, 33)}
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
