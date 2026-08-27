@@ -540,6 +540,7 @@ from generators.set_membership_subset_generator import SetMembershipSubsetGenera
 from generators.set_builder_roster_generator import SetBuilderRosterGenerator
 from generators.venn_region_count_generator import VennRegionCountGenerator
 from generators.counterexample_search_generator import CounterexampleSearchGenerator
+from generators.conditional_forms_generator import ConditionalFormsGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -642,6 +643,7 @@ ALL_GENERATORS = [
     SetBuilderRosterGenerator(),
     VennRegionCountGenerator(),
     CounterexampleSearchGenerator(),
+    ConditionalFormsGenerator(),
 
     # --- Ratios & Proportions ---
     UnitRateGenerator(),

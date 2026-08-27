@@ -72,6 +72,7 @@ CURRICULUM = {
     "SetBuilderRosterGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "VennRegionCountGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "CounterexampleSearchGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "ConditionalFormsGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "UnitRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "RatioTableGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "TipBillSplitGenerator": {"grade_level": MIDDLE, "difficulty": 3},
