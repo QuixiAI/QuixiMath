@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**545 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**546 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6398,6 +6398,21 @@ Steps:
   CHECK|flatten one level|{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
   Z|{{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
 Answer: {{∅, {∅, {∅}}}, {{∅}, {{∅}}}, {{∅, {∅}}}, {{{∅}}}, {∅, {∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {∅, {∅}, {{{∅}}}}, {∅, {∅, {∅}}, {{{∅}}}}, {∅, {{∅}}, {{{∅}}}}, {{∅}, {∅, {∅}}, {{∅}}, {{{∅}}}}, {{∅}, {{∅}}, {{{∅}}}}, {{∅}, {{{∅}}}}, {{{{∅}}}}}
+```
+
+### Peano Arithmetic — `PeanoArithmeticGenerator`  ·  college · difficulty 3
+
+Generate exact recursive arithmetic over successor numerals.
+
+**Variants:** `peano_arithmetic_addition`, `peano_arithmetic_exponentiation`, `peano_arithmetic_leq_witness`, `peano_arithmetic_multiplication`, `peano_arithmetic_predecessor_monus`
+
+```
+Problem: Comparison: 6 ≤ SSS0. Definition: a ≤ b iff there exists c with a + c = b. Check the comparison from the supplied Peano definition.
+Steps:
+  NO_WITNESS|6 > 3|successor addition cannot decrease a
+  CHECK|decimal|6 ≤ 3 is false
+  Z|false; no c (6 > 3)
+Answer: false; no c (6 > 3)
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

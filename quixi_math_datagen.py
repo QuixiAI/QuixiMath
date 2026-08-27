@@ -567,6 +567,7 @@ from generators.english_to_logic_generator import EnglishToLogicGenerator
 from generators.natural_deduction_generator import NaturalDeductionGenerator
 from generators.semantic_tableau_generator import SemanticTableauGenerator
 from generators.hereditarily_finite_set_generator import HereditarilyFiniteSetGenerator
+from generators.peano_arithmetic_generator import PeanoArithmeticGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -767,6 +768,7 @@ ALL_GENERATORS = [
     NaturalDeductionGenerator(),
     SemanticTableauGenerator(),
     HereditarilyFiniteSetGenerator(),
+    PeanoArithmeticGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
