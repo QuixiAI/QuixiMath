@@ -96,6 +96,7 @@ CURRICULUM = {
     "PGFGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "NegativeBinomialGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "MultinomialProbabilityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "PoissonProcessGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

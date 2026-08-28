@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**592 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**593 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12062,6 +12062,26 @@ Steps:
   CHECK|matching orders|6|count probability = orders times sequence probability
   Z|specified sequence = 1/11664; matching counts = 1/1944
 Answer: specified sequence = 1/11664; matching counts = 1/1944
+```
+
+### Poisson Process — `PoissonProcessGenerator`  ·  college · difficulty 3
+
+Generate Poisson-process count, waiting-time, and rate exercises.
+
+**Variants:** `probability_poisson_process_count_in_interval`, `probability_poisson_process_interarrival_within`, `probability_poisson_process_mean_variance`, `probability_poisson_process_no_event_interval`, `probability_poisson_process_superposition_rate`, `probability_poisson_process_thinning_rate`, `probability_poisson_process_time_to_second`, `probability_poisson_process_which_type_first`
+
+```
+Problem: At the nova lab in Boston, Imani monitors independent type-A and type-B Poisson streams of orders. Their rates are lambda_A=3 per hour and lambda_B=5/2 per hour. Target: the probability that the next combined event is type A. Compute the exact type-A first-arrival probability.
+Steps:
+  PP_SETUP|lambda_A=3, lambda_B=5/2|next event type
+  RATE_FORMULA|P(type A first)=lambda_A/(lambda_A+lambda_B)
+  A|3|5/2|11/2
+  D|3|11/2|6/11
+  D|5/2|11/2|5/11
+  A|6/11|5/11|1
+  CHECK|type-A plus type-B first probabilities|1
+  Z|6/11
+Answer: 6/11
 ```
 
 ## Graduate
