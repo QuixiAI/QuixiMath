@@ -10136,19 +10136,20 @@ Answer: k = 1/98, P = 13/49, mean = 28/3, variance = 98/9
 
 ### Named Distribution — `NamedDistributionGenerator`  ·  college · difficulty 3
 
-Poisson, exponential, uniform, and normal distribution arithmetic.
+Generate Poisson, exponential, uniform, and normal exercises.
 
-**Variants:** `named_distribution_exponential`, `named_distribution_normal`, `named_distribution_poisson`, `named_distribution_uniform`
+**Variants:** `named_distribution_exponential`, `named_distribution_exponential_memoryless`, `named_distribution_normal`, `named_distribution_poisson`, `named_distribution_poisson_mode`, `named_distribution_uniform`
 
 ```
-Problem: For X~Normal(mu=-1, sigma=1), compute P(X<0). Use supplied Phi(1)=8413/10000.
+Problem: At the quartz program in Portland, Mina studies a named distribution. Distribution: Normal(mu=0, sigma=1). Supplied value: Phi(1) = 0.8413. Target: P(X<1) to 4 decimal places. Find this normal probability from the provided lookup.
 Steps:
-  DIST_SETUP|normal|mu=-1,sigma=1|x=0
-  S|0|-1|1
+  DIST_SETUP|normal|mu=0, sigma=1|x=1
+  S|1|0|1
   D|1|1|1
-  LOOKUP_SUPPLIED|Phi(1)|8413/10000
-  Z|P(X<0) = 8413/10000
-Answer: P(X<0) = 8413/10000
+  LOOKUP_SUPPLIED|Phi(1)|0.8413
+  CHECK|z=1|0.8413
+  Z|P(X<1) = 0.8413
+Answer: P(X<1) = 0.8413
 ```
 
 ### Joint Distribution — `JointDistributionGenerator`  ·  college · difficulty 4
