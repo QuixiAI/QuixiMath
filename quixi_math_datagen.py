@@ -111,6 +111,7 @@ from generators.grouped_data_generator import GroupedDataGenerator
 from generators.percentile_generator import PercentileGenerator
 from generators.linear_transform_effect_generator import LinearTransformEffectGenerator
 from generators.scatter_plot_describe_generator import ScatterPlotDescribeGenerator
+from generators.two_way_table_generator import TwoWayTableGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1342,6 +1343,7 @@ ALL_GENERATORS = [
     PercentileGenerator(),
     LinearTransformEffectGenerator(),
     ScatterPlotDescribeGenerator(),
+    TwoWayTableGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

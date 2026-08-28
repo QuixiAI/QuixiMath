@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**617 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**618 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7049,6 +7049,42 @@ Steps:
   CHECK|converted summaries|mean 12 in; sd 4 in
   Z|mean 12 in; sd 4 in
 Answer: mean 12 in; sd 4 in
+```
+
+### Two Way Table — `TwoWayTableGenerator`  ·  high · difficulty 2
+
+Generate exact two-way-table reading and completion exercises.
+
+**Variants:** `statistics_two_way_table_association_check`, `statistics_two_way_table_conditional_col`, `statistics_two_way_table_conditional_row`, `statistics_two_way_table_fill_missing_cell`, `statistics_two_way_table_joint_relative`, `statistics_two_way_table_marginal`
+
+```
+Problem: At the west annex during the indigo review, a two-way table crosses Team (rows) with Outcome (columns).
+            Win   Draw   Loss   Total
+Team Red      5      3      1       9
+Team Blue     4      2      1       7
+Team Gold     1      1      2       4
+Total        10      6      4      20
+Target row: Team Red. Target column: Loss.
+Compute the target-row percent conditional on the named column.
+Steps:
+  STAT_SETUP|two-way frequency table|3x3, n=20
+  TABLE_CELL|Team Red, Win|5
+  TABLE_CELL|Team Red, Draw|3
+  TABLE_CELL|Team Red, Loss|1
+  TABLE_CELL|Team Blue, Win|4
+  TABLE_CELL|Team Blue, Draw|2
+  TABLE_CELL|Team Blue, Loss|1
+  TABLE_CELL|Team Gold, Win|1
+  TABLE_CELL|Team Gold, Draw|1
+  TABLE_CELL|Team Gold, Loss|2
+  TABLE_TOTAL|grand|5 + 3 + 1 + 4 + 2 + 1 + 1 + 1 + 2 = 20
+  MARGIN_COL|Loss|1 + 1 + 2|4
+  M|1|100|100
+  D|100|4|25
+  COND_COL|Team Red given Loss|1/4|25%
+  CHECK|conditional col|25%
+  Z|25%
+Answer: 25%
 ```
 
 ## College

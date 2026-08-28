@@ -121,6 +121,7 @@ CURRICULUM = {
     "PercentileGenerator": {"grade_level": HIGH, "difficulty": 2},
     "LinearTransformEffectGenerator": {"grade_level": HIGH, "difficulty": 2},
     "ScatterPlotDescribeGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "TwoWayTableGenerator": {"grade_level": HIGH, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
