@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**581 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**582 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2970,6 +2970,23 @@ Steps:
   CHECK|two updates equal direct joint update|27783/49607|27783/49607
   Z|P(U3 given teal) = 441/769; P(U3 given teal, teal) = 27783/49607
 Answer: P(U3 given teal) = 441/769; P(U3 given teal, teal) = 27783/49607
+```
+
+### Hypergeometric — `HypergeometricGenerator`  ·  high · difficulty 4
+
+Generate exact hypergeometric probabilities and moments.
+
+**Variants:** `probability_hypergeometric_at_least_one`, `probability_hypergeometric_at_most`, `probability_hypergeometric_exact_k`, `probability_hypergeometric_mean`, `probability_hypergeometric_three_types`, `probability_hypergeometric_variance`
+
+```
+Problem: In the quartz lot, a case has 8 charged batteries and 4 empty batteries. A sample of 2 items is drawn uniformly without replacement. Let X be the number of charged batteries drawn. Target: E[X]. Compute E[X] for this without-replacement count.
+Steps:
+  HYPERGEO_SETUP|N = 12, K = 8, n = 2|E[X]
+  HYPERGEO_FORMULA|E[X] = nK/N
+  M|2|8|16
+  D|16|12|4/3
+  Z|E[X] = 4/3
+Answer: E[X] = 4/3
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
