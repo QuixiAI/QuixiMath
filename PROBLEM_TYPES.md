@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**579 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**580 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2857,6 +2857,49 @@ Steps:
   CHECK|total probability|1
   Z|median 8
 Answer: median 8
+```
+
+### Expectation Of Function — `ExpectationOfFunctionGenerator`  ·  high · difficulty 3
+
+Generate exact expectation, variance, and standardization exercises.
+
+**Variants:** `probability_expectation_function_compare_routes`, `probability_expectation_function_e_g_x`, `probability_expectation_function_linear_mean_var`, `probability_expectation_function_standardize`, `probability_expectation_function_var_shortcut`
+
+```
+Problem: X has pmf: P(X=66) = 1/8; P(X=94) = 3/4; P(X=122) = 1/8. Standardize x = 66. Determine the exact standard score with no decimal approximation.
+Steps:
+  WEIGHT|66|1/8
+  WEIGHT|94|3/4
+  WEIGHT|122|1/8
+  EV_FORMULA|E[X] = Σ x·P(X=x)
+  M|66|1/8|33/4
+  G_ROW|x=66|g = 66|66 × 1/8 = 33/4
+  M|94|3/4|141/2
+  G_ROW|x=94|g = 94|94 × 3/4 = 141/2
+  M|122|1/8|61/4
+  G_ROW|x=122|g = 122|122 × 1/8 = 61/4
+  A|33/4|141/2|315/4
+  A|315/4|61/4|94
+  CHECK|weighted sum for X|94
+  EV_FORMULA|E[X²] = Σ x²·P(X=x)
+  M|4356|1/8|1089/2
+  G_ROW|x=66|g = 4356|4356 × 1/8 = 1089/2
+  M|8836|3/4|6627
+  G_ROW|x=94|g = 8836|8836 × 3/4 = 6627
+  M|14884|1/8|3721/2
+  G_ROW|x=122|g = 14884|14884 × 1/8 = 3721/2
+  A|1089/2|6627|14343/2
+  A|14343/2|3721/2|9032
+  CHECK|weighted sum for X²|9032
+  VAR_FORMULA|Var(X) = E[X²] − (E[X])²
+  E|94|2|8836
+  S|9032|8836|196
+  ROOT|196|2|14
+  S|66|94|-28
+  D|-28|14|-2
+  CHECK|constructed exact standard deviation|14
+  Z|μ = 94; σ = 14; z = -2
+Answer: μ = 94; σ = 14; z = -2
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2

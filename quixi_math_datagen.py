@@ -73,6 +73,7 @@ from generators.independence_check_generator import IndependenceCheckGenerator
 from generators.law_of_total_probability_generator import LawOfTotalProbabilityGenerator
 from generators.discrete_uniform_bernoulli_generator import DiscreteUniformBernoulliGenerator
 from generators.pmf_cdf_quantile_generator import PmfCdfQuantileGenerator
+from generators.expectation_of_function_generator import ExpectationOfFunctionGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -712,6 +713,7 @@ ALL_GENERATORS = [
     LawOfTotalProbabilityGenerator(),
     DiscreteUniformBernoulliGenerator(),
     PmfCdfQuantileGenerator(),
+    ExpectationOfFunctionGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
