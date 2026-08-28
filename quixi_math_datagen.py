@@ -671,6 +671,7 @@ from generators.money_life_generator import MoneyLifeGenerator
 from generators.missing_information_generator import MissingInformationGenerator
 from generators.method_discrimination_generator import MethodDiscriminationGenerator
 from generators.plausibility_critic_generator import PlausibilityCriticGenerator
+from generators.assumption_check_generator import AssumptionCheckGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1413,6 +1414,7 @@ ALL_GENERATORS = [
     MissingInformationGenerator(),
     MethodDiscriminationGenerator(),
     PlausibilityCriticGenerator(),
+    AssumptionCheckGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

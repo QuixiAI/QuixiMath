@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**649 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**650 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7580,6 +7580,23 @@ Steps:
   CHECK|claim 1.4|correct 0.4|implausible
   Z|p = 4/10 = 0.4; implausible; correct 0.4
 Answer: p = 4/10 = 0.4; implausible; correct 0.4
+```
+
+### Assumption Check — `AssumptionCheckGenerator`  ·  high · difficulty 4
+
+Generate one-premise checks with exact corrections.
+
+**Variants:** `applied_assumption_check_average_of_averages_distractor`, `applied_assumption_check_average_of_averages_plain`, `applied_assumption_check_average_of_averages_with_model`, `applied_assumption_check_division_by_zero_rate_distractor`, `applied_assumption_check_division_by_zero_rate_estimate_first`, `applied_assumption_check_division_by_zero_rate_plain`, `applied_assumption_check_division_by_zero_rate_with_model`, `applied_assumption_check_extrapolation_beyond_data_distractor`, `applied_assumption_check_extrapolation_beyond_data_estimate_first`, `applied_assumption_check_extrapolation_beyond_data_plain`, `applied_assumption_check_extrapolation_beyond_data_with_model`, `applied_assumption_check_independence_without_replacement_distractor`, `applied_assumption_check_independence_without_replacement_estimate_first`, `applied_assumption_check_independence_without_replacement_plain`, `applied_assumption_check_independence_without_replacement_with_model`, `applied_assumption_check_nonphysical_root_distractor`, `applied_assumption_check_nonphysical_root_estimate_first`, `applied_assumption_check_nonphysical_root_plain`, `applied_assumption_check_nonphysical_root_with_model`, `applied_assumption_check_normal_approx_small_n_distractor`, `applied_assumption_check_normal_approx_small_n_estimate_first`, `applied_assumption_check_normal_approx_small_n_plain`, `applied_assumption_check_normal_approx_small_n_with_model`, `applied_assumption_check_proportional_reasoning_with_fixed_cost_distractor`, `applied_assumption_check_proportional_reasoning_with_fixed_cost_estimate_first`, `applied_assumption_check_proportional_reasoning_with_fixed_cost_plain`, `applied_assumption_check_proportional_reasoning_with_fixed_cost_with_model`, `applied_assumption_check_triangle_inequality_distractor`, `applied_assumption_check_triangle_inequality_estimate_first`, `applied_assumption_check_triangle_inequality_plain`, `applied_assumption_check_triangle_inequality_with_model`
+
+```
+Problem: At the library corner, a note reviewed by Milo reads: A sensor records a distance change of 100 km over 5 hours. Milo wants to report the distance change per hour by dividing those two readings. Is the required division defined for this record?
+Steps:
+  MODEL_EQ|r = 100/5 = 20 km/h|relationship after checking the premise
+  ASSUMPTION|nonzero denominator|holds|elapsed time is nonzero
+  D|100|5|20
+  CHECK|100/5|20 km/h
+  Z|r = 100/5 = 20 km/h; applies; elapsed time is nonzero; correct 20 km/h
+Answer: r = 100/5 = 20 km/h; applies; elapsed time is nonzero; correct 20 km/h
 ```
 
 ## College
