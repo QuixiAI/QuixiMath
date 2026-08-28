@@ -55,6 +55,7 @@ from generators.proportion_word_problem_generator import ProportionWordProblemGe
 from generators.simple_stats_generator import SimpleStatsGenerator
 from generators.number_comparison_generator import NumberComparisonGenerator
 from generators.simple_probability_generator import SimpleProbabilityGenerator
+from generators.likelihood_language_generator import LikelihoodLanguageGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -676,6 +677,7 @@ ALL_GENERATORS = [
     # --- Data & Statistics (Elementary) ---
     SimpleStatsGenerator(),
     SimpleProbabilityGenerator(),
+    LikelihoodLanguageGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

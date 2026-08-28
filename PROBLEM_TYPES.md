@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**561 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**562 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -772,6 +772,23 @@ Steps:
   PROB_SETUP|98|101
   Z|98/101
 Answer: 98/101
+```
+
+### Likelihood Language — `LikelihoodLanguageGenerator`  ·  elementary · difficulty 1
+
+Generate exact likelihood classification and comparison exercises.
+
+**Variants:** `probability_likelihood_language_certain_impossible`, `probability_likelihood_language_classify`, `probability_likelihood_language_compare_two_events`, `probability_likelihood_language_order_events`
+
+```
+Problem: Experiment: one token selected from a jar. Outcome counts: amber=17; orange=33; white=32. All individual outcomes are equally likely. Scale: 0 impossible; between 0 and 1/2 unlikely; 1/2 even chance; between 1/2 and 1 likely; 1 certain. Focus event: one of the three listed outcomes. Use the complete outcome list to classify the focus event.
+Steps:
+  SUM|17 + 33 + 32|82
+  PROB_SETUP|82|82
+  LIKELIHOOD|1|certain
+  CHECK|one of the three listed outcomes|certain
+  Z|certain; 1
+Answer: certain; 1
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1

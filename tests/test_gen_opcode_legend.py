@@ -23,10 +23,11 @@ class TestGenOpcodeLegend(unittest.TestCase):
 
     def test_prob_setup_is_only_numeric_variant(self):
         # After the PROB_DESCRIBE rename, PROB_SETUP should remain only in
-        # the structured favorable|total form of simple_probability.
+        # the structured favorable|total form of numeric probability flows.
         self.assertEqual(
             self.opcodes["PROB_SETUP"].files,
-            {"simple_probability_generator.py"},
+            {"likelihood_language_generator.py",
+             "simple_probability_generator.py"},
         )
 
     def test_ifexp_opcode_resolves_both_branches(self):

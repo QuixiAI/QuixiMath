@@ -65,6 +65,7 @@ CURRICULUM = {
     "ProportionWordProblemGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "SimpleStatsGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "SimpleProbabilityGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
+    "LikelihoodLanguageGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
