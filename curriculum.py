@@ -285,6 +285,7 @@ CURRICULUM = {
     "FisherInformationGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "SufficiencyFactorizationGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "LikelihoodRatioTestGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "DiscretePosteriorGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},

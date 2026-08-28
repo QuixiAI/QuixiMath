@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**637 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**638 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -17047,4 +17047,59 @@ Steps:
   CHECK|-2 ln Λ vs χ²|4 > 3.841|reject H0
   Z|-2 ln Λ = 4; reject H0 (4 > 3.841)
 Answer: -2 ln Λ = 4; reject H0 (4 > 3.841)
+```
+
+### Discrete Posterior — `DiscretePosteriorGenerator`  ·  graduate · difficulty 3
+
+Generate exact finite-grid posterior and predictive calculations.
+
+**Variants:** `statistics_discrete_posterior_bayes_factor`, `statistics_discrete_posterior_credible_set`, `statistics_discrete_posterior_map`, `statistics_discrete_posterior_posterior_mean`, `statistics_discrete_posterior_posterior_predictive`, `statistics_discrete_posterior_posterior_table`
+
+```
+Problem: At the river office during the Bayes review (grid C46), prior on θ: P(0.1) = 1/2; P(0.4) = 1/8; P(0.5) = 1/4; P(0.8) = 1/8. Observe 1 success in 5 Bernoulli trials (4 failures).
+Evaluate the sum of theta times posterior(theta).
+Steps:
+  BAYES_UPDATE_SETUP|grid 0.1, 0.4, 0.5, 0.8|prior 1/2, 1/8, 1/4, 1/8; data 1 of 5
+  S|1|0.1|0.9
+  E|0.1|1|0.1
+  E|0.9|4|0.6561
+  M|0.1|0.6561|0.06561
+  M|1/2|0.06561|0.032805
+  BAYES_ROW|0.1|1/2 · 0.1 · 0.6561|0.032805
+  S|1|0.4|0.6
+  E|0.4|1|0.4
+  E|0.6|4|0.1296
+  M|0.4|0.1296|0.05184
+  M|1/8|0.05184|0.00648
+  BAYES_ROW|0.4|1/8 · 0.4 · 0.1296|0.00648
+  S|1|0.5|0.5
+  E|0.5|1|0.5
+  E|0.5|4|0.0625
+  M|0.5|0.0625|0.03125
+  M|1/4|0.03125|0.0078125
+  BAYES_ROW|0.5|1/4 · 0.5 · 0.0625|0.0078125
+  S|1|0.8|0.2
+  E|0.8|1|0.8
+  E|0.2|4|0.0016
+  M|0.8|0.0016|0.00128
+  M|1/8|0.00128|0.00016
+  BAYES_ROW|0.8|1/8 · 0.8 · 0.0016|0.00016
+  SUM|0.032805 + 0.00648 + 0.0078125 + 0.00016|0.0472575
+  D|0.032805|0.0472575|4374/6301
+  POSTERIOR_ROW|0.1|4374/6301
+  D|0.00648|0.0472575|864/6301
+  POSTERIOR_ROW|0.4|864/6301
+  D|0.0078125|0.0472575|3125/18903
+  POSTERIOR_ROW|0.5|3125/18903
+  D|0.00016|0.0472575|64/18903
+  POSTERIOR_ROW|0.8|64/18903
+  CHECK|posterior split|4374/6301 + 864/6301 + 3125/18903 + 64/18903|1
+  M|0.1|4374/6301|2187/31505
+  M|0.4|864/6301|1728/31505
+  M|0.5|3125/18903|3125/37806
+  M|0.8|64/18903|256/94515
+  SUM|2187/31505 + 1728/31505 + 3125/37806 + 256/94515|13209/63010
+  CHECK|Bernoulli posterior predictive|Σ θ·posterior(θ)|13209/63010
+  Z|P(next success) = 13209/63010
+Answer: P(next success) = 13209/63010
 ```
