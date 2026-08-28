@@ -279,6 +279,16 @@ DIFF_PROP_SE_BANK = (
     ((Fraction(1, 2), 800), (Fraction(1, 2), 800), Fraction(1, 40)),
     ((Fraction(1, 10), 1800), (Fraction(1, 10), 1800), Fraction(1, 100)),
     ((Fraction(3, 5), 1200), (Fraction(3, 5), 1200), Fraction(1, 50)),
+    ((Fraction(1, 10), 25), (Fraction(1, 5), 25), Fraction(1, 10)),
+    ((Fraction(1, 10), 25), (Fraction(3, 10), 75), Fraction(2, 25)),
+    ((Fraction(1, 10), 25), (Fraction(1, 2), 400), Fraction(13, 200)),
+    ((Fraction(1, 10), 25), (Fraction(7, 10), 75), Fraction(2, 25)),
+    ((Fraction(1, 10), 25), (Fraction(4, 5), 25), Fraction(1, 10)),
+    ((Fraction(1, 10), 50), (Fraction(9, 10), 50), Fraction(3, 50)),
+    ((Fraction(1, 5), 50), (Fraction(3, 10), 525), Fraction(3, 50)),
+    ((Fraction(1, 5), 50), (Fraction(2, 5), 75), Fraction(2, 25)),
+    ((Fraction(3, 10), 25), (Fraction(2, 5), 150), Fraction(1, 10)),
+    ((Fraction(3, 10), 50), (Fraction(7, 10), 300), Fraction(7, 100)),
 )
 
 

@@ -6623,19 +6623,26 @@ Answer: unfavorable
 
 Confidence intervals for a mean or a proportion, margins of error, and minimum sample sizes — with the critical value z* given in the problem (Principle 5). Sample sizes are perfect squares and the margins are chosen so √n is an integer and every quantity is an exact terminating decimal.
 
-**Variants:** `confidence_interval_mean_ci`, `confidence_interval_mean_margin`, `confidence_interval_prop_margin`, `confidence_interval_sample_size_mean`, `confidence_interval_sample_size_prop`
+**Variants:** `confidence_interval_diff_means_ci`, `confidence_interval_diff_props_ci`, `confidence_interval_mean_ci`, `confidence_interval_mean_margin`, `confidence_interval_prop_ci`, `confidence_interval_prop_margin`, `confidence_interval_sample_size_mean`, `confidence_interval_sample_size_prop`, `confidence_interval_width_effect`
 
 ```
-Problem: A planned mean confidence interval needs margin of error of 0.5, with σ = 3. Using z* = 2.05, find the minimum sample size.
+Problem: At the lake center during the kestrel study (cohort B57), a sample of size 1600 has p̂ = 0.8. Using z* = 1.96, find the confidence interval for p.
+Compute p̂ ± z*·SE(p̂).
 Steps:
-  CI_SETUP|σ = 3, E = 0.5, z* = 2.05|minimum sample size for the mean
-  SAMPLE_SIZE_FORMULA|n = (z*·σ/E)^2
-  M|2.05|3|6.15
-  D|6.15|0.5|12.3
-  E|12.3|2|151.29
-  CEIL|151.29|152
-  Z|152
-Answer: 152
+  CI_SETUP|p̂ = 0.8, n = 1600|z* = 1.96
+  S|1|0.8|0.2
+  M|0.8|0.2|0.16
+  D|0.16|1600|0.0001
+  ROOT|0.0001|2|0.01
+  LOOKUP_SUPPLIED|z*|1.96
+  MOE_FORMULA|E = z*·SE
+  M|1.96|0.01|0.0196
+  CI_FORMULA|estimate ± E
+  S|0.8|0.0196|0.7804
+  A|0.8|0.0196|0.8196
+  REWRITE|(0.7804, 0.8196)
+  Z|(0.7804, 0.8196)
+Answer: (0.7804, 0.8196)
 ```
 
 ### Hypothesis Test — `HypothesisTestGenerator`  ·  high · difficulty 5
