@@ -62,6 +62,7 @@ from generators.experimental_probability_generator import ExperimentalProbabilit
 from generators.fundamental_counting_principle_generator import FundamentalCountingPrincipleGenerator
 from generators.odds_probability_generator import OddsProbabilityGenerator
 from generators.probability_axioms_finite_generator import ProbabilityAxiomsFiniteGenerator
+from generators.tree_diagram_probability_generator import TreeDiagramProbabilityGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -690,6 +691,7 @@ ALL_GENERATORS = [
     FundamentalCountingPrincipleGenerator(),
     OddsProbabilityGenerator(),
     ProbabilityAxiomsFiniteGenerator(),
+    TreeDiagramProbabilityGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

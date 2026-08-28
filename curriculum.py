@@ -72,6 +72,7 @@ CURRICULUM = {
     "FundamentalCountingPrincipleGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "OddsProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 1},
     "ProbabilityAxiomsFiniteGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "TreeDiagramProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**568 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**569 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -985,6 +985,23 @@ Steps:
   CHECK|direct sum equals complement rule
   Z|P(Aᶜ) = 7/11
 Answer: P(Aᶜ) = 7/11
+```
+
+### Tree Diagram Probability — `TreeDiagramProbabilityGenerator`  ·  middle · difficulty 2
+
+Generate exact path-summing exercises for small probability trees.
+
+**Variants:** `probability_tree_diagram_different_colors`, `probability_tree_diagram_exactly_one`, `probability_tree_diagram_same_color`, `probability_tree_diagram_spinner_then_coin`, `probability_tree_diagram_three_coins_exactly_two_heads`, `probability_tree_diagram_with_replacement`
+
+```
+Problem: A bag has 4 teal and 18 orange marbles. Draw two with replacement. Use A for teal and B for orange. Event A: the two colors match. Sum the mutually exclusive replacement paths in event A.
+Steps:
+  TREE_BRANCH|AA|2/11 × 2/11|4/121
+  TREE_BRANCH|BB|9/11 × 9/11|81/121
+  BRANCH_SUM|AA + BB|4/121 + 81/121|85/121
+  CHECK|all branches|4/121 + 18/121 + 18/121 + 81/121|1
+  Z|85/121
+Answer: 85/121
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
