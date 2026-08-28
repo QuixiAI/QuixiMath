@@ -666,6 +666,7 @@ from generators.work_rate_generator import WorkRateGenerator
 from generators.mixture_generator import MixtureGenerator
 from generators.motion_word_generator import MotionWordGenerator
 from generators.linear_model_word_generator import LinearModelWordGenerator
+from generators.percent_chain_generator import PercentChainGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1396,6 +1397,7 @@ ALL_GENERATORS = [
     MixtureGenerator(),
     MotionWordGenerator(),
     LinearModelWordGenerator(),
+    PercentChainGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

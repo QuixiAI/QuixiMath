@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**644 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**645 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3137,6 +3137,25 @@ Steps:
   CHECK|income equals cost|$168.00
   Z|8x = 84 + 4x; x = 21 items; $168.00 income and cost
 Answer: 8x = 84 + 4x; x = 21 items; $168.00 income and cost
+```
+
+### Percent Chain — `PercentChainGenerator`  ·  middle · difficulty 3
+
+Generate exact chained-percent stories with standard modifiers.
+
+**Variants:** `applied_percent_chain_markup_then_discount_distractor`, `applied_percent_chain_markup_then_discount_estimate_first`, `applied_percent_chain_markup_then_discount_plain`, `applied_percent_chain_markup_then_discount_with_model`, `applied_percent_chain_percent_of_percent_distractor`, `applied_percent_chain_percent_of_percent_estimate_first`, `applied_percent_chain_percent_of_percent_plain`, `applied_percent_chain_percent_of_percent_with_model`, `applied_percent_chain_reverse_from_sale_price_distractor`, `applied_percent_chain_reverse_from_sale_price_estimate_first`, `applied_percent_chain_reverse_from_sale_price_plain`, `applied_percent_chain_reverse_from_sale_price_with_model`, `applied_percent_chain_reverse_from_total_with_tax_distractor`, `applied_percent_chain_reverse_from_total_with_tax_estimate_first`, `applied_percent_chain_reverse_from_total_with_tax_plain`, `applied_percent_chain_reverse_from_total_with_tax_with_model`, `applied_percent_chain_successive_changes_net_distractor`, `applied_percent_chain_successive_changes_net_estimate_first`, `applied_percent_chain_successive_changes_net_plain`, `applied_percent_chain_successive_changes_net_with_model`, `applied_percent_chain_tax_then_tip_distractor`, `applied_percent_chain_tax_then_tip_estimate_first`, `applied_percent_chain_tax_then_tip_plain`, `applied_percent_chain_tax_then_tip_with_model`
+
+```
+Problem: Consider the G48 report from the market cafe: A sale price is $24.00 after a 20% discount from the original price. What was the original price?
+Steps:
+  MODEL_EQ|x*(1-20/100) = 24|successive multipliers
+  PERCENT_TO_DEC|20%|0.2
+  REVERSE_PCT|x*(1-20/100) = 24|30
+  D|24|0.8|30
+  M|30|0.8|24
+  CHECK|original price|$30.00
+  Z|x*(1-20/100) = 24; x = $30.00
+Answer: x*(1-20/100) = 24; x = $30.00
 ```
 
 ## High School
