@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**564 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**565 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -849,6 +849,27 @@ Steps:
   CHECK|P(A) + P(Aᶜ)|1/2 + 1/2|1
   Z|1/2
 Answer: 1/2
+```
+
+### Experimental Probability — `ExperimentalProbabilityGenerator`  ·  elementary · difficulty 2
+
+Generate exact relative-frequency and prediction exercises.
+
+**Variants:** `probability_experimental_compare_theoretical`, `probability_experimental_from_sequence`, `probability_experimental_predict_count`, `probability_experimental_relative_frequency`
+
+```
+Problem: A fair 17-sided die was rolled 255 times; face 9 appeared 15 times. Determine whether the experimental chance is higher, lower, or equal.
+Steps:
+  TALLY|face 9|15
+  REL_FREQ|experimental|15/255|1/17
+  REL_FREQ|theoretical|1/17|1/17
+  L|17|17|17
+  C|1/17|17|1/17
+  C|1/17|17|1/17
+  CMP|1|1|equal
+  CHECK|experimental 1/17; theoretical 1/17; experimental is equal
+  Z|experimental 1/17; theoretical 1/17; experimental is equal
+Answer: experimental 1/17; theoretical 1/17; experimental is equal
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1

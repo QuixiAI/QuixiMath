@@ -58,6 +58,7 @@ from generators.simple_probability_generator import SimpleProbabilityGenerator
 from generators.likelihood_language_generator import LikelihoodLanguageGenerator
 from generators.sample_space_list_generator import SampleSpaceListGenerator
 from generators.complement_probability_generator import ComplementProbabilityGenerator
+from generators.experimental_probability_generator import ExperimentalProbabilityGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -682,6 +683,7 @@ ALL_GENERATORS = [
     LikelihoodLanguageGenerator(),
     SampleSpaceListGenerator(),
     ComplementProbabilityGenerator(),
+    ExperimentalProbabilityGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
