@@ -664,6 +664,7 @@ from generators.multi_step_word_generator import MultiStepWordGenerator
 from generators.integer_puzzle_word_generator import IntegerPuzzleWordGenerator
 from generators.work_rate_generator import WorkRateGenerator
 from generators.mixture_generator import MixtureGenerator
+from generators.motion_word_generator import MotionWordGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1392,6 +1393,7 @@ ALL_GENERATORS = [
     IntegerPuzzleWordGenerator(),
     WorkRateGenerator(),
     MixtureGenerator(),
+    MotionWordGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

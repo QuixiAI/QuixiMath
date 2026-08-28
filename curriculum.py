@@ -674,6 +674,7 @@ CURRICULUM = {
     "IntegerPuzzleWordGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "WorkRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "MixtureGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "MotionWordGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 }
 
 

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**642 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**643 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3095,6 +3095,26 @@ Steps:
   CHECK|weighted cost|$187.00
   Z|x = (8*27/4 + 14*19/2)/(8+14); x = $8.50 per kg
 Answer: x = (8*27/4 + 14*19/2)/(8+14); x = $8.50 per kg
+```
+
+### Motion Word — `MotionWordGenerator`  ·  middle · difficulty 3
+
+Generate exact relative-motion stories with standard modifiers.
+
+**Variants:** `applied_motion_head_start_distractor`, `applied_motion_head_start_estimate_first`, `applied_motion_head_start_plain`, `applied_motion_head_start_with_model`, `applied_motion_round_trip_average_speed_distractor`, `applied_motion_round_trip_average_speed_estimate_first`, `applied_motion_round_trip_average_speed_plain`, `applied_motion_round_trip_average_speed_with_model`, `applied_motion_same_direction_catch_up_distractor`, `applied_motion_same_direction_catch_up_estimate_first`, `applied_motion_same_direction_catch_up_plain`, `applied_motion_same_direction_catch_up_with_model`, `applied_motion_time_to_meet_from_table_distractor`, `applied_motion_time_to_meet_from_table_estimate_first`, `applied_motion_time_to_meet_from_table_plain`, `applied_motion_time_to_meet_from_table_with_model`, `applied_motion_toward_each_other_distractor`, `applied_motion_toward_each_other_estimate_first`, `applied_motion_toward_each_other_plain`, `applied_motion_toward_each_other_with_model`, `applied_motion_with_current_distractor`, `applied_motion_with_current_estimate_first`, `applied_motion_with_current_plain`, `applied_motion_with_current_with_model`
+
+```
+Problem: Trip F84 at the training ground — A boat moves at 8 km/h in still water, and the current is 3 km/h. It travels 12.5 km upstream. How many hours does the trip take?
+Steps:
+  MODEL_EQ|t = 12.5/(8 - 3)|motion relationship
+  S|8|3|5
+  DRT|upstream|d = 5t
+  MODEL_EQ|t = 12.5/(8 - 3)|upstream trip
+  D|12.5|5|2.5
+  M|5|2.5|12.5
+  CHECK|recovered trip distance|12.5 km
+  Z|t = 12.5/(8 - 3); t = 2.5 hours
+Answer: t = 12.5/(8 - 3); t = 2.5 hours
 ```
 
 ## High School
