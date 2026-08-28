@@ -672,6 +672,7 @@ CURRICULUM = {
     "BlackScholesGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MultiStepWordGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "IntegerPuzzleWordGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "WorkRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 }
 
 

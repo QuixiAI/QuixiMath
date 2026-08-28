@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**640 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**641 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3053,6 +3053,26 @@ Steps:
   CHECK|21 - 12|9
   Z|a + b = 3; (10a+b) - (10b+a) = 9; x = number 21; reversed 12
 Answer: a + b = 3; (10a+b) - (10b+a) = 9; x = number 21; reversed 12
+```
+
+### Work Rate — `WorkRateGenerator`  ·  middle · difficulty 3
+
+Generate exact work-composition stories with standard modifiers.
+
+**Variants:** `applied_work_rate_fill_and_drain_distractor`, `applied_work_rate_fill_and_drain_estimate_first`, `applied_work_rate_fill_and_drain_plain`, `applied_work_rate_fill_and_drain_with_model`, `applied_work_rate_one_alone_unknown_distractor`, `applied_work_rate_one_alone_unknown_estimate_first`, `applied_work_rate_one_alone_unknown_plain`, `applied_work_rate_one_alone_unknown_with_model`, `applied_work_rate_one_leaves_early_distractor`, `applied_work_rate_one_leaves_early_estimate_first`, `applied_work_rate_one_leaves_early_plain`, `applied_work_rate_one_leaves_early_with_model`, `applied_work_rate_partial_job_distractor`, `applied_work_rate_partial_job_estimate_first`, `applied_work_rate_partial_job_with_model`, `applied_work_rate_three_workers_distractor`, `applied_work_rate_three_workers_estimate_first`, `applied_work_rate_three_workers_plain`, `applied_work_rate_three_workers_with_model`, `applied_work_rate_together_distractor`, `applied_work_rate_together_estimate_first`, `applied_work_rate_together_plain`, `applied_work_rate_together_with_model`
+
+```
+Problem: Job H55 at the front yard — A pump fills one tank in 17 hours. An open valve drains a full tank in 19 hours. With both operating, how many hours does filling take?
+Steps:
+  MODEL_EQ|1/17 - 1/19 = 1/t|completion facts
+  RATE|pump|1/17 tank per hour
+  RATE|valve|-1/19 tank per hour
+  S|1/17|1/19|2/323
+  RATE_SUM|1/17 - 1/19|2/323
+  D|1|2/323|323/2
+  CHECK|net tank change|(323/2)/17 - (323/2)/19|1
+  Z|1/17 - 1/19 = 1/t; t = 161.5 hours
+Answer: 1/17 - 1/19 = 1/t; t = 161.5 hours
 ```
 
 ## High School
