@@ -668,6 +668,7 @@ from generators.motion_word_generator import MotionWordGenerator
 from generators.linear_model_word_generator import LinearModelWordGenerator
 from generators.percent_chain_generator import PercentChainGenerator
 from generators.money_life_generator import MoneyLifeGenerator
+from generators.missing_information_generator import MissingInformationGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1407,6 +1408,7 @@ ALL_GENERATORS = [
     LinearModelWordGenerator(),
     PercentChainGenerator(),
     MoneyLifeGenerator(),
+    MissingInformationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

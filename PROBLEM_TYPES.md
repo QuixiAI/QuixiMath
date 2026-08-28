@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**646 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**647 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1067,6 +1067,22 @@ Steps:
   CHECK|start plus elapsed|700 + 90|790
   Z|x = (13 * 60 + 10) - (11 * 60 + 40); x = 90 minutes
 Answer: x = (13 * 60 + 10) - (11 * 60 + 40); x = 90 minutes
+```
+
+### Missing Information — `MissingInformationGenerator`  ·  elementary · difficulty 2
+
+Generate missing-data judgments paired with numeric controls.
+
+**Variants:** `applied_missing_information_extra_and_missing_distractor`, `applied_missing_information_extra_and_missing_estimate_first`, `applied_missing_information_extra_and_missing_plain`, `applied_missing_information_extra_and_missing_with_model`, `applied_missing_information_identify_missing_distractor`, `applied_missing_information_identify_missing_estimate_first`, `applied_missing_information_identify_missing_plain`, `applied_missing_information_identify_missing_with_model`, `applied_missing_information_solvable_control_distractor`, `applied_missing_information_solvable_control_estimate_first`, `applied_missing_information_solvable_control_plain`, `applied_missing_information_solvable_control_with_model`, `applied_missing_information_which_of_two_missing_distractor`, `applied_missing_information_which_of_two_missing_estimate_first`, `applied_missing_information_which_of_two_missing_plain`, `applied_missing_information_which_of_two_missing_with_model`
+
+```
+Problem: At Room 12, a shopper named Mia buys 6 notebooks and pays with $40.00. A nearby display holds 35 brochures. Milo asks: How much change does Mia receive?
+Steps:
+  MODEL_EQ|x = 40 - 6*p|required relationship
+  SELECT_RELEVANT|used: 6 notebooks, payment $40.00|ignored: 35 brochures|needed: the price of a notebook
+  MISSING|the price of a notebook|x = 40 - 6*p
+  Z|insufficient information; need the price of a notebook
+Answer: insufficient information; need the price of a notebook
 ```
 
 ## Middle School (grades 6–8)

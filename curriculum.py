@@ -678,6 +678,7 @@ CURRICULUM = {
     "LinearModelWordGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "PercentChainGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "MoneyLifeGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "MissingInformationGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
 }
 
 
