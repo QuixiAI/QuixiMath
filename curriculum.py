@@ -93,6 +93,7 @@ CURRICULUM = {
     "ConditionalExpectationGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "DistributionOfSumGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ProbabilityInequalityGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "PGFGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

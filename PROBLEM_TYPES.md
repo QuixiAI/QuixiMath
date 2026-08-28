@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**589 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**590 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12011,6 +12011,39 @@ Answer: IRR_estimate=147/125
 ```
 
 ## Graduate
+
+### PGF — `PGFGenerator`  ·  graduate · difficulty 3
+
+Generate exact finite probability-generating-function exercises.
+
+**Variants:** `probability_pgf_binomial_pgf`, `probability_pgf_build`, `probability_pgf_extract_pmf`, `probability_pgf_mean_from_pgf`, `probability_pgf_prob_even`, `probability_pgf_sum_independent_product`, `probability_pgf_variance_from_pgf`
+
+```
+Problem: At the quartz program in Portland, Mina has pmf: P(X=0)=3/64; P(X=1)=7/32; P(X=2)=45/64; P(X=3)=1/32. Thus G_X(s) = (1/32)s^3 + (45/64)s^2 + (7/32)s + 3/64. Compute the exact probability of an even value from the PGF.
+Steps:
+  PGF_SETUP|G(s) = Σ P(X=k)·s^k
+  PGF_TERM|k=3|(1/32)s^3
+  PGF_TERM|k=2|(45/64)s^2
+  PGF_TERM|k=1|(7/32)s
+  PGF_TERM|k=0|3/64
+  E|-1|0|1
+  M|3/64|1|3/64
+  E|-1|1|-1
+  M|7/32|-1|-7/32
+  E|-1|2|1
+  M|45/64|1|45/64
+  E|-1|3|-1
+  M|1/32|-1|-1/32
+  A|3/64|-7/32|-11/64
+  A|-11/64|45/64|17/32
+  A|17/32|-1/32|1/2
+  SUBST|s|-1|1/2
+  A|1|1/2|3/2
+  D|3/2|2|3/4
+  CHECK|direct even coefficients|3/4
+  Z|3/4
+Answer: 3/4
+```
 
 ### Ordinal Arithmetic — `OrdinalArithmeticGenerator`  ·  graduate · difficulty 4
 

@@ -83,6 +83,7 @@ from generators.covariance_algebra_generator import CovarianceAlgebraGenerator
 from generators.conditional_expectation_generator import ConditionalExpectationGenerator
 from generators.distribution_of_sum_generator import DistributionOfSumGenerator
 from generators.probability_inequality_generator import ProbabilityInequalityGenerator
+from generators.pgf_generator import PGFGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -732,6 +733,7 @@ ALL_GENERATORS = [
     ConditionalExpectationGenerator(),
     DistributionOfSumGenerator(),
     ProbabilityInequalityGenerator(),
+    PGFGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
