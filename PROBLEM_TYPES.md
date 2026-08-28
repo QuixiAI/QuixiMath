@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**551 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**552 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6551,6 +6551,44 @@ Steps:
   CHECK|49674|214/353
   Z|term 49674 = 214/353
 Answer: term 49674 = 214/353
+```
+
+### Cantor Diagonal — `CantorDiagonalGenerator`  ·  college · difficulty 3
+
+Generate finite diagonal constructions over strings and functions.
+
+**Variants:** `cantor_diagonal_binary_strings`, `cantor_diagonal_decimal_digits`, `cantor_diagonal_function_table`
+
+```
+Problem: Decimal rows of length 8, indexed 1 through 8: row 1 = 04876475; row 2 = 93824219; row 3 = 48924115; row 4 = 78156593; row 5 = 87784080; row 6 = 16097535; row 7 = 13933287; row 8 = 11587148. Replace a diagonal digit d by 1 unless d = 1, in which case replace it by 2. Use decimal diagonalization to produce a string absent from the list.
+Steps:
+  DIAG|row 1|0
+  FLIP|1|0 → 1
+  DIAG|row 2|3
+  FLIP|2|3 → 1
+  DIAG|row 3|9
+  FLIP|3|9 → 1
+  DIAG|row 4|5
+  FLIP|4|5 → 1
+  DIAG|row 5|4
+  FLIP|5|4 → 1
+  DIAG|row 6|5
+  FLIP|6|5 → 1
+  DIAG|row 7|8
+  FLIP|7|8 → 1
+  DIAG|row 8|8
+  FLIP|8|8 → 1
+  NEW_STRING|11111111
+  CHECK|differs from row 1 at position 1
+  CHECK|differs from row 2 at position 2
+  CHECK|differs from row 3 at position 3
+  CHECK|differs from row 4 at position 4
+  CHECK|differs from row 5 at position 5
+  CHECK|differs from row 6 at position 6
+  CHECK|differs from row 7 at position 7
+  CHECK|differs from row 8 at position 8
+  Z|diagonal 03954588; new string 11111111
+Answer: diagonal 03954588; new string 11111111
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
