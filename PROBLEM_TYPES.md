@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**635 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**636 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16999,4 +16999,30 @@ Steps:
   CRLB|1/I_n(μ)|1/24
   Z|I(μ) = 1; I_n(μ) = 24; CRLB = 1/24
 Answer: I(μ) = 1; I_n(μ) = 24; CRLB = 1/24
+```
+
+### Sufficiency Factorization — `SufficiencyFactorizationGenerator`  ·  graduate · difficulty 3
+
+Generate factorization-theorem and likelihood-ratio exercises.
+
+**Variants:** `statistics_sufficiency_factorization_factor_and_evaluate`, `statistics_sufficiency_factorization_identify_T`, `statistics_sufficiency_factorization_ratio_check`, `statistics_sufficiency_factorization_two_dimensional`, `statistics_sufficiency_factorization_uniform_max`
+
+```
+Problem: At the birch campus during the estimator trial (factor H55), a sample from Normal(μ, σ²) with both parameters unknown is [1, 5, 9, 8, 7, 5].
+Factor the normal likelihood when both μ and σ² are unknown.
+Steps:
+  LOG_LIKELIHOOD|joint = (2πσ²)^(-n/2) exp[-(Σx_i² - 2μΣx_i + nμ²)/(2σ²)]
+  LIKELIHOOD_FACTOR|g(T,μ,σ²) = (2πσ²)^(-n/2) exp[-(T2 - 2μT1 + nμ²)/(2σ²)]|h(x) = 1
+  SUM|1 + 5 + 9 + 8 + 7 + 5|35
+  E|1|2|1
+  E|5|2|25
+  E|9|2|81
+  E|8|2|64
+  E|7|2|49
+  E|5|2|25
+  SUM|1 + 25 + 81 + 64 + 49 + 25|245
+  SUFFICIENT|T = (Σx_i, Σx_i²)|(35, 245)
+  LIKELIHOOD_FACTOR|g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]|h = 1
+  Z|T = (Σx_i, Σx_i²) = (35, 245); g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]; h = 1
+Answer: T = (Σx_i, Σx_i²) = (35, 245); g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]; h = 1
 ```

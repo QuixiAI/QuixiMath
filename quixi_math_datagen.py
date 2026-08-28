@@ -266,6 +266,7 @@ from generators.study_design_generator import StudyDesignGenerator
 from generators.estimator_bias_enum_generator import EstimatorBiasEnumGenerator
 from generators.mse_decomposition_generator import MSEDecompositionGenerator
 from generators.fisher_information_generator import FisherInformationGenerator
+from generators.sufficiency_factorization_generator import SufficiencyFactorizationGenerator
 from generators.permutation_combination_generator import PermutationCombinationGenerator
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
 from generators.probability_addition_rule_generator import ProbabilityAdditionRuleGenerator
@@ -1378,6 +1379,7 @@ ALL_GENERATORS = [
     EstimatorBiasEnumGenerator(),
     MSEDecompositionGenerator(),
     FisherInformationGenerator(),
+    SufficiencyFactorizationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

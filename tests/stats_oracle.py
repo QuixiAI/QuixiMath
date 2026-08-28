@@ -874,3 +874,17 @@ def fisher_from_score(family, parameter):
         p = parameter
         return ((1 - p) / p ** 2) / (1 - p) ** 2
     raise ValueError(f"unknown Fisher family {family!r}")
+
+
+def sufficient_statistic(family, data):
+    """Independent family-to-statistic table for S6 factorization tests."""
+    data = tuple(Fraction(value) for value in data)
+    if family == "uniform":
+        return max(data)
+    if family == "normal_two":
+        return (sum(data, Fraction(0)),
+                sum((value ** 2 for value in data), Fraction(0)))
+    if family in {"bernoulli", "poisson", "exponential", "geometric",
+                  "normal_mu"}:
+        return sum(data, Fraction(0))
+    raise ValueError(f"unknown sufficient-statistic family {family!r}")
