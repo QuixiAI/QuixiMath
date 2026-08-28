@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**634 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**635 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16977,4 +16977,26 @@ Steps:
   CHECK|minimum-MSE identity|μ²·Var(x̄)/(μ² + Var(x̄))|256/257
   Z|c* = 256/257; MSE(c*) = 256/257
 Answer: c* = 256/257; MSE(c*) = 256/257
+```
+
+### Fisher Information — `FisherInformationGenerator`  ·  graduate · difficulty 4
+
+Generate exact Fisher-information and Cramer-Rao calculations.
+
+**Variants:** `statistics_fisher_information_bernoulli`, `statistics_fisher_information_crlb_check`, `statistics_fisher_information_exponential`, `statistics_fisher_information_geometric`, `statistics_fisher_information_normal_mu`, `statistics_fisher_information_poisson`
+
+```
+Problem: At the maple center during the variance review (info H61), consider n = 24 independent Normal(μ, σ²) observations with μ = -2 and known σ² = 1. Treat Fisher information as the expected squared score.
+Use the score identity to obtain the exact mean-parameter CRLB.
+Steps:
+  LOG_LIKELIHOOD|ell(μ) = constant - (x-μ)²/(2σ²)
+  DERIVATIVE|score = (x-μ)/σ²
+  DERIVATIVE|second = -1/σ²
+  FISHER_INFO|I(μ) = -E[second] = 1/σ²
+  D|1|1|1
+  M|24|1|24
+  D|1|24|1/24
+  CRLB|1/I_n(μ)|1/24
+  Z|I(μ) = 1; I_n(μ) = 24; CRLB = 1/24
+Answer: I(μ) = 1; I_n(μ) = 24; CRLB = 1/24
 ```

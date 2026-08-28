@@ -841,3 +841,36 @@ def cue_conflicts(bank):
                     and cue.lower() in other.lower():
                 bad.append((cue, other))
     return bad
+
+
+# ---------------------------------------------------------------------------
+# Fisher information from expected squared scores (S6)
+# ---------------------------------------------------------------------------
+
+def fisher_from_score(family, parameter):
+    """Independent score-variance identities for the Phase 6 families.
+
+    ``parameter`` is p for Bernoulli / geometric, lambda for Poisson /
+    exponential, and known sigma-squared for ``normal_mu``. This deliberately
+    does not use the generator's negative-expected-Hessian formulas.
+    """
+    parameter = Fraction(parameter)
+    if family == "bernoulli":
+        p = parameter
+        score_one = 1 / p
+        score_zero = -1 / (1 - p)
+        return p * score_one ** 2 + (1 - p) * score_zero ** 2
+    if family == "poisson":
+        # score = (X-lambda)/lambda; Var(X) = lambda.
+        return parameter / parameter ** 2
+    if family == "exponential":
+        # score = E[X] - X and Var(X) = 1/lambda^2.
+        return 1 / parameter ** 2
+    if family == "normal_mu":
+        # score = (X-mu)/sigma^2; Var(X) = sigma^2.
+        return parameter / parameter ** 2
+    if family == "geometric":
+        # Y=X-1 has Var(Y)=(1-p)/p^2; score is centered Y/(1-p).
+        p = parameter
+        return ((1 - p) / p ** 2) / (1 - p) ** 2
+    raise ValueError(f"unknown Fisher family {family!r}")
