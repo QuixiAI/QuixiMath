@@ -6670,24 +6670,27 @@ Answer: reject H0 (4 > 2.33)
 
 Two-sample t and two-proportion z tests with supplied critical values and exact-friendly standard errors.
 
-**Variants:** `two_sample_test_prop_z_decision`, `two_sample_test_prop_z_stat`, `two_sample_test_t_decision`, `two_sample_test_t_stat`
+**Variants:** `two_sample_test_prop_z_decision`, `two_sample_test_prop_z_stat`, `two_sample_test_prop_z_unequal_n`, `two_sample_test_t_decision`, `two_sample_test_t_pooled_decision`, `two_sample_test_t_pooled_stat`, `two_sample_test_t_stat`, `two_sample_test_t_welch_stat`
 
 ```
-Problem: In a two-sided two-proportion z-test of H0: p1 = p2, sample 1 has n1=50, x1=14; sample 2 has n2=50, x2=36. Using a critical value of 2.576, state the conclusion (reject H0 or fail to reject H0).
+Problem: At the cedar clinic during the indigo review (cohort E20), for a Welch two-sample t statistic, sample 1 has n1=16, x̄1=99, s1=4; sample 2 has n2=15, x̄2=88, s2=15. Use conservative df = min(n1 − 1, n2 − 1).
 Steps:
-  HT_SETUP|H0: p1 = p2; Ha: p1 ≠ p2|n1=50, x1=14; n2=50, x2=36; critical value=2.576
-  D|14|50|0.28
-  D|36|50|0.72
-  TEST_STAT_FORMULA|z = (p̂1-p̂2)/sqrt(pooled(1-pooled)(1/n1+1/n2))
-  A|14|36|50
-  A|50|50|100
-  D|50|100|0.5
-  S|0.28|0.72|-0.44
-  ROOT|√0.01|0.1
-  D|-0.44|0.1|-4.4
-  CHECK|abs(stat) vs critical value|4.4 > 2.576|reject H0
-  Z|reject H0 (4.4 > 2.576)
-Answer: reject H0 (4.4 > 2.576)
+  HT_SETUP|H0: μ1 = μ2; Ha: μ1 ≠ μ2|unequal variances
+  TEST_STAT_FORMULA|t = (x̄1 − x̄2)/√(s1²/n1 + s2²/n2)
+  RULE|conservative df|df = min(n1 − 1, n2 − 1)
+  S|16|1|15
+  S|15|1|14
+  MIN|15,14|14
+  E|4|2|16
+  D|16|16|1
+  E|15|2|225
+  D|225|15|15
+  A|1|15|16
+  ROOT|16|2|4
+  S|99|88|11
+  D|11|4|2.75
+  Z|t = 2.75; df = 14
+Answer: t = 2.75; df = 14
 ```
 
 ### Chi Square — `ChiSquareGenerator`  ·  high · difficulty 5

@@ -237,28 +237,55 @@ def oracle_telescoping(example):
 
 def oracle_two_sample(example):
     p = example["problem"]
-    crit = Fraction(re.search(r"critical value of ([\d.]+)", p).group(1))
-    if "two-sample t-test" in p:
+    variant = example["operation"].removeprefix("two_sample_test_")
+
+    def exact_root(value):
+        value = Fraction(value)
+        top, bottom = math.isqrt(value.numerator), math.isqrt(value.denominator)
+        assert top * top == value.numerator
+        assert bottom * bottom == value.denominator
+        return Fraction(top, bottom)
+
+    def number(value):
+        value = Fraction(value)
+        denominator = value.denominator
+        while denominator % 2 == 0:
+            denominator //= 2
+        while denominator % 5 == 0:
+            denominator //= 5
+        return dec(value) if denominator == 1 else str(value)
+
+    if variant.startswith("t_"):
         n1, x1, s1, n2, x2, s2 = map(Fraction, re.search(
-            r"n1=(\d+), x̄1=(\d+), s1=(\d+); sample 2 has n2=(\d+), x̄2=(\d+), s2=(\d+)",
-            p,
-        ).groups())
-        se = (s1 * s1 / n1 + s2 * s2 / n2)
-        assert se == 4
-        stat = (x1 - x2) / 2
+            r"n1=(\d+), x̄1=(\d+), s1=(\d+); sample 2 has n2=(\d+), "
+            r"x̄2=(\d+), s2=(\d+)", p).groups())
+        if variant.startswith("t_pooled"):
+            df = n1 + n2 - 2
+            pooled_variance = (
+                (n1 - 1) * s1 * s1 + (n2 - 1) * s2 * s2
+            ) / df
+            se = exact_root(pooled_variance * (1 / n1 + 1 / n2))
+        else:
+            se = exact_root(s1 * s1 / n1 + s2 * s2 / n2)
+        stat = (x1 - x2) / se
+        if variant == "t_welch_stat":
+            df = min(n1 - 1, n2 - 1)
+            return f"t = {number(stat)}; df = {number(df)}"
     else:
         n1, x1, n2, x2 = map(Fraction, re.search(
             r"n1=(\d+), x1=(\d+); sample 2 has n2=(\d+), x2=(\d+)",
             p,
         ).groups())
         pooled = (x1 + x2) / (n1 + n2)
-        se = Fraction(1, 10)
+        se = exact_root(pooled * (1 - pooled) * (1 / n1 + 1 / n2))
         stat = (x1 / n1 - x2 / n2) / se
-    if "test statistic" in p:
-        return dec(stat)
+
+    if not variant.endswith("_decision"):
+        return number(stat)
+    crit = Fraction(re.search(r"critical value(?: of)? ([\d.]+)", p).group(1))
     head = "reject H0" if abs(stat) > crit else "fail to reject H0"
     rel = ">" if abs(stat) > crit else "≤"
-    return f"{head} ({dec(abs(stat))} {rel} {dec(crit)})"
+    return f"{head} ({number(abs(stat))} {rel} {number(crit)})"
 
 
 def oracle_ice(example):
