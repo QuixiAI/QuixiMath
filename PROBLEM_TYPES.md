@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**614 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**615 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6970,6 +6970,33 @@ Steps:
   CHECK|interpolation|L=110, w=10|112
   Z|112
 Answer: 112
+```
+
+### Percentile — `PercentileGenerator`  ·  high · difficulty 2
+
+Generate exact percentile-rank and nearest-rank exercises.
+
+**Variants:** `statistics_percentile_between_percentiles`, `statistics_percentile_interpret`, `statistics_percentile_percentile_rank`, `statistics_percentile_quartiles_by_rank`, `statistics_percentile_value_at_percentile`
+
+```
+Problem: At the granite program, distinct commute times are: 36, 15, 30, 56, 59, 50, 26, 53, 41, 21, 47, 33, 35, 28, 17, 40, 39, 32, 23, 49, 38, 60, 54, 34, 22, 52, 57, 37, 46, 55, 18, 19, 44, 24, 20, 42, 25, 45, 31, 48.
+Lower percentile: 40%. Upper percentile: 60%. Nearest-rank rule: position = ⌈k·n/100⌉ in the sorted list.
+Find the inclusive number of observations between the requested percentiles.
+Steps:
+  STAT_SETUP|between percentile values|n=40
+  SORT|15,17,18,19,20,21,22,23,24,25,26,28,30,31,32,33,34,35,36,37,38,39,40,41,42,44,45,46,47,48,49,50,52,53,54,55,56,57,59,60
+  RULE|nearest rank|position = ⌈k·n/100⌉ in the sorted list
+  M|2/5|40|16
+  CEIL|16|16
+  RANK_POS|16|value 33
+  M|3/5|40|24
+  CEIL|24|24
+  RANK_POS|24|value 41
+  S|24|16|8
+  A|8|1|9
+  CHECK|inclusive rank count|16 through 24|9
+  Z|9
+Answer: 9
 ```
 
 ## College
