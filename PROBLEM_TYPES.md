@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**660 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**661 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7812,6 +7812,38 @@ Steps:
   CHECK|year 3|$2176.00 ≥ $1958.40
   Z|V(n) = 4250(0.8)^n; year 4; value $1740.80
 Answer: V(n) = 4250(0.8)^n; year 4; value $1740.80
+```
+
+### Optimization In Context — `OptimizationInContextGenerator`  ·  high · difficulty 4
+
+Generate six bounded optimization stories without method cues.
+
+**Variants:** `applied_optimization_context_best_of_three_plans_table_distractor`, `applied_optimization_context_best_of_three_plans_table_estimate_first`, `applied_optimization_context_best_of_three_plans_table_plain`, `applied_optimization_context_best_of_three_plans_table_with_model`, `applied_optimization_context_knapsack_small_distractor`, `applied_optimization_context_knapsack_small_estimate_first`, `applied_optimization_context_knapsack_small_plain`, `applied_optimization_context_knapsack_small_with_model`, `applied_optimization_context_max_area_fixed_fence_distractor`, `applied_optimization_context_max_area_fixed_fence_estimate_first`, `applied_optimization_context_max_area_fixed_fence_plain`, `applied_optimization_context_max_area_fixed_fence_with_model`, `applied_optimization_context_max_revenue_distractor`, `applied_optimization_context_max_revenue_estimate_first`, `applied_optimization_context_max_revenue_plain`, `applied_optimization_context_max_revenue_with_model`, `applied_optimization_context_min_cost_two_suppliers_distractor`, `applied_optimization_context_min_cost_two_suppliers_estimate_first`, `applied_optimization_context_min_cost_two_suppliers_plain`, `applied_optimization_context_min_cost_two_suppliers_with_model`, `applied_optimization_context_min_material_box_distractor`, `applied_optimization_context_min_material_box_estimate_first`, `applied_optimization_context_min_material_box_plain`, `applied_optimization_context_min_material_box_with_model`
+
+```
+Problem: Consider the choice Nadia is making at the market stall. A pack can hold at most 13 kg. Four indivisible items are available — item A: 2 kg, value 33 points; item B: 6 kg, value 58 points; item C: 10 kg, value 27 points; item D: 9 kg, value 38 points. Which items give the greatest total value without exceeding the limit?
+Steps:
+  MODEL_EQ|maximize total points with weight ≤ 13 kg|objective and constraints
+  MODEL_EQ|maximize total points with weight ≤ 13 kg|all subsets of four items
+  KNAPSACK_OPTION|A|2|33|feasible
+  KNAPSACK_OPTION|B|6|58|feasible
+  KNAPSACK_OPTION|AB|8|91|feasible
+  KNAPSACK_OPTION|C|10|27|feasible
+  KNAPSACK_OPTION|AC|12|60|feasible
+  KNAPSACK_OPTION|BC|16|85|over limit
+  KNAPSACK_OPTION|ABC|18|118|over limit
+  KNAPSACK_OPTION|D|9|38|feasible
+  KNAPSACK_OPTION|AD|11|71|feasible
+  KNAPSACK_OPTION|BD|15|96|over limit
+  KNAPSACK_OPTION|ABD|17|129|over limit
+  KNAPSACK_OPTION|CD|19|65|over limit
+  KNAPSACK_OPTION|ACD|21|98|over limit
+  KNAPSACK_OPTION|BCD|25|123|over limit
+  KNAPSACK_OPTION|ABCD|27|156|over limit
+  DECIDE|A+B|value 91
+  CHECK|weight 8|8 ≤ 13
+  Z|maximize total points with weight ≤ 13 kg; items A+B; value 91; weight 8 kg
+Answer: maximize total points with weight ≤ 13 kg; items A+B; value 91; weight 8 kg
 ```
 
 ## College
