@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**567 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**568 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -962,6 +962,29 @@ Steps:
   CHECK|gcd=14|3:19
   Z|3:19
 Answer: 3:19
+```
+
+### Probability Axioms Finite — `ProbabilityAxiomsFiniteGenerator`  ·  middle · difficulty 2
+
+Generate exact finite probability-axiom exercises.
+
+**Variants:** `probability_axioms_finite_complement_from_weights`, `probability_axioms_finite_disjoint_union`, `probability_axioms_finite_event_sum`, `probability_axioms_finite_missing_weight`, `probability_axioms_finite_valid_assignment`
+
+```
+Problem: Outcomes Ω = {-1516, -1515, -1514, -1513, -1512, -1511}. Weights: P(-1516) = 5/11; P(-1515) = 3/22; P(-1514) = 3/22; P(-1513) = 1/22; P(-1512) = 3/22; P(-1511) = 1/11. Event A = {-1515, -1512, -1511}. Compute the exact measure of the complementary event.
+Steps:
+  WEIGHT|-1516|5/11
+  WEIGHT|-1515|3/22
+  WEIGHT|-1514|3/22
+  WEIGHT|-1513|1/22
+  WEIGHT|-1512|3/22
+  WEIGHT|-1511|1/11
+  EVENT|Aᶜ|{-1516, -1514, -1513}|3
+  A|5/11 + 3/22 + 1/22|7/11
+  COMPLEMENT|1 − P(A)|1 − 4/11|7/11
+  CHECK|direct sum equals complement rule
+  Z|P(Aᶜ) = 7/11
+Answer: P(Aᶜ) = 7/11
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
