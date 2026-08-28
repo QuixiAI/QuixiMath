@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**645 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**646 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3156,6 +3156,23 @@ Steps:
   CHECK|original price|$30.00
   Z|x*(1-20/100) = 24; x = $30.00
 Answer: x*(1-20/100) = 24; x = $30.00
+```
+
+### Money Life — `MoneyLifeGenerator`  ·  middle · difficulty 2
+
+Generate exact personal-finance stories with standard modifiers.
+
+**Variants:** `applied_money_life_best_buy_estimate_first`, `applied_money_life_best_buy_plain`, `applied_money_life_best_buy_with_model`, `applied_money_life_budget_share_distractor`, `applied_money_life_budget_share_estimate_first`, `applied_money_life_budget_share_plain`, `applied_money_life_budget_share_with_model`, `applied_money_life_currency_supplied_rate_distractor`, `applied_money_life_currency_supplied_rate_estimate_first`, `applied_money_life_currency_supplied_rate_plain`, `applied_money_life_currency_supplied_rate_with_model`, `applied_money_life_payroll_overtime_distractor`, `applied_money_life_payroll_overtime_estimate_first`, `applied_money_life_payroll_overtime_plain`, `applied_money_life_payroll_overtime_with_model`, `applied_money_life_savings_goal_weeks_estimate_first`, `applied_money_life_savings_goal_weeks_plain`, `applied_money_life_savings_goal_weeks_with_model`, `applied_money_life_split_by_ratio_distractor`, `applied_money_life_split_by_ratio_estimate_first`, `applied_money_life_split_by_ratio_plain`, `applied_money_life_split_by_ratio_with_model`
+
+```
+Problem: Consider the G48 report from the mountain pass: A posted exchange states that 1 USD equals 0.75 EUR. A traveller exchanges $180.00. How many EUR does the traveller receive?
+Steps:
+  MODEL_EQ|x = 180*0.75|money relationship
+  RATE_SUPPLIED|1 USD|0.75 EUR
+  M|180|0.75|135
+  CHECK|supplied exchange|135 EUR
+  Z|x = 180*0.75; x = 135 EUR
+Answer: x = 180*0.75; x = 135 EUR
 ```
 
 ## High School
