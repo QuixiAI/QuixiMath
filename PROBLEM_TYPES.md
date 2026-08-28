@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**562 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**563 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -793,6 +793,44 @@ Steps:
   CHECK|one of the three listed outcomes|certain
   Z|certain; 1
 Answer: certain; 1
+```
+
+### Sample Space List — `SampleSpaceListGenerator`  ·  elementary · difficulty 2
+
+Generate exact enumeration exercises for small finite experiments.
+
+**Variants:** `probability_sample_space_list_digit_cards`, `probability_sample_space_list_event_probability`, `probability_sample_space_list_list_and_count`, `probability_sample_space_list_two_coins`, `probability_sample_space_list_two_spinners`
+
+```
+Problem: At the library, Spinner 1 sectors are {3, 17, 26, 32, 33}; spinner 2 sectors are {54, 63, 71, 78}. Event A is that the pair sum is even. Pairs list spinner 1 first. Enumerate the two-spinner Cartesian product before counting event A.
+Steps:
+  SAMPLE_SPACE|spinner 1 × spinner 2|(3, 54), (3, 63), (3, 71), (3, 78), (17, 54), (17, 63), (17, 71), (17, 78), (26, 54), (26, 63), (26, 71), (26, 78), (32, 54), (32, 63), (32, 71), (32, 78), (33, 54), (33, 63), (33, 71), (33, 78)|20
+  OUTCOME_CHECK|(3, 54)|the pair sum is even|no
+  OUTCOME_CHECK|(3, 63)|the pair sum is even|yes
+  OUTCOME_CHECK|(3, 71)|the pair sum is even|yes
+  OUTCOME_CHECK|(3, 78)|the pair sum is even|no
+  OUTCOME_CHECK|(17, 54)|the pair sum is even|no
+  OUTCOME_CHECK|(17, 63)|the pair sum is even|yes
+  OUTCOME_CHECK|(17, 71)|the pair sum is even|yes
+  OUTCOME_CHECK|(17, 78)|the pair sum is even|no
+  OUTCOME_CHECK|(26, 54)|the pair sum is even|yes
+  OUTCOME_CHECK|(26, 63)|the pair sum is even|no
+  OUTCOME_CHECK|(26, 71)|the pair sum is even|no
+  OUTCOME_CHECK|(26, 78)|the pair sum is even|yes
+  OUTCOME_CHECK|(32, 54)|the pair sum is even|yes
+  OUTCOME_CHECK|(32, 63)|the pair sum is even|no
+  OUTCOME_CHECK|(32, 71)|the pair sum is even|no
+  OUTCOME_CHECK|(32, 78)|the pair sum is even|yes
+  OUTCOME_CHECK|(33, 54)|the pair sum is even|no
+  OUTCOME_CHECK|(33, 63)|the pair sum is even|yes
+  OUTCOME_CHECK|(33, 71)|the pair sum is even|yes
+  OUTCOME_CHECK|(33, 78)|the pair sum is even|no
+  EVENT|A|(3, 63), (3, 71), (17, 63), (17, 71), (26, 54), (26, 78), (32, 54), (32, 78), (33, 63), (33, 71)|10
+  PROB_SETUP|10|20
+  F|10/20|1/2
+  CHECK|favorable outcomes rescanned|10
+  Z|(3, 54), (3, 63), (3, 71), (3, 78), (17, 54), (17, 63), (17, 71), (17, 78), (26, 54), (26, 63), (26, 71), (26, 78), (32, 54), (32, 63), (32, 71), (32, 78), (33, 54), (33, 63), (33, 71), (33, 78); 20 outcomes; 1/2
+Answer: (3, 54), (3, 63), (3, 71), (3, 78), (17, 54), (17, 63), (17, 71), (17, 78), (26, 54), (26, 63), (26, 71), (26, 78), (32, 54), (32, 63), (32, 71), (32, 78), (33, 54), (33, 63), (33, 71), (33, 78); 20 outcomes; 1/2
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1
