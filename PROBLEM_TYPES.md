@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**625 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**626 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7292,6 +7292,41 @@ Steps:
   CHECK|both expected counts at n|np = 23.8, n(1 − p) = 10.2|both ≥ 10
   Z|34
 Answer: 34
+```
+
+### TInterval — `TIntervalGenerator`  ·  high · difficulty 4
+
+Generate exact t intervals and paired/pooled t procedures.
+
+**Variants:** `statistics_t_interval_mean_t_ci`, `statistics_t_interval_mean_t_margin`, `statistics_t_interval_paired_from_data`, `statistics_t_interval_paired_from_summary`, `statistics_t_interval_paired_t_stat`, `statistics_t_interval_pooled_t_ci`, `statistics_t_interval_pooled_t_stat`
+
+```
+Problem: At the river center during the harbor test (trial H61), independent sample 1 has n1 = 8, x̄1 = 147, s1 = 7; sample 2 has n2 = 8, x̄2 = 169, s2 = 23. Assume equal variances. For the two-sided 95% procedure, use t* = 2.145 (df = 14).
+Use equal variances and the supplied t* to report the interval.
+Steps:
+  CI_SETUP|n1 = n2 = 8, x̄1 = 147, x̄2 = 169|s1 = 7, s2 = 23, df = 14
+  E|7|2|49
+  M|7|49|343
+  E|23|2|529
+  M|7|529|3703
+  A|343|3703|4046
+  A|7|7|14
+  D|4046|14|289
+  ROOT|289|2|17
+  D|1|8|0.125
+  A|0.125|0.125|0.25
+  ROOT|0.25|2|0.5
+  M|17|0.5|8.5
+  S|147|169|-22
+  LOOKUP_SUPPLIED|t* (df = 14)|2.145
+  MOE_FORMULA|E = t*·pooled SE
+  M|2.145|8.5|18.2325
+  CI_FORMULA|(x̄1 − x̄2) ± E
+  S|-22|18.2325|-40.2325
+  A|-22|18.2325|-3.7675
+  REWRITE|(-40.2325, -3.7675)
+  Z|(-40.2325, -3.7675)
+Answer: (-40.2325, -3.7675)
 ```
 
 ## College

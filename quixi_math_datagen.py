@@ -119,6 +119,7 @@ from generators.sampling_distribution_enum_generator import SamplingDistribution
 from generators.clt_probability_generator import CLTProbabilityGenerator
 from generators.p_value_generator import PValueGenerator
 from generators.inference_setup_generator import InferenceSetupGenerator
+from generators.t_interval_generator import TIntervalGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1358,6 +1359,7 @@ ALL_GENERATORS = [
     CLTProbabilityGenerator(),
     PValueGenerator(),
     InferenceSetupGenerator(),
+    TIntervalGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
