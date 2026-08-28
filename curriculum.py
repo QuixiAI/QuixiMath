@@ -104,6 +104,7 @@ CURRICULUM = {
     "FiniteSigmaAlgebraGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "BallotReflectionGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PolyaUrnGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "MarkovStateClassificationGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

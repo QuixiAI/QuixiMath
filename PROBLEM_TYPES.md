@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**600 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**601 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16012,4 +16012,23 @@ Steps:
   CHECK|exchangeable sequences with this red count|20
   Z|P(3 red draws in 6) = 256/3003
 Answer: P(3 red draws in 6) = 256/3003
+```
+
+### Markov State Classification — `MarkovStateClassificationGenerator`  ·  graduate · difficulty 4
+
+Generate graph-theoretic finite Markov-state classification tasks.
+
+**Variants:** `probability_markov_state_classification_absorbing_states`, `probability_markov_state_classification_communicating_classes`, `probability_markov_state_classification_irreducible_check`, `probability_markov_state_classification_period`, `probability_markov_state_classification_reachability_matrix`, `probability_markov_state_classification_transient_recurrent`
+
+```
+Problem: At the river test in Wichita, Tariq studies a finite Markov chain. The states are {1, 2, 3, 4, 5}. Positive transitions are 1→2, 1→4, 1→5, 2→2, 2→3, 3→3, 4→1, 4→2, 4→3, 5→3, 5→5. Every listed edge has positive probability and no other edge does. Target: absorbing and nonabsorbing states. Identify states whose only positive transition is to themselves.
+Steps:
+  MARKOV_GRAPH|states 1 through 5|1→2, 1→4, 1→5, 2→2, 2→3, 3→3, 4→1, 4→2, 4→3, 5→3, 5→5
+  ABSORBING_CHECK|state 1|outgoing {2, 4, 5}|no
+  ABSORBING_CHECK|state 2|outgoing {2, 3}|no
+  ABSORBING_CHECK|state 3|outgoing {3}|yes
+  ABSORBING_CHECK|state 4|outgoing {1, 2, 3}|no
+  ABSORBING_CHECK|state 5|outgoing {3, 5}|no
+  Z|absorbing states {3}; nonabsorbing states {1, 2, 4, 5}
+Answer: absorbing states {3}; nonabsorbing states {1, 2, 4, 5}
 ```

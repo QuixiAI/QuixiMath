@@ -94,6 +94,7 @@ from generators.expected_value_classics_generator import ExpectedValueClassicsGe
 from generators.finite_sigma_algebra_generator import FiniteSigmaAlgebraGenerator
 from generators.ballot_reflection_generator import BallotReflectionGenerator
 from generators.polya_urn_generator import PolyaUrnGenerator
+from generators.markov_state_classification_generator import MarkovStateClassificationGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1308,6 +1309,7 @@ ALL_GENERATORS = [
     FiniteSigmaAlgebraGenerator(),
     BallotReflectionGenerator(),
     PolyaUrnGenerator(),
+    MarkovStateClassificationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
