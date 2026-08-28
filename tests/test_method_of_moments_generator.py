@@ -1,198 +1,209 @@
-import os
+"""Problem-text oracles for every MethodOfMomentsGenerator variant."""
+import math
+import random
 import re
-import sys
 import unittest
 from fractions import Fraction
 
-repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
 from generators.method_of_moments_generator import (
+    STATISTICS,
     MethodOfMomentsGenerator,
-    data_text,
-    sum_expr,
 )
 from helpers import DELIM
 
 
-POISSON_RE = re.compile(
-    r"For data \[([0-9,]+)\] from a Poisson\(lambda\) model, use the "
-    r"first moment equation to find the method-of-moments estimator "
-    r"lambda_hat\."
-)
-EXP_RE = re.compile(
-    r"For data \[([0-9,]+)\] from an Exponential\(lambda\) model, use "
-    r"E\[X\]=1/lambda to find the method-of-moments estimator "
-    r"lambda_hat\."
-)
-UNIFORM_RE = re.compile(
-    r"For data \[([0-9,]+)\] from a Uniform\(0,theta\) model, use "
-    r"E\[X\]=theta/2 to find the method-of-moments estimator theta_hat\."
-)
+DATA_RE = re.compile(r"data \[(-?\d+(?:,-?\d+)*)\]")
 
 
-def make_step(*parts):
-    parts = [str(part) for part in parts]
-    while parts and parts[-1] == "":
-        parts.pop()
-    return DELIM.join(parts)
-
-
-def fraction_text(value):
+def exact(value):
     return str(Fraction(value))
 
 
-def parse_values(raw):
-    return [int(part) for part in raw.split(",")]
+def values_from_problem(problem):
+    match = DATA_RE.search(problem)
+    if not match:
+        raise AssertionError(f"cannot parse data from: {problem}")
+    return [int(part) for part in match.group(1).split(",")]
 
 
-def summary_steps(model, parameter, values):
+def moments(problem):
+    values = values_from_problem(problem)
     n = len(values)
-    total = sum(values)
-    mean = Fraction(total, n)
-    steps = [
-        make_step("MOM_SETUP", model, f"parameter={parameter}",
-                  f"data={data_text(values)}"),
-        make_step("COUNT", "n", n),
-        make_step("SUM", "sum x_i", sum_expr(values), total),
-        make_step("D", total, n, fraction_text(mean)),
-        make_step("SAMPLE_MOMENT", "xbar", fraction_text(mean)),
-    ]
-    return n, total, mean, steps
+    mean = Fraction(sum(values), n)
+    second = Fraction(sum(value * value for value in values), n)
+    return values, mean, second
 
 
-def expected_poisson(problem):
-    values = parse_values(POISSON_RE.fullmatch(problem).group(1))
-    _, _, mean, steps = summary_steps("poisson", "lambda", values)
-    lambda_hat = mean
-    steps += [
-        make_step("MOM_EQUATION", "E[X]=lambda", "xbar=lambda"),
-        make_step("REWRITE", f"lambda_hat={fraction_text(lambda_hat)}"),
-        make_step("CHECK", f"lambda_hat={fraction_text(lambda_hat)}>=0",
-                  "valid Poisson parameter"),
-    ]
-    answer = (
-        f"xbar={fraction_text(mean)}; "
-        f"lambda_hat={fraction_text(lambda_hat)}"
-    )
-    return steps, answer
+def oracle(problem):
+    values, mean, second = moments(problem)
+    if "Poisson(lambda)" in problem:
+        return f"xbar={exact(mean)}; lambda_hat={exact(mean)}"
+    if "Exponential(lambda)" in problem:
+        estimate = Fraction(len(values), sum(values))
+        return f"xbar={exact(mean)}; lambda_hat={exact(estimate)}"
+    if "Uniform(0,theta)" in problem:
+        return f"xbar={exact(mean)}; theta_hat={exact(2 * mean)}"
+
+    variance = second - mean * mean
+    if problem.startswith("For normal data"):
+        return (f"xbar={exact(mean)}; m2={exact(second)}; "
+                f"mu_hat={exact(mean)}; sigma2_hat={exact(variance)}")
+    if "Gamma(alpha,beta)" in problem:
+        alpha = mean * mean / variance
+        beta = mean / variance
+        return (f"xbar={exact(mean)}; m2={exact(second)}; "
+                f"alpha_hat={exact(alpha)}; beta_hat={exact(beta)}")
+    if "Uniform(a,b)" in problem:
+        radicand = 3 * variance
+        numerator_root = math.isqrt(radicand.numerator)
+        denominator_root = math.isqrt(radicand.denominator)
+        if (numerator_root * numerator_root != radicand.numerator or
+                denominator_root * denominator_root != radicand.denominator):
+            raise AssertionError(f"non-square endpoint radicand: {radicand}")
+        radius = Fraction(numerator_root, denominator_root)
+        return (f"xbar={exact(mean)}; m2={exact(second)}; "
+                f"a_hat={exact(mean - radius)}; "
+                f"b_hat={exact(mean + radius)}")
+    raise AssertionError(f"unrecognized problem: {problem}")
 
 
-def expected_exponential(problem):
-    values = parse_values(EXP_RE.fullmatch(problem).group(1))
-    n, total, mean, steps = summary_steps("exponential", "lambda", values)
-    lambda_hat = Fraction(n, total)
-    steps += [
-        make_step("MOM_EQUATION", "E[X]=1/lambda", "xbar=1/lambda"),
-        make_step("REWRITE", "lambda_hat=1/xbar"),
-        make_step("D", n, total, fraction_text(lambda_hat)),
-        make_step("CHECK", f"lambda_hat={fraction_text(lambda_hat)}>0",
-                  "valid rate parameter"),
-    ]
-    answer = (
-        f"xbar={fraction_text(mean)}; "
-        f"lambda_hat={fraction_text(lambda_hat)}"
-    )
-    return steps, answer
-
-
-def expected_uniform(problem):
-    values = parse_values(UNIFORM_RE.fullmatch(problem).group(1))
-    _, _, mean, steps = summary_steps("uniform_zero_theta", "theta", values)
-    theta_hat = 2 * mean
-    steps += [
-        make_step("MOM_EQUATION", "E[X]=theta/2", "xbar=theta/2"),
-        make_step("REWRITE", "theta_hat=2*xbar"),
-        make_step("M", 2, fraction_text(mean), fraction_text(theta_hat)),
-        make_step("CHECK", f"theta_hat={fraction_text(theta_hat)}>0",
-                  "valid upper endpoint"),
-    ]
-    answer = (
-        f"xbar={fraction_text(mean)}; "
-        f"theta_hat={fraction_text(theta_hat)}"
-    )
-    return steps, answer
-
-
-def expected_flow(example):
-    problem = example["problem"]
-    if POISSON_RE.fullmatch(problem):
-        steps, answer = expected_poisson(problem)
-    elif EXP_RE.fullmatch(problem):
-        steps, answer = expected_exponential(problem)
-    else:
-        steps, answer = expected_uniform(problem)
-    steps.append(make_step("Z", answer))
-    return steps, answer
+def assert_arithmetic(testcase, raw_step):
+    fields = raw_step.split(DELIM)
+    code = fields[0]
+    if code == "A":
+        testcase.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+    elif code == "S":
+        testcase.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+    elif code == "M":
+        testcase.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+    elif code == "D":
+        testcase.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                             Fraction(fields[3]), raw_step)
+    elif code == "E":
+        testcase.assertEqual(Fraction(fields[1]) ** int(fields[2]),
+                             Fraction(fields[3]), raw_step)
+    elif code == "ROOT":
+        testcase.assertEqual(Fraction(fields[2]) ** 2,
+                             Fraction(fields[1]), raw_step)
+    elif code == "SUM":
+        terms = [Fraction(term.strip()) for term in fields[2].split("+")]
+        testcase.assertEqual(sum(terms, Fraction()),
+                             Fraction(fields[3]), raw_step)
 
 
 class TestMethodOfMomentsGenerator(unittest.TestCase):
     def setUp(self):
         self.gen = MethodOfMomentsGenerator()
 
+    def test_statistics_marker(self):
+        self.assertIs(STATISTICS, True)
+
     def test_output_contract(self):
         result = self.gen.generate()
-        for key in ("problem_id", "operation", "problem", "steps",
-                    "final_answer"):
-            self.assertIn(key, result)
-        self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
-        self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
-                         result["final_answer"])
+        self.assertEqual(
+            set(result),
+            {"problem_id", "operation", "problem", "steps", "final_answer"},
+        )
+        self.assertEqual(result["steps"][-1],
+                         f"Z{DELIM}{result['final_answer']}")
 
-    def test_oracle_reconstructs_full_trace_from_problem_text(self):
-        for _ in range(500):
+    def test_oracle_recomputes_answer_from_problem_text(self):
+        random.seed(7319)
+        seen = set()
+        for _ in range(1000):
             result = self.gen.generate()
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer, result["problem"])
-            self.assertEqual(result["steps"], expected_steps,
+            seen.add(result["operation"])
+            self.assertEqual(result["final_answer"], oracle(result["problem"]),
                              result["problem"])
+        self.assertEqual(
+            seen,
+            {f"method_of_moments_{variant}"
+             for variant in MethodOfMomentsGenerator.VARIANTS},
+        )
 
-    def test_arithmetic_steps(self):
-        for _ in range(300):
-            result = self.gen.generate()
-            for raw_step in result["steps"]:
-                fields = raw_step.split(DELIM)
-                if fields[0] == "D":
-                    self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "M":
-                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
-                elif fields[0] == "SUM":
-                    values = [int(v) for v in re.findall(r"\d+", fields[2])]
-                    self.assertEqual(sum(values), int(fields[3]), raw_step)
-
-    def test_variants_are_available(self):
+    def test_all_variants_and_invalid_variant(self):
         for variant in MethodOfMomentsGenerator.VARIANTS:
             result = MethodOfMomentsGenerator(variant).generate()
             self.assertEqual(result["operation"],
                              f"method_of_moments_{variant}")
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer)
-            self.assertEqual(result["steps"], expected_steps)
-
-    def test_invalid_variant_rejected(self):
+            self.assertEqual(result["final_answer"], oracle(result["problem"]))
         with self.assertRaises(ValueError):
             MethodOfMomentsGenerator("bogus")
 
-    def test_estimates_have_valid_domains(self):
-        for variant in MethodOfMomentsGenerator.VARIANTS:
+    def test_emitted_arithmetic(self):
+        random.seed(992)
+        for _ in range(500):
+            result = self.gen.generate()
+            for raw_step in result["steps"]:
+                assert_arithmetic(self, raw_step)
+
+    def test_sample_moments_match_problem_data(self):
+        for variant in ("normal_two_param", "gamma_two_param", "uniform_a_b"):
             gen = MethodOfMomentsGenerator(variant)
             for _ in range(100):
                 result = gen.generate()
-                estimate = Fraction(result["final_answer"].rsplit("=", 1)[1])
-                self.assertGreaterEqual(estimate, 0)
-                if variant != "poisson":
-                    self.assertGreater(estimate, 0)
+                _, mean, second = moments(result["problem"])
+                sample_moments = {
+                    fields[1]: fields[2]
+                    for fields in (step_text.split(DELIM)
+                                   for step_text in result["steps"])
+                    if fields[0] == "SAMPLE_MOMENT"
+                }
+                self.assertEqual(Fraction(sample_moments["xbar"]), mean)
+                self.assertEqual(
+                    Fraction(sample_moments["m2=(1/n)sum x_i^2"]), second
+                )
 
-    def test_pipe_safe(self):
+    def test_two_parameter_estimates_have_valid_domains(self):
+        for variant in ("normal_two_param", "gamma_two_param", "uniform_a_b"):
+            gen = MethodOfMomentsGenerator(variant)
+            for _ in range(150):
+                result = gen.generate()
+                _, mean, second = moments(result["problem"])
+                variance = second - mean * mean
+                self.assertGreater(variance, 0)
+                if variant == "gamma_two_param":
+                    self.assertGreater(mean * mean / variance, 0)
+                    self.assertGreater(mean / variance, 0)
+                elif variant == "uniform_a_b":
+                    answer = result["final_answer"]
+                    a_hat = Fraction(re.search(r"a_hat=([^;]+)", answer).group(1))
+                    b_hat = Fraction(re.search(r"b_hat=([^;]+)", answer).group(1))
+                    self.assertLess(a_hat, b_hat)
+
+    def test_uniform_endpoint_exactness_patterns(self):
+        gen = MethodOfMomentsGenerator("uniform_a_b")
+        observed_variances = set()
         for _ in range(300):
+            result = gen.generate()
+            _, mean, second = moments(result["problem"])
+            variance = second - mean * mean
+            observed_variances.add(variance)
+            root = math.isqrt((3 * variance).numerator)
+            self.assertEqual(root * root, (3 * variance).numerator)
+            self.assertEqual((3 * variance).denominator, 1)
+        self.assertEqual(observed_variances, {Fraction(3), Fraction(12)})
+
+    def test_rate_parameterization_is_stated(self):
+        for _ in range(100):
+            result = MethodOfMomentsGenerator("gamma_two_param").generate()
+            self.assertIn("beta is the rate parameter", result["problem"])
+
+    def test_pipe_and_render_safety(self):
+        # ``+ 0`` is legitimate here when a sampled Poisson observation is 0.
+        bad_patterns = (r"\b1x\b", r"\b-1x\b", r"\^1\b", r"--")
+        for _ in range(500):
             result = self.gen.generate()
+            self.assertNotIn(DELIM, result["final_answer"])
+            rendered = result["problem"] + " " + " ".join(result["steps"])
+            for pattern in bad_patterns:
+                self.assertIsNone(re.search(pattern, rendered), rendered)
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
-            self.assertNotIn(DELIM, result["final_answer"])
 
 
 if __name__ == "__main__":

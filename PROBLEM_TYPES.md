@@ -15054,24 +15054,30 @@ Answer: xbar=59/9; score=9/p-50/(1-p); p_hat=9/59
 
 ### Method Of Moments — `MethodOfMomentsGenerator`  ·  graduate · difficulty 3
 
-First-moment method-of-moments estimators.
+Exact first- and second-moment method-of-moments estimators.
 
-**Variants:** `method_of_moments_exponential`, `method_of_moments_poisson`, `method_of_moments_uniform_zero_theta`
+**Variants:** `method_of_moments_exponential`, `method_of_moments_gamma_two_param`, `method_of_moments_normal_two_param`, `method_of_moments_poisson`, `method_of_moments_uniform_a_b`, `method_of_moments_uniform_zero_theta`
 
 ```
-Problem: For data [1,5,9,8,7,5,8,6,10] from an Exponential(lambda) model, use E[X]=1/lambda to find the method-of-moments estimator lambda_hat.
+Problem: For normal data [2,9,17,16,13,10,16] with both mu and sigma^2 unknown, match the first two raw moments to find the method-of-moments estimates mu_hat and sigma2_hat.
 Steps:
-  MOM_SETUP|exponential|parameter=lambda|data=[1,5,9,8,7,5,8,6,10]
-  COUNT|n|9
-  SUM|sum x_i|1 + 5 + 9 + 8 + 7 + 5 + 8 + 6 + 10|59
-  D|59|9|59/9
-  SAMPLE_MOMENT|xbar|59/9
-  MOM_EQUATION|E[X]=1/lambda|xbar=1/lambda
-  REWRITE|lambda_hat=1/xbar
-  D|9|59|9/59
-  CHECK|lambda_hat=9/59>0|valid rate parameter
-  Z|xbar=59/9; lambda_hat=9/59
-Answer: xbar=59/9; lambda_hat=9/59
+  MOM_SETUP|normal|parameter=mu,sigma^2|data=[2,9,17,16,13,10,16]
+  COUNT|n|7
+  SUM|sum x_i|2 + 9 + 17 + 16 + 13 + 10 + 16|83
+  D|83|7|83/7
+  SAMPLE_MOMENT|xbar|83/7
+  SUM|sum x_i^2|4 + 81 + 289 + 256 + 169 + 100 + 256|1155
+  D|1155|7|165
+  SAMPLE_MOMENT|m2=(1/n)sum x_i^2|165
+  MOM_EQUATION|E[X]=mu|xbar=mu
+  MOM_EQUATION|E[X^2]=mu^2+sigma^2|m2=mu^2+sigma^2
+  REWRITE|mu_hat=83/7
+  E|83/7|2|6889/49
+  S|165|6889/49|1196/49
+  REWRITE|sigma2_hat=1196/49
+  CHECK|sigma2_hat=1196/49>0|valid variance parameter
+  Z|xbar=83/7; m2=165; mu_hat=83/7; sigma2_hat=1196/49
+Answer: xbar=83/7; m2=165; mu_hat=83/7; sigma2_hat=1196/49
 ```
 
 ### Bayesian Update — `BayesianUpdateGenerator`  ·  graduate · difficulty 4
