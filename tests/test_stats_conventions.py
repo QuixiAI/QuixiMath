@@ -89,8 +89,9 @@ def decimal_violations(example):
     answer = str(example.get("final_answer", ""))
     problem = str(example.get("problem", ""))
     bad = []
+    rounding_text = answer.replace("approximately normal", "")
     for marker in _ROUNDING:
-        if marker in answer:
+        if marker in rounding_text:
             bad.append(f"final_answer is rounded ({marker!r}): {answer!r}")
     for m in _DECIMAL.finditer(answer):
         literal = m.group(0)
@@ -335,6 +336,15 @@ class TestCheckersRejectViolations(unittest.TestCase):
     def test_rounded_answer_is_rejected(self):
         ex = example("Find the mean.", ["D|10|3|3.33"], "≈ 3.33")
         self.assertTrue(decimal_violations(ex))
+        worded = example("Find the mean.", ["D|10|3|3.33"],
+                         "approximately 3.33")
+        self.assertTrue(decimal_violations(worded))
+
+    def test_approximately_normal_label_is_allowed(self):
+        ex = example("Describe the CLT shape.",
+                     ["CLT_CHECK|n = 36 ≥ 30|approximately normal"],
+                     "approximately normal (n = 36 ≥ 30); mean 50; SE 2")
+        self.assertEqual([], decimal_violations(ex))
 
     def test_scientific_notation_is_rejected(self):
         ex = example("Find the probability.", ["D|1|1000|0.001"], "1.0e-3")

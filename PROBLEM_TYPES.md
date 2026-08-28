@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**622 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**623 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7219,6 +7219,34 @@ Steps:
   CHECK|enumeration = variance identity|19/3|19/3
   Z|19/3; σ²/n = 19/3
 Answer: 19/3; σ²/n = 19/3
+```
+
+### CLTProbability — `CLTProbabilityGenerator`  ·  high · difficulty 3
+
+Generate exact standard errors and supplied-table CLT procedures.
+
+**Variants:** `statistics_clt_probability_mean_above`, `statistics_clt_probability_mean_between`, `statistics_clt_probability_mean_sd_xbar`, `statistics_clt_probability_n_for_target_se`, `statistics_clt_probability_prob_proportion`, `statistics_clt_probability_prop_below`, `statistics_clt_probability_se_mean`, `statistics_clt_probability_se_prop`, `statistics_clt_probability_shape_and_center`, `statistics_clt_probability_unusual_sample_mean`
+
+```
+Problem: At the lake center during the jade pilot (cohort E71), water-use measurements have population mean μ = 114 units and population standard deviation σ = 12 units. The population shape is left-skewed. Independent random samples of size n = 144 are taken. Target: find P(112.1 < x̄ < 116).
+Standard normal table, Φ(z) = P(Z < z): z=1.90: 0.9713; z=2.00: 0.9772; z=2.10: 0.9821; z=2.30: 0.9893
+Use the CLT and supplied table to evaluate the x̄ interval.
+Steps:
+  SAMP_DIST_SETUP|μ = 114, σ = 12, n = 144|sampling distribution of x̄
+  SE_FORMULA|SE(x̄) = σ/√n
+  ROOT|144|2|12
+  D|12|12|1
+  CLT_CHECK|n = 144 ≥ 30|approximately normal
+  ZSCORE|(112.1 − 114)/1|-1.90
+  ZSCORE|(116 − 114)/1|2.00
+  TABLE_LOOKUP|Φ(1.90)|0.9713
+  REWRITE|Φ(-1.90) = 1 − Φ(1.90)
+  S|1.0000|0.9713|0.0287
+  TABLE_LOOKUP|Φ(2.00)|0.9772
+  REWRITE|P(112.1 < x̄ < 116) = Φ(2.00) − Φ(-1.90)
+  S|0.9772|0.0287|0.9485
+  Z|0.9485
+Answer: 0.9485
 ```
 
 ## College

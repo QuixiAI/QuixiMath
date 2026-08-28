@@ -126,6 +126,7 @@ CURRICULUM = {
     "EmpiricalRuleGenerator": {"grade_level": HIGH, "difficulty": 1},
     "InverseNormalGenerator": {"grade_level": HIGH, "difficulty": 3},
     "SamplingDistributionEnumGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "CLTProbabilityGenerator": {"grade_level": HIGH, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
