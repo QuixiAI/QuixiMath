@@ -1,204 +1,211 @@
-import os
+"""Independent problem-text oracles for all MLEGenerator variants."""
+import random
 import re
-import sys
 import unittest
 from fractions import Fraction
 
-repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
-from generators.mle_generator import MLEGenerator, data_text, sum_expr
+from generators.mle_generator import MLEGenerator
 from helpers import DELIM
 
 
-BERNOULLI_RE = re.compile(
-    r"For Bernoulli data \[([0-1,]+)\], write the log-likelihood for p, "
-    r"differentiate, and solve for the MLE p_hat\."
-)
-EXP_RE = re.compile(
-    r"For exponential data \[([0-9,]+)\], write the log-likelihood for "
-    r"lambda, differentiate, and solve for the MLE lambda_hat\."
-)
-NORMAL_RE = re.compile(
-    r"For normal data \[([-0-9,]+)\] with known sigma\^2=(\d+), write "
-    r"the log-likelihood for mu, differentiate, and solve for the MLE "
-    r"mu_hat\."
-)
+def values_from(text):
+    return [int(value) for value in re.search(r"\[([-\d,]+)\]", text).group(1).split(",")]
 
 
-def make_step(*parts):
-    parts = [str(part) for part in parts]
-    while parts and parts[-1] == "":
-        parts.pop()
-    return DELIM.join(parts)
-
-
-def fraction_text(value):
+def fraction(value):
     return str(Fraction(value))
 
 
-def parse_values(raw):
-    if raw == "":
-        return []
-    return [int(part) for part in raw.split(",")]
-
-
-def expected_bernoulli(problem):
-    values = parse_values(BERNOULLI_RE.fullmatch(problem).group(1))
-    n = len(values)
-    successes = sum(values)
-    failures = n - successes
-    p_hat = Fraction(successes, n)
-    loglik = f"ell(p)={successes}*log(p)+{failures}*log(1-p)"
-    score = f"score={successes}/p-{failures}/(1-p)"
-    steps = [
-        make_step("MLE_SETUP", "bernoulli", "parameter=p",
-                  f"data={data_text(values)}"),
-        make_step("COUNT", "n", n),
-        make_step("COUNT", "sum x_i", successes),
-        make_step("S", n, successes, failures),
-        make_step("LOG_LIKELIHOOD", loglik),
-        make_step("DERIVATIVE", score),
-        make_step("SCORE_EQ", f"{successes}/p={failures}/(1-p)"),
-        make_step("REWRITE", f"{successes}={n}*p"),
-        make_step("D", successes, n, fraction_text(p_hat)),
-        make_step("CHECK", f"0<={fraction_text(p_hat)}<=1",
-                  "valid Bernoulli parameter"),
-    ]
-    answer = f"{loglik}; {score}; p_hat={fraction_text(p_hat)}"
-    return steps, answer
-
-
-def expected_exponential(problem):
-    values = parse_values(EXP_RE.fullmatch(problem).group(1))
-    n = len(values)
-    total = sum(values)
-    lambda_hat = Fraction(n, total)
-    loglik = f"ell(lambda)={n}*log(lambda)-{total}*lambda"
-    score = f"score={n}/lambda-{total}"
-    steps = [
-        make_step("MLE_SETUP", "exponential", "parameter=lambda",
-                  f"data={data_text(values)}"),
-        make_step("COUNT", "n", n),
-        make_step("SUM", "sum x_i", sum_expr(values), total),
-        make_step("LOG_LIKELIHOOD", loglik),
-        make_step("DERIVATIVE", score),
-        make_step("SCORE_EQ", f"{n}/lambda={total}"),
-        make_step("D", n, total, fraction_text(lambda_hat)),
-        make_step("CHECK", f"lambda_hat={fraction_text(lambda_hat)}>0",
-                  "valid rate parameter"),
-    ]
-    answer = f"{loglik}; {score}; lambda_hat={fraction_text(lambda_hat)}"
-    return steps, answer
-
-
-def expected_normal(problem):
-    match = NORMAL_RE.fullmatch(problem)
-    values = parse_values(match.group(1))
-    sigma_sq = int(match.group(2))
-    n = len(values)
-    total = sum(values)
-    mu_hat = Fraction(total, n)
-    loglik = f"ell(mu)=-(1/(2*{sigma_sq}))*sum((x_i-mu)^2)+C"
-    score = f"score=({total}-{n}*mu)/{sigma_sq}"
-    steps = [
-        make_step("MLE_SETUP", "normal_mu", "parameter=mu",
-                  f"sigma^2={sigma_sq}"),
-        make_step("MLE_SETUP", "data", data_text(values)),
-        make_step("COUNT", "n", n),
-        make_step("SUM", "sum x_i", sum_expr(values), total),
-        make_step("LOG_LIKELIHOOD", loglik),
-        make_step("DERIVATIVE", score),
-        make_step("SCORE_EQ", f"{total}-{n}*mu=0"),
-        make_step("REWRITE", f"{total}={n}*mu"),
-        make_step("D", total, n, fraction_text(mu_hat)),
-        make_step("CHECK", "mu_hat can be any real number",
-                  fraction_text(mu_hat)),
-    ]
-    answer = f"{loglik}; {score}; mu_hat={fraction_text(mu_hat)}"
-    return steps, answer
-
-
-def expected_flow(example):
+def oracle_parts(example):
     problem = example["problem"]
-    if BERNOULLI_RE.fullmatch(problem):
-        steps, answer = expected_bernoulli(problem)
-    elif EXP_RE.fullmatch(problem):
-        steps, answer = expected_exponential(problem)
-    else:
-        steps, answer = expected_normal(problem)
-    steps.append(make_step("Z", answer))
-    return steps, answer
+    values = values_from(problem)
+    n = len(values)
+    total = sum(values)
+    if problem.startswith("For Bernoulli data"):
+        successes = total
+        failures = n - successes
+        estimate = Fraction(successes, n)
+        loglik = f"ell(p)={successes}*log(p)+{failures}*log(1-p)"
+        score = f"score={successes}/p-{failures}/(1-p)"
+        return {"variant": "bernoulli", "values": values,
+                "answer": f"{loglik}; {score}; p_hat={fraction(estimate)}",
+                "estimate": estimate}
+    if problem.startswith("For exponential data"):
+        estimate = Fraction(n, total)
+        loglik = f"ell(lambda)={n}*log(lambda)-{total}*lambda"
+        score = f"score={n}/lambda-{total}"
+        return {"variant": "exponential", "values": values,
+                "answer": f"{loglik}; {score}; lambda_hat={fraction(estimate)}",
+                "estimate": estimate}
+    if "with known sigma^2=" in problem:
+        sigma2 = int(re.search(r"known sigma\^2=(\d+)", problem).group(1))
+        estimate = Fraction(total, n)
+        loglik = f"ell(mu)=-(1/(2*{sigma2}))*sum((x_i-mu)^2)+C"
+        score = f"score=({total}-{n}*mu)/{sigma2}"
+        return {"variant": "normal_mu", "values": values,
+                "answer": f"{loglik}; {score}; mu_hat={fraction(estimate)}",
+                "estimate": estimate}
+    if "with both mu and sigma^2 unknown" in problem:
+        mean = Fraction(total, n)
+        squares = [(Fraction(value) - mean) ** 2 for value in values]
+        ss = sum(squares, Fraction(0))
+        variance = ss / n
+        return {"variant": "normal_sigma2", "values": values,
+                "mean": mean, "squares": squares, "ss": ss,
+                "variance": variance,
+                "answer": f"mu_hat={fraction(mean)}; SS={fraction(ss)}; "
+                          f"sigma2_hat={fraction(variance)}"}
+    if problem.startswith("For Poisson data"):
+        estimate = Fraction(total, n)
+        loglik = f"ell(lambda)={total}*log(lambda)-{n}*lambda+C"
+        score = f"score={total}/lambda-{n}"
+        return {"variant": "poisson", "values": values,
+                "answer": f"{loglik}; {score}; lambda_hat={fraction(estimate)}",
+                "estimate": estimate}
+    if "from Uniform(0,theta)" in problem:
+        maximum = max(values)
+        return {"variant": "uniform_theta", "values": values,
+                "maximum": maximum,
+                "answer": f"theta_hat = max = {maximum}; "
+                          "score equation has no root"}
+    if problem.startswith("For geometric data"):
+        failures = total - n
+        mean = Fraction(total, n)
+        estimate = Fraction(n, total)
+        score = f"score={n}/p-{failures}/(1-p)"
+        return {"variant": "geometric", "values": values,
+                "mean": mean, "estimate": estimate,
+                "answer": f"xbar={fraction(mean)}; {score}; "
+                          f"p_hat={fraction(estimate)}"}
+    trials_each = int(re.search(r"Binomial\(N=(\d+),p\)", problem).group(1))
+    total_trials = n * trials_each
+    failures = total_trials - total
+    estimate = Fraction(total, total_trials)
+    loglik = f"ell(p)={total}*log(p)+{failures}*log(1-p)+C"
+    score = f"score={total}/p-{failures}/(1-p)"
+    return {"variant": "binomial_n_known", "values": values,
+            "trials_each": trials_each, "total_trials": total_trials,
+            "estimate": estimate,
+            "answer": f"{loglik}; {score}; p_hat={fraction(estimate)}"}
 
 
-class TestMLEGenerator(unittest.TestCase):
+class MLEGeneratorTest(unittest.TestCase):
     def setUp(self):
-        self.gen = MLEGenerator()
+        random.seed(625184)
 
     def test_output_contract(self):
-        result = self.gen.generate()
+        result = MLEGenerator().generate()
         for key in ("problem_id", "operation", "problem", "steps",
                     "final_answer"):
             self.assertIn(key, result)
-        self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
-        self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
-                         result["final_answer"])
+        self.assertEqual(result["steps"][-1],
+                         f"Z{DELIM}{result['final_answer']}")
 
-    def test_oracle_reconstructs_full_trace_from_problem_text(self):
-        for _ in range(500):
-            result = self.gen.generate()
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer, result["problem"])
-            self.assertEqual(result["steps"], expected_steps,
-                             result["problem"])
+    def test_oracle_recomputes_1000_answers_from_problem_text(self):
+        generator = MLEGenerator()
+        for _ in range(1000):
+            result = generator.generate()
+            self.assertEqual(result["final_answer"],
+                             oracle_parts(result)["answer"], result["problem"])
 
-    def test_arithmetic_steps(self):
-        for _ in range(300):
-            result = self.gen.generate()
-            for raw_step in result["steps"]:
-                fields = raw_step.split(DELIM)
-                if fields[0] == "S":
+    def test_all_arithmetic_steps(self):
+        generator = MLEGenerator()
+        for _ in range(900):
+            result = generator.generate()
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "S":
                     self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
                 elif fields[0] == "D":
                     self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
-                                     Fraction(fields[3]), raw_step)
+                                     Fraction(fields[3]), raw)
                 elif fields[0] == "SUM":
-                    values = [int(v) for v in re.findall(r"-?\d+", fields[2])]
-                    self.assertEqual(sum(values), int(fields[3]), raw_step)
+                    terms = [int(value) for value in
+                             re.findall(r"(?<!\^)-?\d+", fields[2])]
+                    self.assertEqual(sum(terms), int(fields[3]), raw)
 
-    def test_variants_are_available(self):
+    def test_normal_sigma2_deviation_rows_and_integer_variance(self):
+        generator = MLEGenerator("normal_sigma2")
+        seen_n = set()
+        for _ in range(400):
+            result = generator.generate()
+            parts = oracle_parts(result)
+            seen_n.add(len(parts["values"]))
+            rows = [raw.split(DELIM) for raw in result["steps"]
+                    if raw.startswith(f"DEV_ROW{DELIM}")]
+            self.assertEqual(len(rows), len(parts["values"]))
+            for row, value, square in zip(rows, parts["values"], parts["squares"]):
+                self.assertEqual(int(row[1]), value)
+                self.assertEqual(Fraction(row[2]), Fraction(value) - parts["mean"])
+                self.assertEqual(Fraction(row[3]), square)
+            self.assertEqual(parts["variance"].denominator, 1)
+            self.assertGreater(parts["variance"], 0)
+        self.assertEqual(seen_n, {4, 5, 6, 7, 8})
+
+    def test_poisson_and_geometric_estimators_are_sample_mean_routes(self):
+        poisson = MLEGenerator("poisson")
+        geometric = MLEGenerator("geometric")
+        for _ in range(300):
+            p_parts = oracle_parts(poisson.generate())
+            self.assertEqual(p_parts["estimate"],
+                             Fraction(sum(p_parts["values"]), len(p_parts["values"])))
+            g_parts = oracle_parts(geometric.generate())
+            self.assertEqual(g_parts["estimate"], 1 / g_parts["mean"])
+            self.assertTrue(all(value >= 1 for value in g_parts["values"]))
+
+    def test_uniform_uses_boundary_not_score_root(self):
+        generator = MLEGenerator("uniform_theta")
+        for _ in range(300):
+            result = generator.generate()
+            parts = oracle_parts(result)
+            boundary = next(raw.split(DELIM) for raw in result["steps"]
+                            if raw.startswith(f"BOUNDARY_MLE{DELIM}"))
+            self.assertEqual(int(boundary[2]), parts["maximum"])
+            check = next(raw for raw in result["steps"]
+                         if raw.startswith(f"CHECK{DELIM}likelihood decreasing"))
+            self.assertIn(f"θ ≥ {parts['maximum']}", check)
+
+    def test_known_binomial_total_trials_and_interior_estimate(self):
+        generator = MLEGenerator("binomial_n_known")
+        for _ in range(300):
+            result = generator.generate()
+            parts = oracle_parts(result)
+            self.assertEqual(parts["total_trials"],
+                             len(parts["values"]) * parts["trials_each"])
+            self.assertTrue(all(0 <= value <= parts["trials_each"]
+                                for value in parts["values"]))
+            self.assertGreater(parts["estimate"], 0)
+            self.assertLess(parts["estimate"], 1)
+
+    def test_all_variants_are_available(self):
         for variant in MLEGenerator.VARIANTS:
             result = MLEGenerator(variant).generate()
             self.assertEqual(result["operation"], f"mle_{variant}")
-            expected_steps, answer = expected_flow(result)
-            self.assertEqual(result["final_answer"], answer)
-            self.assertEqual(result["steps"], expected_steps)
+            self.assertEqual(result["final_answer"],
+                             oracle_parts(result)["answer"])
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):
             MLEGenerator("bogus")
 
-    def test_estimates_are_valid(self):
-        for variant in MLEGenerator.VARIANTS:
-            gen = MLEGenerator(variant)
-            for _ in range(100):
-                result = gen.generate()
-                estimate = Fraction(result["final_answer"].rsplit("=", 1)[1])
-                if variant == "bernoulli":
-                    self.assertGreaterEqual(estimate, 0)
-                    self.assertLessEqual(estimate, 1)
-                elif variant == "exponential":
-                    self.assertGreater(estimate, 0)
-
-    def test_pipe_safe(self):
-        for _ in range(300):
-            result = self.gen.generate()
-            for raw_step in result["steps"]:
-                self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
-                                     raw_step)
+    def test_pipe_safety_and_render_sanity(self):
+        generator = MLEGenerator()
+        for _ in range(500):
+            result = generator.generate()
+            self.assertNotIn(DELIM, result["problem"])
             self.assertNotIn(DELIM, result["final_answer"])
+            rendered = "\n".join([result["problem"], *result["steps"],
+                                    result["final_answer"]])
+            self.assertNotRegex(rendered, r"1x|\^1\b|--|− -")
+            for raw in result["steps"]:
+                self.assertLessEqual(len(raw.split(DELIM)) - 1, 4, raw)
 
 
 if __name__ == "__main__":

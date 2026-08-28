@@ -15033,21 +15033,23 @@ Answer: inverse x=(u+v)/2, y=(u-v)/2; support=0<=u+v<=30 and 0<=u-v<=30; absJ=1/
 
 Maximum-likelihood estimates from log-likelihood score equations.
 
-**Variants:** `mle_bernoulli`, `mle_exponential`, `mle_normal_mu`
+**Variants:** `mle_bernoulli`, `mle_binomial_n_known`, `mle_exponential`, `mle_geometric`, `mle_normal_mu`, `mle_normal_sigma2`, `mle_poisson`, `mle_uniform_theta`
 
 ```
-Problem: For exponential data [7,1,5,9,8,7,5,8,6], write the log-likelihood for lambda, differentiate, and solve for the MLE lambda_hat.
+Problem: For geometric data [1,5,9,8,7,5,8,6,10] on support 1,2,..., write the log-likelihood and find the MLE p_hat=1/xbar.
 Steps:
-  MLE_SETUP|exponential|parameter=lambda|data=[7,1,5,9,8,7,5,8,6]
+  MLE_SETUP|geometric|support=1,2,...|data=[1,5,9,8,7,5,8,6,10]
   COUNT|n|9
-  SUM|sum x_i|7 + 1 + 5 + 9 + 8 + 7 + 5 + 8 + 6|56
-  LOG_LIKELIHOOD|ell(lambda)=9*log(lambda)-56*lambda
-  DERIVATIVE|score=9/lambda-56
-  SCORE_EQ|9/lambda=56
-  D|9|56|9/56
-  CHECK|lambda_hat=9/56>0|valid rate parameter
-  Z|ell(lambda)=9*log(lambda)-56*lambda; score=9/lambda-56; lambda_hat=9/56
-Answer: ell(lambda)=9*log(lambda)-56*lambda; score=9/lambda-56; lambda_hat=9/56
+  SUM|sum x_i|1 + 5 + 9 + 8 + 7 + 5 + 8 + 6 + 10|59
+  S|59|9|50
+  D|59|9|59/9
+  LOG_LIKELIHOOD|ell(p)=9*log(p)+50*log(1-p)
+  DERIVATIVE|score=9/p-50/(1-p)
+  SCORE_EQ|p_hat=1/xbar
+  D|9|59|9/59
+  CHECK|0<9/59<=1|valid geometric parameter
+  Z|xbar=59/9; score=9/p-50/(1-p); p_hat=9/59
+Answer: xbar=59/9; score=9/p-50/(1-p); p_hat=9/59
 ```
 
 ### Method Of Moments — `MethodOfMomentsGenerator`  ·  graduate · difficulty 3
