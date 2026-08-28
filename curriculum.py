@@ -109,6 +109,7 @@ CURRICULUM = {
     "ProbabilityCriticGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "TallyFrequencyGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
     "DotPlotGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "FractionLinePlotGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

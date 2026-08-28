@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**605 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**606 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -999,6 +999,55 @@ Steps:
   CHECK|ordered middle|17
   Z|17
 Answer: 17
+```
+
+### Fraction Line Plot — `FractionLinePlotGenerator`  ·  elementary · difficulty 3
+
+Generate exact fraction-line-plot measurement exercises.
+
+**Variants:** `statistics_fraction_line_plot_count_at_least`, `statistics_fraction_line_plot_equal_share`, `statistics_fraction_line_plot_longest_minus_shortest`, `statistics_fraction_line_plot_total_length`
+
+```
+Problem: At the training center, read the display below.
+Fraction line plot of pencil lengths in inches (each ● is one pencil; row unit = 1/4):
+1 1/2 ∣ ● ● ● ● ●
+1 3/4 ∣ ●
+    2 ∣ ● ● ● ●
+2 1/4 ∣ ● ● ●
+2 1/2 ∣ ● ● ●
+2 3/4 ∣ ● ● ● ●
+    3 ∣ ● ●
+3 1/4 ∣ ●
+Compute the mean measurement from the fraction line plot.
+Steps:
+  STAT_SETUP|fraction line plot of pencil lengths|unit=1/4, n=23
+  PLOT_READ|row 1 1/2|●●●●●|5
+  M|3/2|5|15/2
+  PLOT_READ|row 1 3/4|●|1
+  M|7/4|1|7/4
+  PLOT_READ|row 2|●●●●|4
+  M|2|4|8
+  PLOT_READ|row 2 1/4|●●●|3
+  M|9/4|3|27/4
+  PLOT_READ|row 2 1/2|●●●|3
+  M|5/2|3|15/2
+  PLOT_READ|row 2 3/4|●●●●|4
+  M|11/4|4|11
+  PLOT_READ|row 3|●●|2
+  M|3|2|6
+  PLOT_READ|row 3 1/4|●|1
+  M|13/4|1|13/4
+  A|7.5|1.75|9.25
+  A|9.25|8|17.25
+  A|17.25|6.75|24
+  A|24|7.5|31.5
+  A|31.5|11|42.5
+  A|42.5|6|48.5
+  A|48.5|3.25|51.75
+  D|207/4|23|9/4
+  CHECK|share times item count|9/4 × 23 = 207/4
+  Z|2 1/4 inches
+Answer: 2 1/4 inches
 ```
 
 ## Middle School (grades 6–8)
