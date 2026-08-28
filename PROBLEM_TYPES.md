@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**594 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**595 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12102,6 +12102,34 @@ Steps:
   CHECK|duration is zero at boundaries|E_0=E_N=0
   Z|14
 Answer: 14
+```
+
+### Multi State Markov — `MultiStateMarkovGenerator`  ·  college · difficulty 4
+
+Generate exact three-state transition and hitting-time exercises.
+
+**Variants:** `probability_multi_state_markov_distribution_after_one_step`, `probability_multi_state_markov_expected_hitting_time`, `probability_multi_state_markov_hitting_prob_3state`, `probability_multi_state_markov_path_probability`, `probability_multi_state_markov_stationary_3state`, `probability_multi_state_markov_two_step`
+
+```
+Problem: At the jade pilot in Portland, Luca studies a Markov chain. The states are {1, 2, 3}. Transition rows, with columns in state order 1, 2, 3, are P1=(1/9, 2/3, 2/9); P2=(2/5, 2/5, 1/5); P3=(0, 0, 1). Target: E_1[T_3] and E_2[T_3]. Use the transient-state linear system for the target-state wait.
+Steps:
+  MARKOV_SETUP|three_state|P1=(1/9, 2/3, 2/9); P2=(2/5, 2/5, 1/5); P3=(0, 0, 1)|E_1[T_3] and E_2[T_3]
+  FIRST_STEP|t_1=1+P11*t_1+P12*t_2|t_2=1+P21*t_1+P22*t_2
+  S|1|1/9|8/9
+  M|2/3|-1|-2/3
+  M|2/5|-1|-2/5
+  S|1|2/5|3/5
+  LINEAR_SYSTEM|(8/9)t_1 - (2/3)t_2 = 1|-(2/5)t_1 + (3/5)t_2 = 1
+  M|8/9|3/5|8/15
+  M|-2/3|-2/5|4/15
+  S|8/15|4/15|4/15
+  S|3/5|-2/3|19/15
+  D|19/15|4/15|19/4
+  S|8/9|-2/5|58/45
+  D|58/45|4/15|29/6
+  CHECK|target state|E_3[T_3]=0
+  Z|E_1[T_3] = 19/4; E_2[T_3] = 29/6
+Answer: E_1[T_3] = 19/4; E_2[T_3] = 29/6
 ```
 
 ## Graduate
