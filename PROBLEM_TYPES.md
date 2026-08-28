@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**630 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**631 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12979,6 +12979,25 @@ Steps:
   COUNT|diff ≥ 5/3|10 of 20
   Z|1/2
 Answer: 1/2
+```
+
+### Empirical CDF — `EmpiricalCDFGenerator`  ·  college · difficulty 2
+
+Generate ECDF values, tables, inverse rows, jumps, and KS distances.
+
+**Variants:** `statistics_empirical_cdf_ecdf_quantile`, `statistics_empirical_cdf_ecdf_table`, `statistics_empirical_cdf_ecdf_value`, `statistics_empirical_cdf_jump_size`, `statistics_empirical_cdf_ks_distance_uniform`
+
+```
+Problem: At the east annex during the ember lab (sample D74), the sample is 5, 9, 8, 7, 5, 8, 6. Find the jump at x = 9.
+Divide that value's multiplicity by n.
+Steps:
+  ECDF_SETUP|n = 7|F̂(x) = count(X ≤ x)/n
+  SORT|5, 9, 8, 7, 5, 8, 6|5, 5, 6, 7, 8, 8, 9
+  COUNT|sample values equal 9|1
+  D|1|7|1/7
+  ECDF_ROW|jump at 9|1/7
+  Z|1/7
+Answer: 1/7
 ```
 
 ## Graduate

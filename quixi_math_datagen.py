@@ -261,6 +261,7 @@ from generators.type_error_power_generator import TypeErrorPowerGenerator
 from generators.anova_generator import ANOVAGenerator
 from generators.slope_inference_generator import SlopeInferenceGenerator
 from generators.nonparametric_test_generator import NonparametricTestGenerator
+from generators.empirical_cdf_generator import EmpiricalCDFGenerator
 from generators.permutation_combination_generator import PermutationCombinationGenerator
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
 from generators.probability_addition_rule_generator import ProbabilityAdditionRuleGenerator
@@ -1368,6 +1369,7 @@ ALL_GENERATORS = [
     ANOVAGenerator(),
     SlopeInferenceGenerator(),
     NonparametricTestGenerator(),
+    EmpiricalCDFGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
