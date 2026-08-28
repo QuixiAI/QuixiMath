@@ -575,6 +575,7 @@ from generators.cantor_pairing_generator import CantorPairingGenerator
 from generators.countability_bijection_generator import CountabilityBijectionGenerator
 from generators.cantor_diagonal_generator import CantorDiagonalGenerator
 from generators.ordinal_arithmetic_generator import OrdinalArithmeticGenerator
+from generators.cardinal_arithmetic_generator import CardinalArithmeticGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -783,6 +784,7 @@ ALL_GENERATORS = [
     CountabilityBijectionGenerator(),
     CantorDiagonalGenerator(),
     OrdinalArithmeticGenerator(),
+    CardinalArithmeticGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**553 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**554 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11246,6 +11246,24 @@ Steps:
   CHECK|canonical CNF|ω^3·8 + ω^2 + 6
   Z|ω^3·8 + ω^2 + 6
 Answer: ω^3·8 + ω^2 + 6
+```
+
+### Cardinal Arithmetic — `CardinalArithmeticGenerator`  ·  graduate · difficulty 3
+
+Generate exact cardinal arithmetic with ℵ0 and c.
+
+**Variants:** `cardinal_arithmetic_add_multiply`, `cardinal_arithmetic_exponent`, `cardinal_arithmetic_set_cardinality`
+
+```
+Problem: Evaluate cardinal exponentiation inside expression: 5307 · (c^ℵ0). Identity to use: c^ℵ0 = c. Compute the power in canonical cardinal notation.
+Steps:
+  CARD_RULE|continuum to countable power|c^ℵ0 = c
+  REWRITE|c^ℵ0|c
+  CARD_RULE|positive finite with infinite|5307 · c = c
+  REWRITE|5307 · (c^ℵ0)|c
+  CHECK|5307 · (c^ℵ0)|c
+  Z|c (5307 · (c^ℵ0))
+Answer: c (5307 · (c^ℵ0))
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
