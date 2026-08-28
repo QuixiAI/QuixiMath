@@ -87,6 +87,7 @@ from generators.pgf_generator import PGFGenerator
 from generators.negative_binomial_generator import NegativeBinomialGenerator
 from generators.multinomial_probability_generator import MultinomialProbabilityGenerator
 from generators.poisson_process_generator import PoissonProcessGenerator
+from generators.random_walk_generator import RandomWalkGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1294,6 +1295,7 @@ ALL_GENERATORS = [
     # Appended so generated op-code examples for existing classes remain stable.
     MultinomialProbabilityGenerator(),
     PoissonProcessGenerator(),
+    RandomWalkGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

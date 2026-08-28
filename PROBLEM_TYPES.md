@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**593 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**594 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12084,6 +12084,24 @@ Steps:
   CHECK|type-A plus type-B first probabilities|1
   Z|6/11
 Answer: 6/11
+```
+
+### Random Walk — `RandomWalkGenerator`  ·  college · difficulty 4
+
+Generate exact walk-position and gambler's-ruin exercises.
+
+**Variants:** `probability_random_walk_biased_position`, `probability_random_walk_duration_fair`, `probability_random_walk_mean_var`, `probability_random_walk_position_prob`, `probability_random_walk_return_to_origin`, `probability_random_walk_ruin_biased`, `probability_random_walk_ruin_fair`
+
+```
+Problem: At the birch survey in Ithaca, Quinn studies a random walk. A gambler starts with i=7 units and stops upon reaching 0 or N=9. Each round adds 1 unit with probability p=1/2 and subtracts 1 unit with probability q=1/2. Target: the expected rounds until hitting 0 or N. How many rounds are expected before reaching 0 or N?
+Steps:
+  RUIN_SETUP|fair, i=7, N=9|expected duration
+  RUIN_FORMULA|E_i=i(N-i)
+  S|9|7|2
+  M|7|2|14
+  CHECK|duration is zero at boundaries|E_0=E_N=0
+  Z|14
+Answer: 14
 ```
 
 ## Graduate

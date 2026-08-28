@@ -39,7 +39,7 @@ PROBABILITY_OP_RE = re.compile(r"prob", re.I)
 #: … unless the operation names a quantity that is not a probability.
 NON_PROBABILITY_OP_RE = re.compile(
     r"mean|expect|variance|var\b|sd\b|deviation|odds|count|outcomes|"
-    r"trials|sample_size|estimate|time|paths|period", re.I)
+    r"trials|sample_size|estimate|time|duration|paths|period", re.I)
 
 
 def _value(text):
@@ -275,6 +275,11 @@ class CheckerFixtureTest(unittest.TestCase):
         example = self.good(operation="probability_expected_value",
                             final_answer="147/10",
                             steps=[f"Z{DELIM}147/10"])
+        self.assertFalse(probability_violations(example))
+
+    def test_duration_operation_is_not_range_checked(self):
+        example = self.good(operation="probability_random_walk_duration_fair",
+                            final_answer="16", steps=[f"Z{DELIM}16"])
         self.assertFalse(probability_violations(example))
 
     def test_duplicate_roster_item_is_rejected(self):
