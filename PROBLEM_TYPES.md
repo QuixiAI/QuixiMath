@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**652 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**653 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3208,6 +3208,24 @@ Steps:
   CHECK|supplied exchange|135 EUR
   Z|x = 180*0.75; x = 135 EUR
 Answer: x = 180*0.75; x = 135 EUR
+```
+
+### Magnitude Comparison — `MagnitudeComparisonGenerator`  ·  middle · difficulty 2
+
+Generate comparison-first reasoning followed by exact checks.
+
+**Variants:** `applied_magnitude_comparison_benchmark_fraction_distractor`, `applied_magnitude_comparison_benchmark_fraction_estimate_first`, `applied_magnitude_comparison_benchmark_fraction_plain`, `applied_magnitude_comparison_benchmark_fraction_with_model`, `applied_magnitude_comparison_bigger_product_or_quotient_distractor`, `applied_magnitude_comparison_bigger_product_or_quotient_estimate_first`, `applied_magnitude_comparison_bigger_product_or_quotient_plain`, `applied_magnitude_comparison_bigger_product_or_quotient_with_model`, `applied_magnitude_comparison_compare_without_computing_distractor`, `applied_magnitude_comparison_compare_without_computing_estimate_first`, `applied_magnitude_comparison_compare_without_computing_plain`, `applied_magnitude_comparison_compare_without_computing_with_model`, `applied_magnitude_comparison_estimate_then_verify_distractor`, `applied_magnitude_comparison_estimate_then_verify_estimate_first`, `applied_magnitude_comparison_estimate_then_verify_plain`, `applied_magnitude_comparison_estimate_then_verify_with_model`, `applied_magnitude_comparison_order_of_magnitude_distractor`, `applied_magnitude_comparison_order_of_magnitude_estimate_first`, `applied_magnitude_comparison_order_of_magnitude_with_model`, `applied_magnitude_comparison_reasonable_answer_distractor`, `applied_magnitude_comparison_reasonable_answer_estimate_first`, `applied_magnitude_comparison_reasonable_answer_plain`, `applied_magnitude_comparison_reasonable_answer_with_model`
+
+```
+Problem: At the highway rest stop, a note reviewed by Milo reads: A shopper buys 20 identical notebooks at $17.50 each. A report gives the total as $3500.00. Is the reported result a reasonable size, and what exact result verifies it?
+Steps:
+  MODEL_EQ|c = 20 × 17.5 = $350.00|comparison or scale relationship
+  M|20|17.5|350
+  BOUND|expected scale|$350.00|claim is off by factor 10
+  PLAUSIBLE|no|claim differs by a factor of 10
+  CHECK|claim $3500.00|correct $350.00|unreasonable
+  Z|c = 20 × 17.5 = $350.00; unreasonable; correct $350.00
+Answer: c = 20 × 17.5 = $350.00; unreasonable; correct $350.00
 ```
 
 ## High School

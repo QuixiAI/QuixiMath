@@ -684,6 +684,7 @@ CURRICULUM = {
     "AssumptionCheckGenerator": {"grade_level": HIGH, "difficulty": 4},
     "QualitativeReasoningGenerator": {"grade_level": HIGH, "difficulty": 3},
     "MentalStrategyGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "MagnitudeComparisonGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 
