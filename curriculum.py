@@ -279,6 +279,7 @@ CURRICULUM = {
     "SlopeInferenceGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "NonparametricTestGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "EmpiricalCDFGenerator": {"grade_level": COLLEGE, "difficulty": 2},
+    "StudyDesignGenerator": {"grade_level": HIGH, "difficulty": 1},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},

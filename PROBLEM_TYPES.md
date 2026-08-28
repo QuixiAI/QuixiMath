@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**631 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**632 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7336,6 +7336,32 @@ Steps:
   REWRITE|(-40.2325, -3.7675)
   Z|(-40.2325, -3.7675)
 Answer: (-40.2325, -3.7675)
+```
+
+### Study Design — `StudyDesignGenerator`  ·  high · difficulty 1
+
+Generate study-design labels and exact sample-selection traces.
+
+**Variants:** `statistics_study_design_bias_identify`, `statistics_study_design_design_elements`, `statistics_study_design_experiment_vs_observational`, `statistics_study_design_random_digit_select`, `statistics_study_design_sampling_method`, `statistics_study_design_stratified_allocate`, `statistics_study_design_systematic_select`
+
+```
+Problem: At the river center during the transportation study (design D74), people are labeled 01-40. Read the supplied digit line left to right in nonoverlapping two-digit pairs, accept valid labels only once, and stop after choosing 6.
+Digits: 9927270003911733322638614574
+Carry out the random-digit selection trace.
+Steps:
+  RULE|random-digit sample|read pairs; accept 01-40 once; stop after 6
+  DIGIT_PICK|99|reject|> 40
+  DIGIT_PICK|27|accept
+  DIGIT_PICK|27|reject|repeat
+  DIGIT_PICK|00|reject|outside 01-40
+  DIGIT_PICK|03|accept
+  DIGIT_PICK|91|reject|> 40
+  DIGIT_PICK|17|accept
+  DIGIT_PICK|33|accept
+  DIGIT_PICK|32|accept
+  DIGIT_PICK|26|accept
+  Z|27, 03, 17, 33, 32, 26
+Answer: 27, 03, 17, 33, 32, 26
 ```
 
 ## College
