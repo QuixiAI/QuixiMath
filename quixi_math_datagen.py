@@ -97,6 +97,7 @@ from generators.polya_urn_generator import PolyaUrnGenerator
 from generators.markov_state_classification_generator import MarkovStateClassificationGenerator
 from generators.martingale_check_generator import MartingaleCheckGenerator
 from generators.probability_critic_generator import ProbabilityCriticGenerator
+from generators.tally_frequency_generator import TallyFrequencyGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1314,6 +1315,7 @@ ALL_GENERATORS = [
     MarkovStateClassificationGenerator(),
     MartingaleCheckGenerator(),
     ProbabilityCriticGenerator(),
+    TallyFrequencyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

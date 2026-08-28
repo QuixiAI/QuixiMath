@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**603 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**604 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -944,6 +944,28 @@ Steps:
   EVAL|area|26 1/10 square feet
   Z|26 1/10 square feet
 Answer: 26 1/10 square feet
+```
+
+### Tally Frequency — `TallyFrequencyGenerator`  ·  elementary · difficulty 1
+
+Generate exact categorical tally construction and reading tasks.
+
+**Variants:** `statistics_tally_frequency_how_many_more`, `statistics_tally_frequency_most_least`, `statistics_tally_frequency_raw_to_table`, `statistics_tally_frequency_table_total`, `statistics_tally_frequency_tally_to_count`
+
+```
+Problem: At the training center, a survey produced this tally table.
+Tally table for club choices
+Drama: ////\ //
+Music: ////\
+Robotics: ////\ ///
+Read the tally table to report the unique maximum and minimum rows.
+Steps:
+  STAT_SETUP|tally table for club choices|3 categories
+  TALLY_ROW|Robotics|////\ ///|8
+  TALLY_ROW|Music|////\|5
+  CHECK|unique extremes|max 8, min 5
+  Z|most: Robotics (8); least: Music (5)
+Answer: most: Robotics (8); least: Music (5)
 ```
 
 ## Middle School (grades 6–8)
