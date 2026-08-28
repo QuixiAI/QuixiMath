@@ -78,6 +78,7 @@ from generators.bayes_multiple_hypotheses_generator import BayesMultipleHypothes
 from generators.hypergeometric_generator import HypergeometricGenerator
 from generators.classic_probability_puzzles_generator import ClassicProbabilityPuzzlesGenerator
 from generators.normal_approx_binomial_generator import NormalApproxBinomialGenerator
+from generators.linearity_of_expectation_generator import LinearityOfExpectationGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -722,6 +723,7 @@ ALL_GENERATORS = [
     HypergeometricGenerator(),
     ClassicProbabilityPuzzlesGenerator(),
     NormalApproxBinomialGenerator(),
+    LinearityOfExpectationGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

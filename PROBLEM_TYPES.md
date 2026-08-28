@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**584 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**585 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6745,6 +6745,24 @@ Steps:
   MEASURE|A ∪ B ∪ C|{a, b, c, d, e, f, g, h}|1
   Z|1
 Answer: 1
+```
+
+### Linearity Of Expectation — `LinearityOfExpectationGenerator`  ·  college · difficulty 3
+
+Generate finite indicator-variable expectation exercises.
+
+**Variants:** `probability_linearity_expectation_adjacent_same_color`, `probability_linearity_expectation_birthday_pairs`, `probability_linearity_expectation_distinct_values`, `probability_linearity_expectation_empty_bins`, `probability_linearity_expectation_fixed_points`, `probability_linearity_expectation_heads_different_coins`, `probability_linearity_expectation_sum_dice`
+
+```
+Problem: At the birch survey in Ithaca, Quinn observes 4 people who independently choose a birthday date uniformly from 5 labelled dates. Let Y count unordered pairs who chose the same date. What is E[Y] for the number of pairs sharing a date?
+Steps:
+  NCR|C(4, 2)|6
+  INDICATOR|I_ab = 1 if pair a,b matches|P(I_ab = 1) = 1/5
+  D|1|5|1/5
+  LINEARITY|E[Y] = Σ E[I_ab]|6 × 1/5
+  M|6|1/5|6/5
+  Z|E[Y] = 6/5
+Answer: E[Y] = 6/5
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
