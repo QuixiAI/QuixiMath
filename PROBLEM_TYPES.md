@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**583 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**584 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3011,6 +3011,31 @@ Steps:
   CHECK|condition on observed token|2 favorable of 3
   Z|2/3
 Answer: 2/3
+```
+
+### Normal Approx Binomial — `NormalApproxBinomialGenerator`  ·  high · difficulty 4
+
+Generate exact-setup, supplied-table binomial normal approximations.
+
+**Variants:** `probability_normal_approx_binomial_at_least`, `probability_normal_approx_binomial_at_most`, `probability_normal_approx_binomial_between`, `probability_normal_approx_binomial_check_conditions`, `probability_normal_approx_binomial_exactly`, `probability_normal_approx_binomial_mean_sd`
+
+```
+Problem: At the quartz program in Portland, X counts applicants who qualify in 625 independent trials with success probability p = 1/5. Target: P(127 ≤ X ≤ 136). Use a normal approximation with continuity correction. Standard normal table, Φ(z) = P(Z < z): z=0.15: 0.5596; z=0.30: 0.6179; z=1.15: 0.8749; z=1.40: 0.9192. Approximate the binomial probability between the two counts.
+Steps:
+  BINOM_SETUP|n = 625, p = 1/5|P(127 ≤ X ≤ 136)
+  CHECK|np ≥ 10 and n(1 − p) ≥ 10|125, 500|ok
+  M|625|1/5|125
+  S|1|1/5|4/5
+  M|125|4/5|100
+  ROOT|100|2|10
+  CONT_CORR|P(127 ≤ X ≤ 136)|P(126.5 < Y < 136.5)
+  ZSCORE|(126.5 − 125)/10|0.15
+  ZSCORE|(136.5 − 125)/10|1.15
+  TABLE_LOOKUP|Φ(0.15)|0.5596
+  TABLE_LOOKUP|Φ(1.15)|0.8749
+  S|0.8749|0.5596|0.3153
+  Z|0.3153
+Answer: 0.3153
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
