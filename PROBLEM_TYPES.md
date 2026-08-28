@@ -762,16 +762,20 @@ Answer: 12.5
 
 ### Simple Probability — `SimpleProbabilityGenerator`  ·  elementary · difficulty 1
 
-Single-event probability with uniform outcomes.
+Generate exact probability from favorable and total outcome counts.
 
-**Variants:** `probability_simple`
+**Variants:** `probability_simple`, `probability_simple_as_decimal`, `probability_simple_as_percent`, `probability_simple_bag`, `probability_simple_die`, `probability_simple_letter_tiles`, `probability_simple_numbered_cards`, `probability_simple_spinner`
 
 ```
-Problem: An exercise used by the game club specifies these outcome counts. If an event has 98 favorable outcomes out of 101 equally likely outcomes, what is P?
+Problem: At the survey office, numbered tickets form S = {6753, 6754, 6755, 6756, 6757, 6758, 6759, 6760}. Event A is drawing one of the first 3 tickets. Report P(A) as a percent. Determine the exact chance of event A.
 Steps:
-  PROB_SETUP|98|101
-  Z|98/101
-Answer: 98/101
+  EVENT|A|first 3 tickets|3
+  PROB_SETUP|3|8
+  FRAC_TO_DEC|3/8|0.375
+  DEC_TO_PERCENT|0.375|37.5%
+  CHECK|0 < 3/8 < 1|valid probability
+  Z|37.5%
+Answer: 37.5%
 ```
 
 ### Likelihood Language — `LikelihoodLanguageGenerator`  ·  elementary · difficulty 1
