@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**651 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**652 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1083,6 +1083,25 @@ Steps:
   MISSING|the price of a notebook|x = 40 - 6*p
   Z|insufficient information; need the price of a notebook
 Answer: insufficient information; need the price of a notebook
+```
+
+### Mental Strategy — `MentalStrategyGenerator`  ·  elementary · difficulty 2
+
+Generate exact arithmetic rewrites designed for mental calculation.
+
+**Variants:** `applied_mental_strategy_choose_strategy_distractor`, `applied_mental_strategy_choose_strategy_estimate_first`, `applied_mental_strategy_choose_strategy_plain`, `applied_mental_strategy_choose_strategy_with_model`, `applied_mental_strategy_compensation_distractor`, `applied_mental_strategy_compensation_estimate_first`, `applied_mental_strategy_compensation_plain`, `applied_mental_strategy_compensation_with_model`, `applied_mental_strategy_count_up_change_distractor`, `applied_mental_strategy_count_up_change_estimate_first`, `applied_mental_strategy_count_up_change_plain`, `applied_mental_strategy_count_up_change_with_model`, `applied_mental_strategy_distributive_split_distractor`, `applied_mental_strategy_distributive_split_estimate_first`, `applied_mental_strategy_distributive_split_plain`, `applied_mental_strategy_distributive_split_with_model`, `applied_mental_strategy_doubling_halving_distractor`, `applied_mental_strategy_doubling_halving_estimate_first`, `applied_mental_strategy_doubling_halving_plain`, `applied_mental_strategy_doubling_halving_with_model`, `applied_mental_strategy_friendly_numbers_distractor`, `applied_mental_strategy_friendly_numbers_estimate_first`, `applied_mental_strategy_friendly_numbers_plain`, `applied_mental_strategy_friendly_numbers_with_model`, `applied_mental_strategy_percent_shortcut_distractor`, `applied_mental_strategy_percent_shortcut_estimate_first`, `applied_mental_strategy_percent_shortcut_plain`, `applied_mental_strategy_percent_shortcut_with_model`
+
+```
+Problem: Consider the calculation from the back of the garage that Lena is checking. For 10 × 35, proposal A is 5 × 70; proposal B is 5 × 36. Which proposed rewrite is equivalent, and what exact result follows?
+Steps:
+  MODEL_EQ|10 × 35 = 5 × 70|equivalent mental rewrite
+  STRATEGY|doubling and halving|A: 5 × 70
+  D|10|2|5
+  M|35|2|70
+  M|5|70|350
+  CHECK|10 × 35|350
+  Z|10 × 35 = 5 × 70; A: doubling and halving; 350 (5 × 70)
+Answer: 10 × 35 = 5 × 70; A: doubling and halving; 350 (5 × 70)
 ```
 
 ## Middle School (grades 6–8)

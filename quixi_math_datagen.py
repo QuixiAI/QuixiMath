@@ -673,6 +673,7 @@ from generators.method_discrimination_generator import MethodDiscriminationGener
 from generators.plausibility_critic_generator import PlausibilityCriticGenerator
 from generators.assumption_check_generator import AssumptionCheckGenerator
 from generators.qualitative_reasoning_generator import QualitativeReasoningGenerator
+from generators.mental_strategy_generator import MentalStrategyGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1417,6 +1418,7 @@ ALL_GENERATORS = [
     PlausibilityCriticGenerator(),
     AssumptionCheckGenerator(),
     QualitativeReasoningGenerator(),
+    MentalStrategyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
