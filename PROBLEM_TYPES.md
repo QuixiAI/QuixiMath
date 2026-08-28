@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**549 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**550 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6479,6 +6479,30 @@ Steps:
   CHECK|every listed q has a larger midpoint member
   Z|no largest; −18/5 < −33/10 < −3
 Answer: no largest; −18/5 < −33/10 < −3
+```
+
+### Cantor Pairing — `CantorPairingGenerator`  ·  college · difficulty 3
+
+Generate exact instances of Cantor's bijection ℕ × ℕ → ℕ.
+
+**Variants:** `cantor_pairing_diagonal_enumeration`, `cantor_pairing_pair`, `cantor_pairing_unpair`
+
+```
+Problem: Cantor pairing uses π(m, n) = (m + n)(m + n + 1)/2 + n. Encoded value: z = 45558. Recover the ordered pair.
+Steps:
+  PAIRING|z = T_w + n|T_w = w(w + 1)/2
+  M|301|302|90902
+  D|90902|2|45451
+  TRY|w=301|45451 ≤ 45558|ok
+  M|302|303|91506
+  D|91506|2|45753
+  REJECT|w=302|45753 > 45558
+  S|45558|45451|107
+  S|301|107|194
+  UNPAIR|45558|(194, 107)
+  CHECK|(194, 107)|45558
+  Z|z = 45558 ↔ (194, 107)
+Answer: z = 45558 ↔ (194, 107)
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
