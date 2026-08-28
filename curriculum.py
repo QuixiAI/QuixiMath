@@ -687,6 +687,7 @@ CURRICULUM = {
     "MagnitudeComparisonGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "RoundingEffectGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "SignificantFiguresGenerator": {"grade_level": HIGH, "difficulty": 2},
+    "MeasurementUncertaintyGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 

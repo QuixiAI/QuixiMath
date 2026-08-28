@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**655 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**656 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7691,6 +7691,26 @@ Steps:
   CHECK|fewest decimal places 1|13.2
   Z|4.65 + 8.5 → 13.2 g; 13.2 g
 Answer: 4.65 + 8.5 → 13.2 g; 13.2 g
+```
+
+### Measurement Uncertainty — `MeasurementUncertaintyGenerator`  ·  high · difficulty 3
+
+Generate exact worst-case interval and error calculations.
+
+**Variants:** `applied_measurement_uncertainty_area_from_measured_sides_distractor`, `applied_measurement_uncertainty_area_from_measured_sides_estimate_first`, `applied_measurement_uncertainty_area_from_measured_sides_plain`, `applied_measurement_uncertainty_area_from_measured_sides_with_model`, `applied_measurement_uncertainty_percent_error_distractor`, `applied_measurement_uncertainty_percent_error_estimate_first`, `applied_measurement_uncertainty_percent_error_plain`, `applied_measurement_uncertainty_percent_error_with_model`, `applied_measurement_uncertainty_relative_uncertainty_rule_distractor`, `applied_measurement_uncertainty_relative_uncertainty_rule_estimate_first`, `applied_measurement_uncertainty_relative_uncertainty_rule_plain`, `applied_measurement_uncertainty_relative_uncertainty_rule_with_model`, `applied_measurement_uncertainty_sum_difference_propagation_distractor`, `applied_measurement_uncertainty_sum_difference_propagation_estimate_first`, `applied_measurement_uncertainty_sum_difference_propagation_plain`, `applied_measurement_uncertainty_sum_difference_propagation_with_model`, `applied_measurement_uncertainty_tolerance_interval_distractor`, `applied_measurement_uncertainty_tolerance_interval_estimate_first`, `applied_measurement_uncertainty_tolerance_interval_plain`, `applied_measurement_uncertainty_tolerance_interval_with_model`, `applied_measurement_uncertainty_within_tolerance_distractor`, `applied_measurement_uncertainty_within_tolerance_estimate_first`, `applied_measurement_uncertainty_within_tolerance_plain`, `applied_measurement_uncertainty_within_tolerance_with_model`
+
+```
+Problem: At the allotment, a note reviewed by Milo reads: A rectangle measures 8.5 ± 0.5 cm by 7.3 ± 0.4 cm. Give the smallest and largest possible covered surface.
+Steps:
+  MODEL_EQ|A ∈ [8 × 6.9, 9 × 7.7]|measurement and uncertainty relationship
+  INTERVAL|length|[8, 9]
+  INTERVAL|width|[6.9, 7.7]
+  M|8|6.9|55.2
+  M|9|7.7|69.3
+  PROPAGATE|min × min, max × max|[55.2, 69.3]
+  CHECK|nominal area|62.05
+  Z|A ∈ [8 × 6.9, 9 × 7.7]; 55.2 cm² to 69.3 cm²
+Answer: A ∈ [8 × 6.9, 9 × 7.7]; 55.2 cm² to 69.3 cm²
 ```
 
 ## College
