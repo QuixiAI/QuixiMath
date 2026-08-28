@@ -1,9 +1,13 @@
 """Compute z-test p-values from supplied standard-normal table excerpts.
 
-Variants accept a test statistic directly, make a decision at alpha, derive
-z from one-proportion or known-sigma mean data, or compare two alpha levels.
-All arithmetic after the printed Φ lookup is exact four-decimal table
-arithmetic; every excerpt contains the needed row and exactly two decoys.
+Variants: ``right_tail``, ``left_tail``, ``two_sided``, ``decision_alpha``,
+``from_prop_data``, ``from_mean_data``, and ``compare_alphas``. They accept a
+test statistic directly, derive z from proportion or known-sigma mean data,
+and make one- or two-alpha decisions. All arithmetic after the printed Φ
+lookup is exact four-decimal table arithmetic; every excerpt contains the
+needed row and exactly two decoys. Op-codes: ``HT_SETUP``,
+``TEST_STAT_FORMULA``, ``PVALUE_RULE``, ``TABLE_LOOKUP``, ``REWRITE``,
+``ROOT``, ``M``, ``D``, ``S``, ``CHECK``, and ``Z``.
 """
 import random
 from fractions import Fraction

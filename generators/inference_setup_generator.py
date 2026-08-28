@@ -1,8 +1,13 @@
 """Set up hypotheses, parameters, errors, and inference conditions.
 
-The language variants invert explicit scenario templates; numeric variants
-show every large-count, 10%, or CLT calculation. ``min_n_for_np`` solves both
-large-count inequalities and takes the larger ceiling.
+Variants: ``state_hypotheses``, ``parameter_identify``,
+``type_I_II_describe``, ``np_condition``, ``ten_percent_condition``,
+``clt_condition``, and ``min_n_for_np``. Language variants invert explicit
+scenario templates; numeric variants show every large-count, 10%, or CLT
+calculation. ``min_n_for_np`` solves both inequalities and takes the larger
+exact ceiling. Op-codes: ``HYP_STATE``, ``PARAMETER``, ``ERROR_TYPE``,
+``RULE``, ``CLT_CHECK``, ``REWRITE``, ``CEIL``, ``MAX``, ``M``, ``D``,
+``S``, ``CHECK``, and ``Z``.
 """
 import random
 from fractions import Fraction

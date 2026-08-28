@@ -1,9 +1,13 @@
 """Standard errors and CLT probabilities with supplied normal-table rows.
 
-The ten variants cover sample means and sample proportions. Every standard
-error is exact by construction, every probability cutoff is built backward
-from a table z-score, and every Φ value used by the scratchpad is printed in
-the problem with two decoy rows.
+Variants: ``se_mean``, ``se_prop``, ``mean_sd_xbar``, ``shape_and_center``,
+``n_for_target_se``, ``mean_above``, ``mean_between``, ``prop_below``,
+``prob_proportion``, and ``unusual_sample_mean``. Every standard error is
+exact by construction, every probability cutoff is built backward from a
+table z-score, and every Φ value used by the scratchpad is printed in the
+problem with two decoy rows. Op-codes: ``SAMP_DIST_SETUP``, ``SE_FORMULA``,
+``CLT_CENTER``, ``CLT_CHECK``, ``ZSCORE``, ``TABLE_LOOKUP``, ``REWRITE``,
+``ROOT``, ``E``, ``M``, ``D``, ``S``, ``CHECK``, and ``Z``.
 """
 import random
 from fractions import Fraction

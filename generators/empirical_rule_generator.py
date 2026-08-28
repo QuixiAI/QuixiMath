@@ -5,7 +5,8 @@ Variants: ``percent_within``, ``percent_tail``, ``interval_for_percent``,
 the three empirical-rule constants. Cutoffs are exactly ``μ ± kσ`` for
 ``k`` in 1, 2, 3, and population sizes are filtered so requested counts are
 integers. Random models, contexts, sites, regions, sizes, and four phrasings
-give unbounded capacity.
+give unbounded capacity. Op-codes: ``NORM_SETUP``, ``RULE_68_95``,
+``ZSCORE``, ``A``, ``S``, ``M``, ``D``, ``CHECK``, and ``Z``.
 """
 import random
 from fractions import Fraction

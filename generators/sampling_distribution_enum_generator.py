@@ -6,7 +6,9 @@ replacement prompts enumerate unordered simple random samples; replacement
 prompts enumerate ordered draw sequences, so every displayed row is equally
 likely. Construction caps enumeration at 20 rows. Random populations,
 methods, targets, sites, scenario codes, and four phrasings give unbounded
-capacity.
+capacity. Op-codes: ``STAT_SETUP``, ``SAMPLE_ENUM``, ``DIST_ROW``,
+``VAR_ROW``, ``COUNT``, ``A``, ``S``, ``M``, ``D``, ``E``, ``F``,
+``CHECK``, and ``Z``.
 """
 import itertools
 import random

@@ -5,7 +5,9 @@ Variants: ``cutoff_above``, ``cutoff_below``, ``middle_interval``,
 needed percentile-z entry plus one decoy. The sigma-recovery bank uses z
 values with terminating reciprocals and constructs cutoffs backward from an
 exact sigma. Random models, targets, contexts, sites, decoys, and four
-phrasings give unbounded capacity.
+phrasings give unbounded capacity. Op-codes: ``NORM_SETUP``,
+``LOOKUP_SUPPLIED``, ``RAW_FORMULA``, ``REWRITE``, ``A``, ``S``, ``M``,
+``D``, ``CHECK``, and ``Z``.
 """
 import random
 from fractions import Fraction
