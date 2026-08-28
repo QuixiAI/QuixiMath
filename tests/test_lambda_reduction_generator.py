@@ -162,6 +162,29 @@ def normalize(term, stepper, limit=40):
     raise AssertionError("did not normalize")
 
 
+def normalize_with_count(term, stepper, limit=40):
+    count = 0
+    for _ in range(limit):
+        nxt = stepper(term)
+        if nxt is None:
+            return term, count
+        term = nxt
+        count += 1
+    raise AssertionError("did not normalize")
+
+
+def church_value(term):
+    if term[0] != "abs" or term[2][0] != "abs":
+        return None
+    function_name, base_name = term[1], term[2][1]
+    body = term[2][2]
+    count = 0
+    while body[0] == "app" and body[1] == ("var", function_name):
+        body = body[2]
+        count += 1
+    return count if body == ("var", base_name) else None
+
+
 def debruijn(term, env=()):
     """Nameless form, so alpha-equivalent terms compare equal."""
     if term[0] == "var":
@@ -183,14 +206,20 @@ def leftmost_redex(term):
     return None
 
 
-def oracle(problem):
+def oracle(problem, operation=None):
     term = term_of(balanced_term(problem))
-    normal = normalize(term, lo_step)
+    normal, count = normalize_with_count(term, lo_step)
     # Independent route: applicative order reaches the same normal form
     # (Church-Rosser), compared up to alpha-renaming via de Bruijn indices.
     other = normalize(term, ao_step)
     assert debruijn(normal) == debruijn(other), problem
     assert lo_step(normal) is None, problem
+    if operation and operation.endswith(("church_succ", "church_add")):
+        value = church_value(normal)
+        assert value is not None
+        return f"Church numeral {value}; normal form = {render_top(normal)}"
+    if operation and operation.endswith("beta_count"):
+        return f"normal form = {render_top(normal)}; beta steps = {count}"
     return f"normal form = {render_top(normal)}"
 
 
@@ -201,7 +230,9 @@ def check_steps(case, result):
     term = term_of(steps[0][1])
     case.assertEqual(term, term_of(balanced_term(result["problem"])))
     i = 1
+    beta_count = 0
     while steps[i][0] == "BETA":
+        beta_count += 1
         fn_text, arg_text = steps[i][1].split(" applied to ")
         fn, arg = term_of(fn_text), term_of(arg_text)
         case.assertEqual((fn, arg), leftmost_redex(term))
@@ -234,8 +265,22 @@ def check_steps(case, result):
     case.assertEqual(term_of(steps[i][1]), term)
     case.assertIsNone(lo_step(term))
     i += 1
+    if result["operation"].endswith(("church_succ", "church_add")):
+        case.assertEqual(steps[i][0], "CHURCH_NUMERAL")
+        case.assertEqual(int(steps[i][1]), church_value(term))
+        case.assertEqual(term_of(steps[i][2]), term)
+        i += 1
+        case.assertEqual(steps[i][0], "CHECK")
+        i += 1
+    elif result["operation"].endswith("beta_count"):
+        case.assertEqual(steps[i], ["BETA_COUNT", str(beta_count)])
+        i += 1
+        case.assertEqual(steps[i][0], "CHECK")
+        case.assertEqual(int(steps[i][2]), beta_count)
+        i += 1
     case.assertEqual(i, len(steps) - 1)
-    case.assertEqual(result["final_answer"], f"normal form = {render_top(term)}")
+    case.assertEqual(result["final_answer"],
+                     oracle(result["problem"], result["operation"]))
 
 
 class TestLambdaReductionGenerator(unittest.TestCase):
@@ -251,7 +296,8 @@ class TestLambdaReductionGenerator(unittest.TestCase):
             assert_contract(self, result)
             assert_pipe_safe(self, result)
             self.assertEqual(result["final_answer"],
-                             oracle(result["problem"]), result["problem"])
+                             oracle(result["problem"], result["operation"]),
+                             result["problem"])
             check_steps(self, result)
             saw.add(result["operation"])
             openings.add(result["problem"].split(" ", 1)[0])
@@ -272,8 +318,31 @@ class TestLambdaReductionGenerator(unittest.TestCase):
                 self.assertEqual(result["operation"],
                                  f"lambda_reduction_{variant}")
                 self.assertEqual(result["final_answer"],
-                                 oracle(result["problem"]), result["problem"])
+                                 oracle(result["problem"], result["operation"]),
+                                 result["problem"])
                 check_steps(self, result)
+
+    def test_new_variants_have_500_problem_text_oracles(self):
+        random.seed(2026)
+        variants = ("church_succ", "church_add", "beta_count")
+        for index in range(500):
+            variant = variants[index % len(variants)]
+            result = LambdaReductionGenerator(variant).generate()
+            self.assertEqual(result["final_answer"],
+                             oracle(result["problem"], result["operation"]),
+                             result["problem"])
+            check_steps(self, result)
+
+    def test_church_operands_are_at_most_three(self):
+        random.seed(808)
+        for _ in range(200):
+            successor = LambdaReductionGenerator("church_succ").generate()
+            succ_term = term_of(balanced_term(successor["problem"]))
+            self.assertIn(church_value(succ_term[2]), range(4))
+            addition = LambdaReductionGenerator("church_add").generate()
+            add_term = term_of(balanced_term(addition["problem"]))
+            self.assertIn(church_value(add_term[1][2]), range(4))
+            self.assertIn(church_value(add_term[2]), range(4))
 
     def test_variant_semantics(self):
         random.seed(17)

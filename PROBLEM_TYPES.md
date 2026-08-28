@@ -11505,10 +11505,10 @@ Answer: MGU = {X=h(a), Y=b}
 
 Lambda-calculus beta-reduction traces on randomly built terms, reduced in leftmost-outermost order with capture-avoiding substitution.
 
-**Variants:** `lambda_reduction_alpha`, `lambda_reduction_constant`, `lambda_reduction_duplicate`, `lambda_reduction_identity`
+**Variants:** `lambda_reduction_alpha`, `lambda_reduction_beta_count`, `lambda_reduction_church_add`, `lambda_reduction_church_succ`, `lambda_reduction_constant`, `lambda_reduction_duplicate`, `lambda_reduction_identity`
 
 ```
-Problem: Normalize (((lambda b. (b b)) (lambda p. p)) (lambda p. p)) using leftmost-outermost beta reduction; alpha-rename when needed. Rename a captured bound variable to the first unused name from z, w, v, u.
+Problem: Normalize (((lambda b. (b b)) (lambda p. p)) (lambda p. p)), reporting both the normal form and exact beta-step count. Rename a captured bound variable to the first unused name from z, w, v, u.
 Steps:
   LAMBDA_SETUP|(((lambda b. (b b)) (lambda p. p)) (lambda p. p))|leftmost-outermost
   BETA|(lambda b. (b b)) applied to (lambda p. p)
@@ -11521,8 +11521,10 @@ Steps:
   SUBSTITUTE|p:=(lambda p. p) in p|lambda p. p
   REWRITE|lambda p. p
   NO_REDEX|lambda p. p|no beta redex remains
-  Z|normal form = lambda p. p
-Answer: normal form = lambda p. p
+  BETA_COUNT|3
+  CHECK|beta contractions|3
+  Z|normal form = lambda p. p; beta steps = 3
+Answer: normal form = lambda p. p; beta steps = 3
 ```
 
 ### Quadratic Residue — `QuadraticResidueGenerator`  ·  graduate · difficulty 4

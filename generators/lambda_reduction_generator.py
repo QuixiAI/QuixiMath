@@ -31,6 +31,30 @@ PROBLEM_TEMPLATES = [
      "leftmost-outermost redex each time, and state the normal form. {rule}"),
 ]
 
+CHURCH_SUCC_TEMPLATES = [
+    "Reduce {term} by leftmost-outermost beta reduction and identify the resulting Church numeral. {rule}",
+    "Normalize the Church-successor application {term}; then state its numeral value. {rule}",
+    "Apply successor to the encoded numeral in {term} and reduce completely. {rule}",
+    "Using leftmost-outermost order, evaluate the Church successor term {term}. {rule}",
+    "Contract every beta redex in {term} and report the resulting Church numeral. {rule}",
+]
+
+CHURCH_ADD_TEMPLATES = [
+    "Reduce {term} by leftmost-outermost beta reduction and identify the Church sum. {rule}",
+    "Normalize the Church-addition application {term}; then state its numeral value. {rule}",
+    "Add the two encoded numerals in {term} and reduce completely. {rule}",
+    "Using leftmost-outermost order, evaluate the Church addition term {term}. {rule}",
+    "Contract every beta redex in {term} and report the resulting Church numeral. {rule}",
+]
+
+BETA_COUNT_TEMPLATES = [
+    "Reduce {term} in leftmost-outermost order and count the beta contractions. {rule}",
+    "Normalize {term}, reporting both the normal form and exact beta-step count. {rule}",
+    "Find how many leftmost-outermost contractions take {term} to normal form. {rule}",
+    "Trace {term} to normal form and give the total number of beta reductions. {rule}",
+    "Apply capture-avoiding reduction to {term}; report the result and contraction count. {rule}",
+]
+
 
 def text(term):
     """Fully parenthesised rendering: every abstraction and every application
@@ -241,6 +265,72 @@ def sample_term(variant):
         return term, trace, normal
 
 
+def church_numeral(value, function_name, base_name):
+    body = ("var", base_name)
+    for _ in range(value):
+        body = ("app", ("var", function_name), body)
+    return ("abs", function_name, ("abs", base_name, body))
+
+
+def church_successor_term(value):
+    numeral_f, numeral_x, binder_n, binder_f, binder_x = random.sample(
+        VAR_POOL, 5)
+    numeral = church_numeral(value, numeral_f, numeral_x)
+    successor = (
+        "abs", binder_n,
+        ("abs", binder_f,
+         ("abs", binder_x,
+          ("app", ("var", binder_f),
+           ("app", ("app", ("var", binder_n), ("var", binder_f)),
+            ("var", binder_x))))))
+    return ("app", successor, numeral)
+
+
+def church_add_term(first, second):
+    names = random.sample(VAR_POOL, 8)
+    m_name, n_name, f_name, x_name, mf, mx, nf, nx = names
+    first_numeral = church_numeral(first, mf, mx)
+    second_numeral = church_numeral(second, nf, nx)
+    addition = (
+        "abs", m_name,
+        ("abs", n_name,
+         ("abs", f_name,
+          ("abs", x_name,
+           ("app", ("app", ("var", m_name), ("var", f_name)),
+            ("app", ("app", ("var", n_name), ("var", f_name)),
+             ("var", x_name)))))))
+    return ("app", ("app", addition, first_numeral), second_numeral)
+
+
+def church_value(term):
+    if term[0] != "abs" or term[2][0] != "abs":
+        return None
+    function_name = term[1]
+    base_name = term[2][1]
+    body = term[2][2]
+    count = 0
+    while body[0] == "app" and body[1] == ("var", function_name):
+        count += 1
+        body = body[2]
+    return count if body == ("var", base_name) else None
+
+
+def reduction_steps(term, trace, normal):
+    steps = [step("LAMBDA_SETUP", text(term), "leftmost-outermost")]
+    for info in trace:
+        steps.append(step("BETA", f"{text(info['fn'])} applied to "
+                                  f"{text(info['arg'])}"))
+        for before, after in info["renames"]:
+            steps.append(step("ALPHA_RENAME", before, after))
+        steps.append(step("SUBSTITUTE",
+                          f"{info['fn'][1]}:={text(info['arg'])} in "
+                          f"{top(info['fn'][2])}",
+                          top(info["local"])))
+        steps.append(step("REWRITE", top(info["after"])))
+    steps.append(step("NO_REDEX", top(normal), "no beta redex remains"))
+    return steps
+
+
 class LambdaReductionGenerator(ProblemGenerator):
     """
     Lambda-calculus beta-reduction traces on randomly built terms, reduced in
@@ -252,10 +342,14 @@ class LambdaReductionGenerator(ProblemGenerator):
 
     Op-codes used:
     - LAMBDA_SETUP / BETA / ALPHA_RENAME / SUBSTITUTE / REWRITE / NO_REDEX
-    - Z: normal form under the stated strategy
+    Church variants add exact successor/addition on numerals at most 3, and
+    ``beta_count`` grades the normal form together with the contraction count.
+    - CHURCH_NUMERAL / BETA_COUNT / CHECK cover the extended variants.
+    - Z: exact graded answer under the stated strategy.
     """
 
-    VARIANTS = ["identity", "constant", "alpha", "duplicate"]
+    VARIANTS = ["identity", "constant", "alpha", "duplicate",
+                "church_succ", "church_add", "beta_count"]
 
     def __init__(self, variant=None):
         if variant is not None and variant not in self.VARIANTS:
@@ -264,22 +358,44 @@ class LambdaReductionGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
-        term, trace, normal = sample_term(variant)
-        steps = [step("LAMBDA_SETUP", text(term), "leftmost-outermost")]
-        for info in trace:
-            steps.append(step("BETA", f"{text(info['fn'])} applied to "
-                                      f"{text(info['arg'])}"))
-            for before, after in info["renames"]:
-                steps.append(step("ALPHA_RENAME", before, after))
-            steps.append(step("SUBSTITUTE",
-                              f"{info['fn'][1]}:={text(info['arg'])} in "
-                              f"{top(info['fn'][2])}",
-                              top(info["local"])))
-            steps.append(step("REWRITE", top(info["after"])))
-        steps.append(step("NO_REDEX", top(normal), "no beta redex remains"))
-        answer = f"normal form = {top(normal)}"
-        problem = random.choice(PROBLEM_TEMPLATES).format(
-            term=text(term), rule=RENAME_RULE, who=random.choice(NAMES))
+        if variant in ("identity", "constant", "alpha", "duplicate"):
+            term, trace, normal = sample_term(variant)
+            answer = f"normal form = {top(normal)}"
+            problem = random.choice(PROBLEM_TEMPLATES).format(
+                term=text(term), rule=RENAME_RULE, who=random.choice(NAMES))
+            extra_steps = []
+        elif variant == "church_succ":
+            value = random.randint(0, 3)
+            term = church_successor_term(value)
+            trace, normal = normalize(term, limit=10)
+            result = church_value(normal)
+            answer = f"Church numeral {result}; normal form = {top(normal)}"
+            problem = random.choice(CHURCH_SUCC_TEMPLATES).format(
+                term=text(term), rule=RENAME_RULE)
+            extra_steps = [step("CHURCH_NUMERAL", result, top(normal)),
+                           step("CHECK", f"successor of {value}", result)]
+        elif variant == "church_add":
+            first, second = random.randint(0, 3), random.randint(0, 3)
+            term = church_add_term(first, second)
+            trace, normal = normalize(term, limit=12)
+            result = church_value(normal)
+            answer = f"Church numeral {result}; normal form = {top(normal)}"
+            problem = random.choice(CHURCH_ADD_TEMPLATES).format(
+                term=text(term), rule=RENAME_RULE)
+            extra_steps = [step("CHURCH_NUMERAL", result, top(normal)),
+                           step("CHECK", f"{first} + {second}", result)]
+        else:
+            phenomenon = random.choice(("identity", "constant", "alpha",
+                                        "duplicate"))
+            term, trace, normal = sample_term(phenomenon)
+            answer = (f"normal form = {top(normal)}; "
+                      f"beta steps = {len(trace)}")
+            problem = random.choice(BETA_COUNT_TEMPLATES).format(
+                term=text(term), rule=RENAME_RULE)
+            extra_steps = [step("BETA_COUNT", len(trace)),
+                           step("CHECK", "beta contractions", len(trace))]
+        steps = reduction_steps(term, trace, normal)
+        steps.extend(extra_steps)
         steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
