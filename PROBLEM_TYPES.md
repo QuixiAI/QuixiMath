@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**616 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**617 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2977,6 +2977,37 @@ Steps:
   CHECK|combined mean|200/20|10
   Z|10
 Answer: 10
+```
+
+### Scatter Plot Describe — `ScatterPlotDescribeGenerator`  ·  middle · difficulty 3
+
+Generate exact rule-based scatterplot descriptions.
+
+**Variants:** `statistics_scatter_describe_direction`, `statistics_scatter_describe_identify_outlier`, `statistics_scatter_describe_no_association`, `statistics_scatter_describe_stronger_of_two`
+
+```
+Problem: At the maple office during the lunar trial, points are: (111, 130), (115, 172), (83, 178), (107, 142), (91, 136), (87, 166), (103, 160), (95, 148). Quadrant-count rule: using x̄ and ȳ, ignore mean-line ties; a strict majority whose deviations share a sign means positive, a strict majority with opposite signs means negative, and exactly half agreeing means no association.
+Count the agreements and justify the no-association classification.
+Steps:
+  STAT_SETUP|scatter direction|n=8
+  RULE|direction|using x̄ and ȳ, ignore mean-line ties; a strict majority whose deviations share a sign means positive, a strict majority with opposite signs means negative, and exactly half agreeing means no association
+  SUM|x: 111 + 115 + 83 + 107 + 91 + 87 + 103 + 95|792
+  MEAN_DIV|792|8|99
+  SUM|y: 130 + 172 + 178 + 142 + 136 + 166 + 160 + 148|1232
+  MEAN_DIV|1232|8|154
+  QUADRANT_ROW|(111, 130)|+,−|disagree
+  QUADRANT_ROW|(115, 172)|+,+|agree
+  QUADRANT_ROW|(83, 178)|−,+|disagree
+  QUADRANT_ROW|(107, 142)|+,−|disagree
+  QUADRANT_ROW|(91, 136)|−,−|agree
+  QUADRANT_ROW|(87, 166)|−,+|disagree
+  QUADRANT_ROW|(103, 160)|+,+|agree
+  QUADRANT_ROW|(95, 148)|−,−|agree
+  COUNT|agree|4/8
+  COUNT|disagree|4/8
+  CHECK|quadrant majority|no association; 4 of 8 points agree in sign
+  Z|no association; 4 of 8 points agree in sign
+Answer: no association; 4 of 8 points agree in sign
 ```
 
 ## High School
