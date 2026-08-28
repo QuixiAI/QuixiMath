@@ -1,104 +1,168 @@
-import os
+"""Problem-text-only oracles for the applied percent-word extension."""
 import random
 import re
-import sys
 import unittest
 from fractions import Fraction
 
-repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
 from generators.percent_word_problem_generator import (
+    APPLIED,
+    MODIFIERS,
+    MONEY_OPS,
+    PHRASINGS,
+    VARIANTS,
     PercentWordProblemGenerator,
 )
-from generators.exponential_model_generator import dec, money
 from helpers import DELIM
 
-SUBTRACTIVE = ("decrease", "shrink", "discount", " off", "sale price")
+
+def exact_text(value):
+    value = Fraction(value)
+    if value.denominator == 1:
+        return str(value.numerator)
+    scaled, places = value, 0
+    while scaled.denominator != 1 and places < 12:
+        scaled *= 10
+        places += 1
+    if scaled.denominator != 1:
+        return f"{value.numerator}/{value.denominator}"
+    digits = str(abs(scaled.numerator)).rjust(places + 1, "0")
+    rendered = (digits[:-places] + "." + digits[-places:]).rstrip("0").rstrip(".")
+    return ("-" if value < 0 else "") + rendered
 
 
-def oracle_answer(problem):
-    """Recompute the answer from the problem text alone (A9).
+def money_text(value):
+    cents = Fraction(value) * 100
+    if cents.denominator != 1:
+        raise AssertionError(f"not exact cents: {value}")
+    return f"${cents.numerator // 100}.{cents.numerator % 100:02d}"
 
-    Every core phrasing ends with '?'; any distractor is appended
-    after as a declarative sentence, so the numbers before the first
-    '?' are exactly the rate and the base. Dollar problems answer in
-    the $X.YY money convention.
-    """
-    core = problem[: problem.index("?") + 1]
-    pct = int(re.search(r"(\d+)%", core).group(1))
-    nums = [int(n) for n in re.findall(r"\d+", core)]
-    rest = list(nums)
-    rest.remove(pct)  # removes the first pct occurrence; base remains
-    base = rest[0]
-    change = Fraction(base) * Fraction(pct, 100)
-    lower = core.lower()
-    if any(k in lower for k in SUBTRACTIVE):
-        total = base - change
+
+def clean(problem):
+    return re.sub(r"^A shelf nearby holds \d+ empty folders\. ", "", problem)
+
+
+def solve(problem):
+    """Infer the arithmetic variant and answer from the story alone."""
+    text = clean(problem)
+    pct = int(re.search(r"(\d+)%", text).group(1))
+    base_match = (re.search(r"\$(\d+)\.00", text)
+                  or re.search(r"(\d+)-dollar", text)
+                  or re.search(r"(\d+)(?:-unit| units)", text))
+    if not base_match:
+        raise AssertionError(f"base not found: {problem}")
+    base = int(base_match.group(1))
+    lower = text.lower()
+    if "tax" in lower:
+        variant = "tax"
+    elif "$" in text or "dollar" in lower:
+        variant = ("discount" if any(word in lower for word in
+                   ("discount", "% off", "reduces", "reduction", "cheaper"))
+                   else "markup")
+    elif any(word in lower for word in ("falls", "smaller", "drops",
+                                         "reduction", "loses")):
+        variant = "decrease"
     else:
-        total = base + change
-    if "$" in core:
-        return money(total)
-    return (str(total.numerator) if total.denominator == 1
-            else dec(total))
+        variant = "increase"
+    additive = variant in ("increase", "markup", "tax")
+    change = Fraction(base * pct, 100)
+    total = base + change if additive else base - change
+    answer = money_text(total) if variant in MONEY_OPS else f"{exact_text(total)} units"
+    sign = "+" if additive else "-"
+    model = f"x = {base}*(1{sign}{pct}/100)"
+    return variant, answer, model
+
+
+def expected(problem, modifier):
+    variant, answer, model = solve(problem)
+    if modifier == "with_model":
+        answer = f"{model}; x = {answer}"
+    return variant, answer
 
 
 class TestPercentWordProblemGenerator(unittest.TestCase):
-    def setUp(self):
-        random.seed(42)
-        self.gen = PercentWordProblemGenerator()
-        self.dgen = PercentWordProblemGenerator(distractor=True)
-
-    def test_output_contract(self):
-        result = self.gen.generate()
-        for key in ("problem_id", "operation", "problem", "steps", "final_answer"):
-            self.assertIn(key, result)
-        self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
-        self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
-                         result["final_answer"])
-
-    def test_oracle_recompute_plain(self):
-        """A9 oracle: recompute from the problem text."""
-        for _ in range(500):
-            result = self.gen.generate()
-            self.assertEqual(oracle_answer(result["problem"]),
-                             result["final_answer"], result["problem"])
-
-    def test_oracle_recompute_with_distractor(self):
-        """The distractor number must not change the answer."""
-        for _ in range(500):
-            result = self.dgen.generate()
-            self.assertEqual(oracle_answer(result["problem"]),
-                             result["final_answer"], result["problem"])
-
-    def test_distractor_first_step_selects_data(self):
-        for _ in range(200):
-            result = self.dgen.generate()
-            self.assertTrue(result["steps"][0]
-                            .startswith(f"SELECT_RELEVANT{DELIM}"))
-            self.assertIn("ignore", result["steps"][0])
-
-    def test_plain_has_no_select_step(self):
-        for _ in range(100):
-            result = self.gen.generate()
-            self.assertFalse(any(s.startswith(f"SELECT_RELEVANT{DELIM}")
-                                 for s in result["steps"]))
-
-    def test_multiple_phrasings_occur(self):
-        openings = {result["problem"][:14]
-                    for result in (self.gen.generate()
-                                   for _ in range(300))}
-        self.assertGreaterEqual(len(openings), 5)
-
-    def test_tax_problem_text_is_consistent(self):
-        """Regression: the tax phrasing once reversed base and rate."""
+    def test_marker_contract_and_problem_only_oracle(self):
+        self.assertIs(APPLIED, True)
+        random.seed(249)
+        seen = set()
         for _ in range(1000):
-            result = self.gen.generate()
-            if "sales tax" in result["problem"]:
-                self.assertEqual(oracle_answer(result["problem"]),
-                                 result["final_answer"],
-                                 result["problem"])
+            variant = random.choice(VARIANTS)
+            modifier = random.choice(MODIFIERS)
+            result = PercentWordProblemGenerator(modifier=modifier,
+                                                 variant=variant).generate()
+            self.assertEqual(result["steps"][-1],
+                             f"Z{DELIM}{result['final_answer']}")
+            parsed_variant, answer = expected(result["problem"], modifier)
+            self.assertEqual(parsed_variant, variant)
+            self.assertEqual(result["final_answer"], answer, result["problem"])
+            seen.add((variant, modifier))
+        self.assertEqual(seen, {(v, m) for v in VARIANTS for m in MODIFIERS})
+
+    def test_all_five_phrasings_are_invertible(self):
+        for variant, phrasings in PHRASINGS.items():
+            self.assertEqual(len(phrasings), 5)
+            for index, phrasing in enumerate(phrasings):
+                rendered = phrasing.format(base=80, pct=25)
+                problem = f"At the corner shop, {rendered[:1].lower() + rendered[1:]}"
+                with self.subTest(variant=variant, phrasing=index):
+                    self.assertEqual(solve(problem)[0], variant)
+
+    def test_arithmetic_steps(self):
+        random.seed(250)
+        for _ in range(600):
+            result = PercentWordProblemGenerator(
+                modifier=random.choice(MODIFIERS)).generate()
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "S":
+                    self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+
+    def test_modifier_shapes_and_legacy_constructor(self):
+        random.seed(251)
+        for variant in VARIANTS:
+            for modifier in MODIFIERS:
+                result = PercentWordProblemGenerator(
+                    modifier=modifier, variant=variant).generate()
+                codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+                self.assertEqual(result["final_answer"],
+                                 expected(result["problem"], modifier)[1])
+                if modifier == "distractor":
+                    self.assertEqual(codes[0], "SELECT_RELEVANT")
+                elif modifier == "estimate_first":
+                    self.assertEqual(codes[0], "ESTIMATE")
+                    self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+                elif modifier == "with_model":
+                    self.assertEqual(codes[0], "MODEL_EQ")
+        self.assertEqual(PercentWordProblemGenerator().modifier, "plain")
+        self.assertEqual(PercentWordProblemGenerator(distractor=True).modifier,
+                         "distractor")
+        with self.assertRaises(ValueError):
+            PercentWordProblemGenerator(modifier="bogus")
+        with self.assertRaises(ValueError):
+            PercentWordProblemGenerator(variant="bogus")
+        with self.assertRaises(ValueError):
+            PercentWordProblemGenerator(distractor=True, modifier="plain")
+
+    def test_pipe_safety_and_render_sanity(self):
+        random.seed(252)
+        banned = ("1x", "-1x", "^1", "+ 0", "--", "the the", "e+")
+        for _ in range(500):
+            result = PercentWordProblemGenerator(
+                modifier=random.choice(MODIFIERS)).generate()
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            joined = " ".join((result["problem"], result["final_answer"],
+                               *result["steps"]))
+            for fragment in banned:
+                self.assertNotIn(fragment, joined.lower())
+            for raw in result["steps"]:
+                self.assertLessEqual(len(raw.split(DELIM)) - 1, 4, raw)
 
 
 if __name__ == "__main__":

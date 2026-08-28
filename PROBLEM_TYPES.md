@@ -690,18 +690,19 @@ Answer: 14 atm
 
 ### Percent Word Problem — `PercentWordProblemGenerator`  ·  elementary · difficulty 3
 
-Percent increase/decrease, markup, discount, and tax word problems with explicit arithmetic. Supports multiple phrasings per scenario (A4) and an optional distractor quantity the scratchpad must first filter out (A6).
+Generate exact one-step percent stories with standard modifiers.
 
-**Variants:** `percent_word_problem`, `percent_word_problem_distractor`
+**Variants:** `applied_percent_word_decrease_distractor`, `applied_percent_word_decrease_estimate_first`, `applied_percent_word_decrease_plain`, `applied_percent_word_decrease_with_model`, `applied_percent_word_discount_distractor`, `applied_percent_word_discount_estimate_first`, `applied_percent_word_discount_plain`, `applied_percent_word_discount_with_model`, `applied_percent_word_increase_distractor`, `applied_percent_word_increase_estimate_first`, `applied_percent_word_increase_plain`, `applied_percent_word_increase_with_model`, `applied_percent_word_markup_distractor`, `applied_percent_word_markup_estimate_first`, `applied_percent_word_markup_plain`, `applied_percent_word_markup_with_model`, `applied_percent_word_tax_distractor`, `applied_percent_word_tax_estimate_first`, `applied_percent_word_tax_plain`, `applied_percent_word_tax_with_model`
 
 ```
-Problem: An item priced at $86 is 5% off. What is the sale price?
+Problem: At the school lab, a shop reduces a $30.00 price by 25%. What price remains?
 Steps:
-  PERCENT_TO_DEC|5%|0.05
-  M|86|0.05|4.3
-  S|86|4.3|81.7
-  Z|$81.70
-Answer: $81.70
+  PERCENT_TO_DEC|25%|0.25
+  M|30|0.25|7.5
+  S|30|7.5|22.5
+  CHECK|percent change from base|22.5
+  Z|$22.50
+Answer: $22.50
 ```
 
 ### Repeating Decimal — `RepeatingDecimalGenerator`  ·  elementary · difficulty 3
