@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**612 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**613 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6919,6 +6919,26 @@ Steps:
   CHECK|substitute x|x=1|matches K
   Z|x=1; [A]=8, [B]=2
 Answer: x=1; [A]=8, [B]=2
+```
+
+### Alternative Means — `AlternativeMeansGenerator`  ·  high · difficulty 2
+
+Generate exact alternative-mean calculations and method choices.
+
+**Variants:** `statistics_alternative_means_geometric_mean_data`, `statistics_alternative_means_harmonic_mean`, `statistics_alternative_means_midrange`, `statistics_alternative_means_trimmed_mean`, `statistics_alternative_means_which_mean`
+
+```
+Problem: At the harbor test, sample Lotus has positive data values: 18, 36, 36, 72.
+Multiply all values and take the appropriate root.
+Steps:
+  STAT_SETUP|geometric data|n=4
+  M|18|36|648
+  M|648|36|23328
+  M|23328|72|1679616
+  ROOT|∜1679616|36
+  CHECK|perfect power|36^4|1679616
+  Z|36
+Answer: 36
 ```
 
 ## College
