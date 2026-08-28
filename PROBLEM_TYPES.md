@@ -2692,29 +2692,31 @@ Answer: 18
 
 Variance and standard deviation by hand with the classic deviation table: mean first, one DEV_ROW per value with x, x - mean, and (x - mean)^2, then the sum of squares divided by n (population) or n - 1 (sample). Data are built from integer deviations that sum to zero, so the mean is always an integer.
 
-**Variants:** `standard_deviation_population_std`, `standard_deviation_population_variance`, `standard_deviation_sample_variance`
+**Variants:** `standard_deviation_coefficient_of_variation`, `standard_deviation_from_frequency_table`, `standard_deviation_population_std`, `standard_deviation_population_variance`, `standard_deviation_sample_std`, `standard_deviation_sample_variance`, `standard_deviation_shortcut_formula`
 
 ```
-Problem: Find the sample variance of the data set: 27, 16, 20, 23, 24. Give an exact answer.
+Problem: At the maple office during the cedar trial, sample data are: 73, 85, 85, 85.
+Use divisor n - 1 and report the sample sd.
 Steps:
-  A|27|16|43
-  A|43|20|63
-  A|63|23|86
-  A|86|24|110
-  MEAN_DIV|110|5|22
-  DEV_ROW|27|5|25
-  DEV_ROW|16|-6|36
-  DEV_ROW|20|-2|4
-  DEV_ROW|23|1|1
-  DEV_ROW|24|2|4
-  A|25|36|61
-  A|61|4|65
-  A|65|1|66
-  A|66|4|70
-  EVAL|n - 1|4
-  D|70|4|35/2
-  Z|35/2
-Answer: 35/2
+  STAT_SETUP|sample standard deviation|n=4
+  A|73|85|158
+  A|158|85|243
+  A|243|85|328
+  MEAN_DIV|328|4|82
+  DEV_ROW|73|-9|81
+  DEV_ROW|85|3|9
+  DEV_ROW|85|3|9
+  DEV_ROW|85|3|9
+  A|81|9|90
+  A|90|9|99
+  A|99|9|108
+  SUM|squared deviations|108
+  EVAL|n - 1|3
+  D|108|3|36
+  EVAL|s = √36|6
+  CHECK|square s|6²|36
+  Z|6
+Answer: 6
 ```
 
 ### Frequency Table — `FrequencyTableGenerator`  ·  middle · difficulty 3

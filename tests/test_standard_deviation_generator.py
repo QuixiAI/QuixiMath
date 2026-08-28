@@ -11,7 +11,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from generators.standard_deviation_generator import (
-    StandardDeviationGenerator,
+    LEGACY_VARIANTS, NEW_QUERIES, StandardDeviationGenerator,
 )
 from helpers import DELIM
 
@@ -25,6 +25,33 @@ def sqrt_val(txt):
 def oracle_check(example):
     p = example["problem"]
     ans = example["final_answer"]
+    if "sample data are:" in p:
+        data = [int(v) for v in re.search(
+            r"sample data are: ([0-9, -]+)\.", p).group(1).split(", ")]
+        mean = Fraction(sum(data), len(data))
+        variance = sum((Fraction(v) - mean) ** 2 for v in data) / (len(data) - 1)
+        return Fraction(ans) ** 2 == variance
+    if "population data are:" in p:
+        data = [int(v) for v in re.search(
+            r"population data are: ([0-9, -]+)\.", p).group(1).split(", ")]
+        mean = Fraction(sum(data), len(data))
+        variance = sum((Fraction(v) - mean) ** 2 for v in data) / len(data)
+        return Fraction(ans) == variance
+    if "frequency table (value: frequency):" in p:
+        entries = re.search(r"frequency table \(value: frequency\): "
+                            r"(.+?)\.", p).group(1)
+        data = []
+        for entry in entries.split("; "):
+            value, frequency = map(int, entry.split(": "))
+            data.extend([value] * frequency)
+        mean = Fraction(sum(data), len(data))
+        variance = sum((Fraction(v) - mean) ** 2 for v in data) / len(data)
+        return Fraction(ans) ** 2 == variance
+    if "CV rule:" in p:
+        mean, sigma = re.search(r"mean μ = ([0-9./]+) and standard "
+                                r"deviation σ = (\d+)", p).groups()
+        expected = Fraction(int(sigma), Fraction(mean)) * 100
+        return ans == f"{expected.numerator if expected.denominator == 1 else float(expected)}%"
     data = [int(v) for v in
             re.search(r"data set: (.+)\. Give", p).group(1)
             .split(", ")]
@@ -59,31 +86,100 @@ class TestStandardDeviationGenerator(unittest.TestCase):
                             (result["problem"], result["final_answer"]))
 
     def test_deviation_table_complete_and_consistent(self):
-        for _ in range(200):
-            result = self.gen.generate()
-            data = [int(v) for v in
-                    re.search(r"data set: (.+)\. Give",
-                              result["problem"]).group(1).split(", ")]
-            rows = [s.split(DELIM)[1:] for s in result["steps"]
-                    if s.startswith(f"DEV_ROW{DELIM}")]
-            self.assertEqual(sorted(int(r[0]) for r in rows),
-                             sorted(data))
-            for x, d, sq in rows:
-                self.assertEqual(int(d) ** 2, int(sq))
+        for variant in ("population_variance", "sample_variance",
+                        "population_std"):
+            gen = StandardDeviationGenerator(variant)
+            for _ in range(100):
+                result = gen.generate()
+                data = [int(v) for v in
+                        re.search(r"data set: (.+)\. Give",
+                                  result["problem"]).group(1).split(", ")]
+                rows = [s.split(DELIM)[1:] for s in result["steps"]
+                        if s.startswith(f"DEV_ROW{DELIM}")]
+                self.assertEqual(sorted(int(r[0]) for r in rows),
+                                 sorted(data))
+                for x, d, sq in rows:
+                    self.assertEqual(int(d) ** 2, int(sq))
 
     def test_mean_always_integer(self):
-        for _ in range(300):
-            result = self.gen.generate()
-            data = [int(v) for v in
-                    re.search(r"data set: (.+)\. Give",
-                              result["problem"]).group(1).split(", ")]
-            self.assertEqual(sum(data) % len(data), 0)
+        for variant in ("population_variance", "sample_variance",
+                        "population_std"):
+            gen = StandardDeviationGenerator(variant)
+            for _ in range(100):
+                result = gen.generate()
+                data = [int(v) for v in
+                        re.search(r"data set: (.+)\. Give",
+                                  result["problem"]).group(1).split(", ")]
+                self.assertEqual(sum(data) % len(data), 0)
 
     def test_all_variants_reachable(self):
         ops = set()
         for _ in range(100):
             ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 3)
+        self.assertEqual(len(ops), 7)
+
+    def test_default_wrapper_preserves_legacy_rng_advancement(self):
+        for seed in range(40):
+            random.seed(seed)
+            legacy_variant = random.choice(LEGACY_VARIANTS)
+            StandardDeviationGenerator._generate_legacy(legacy_variant)
+            expected_state = random.getstate()
+            random.seed(seed)
+            StandardDeviationGenerator().generate()
+            self.assertEqual(random.getstate(), expected_state)
+
+    def test_new_variants_have_prompt_only_oracles(self):
+        for variant in NEW_QUERIES:
+            gen = StandardDeviationGenerator(variant)
+            for _ in range(250):
+                result = gen.generate()
+                self.assertTrue(oracle_check(result),
+                                (result["problem"], result["final_answer"]))
+
+    def test_new_arithmetic_steps_are_exact(self):
+        for variant in NEW_QUERIES:
+            gen = StandardDeviationGenerator(variant)
+            for _ in range(180):
+                result = gen.generate()
+                for raw in result["steps"]:
+                    fields = raw.split(DELIM)
+                    if fields[0] == "A":
+                        self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                         Fraction(fields[3]), raw)
+                    elif fields[0] == "S":
+                        self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                                         Fraction(fields[3]), raw)
+                    elif fields[0] == "M":
+                        self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                         Fraction(fields[3]), raw)
+                    elif fields[0] in ("D", "MEAN_DIV"):
+                        self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                                         Fraction(fields[3]), raw)
+                    elif fields[0] == "E":
+                        self.assertEqual(Fraction(fields[1]) ** int(fields[2]),
+                                         Fraction(fields[3]), raw)
+                    elif fields[0] == "WEIGHT_ROW":
+                        self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                         Fraction(fields[3]), raw)
+
+    def test_shortcut_matches_independent_deviation_route(self):
+        gen = StandardDeviationGenerator("shortcut_formula")
+        for _ in range(250):
+            result = gen.generate()
+            self.assertTrue(oracle_check(result))
+            checks = [raw for raw in result["steps"]
+                      if raw.startswith(f"CHECK{DELIM}shortcut")]
+            self.assertEqual(len(checks), 1)
+
+    def test_new_variants_have_four_phrasings(self):
+        for variant, queries in NEW_QUERIES.items():
+            gen = StandardDeviationGenerator(variant)
+            seen = set()
+            for _ in range(250):
+                problem = gen.generate()["problem"]
+                seen.update(query for query in queries
+                            if problem.endswith("\n" + query))
+            self.assertEqual(seen, set(queries))
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
