@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**572 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**573 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1083,6 +1083,25 @@ Steps:
   PROB_SETUP|72|169
   Z|72/169
 Answer: 72/169
+```
+
+### Counting To Probability — `CountingToProbabilityGenerator`  ·  middle · difficulty 4
+
+Generate probability exercises whose numerator is a counting result.
+
+**Variants:** `probability_counting_ends_with_even`, `probability_counting_first_letter`, `probability_counting_friends_adjacent`, `probability_counting_no_repeats_code`, `probability_counting_specific_position`
+
+```
+Problem: The distinct symbols {B, I, Q, P, M, J, W} are arranged uniformly at random. Target: Q in position 5. Count arrangements fixing the target in place and divide by all arrangements.
+Steps:
+  COUNT_SETUP|arrangements of 7 symbols|7!
+  FACT|7|5040
+  COUNT_SETUP|fix Q in position 5|6!
+  FACT|6|720
+  PROB_SETUP|720|5040
+  F|720/5040|1/7
+  Z|1/7
+Answer: 1/7
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
