@@ -776,7 +776,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `HOM_SOL` | 2 | `HOM_SOL\|y_h\|y_h = C1e^(3x) + C2e^(4x)` | undetermined_coeff_generator.py, variation_parameters_generator.py |
 | `HOOK` | 4 | `HOOK\|(1,1)\|right=2\|below=5\|hook=8` | young_tableaux_generator.py |
 | `HORNER_SETUP` | 2 | `HORNER_SETUP\|3x^4 + 5x^3 + 2x^2 - 4x + 5\|x = -2` | horner_evaluation_generator.py |
-| `HT_SETUP` | 2 | `HT_SETUP\|H0: p = 0.5; Ha: p ≠ 0.5\|n = 400, 219 successes, critical value = 2.326` | hypothesis_test_generator.py, p_value_generator.py, two_sample_test_generator.py |
+| `HT_SETUP` | 2 | `HT_SETUP\|H0: μ = 51; Ha: μ ≠ 51\|n = 100, x̄ = 62, σ = 5` | hypothesis_test_generator.py, p_value_generator.py, two_sample_test_generator.py |
 | `HUFFMAN_FORMULA` | 1 | `HUFFMAN_FORMULA\|L=sum p_i*l_i` | huffman_coding_generator.py |
 | `HUFFMAN_MERGE` | 2 | `HUFFMAN_MERGE\|A:1/16 + C:1/16\|AC:1/8` | huffman_coding_generator.py |
 | `HUFFMAN_SETUP` | 1 | `HUFFMAN_SETUP\|A=1/16, B=1/8, C=1/16, D=1/2, E=1/16, F=1/8, G=1/16` | huffman_coding_generator.py |
@@ -975,7 +975,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `LOG_SOFTMAX` | 2 | `LOG_SOFTMAX\|1\|ln(7/12)` | softmax_gradient_generator.py |
 | `LOG_SUPPLIED` | 2 | `LOG_SUPPLIED\|log10(1/100)\|-2` | signal_arithmetic_generator.py |
 | `LOG_TERM` | 3 | `LOG_TERM\|8\|ln(4)\|8*ln(4)` | entropy_change_generator.py |
-| `LOOKUP_SUPPLIED` | 2 | `LOOKUP_SUPPLIED\|e^(-lambda*s)\|0.0183` | inverse_normal_generator.py, named_distribution_generator.py, poisson_process_generator.py, t_interval_generator.py |
+| `LOOKUP_SUPPLIED` | 2 | `LOOKUP_SUPPLIED\|left-tail critical (α = 0.10)\|1.28` | hypothesis_test_generator.py, inverse_normal_generator.py, named_distribution_generator.py, poisson_process_generator.py, t_interval_generator.py |
 | `LORA_COUNT` | 2 | `LORA_COUNT\|r*(d_in+d_out)\|45760` | param_count_generator.py |
 | `LOWRANK_SETUP` | 2 | `LOWRANK_SETUP\|A=[[6,0], [0,3]]\|rank=1` | low_rank_approx_generator.py |
 | `LP_CORNER_SETUP` | 3 | `LP_CORNER_SETUP\|max z=7x+11y\|0<=x<=22, 0<=y<=19\|x+y<=34` | lp_corner_generator.py |
@@ -1785,7 +1785,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `TERM` | 2, 3 | `TERM\|4 makes\|(7/10)^4\|2401/10000` | binomial_probability_generator.py, negative_binomial_generator.py, random_digit_simulation_generator.py |
 | `TERMS` | 1 | `TERMS\|x[0..3]=[24,120,600,3000]` | z_transform_generator.py |
 | `TEST_CHOOSE` | 2 | `TEST_CHOOSE\|direct comparison\|compare with Σ 1/n^2` | power_series_generator.py, series_convergence_generator.py |
-| `TEST_STAT_FORMULA` | 1 | `TEST_STAT_FORMULA\|z = (p̂ - p0)/√(p0(1-p0)/n)` | hypothesis_test_generator.py, p_value_generator.py, t_interval_generator.py, two_sample_test_generator.py |
+| `TEST_STAT_FORMULA` | 1 | `TEST_STAT_FORMULA\|z = (x̄ - μ0)/(σ/√n)` | hypothesis_test_generator.py, p_value_generator.py, t_interval_generator.py, two_sample_test_generator.py |
 | `TF_SETUP` | 3 | `TF_SETUP\|block_feedback\|G1=10/(s+9), G2=1/(s+9)\|H=1` | transfer_function_generator.py |
 | `THEOREM` | 1, 2 | `THEOREM\|quadratic formula\|t = (-b ± √(b^2 - 4ac))/(2a)` | angle_defect_generator.py, circle_angle_generator.py, gauss_bonnet_generator.py, geometric_mean_generator.py, logistic_growth_generator.py, mean_value_theorem_generator.py, parametric_calculus_generator.py, polar_parametric_generator.py, quadratic_generator.py, rational_root_generator.py, remainder_factor_theorem_generator.py, series_convergence_generator.py, special_right_triangle_generator.py, spherical_excess_generator.py, taylor_series_generator.py, triangle_solve_generator.py, trig_identity_eval_generator.py, trig_six_functions_generator.py |
 | `THEOREM_REWRITE` | 2 | `THEOREM_REWRITE\|circulation\|surface integral of curl F dot n` | vector_theorem_generator.py |

@@ -6642,20 +6642,21 @@ Answer: 152
 
 Two-sided significance tests — a one-proportion z-test and a one-sample t-test — with the critical value given in the problem (Principle 5). The null proportion is 0.5 and n is a perfect square, and the t-test's standard error is constructed to divide evenly, so every test statistic is an exact terminating decimal.
 
-**Variants:** `hypothesis_test_prop_z_decision`, `hypothesis_test_prop_z_stat`, `hypothesis_test_t_decision`, `hypothesis_test_t_stat`
+**Variants:** `hypothesis_test_one_sided_left`, `hypothesis_test_one_sided_right`, `hypothesis_test_prop_z_decision`, `hypothesis_test_prop_z_stat`, `hypothesis_test_t_decision`, `hypothesis_test_t_stat`, `hypothesis_test_z_mean_decision`, `hypothesis_test_z_mean_stat`
 
 ```
-Problem: In a two-sided one-sample t-test of H0: μ = 85, a sample of size 25 has mean x̄ = 89 and standard deviation s = 10. Using a critical value of 2.576, state the conclusion (reject H0 or fail to reject H0).
+Problem: At the south campus during the cedar trial (cohort C62), in a one-sided one-sample t-test of H0: μ = 29; Ha: μ > 29, a sample of size 400 has mean x̄ = 37 and sample standard deviation s = 40. At α = 0.01, use the supplied right-tail critical value 2.33. Compute t and state the conclusion.
 Steps:
-  HT_SETUP|H0: μ = 85; Ha: μ ≠ 85|n = 25, x̄ = 89, s = 10, critical value = 2.576
+  HT_SETUP|H0: μ = 29; Ha: μ > 29|n = 400, x̄ = 37, s = 40, α = 0.01
   TEST_STAT_FORMULA|t = (x̄ - μ0)/(s/√n)
-  ROOT|√25|5
-  D|10|5|2
-  S|89|85|4
-  D|4|2|2
-  CHECK|abs(stat) vs critical value|2 ≤ 2.576|fail to reject H0
-  Z|fail to reject H0 (2 ≤ 2.576)
-Answer: fail to reject H0 (2 ≤ 2.576)
+  ROOT|√400|20
+  D|40|20|2
+  S|37|29|8
+  D|8|2|4
+  LOOKUP_SUPPLIED|right-tail critical (α = 0.01)|2.33
+  CHECK|t vs right-tail critical|4 > 2.33|reject H0
+  Z|reject H0 (4 > 2.33)
+Answer: reject H0 (4 > 2.33)
 ```
 
 ### Two Sample Test — `TwoSampleTestGenerator`  ·  high · difficulty 5
