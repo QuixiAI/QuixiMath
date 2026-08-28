@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**628 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**629 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12920,6 +12920,29 @@ Steps:
   D|408|35/6|2448/35
   Z|df = 3, 12
 Answer: df = 3, 12
+```
+
+### Slope Inference — `SlopeInferenceGenerator`  ·  college · difficulty 4
+
+Generate exact slope SE, t, CI, decision, output, and Sxx cases.
+
+**Variants:** `statistics_slope_inference_ci_slope`, `statistics_slope_inference_decision`, `statistics_slope_inference_from_output`, `statistics_slope_inference_se_slope`, `statistics_slope_inference_sxx_from_data`, `statistics_slope_inference_t_stat`
+
+```
+Problem: At the valley school during the forest audit (sample G48), a simple regression on n = 12 points gives slope b = 7.75, residual sd s = 8, and Sxx = 16. Use two-sided t critical value = 2.228 (df = 10).
+Compare abs(t) with the supplied critical value.
+Steps:
+  REG_SETUP|b = 7.75, s = 8, Sxx = 16|inference for β
+  SE_FORMULA|SE_b = s/√Sxx
+  ROOT|16|2|4
+  D|8|4|2
+  TEST_STAT_FORMULA|t = (b − 0)/SE_b
+  S|7.75|0|7.75
+  D|7.75|2|3.875
+  LOOKUP_SUPPLIED|two-sided t critical (df = 10)|2.228
+  CHECK|abs(t) vs critical|3.875 > 2.228|reject H0
+  Z|reject H0 (3.875 > 2.228)
+Answer: reject H0 (3.875 > 2.228)
 ```
 
 ## Graduate
