@@ -6989,23 +6989,24 @@ Answer: E[X - 7 given X > 7] = 4/3
 
 ### Fermi Estimation — `FermiEstimationGenerator`  ·  high · difficulty 4
 
-Fermi-style estimates where the assumptions are supplied in the prompt, multiplied explicitly, and rounded to two significant figures.
+Abstract base class for math problem generators.
 
-**Variants:** `fermi_estimation_cafeteria`, `fermi_estimation_stadium`, `fermi_estimation_water_use`
+**Variants:** `applied_fermi_estimation_book_pages_distractor`, `applied_fermi_estimation_book_pages_estimate_first`, `applied_fermi_estimation_book_pages_plain`, `applied_fermi_estimation_book_pages_with_model`, `applied_fermi_estimation_bound_check_distractor`, `applied_fermi_estimation_bound_check_estimate_first`, `applied_fermi_estimation_bound_check_plain`, `applied_fermi_estimation_bound_check_with_model`, `applied_fermi_estimation_cafeteria_distractor`, `applied_fermi_estimation_cafeteria_estimate_first`, `applied_fermi_estimation_cafeteria_plain`, `applied_fermi_estimation_cafeteria_with_model`, `applied_fermi_estimation_city_buses_distractor`, `applied_fermi_estimation_city_buses_estimate_first`, `applied_fermi_estimation_city_buses_plain`, `applied_fermi_estimation_city_buses_with_model`, `applied_fermi_estimation_compare_two_estimates_distractor`, `applied_fermi_estimation_compare_two_estimates_estimate_first`, `applied_fermi_estimation_compare_two_estimates_plain`, `applied_fermi_estimation_compare_two_estimates_with_model`, `applied_fermi_estimation_household_water_distractor`, `applied_fermi_estimation_household_water_estimate_first`, `applied_fermi_estimation_household_water_with_model`, `applied_fermi_estimation_road_trip_fuel_estimate_first`, `applied_fermi_estimation_road_trip_fuel_plain`, `applied_fermi_estimation_road_trip_fuel_with_model`, `applied_fermi_estimation_school_lunches_distractor`, `applied_fermi_estimation_school_lunches_plain`, `applied_fermi_estimation_school_lunches_with_model`, `applied_fermi_estimation_stadium_distractor`, `applied_fermi_estimation_stadium_estimate_first`, `applied_fermi_estimation_stadium_plain`, `applied_fermi_estimation_waste_bags_distractor`, `applied_fermi_estimation_waste_bags_estimate_first`, `applied_fermi_estimation_waste_bags_plain`, `applied_fermi_estimation_water_use_distractor`, `applied_fermi_estimation_water_use_plain`, `applied_fermi_estimation_water_use_with_model`
 
 ```
-Problem: Estimate seats in a stadium with 40 sections, 18 rows per section, and 18 seats per row. Round to 2 significant figures.
+Problem: At the highway rest stop, a note reviewed by Milo reads: A print run has 120 titles, 250 pages per title, and 4 copies of each. Estimate printed pages and round to two significant figures.
 Steps:
-  FERMI_SETUP|stadium seats|seats
-  FERMI_FACTOR|sections|40
-  FERMI_FACTOR|rows per section|18
-  FERMI_FACTOR|seats per row|18
-  M|40|18|720
-  M|720|18|12960
-  SIGFIG_ROUND|12960|2 significant figures|1.3 × 10^4
-  ESTIMATE_CHECK|1.3 × 10^4|12960|rounded estimate
-  Z|1.3 × 10^4 seats
-Answer: 1.3 × 10^4 seats
+  MODEL_EQ|120 × 250 × 4 = 120000 pages|supplied-factor model
+  FERMI_SETUP|printed pages|pages
+  FERMI_FACTOR|titles|120
+  FERMI_FACTOR|pages/title|250
+  M|120|250|30000
+  FERMI_FACTOR|copies|4
+  M|30000|4|120000
+  SIGFIG_ROUND|120000|2 significant figures|1.2 × 10^5
+  ESTIMATE_CHECK|1.2 × 10^5|120000|rounded estimate
+  Z|120 × 250 × 4 = 120000 pages; 1.2 × 10^5 pages
+Answer: 120 × 250 × 4 = 120000 pages; 1.2 × 10^5 pages
 ```
 
 ### Normal Table — `NormalTableGenerator`  ·  high · difficulty 4

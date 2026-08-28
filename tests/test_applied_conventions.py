@@ -226,24 +226,16 @@ class AppliedConventionsTest(unittest.TestCase):
                     check_example(self, example, units)
 
     def test_discovery_finds_a_flagged_module(self):
-        """The APPLIED flag is the strand's entry point; prove it works (and
-        that the checkers pass on a real applied generator) by flagging one
-        for the duration of the test."""
+        """Prove discovery and checkers on a permanently flagged module."""
         module = importlib.import_module("generators.fermi_estimation_generator")
-        module.APPLIED = True
-        try:
-            found = flagged_generators("APPLIED")
-            names = {type(gen).__name__ for gen in found}
-            self.assertIn("FermiEstimationGenerator", names)
-            for gen in found:
-                if type(gen).__name__ != "FermiEstimationGenerator":
-                    continue
+        self.assertIs(module.APPLIED, True)
+        found = flagged_generators("APPLIED")
+        names = {type(gen).__name__ for gen in found}
+        self.assertIn("FermiEstimationGenerator", names)
+        for gen in found:
+            if type(gen).__name__ == "FermiEstimationGenerator":
                 for example in sample_examples(gen, self.SAMPLE, seed=3):
                     check_example(self, example, declared_units(gen))
-        finally:
-            del module.APPLIED
-        self.assertNotIn("FermiEstimationGenerator",
-                         {type(g).__name__ for g in flagged_generators("APPLIED")})
 
 
 class EngineRecordTest(unittest.TestCase):
