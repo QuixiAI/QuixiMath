@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**599 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**600 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15971,4 +15971,45 @@ Steps:
   CHECK|reflection count|386
   Z|193/256
 Answer: 193/256
+```
+
+### Polya Urn — `PolyaUrnGenerator`  ·  graduate · difficulty 4
+
+Generate exact two-color reinforced-urn exercises.
+
+**Variants:** `probability_polya_urn_count_after_n`, `probability_polya_urn_exchangeability_check`, `probability_polya_urn_expected_red_fraction`, `probability_polya_urn_kth_draw_marginal`, `probability_polya_urn_reinforcement_c`, `probability_polya_urn_sequence_probability`
+
+```
+Problem: At the maple project in Juneau, Priya runs a Polya urn experiment. Initially the urn has r=4 red and b=1 blue balls. After each draw, the ball is returned with c=2 additional balls of the same color. Target: P(exactly 3 red draws among n=6). Compute the exact reinforced red-count probability.
+Steps:
+  POLYA_SETUP|r=4, b=1, c=2|P(exactly 3 red draws among n=6)
+  POLYA_COUNT_FORMULA|C(n,k)(r)_(k,c)(b)_(n-k,c)/(r+b)_(n,c)
+  NCR|C(6, 3)|20
+  RISING_FACTOR|red factor 1|4
+  RISING_FACTOR|red factor 2|6
+  RISING_FACTOR|red factor 3|8
+  M|4|6|24
+  M|24|8|192
+  RISING_FACTOR|blue factor 1|1
+  RISING_FACTOR|blue factor 2|3
+  RISING_FACTOR|blue factor 3|5
+  M|1|3|3
+  M|3|5|15
+  RISING_FACTOR|total factor 1|5
+  RISING_FACTOR|total factor 2|7
+  RISING_FACTOR|total factor 3|9
+  RISING_FACTOR|total factor 4|11
+  RISING_FACTOR|total factor 5|13
+  RISING_FACTOR|total factor 6|15
+  M|5|7|35
+  M|35|9|315
+  M|315|11|3465
+  M|3465|13|45045
+  M|45045|15|675675
+  M|20|192|3840
+  M|3840|15|57600
+  D|57600|675675|256/3003
+  CHECK|exchangeable sequences with this red count|20
+  Z|P(3 red draws in 6) = 256/3003
+Answer: P(3 red draws in 6) = 256/3003
 ```
