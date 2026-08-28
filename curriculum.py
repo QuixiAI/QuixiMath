@@ -80,6 +80,7 @@ CURRICULUM = {
     "ProbabilityMeasureGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "ReliabilitySystemGenerator": {"grade_level": HIGH, "difficulty": 2},
     "IndependenceCheckGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "LawOfTotalProbabilityGenerator": {"grade_level": HIGH, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

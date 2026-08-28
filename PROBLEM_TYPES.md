@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**576 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**577 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2789,6 +2789,28 @@ Steps:
   INDEP_CHECK|P(A ∩ B) = 27/80|product = 33/160|no
   Z|dependent; P(A ∩ B) = 27/80 ≠ P(A)·P(B) = 33/160
 Answer: dependent; P(A ∩ B) = 27/80 ≠ P(A)·P(B) = 33/160
+```
+
+### Law Of Total Probability — `LawOfTotalProbabilityGenerator`  ·  high · difficulty 3
+
+Generate exact finite-partition total-probability exercises.
+
+**Variants:** `probability_total_three_causes`, `probability_total_two_causes`, `probability_total_two_stage_draw`, `probability_total_urn_choice`, `probability_total_weather`
+
+```
+Problem: A bag has 35 teal and 67 amber balls. Draw two without replacement. Target color: teal. What is the exact chance that draw two is the target color?
+Steps:
+  TOTAL_PROB_FORMULA|P(second target) = Σ P(cause)·P(second target given cause)
+  M|35/102|34/101|35/303
+  TOTAL_PROB_TERM|first teal|35/102 × 34/101|35/303
+  M|67/102|35/101|2345/10302
+  TOTAL_PROB_TERM|first amber|67/102 × 35/101|2345/10302
+  A|35/303|2345/10302|35/102
+  A|35/102|67/102|1
+  CHECK|partition|35/102 + 67/102|1
+  CHECK|second-draw marginal equals initial fraction|35/102|35/102
+  Z|35/102
+Answer: 35/102
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2

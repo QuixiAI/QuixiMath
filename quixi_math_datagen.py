@@ -70,6 +70,7 @@ from generators.counting_to_probability_generator import CountingToProbabilityGe
 from generators.probability_measure_generator import ProbabilityMeasureGenerator
 from generators.reliability_system_generator import ReliabilitySystemGenerator
 from generators.independence_check_generator import IndependenceCheckGenerator
+from generators.law_of_total_probability_generator import LawOfTotalProbabilityGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -706,6 +707,7 @@ ALL_GENERATORS = [
     ProbabilityMeasureGenerator(),
     ReliabilitySystemGenerator(),
     IndependenceCheckGenerator(),
+    LawOfTotalProbabilityGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
