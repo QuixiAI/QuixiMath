@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**650 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**651 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7597,6 +7597,25 @@ Steps:
   CHECK|100/5|20 km/h
   Z|r = 100/5 = 20 km/h; applies; elapsed time is nonzero; correct 20 km/h
 Answer: r = 100/5 = 20 km/h; applies; elapsed time is nonzero; correct 20 km/h
+```
+
+### Qualitative Reasoning — `QualitativeReasoningGenerator`  ·  high · difficulty 3
+
+Generate exact checks for qualitative quantitative reasoning.
+
+**Variants:** `applied_qualitative_reasoning_compare_growth_rates_distractor`, `applied_qualitative_reasoning_compare_growth_rates_estimate_first`, `applied_qualitative_reasoning_compare_growth_rates_plain`, `applied_qualitative_reasoning_direction_of_change_distractor`, `applied_qualitative_reasoning_direction_of_change_estimate_first`, `applied_qualitative_reasoning_direction_of_change_plain`, `applied_qualitative_reasoning_direction_of_change_with_model`, `applied_qualitative_reasoning_dominant_term_distractor`, `applied_qualitative_reasoning_dominant_term_estimate_first`, `applied_qualitative_reasoning_dominant_term_plain`, `applied_qualitative_reasoning_dominant_term_with_model`, `applied_qualitative_reasoning_doubling_effect_in_formula_distractor`, `applied_qualitative_reasoning_doubling_effect_in_formula_estimate_first`, `applied_qualitative_reasoning_doubling_effect_in_formula_plain`, `applied_qualitative_reasoning_doubling_effect_in_formula_with_model`, `applied_qualitative_reasoning_limiting_value_distractor`, `applied_qualitative_reasoning_limiting_value_estimate_first`, `applied_qualitative_reasoning_limiting_value_plain`, `applied_qualitative_reasoning_limiting_value_with_model`, `applied_qualitative_reasoning_sign_without_computing_distractor`, `applied_qualitative_reasoning_sign_without_computing_estimate_first`, `applied_qualitative_reasoning_sign_without_computing_plain`, `applied_qualitative_reasoning_sign_without_computing_with_model`
+
+```
+Problem: Consider the quantitative pattern from the mountain pass that Lena is checking. A square garden changes from side length 6 m to side length 12 m. By what factor does its covered surface change, and what values verify it?
+Steps:
+  MODEL_EQ|q1=6²=36; q2=12²=144|relationship supporting the qualitative claim
+  E|6|2|36
+  E|12|2|144
+  D|144|36|4
+  DIRECTION|result after doubling|multiplies by 4|36 m² → 144 m²
+  CHECK|new/old|4
+  Z|q1=6²=36; q2=12²=144; multiplies by 4; 36 m² → 144 m²
+Answer: q1=6²=36; q2=12²=144; multiplies by 4; 36 m² → 144 m²
 ```
 
 ## College

@@ -682,6 +682,7 @@ CURRICULUM = {
     "MethodDiscriminationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "PlausibilityCriticGenerator": {"grade_level": HIGH, "difficulty": 3},
     "AssumptionCheckGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "QualitativeReasoningGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
