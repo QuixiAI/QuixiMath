@@ -660,6 +660,7 @@ from generators.type_theory_generator import TypeTheoryGenerator
 from generators.zf_axiom_identify_generator import ZFAxiomIdentifyGenerator
 from generators.structure_isomorphism_generator import StructureIsomorphismGenerator
 from generators.foundations_critic_generator import FoundationsCriticGenerator
+from generators.multi_step_word_generator import MultiStepWordGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1384,6 +1385,7 @@ ALL_GENERATORS = [
     SufficiencyFactorizationGenerator(),
     LikelihoodRatioTestGenerator(),
     DiscretePosteriorGenerator(),
+    MultiStepWordGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

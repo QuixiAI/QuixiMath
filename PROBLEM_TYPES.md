@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**638 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**639 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1045,6 +1045,26 @@ Steps:
   CHECK|share times item count|9/4 × 23 = 207/4
   Z|2 1/4 inches
 Answer: 2 1/4 inches
+```
+
+### Multi Step Word — `MultiStepWordGenerator`  ·  elementary · difficulty 3
+
+Generate six exact multi-step story families with standard modifiers.
+
+**Variants:** `applied_multi_step_word_change_from_bill_distractor`, `applied_multi_step_word_change_from_bill_estimate_first`, `applied_multi_step_word_change_from_bill_plain`, `applied_multi_step_word_compare_totals_estimate_first`, `applied_multi_step_word_compare_totals_plain`, `applied_multi_step_word_compare_totals_with_model`, `applied_multi_step_word_groups_then_remove_distractor`, `applied_multi_step_word_groups_then_remove_plain`, `applied_multi_step_word_groups_then_remove_with_model`, `applied_multi_step_word_three_step_distractor`, `applied_multi_step_word_three_step_estimate_first`, `applied_multi_step_word_three_step_plain`, `applied_multi_step_word_three_step_with_model`, `applied_multi_step_word_time_elapsed_distractor`, `applied_multi_step_word_time_elapsed_estimate_first`, `applied_multi_step_word_time_elapsed_plain`, `applied_multi_step_word_time_elapsed_with_model`, `applied_multi_step_word_two_step_buy_distractor`, `applied_multi_step_word_two_step_buy_estimate_first`, `applied_multi_step_word_two_step_buy_plain`, `applied_multi_step_word_two_step_buy_with_model`
+
+```
+Problem: The clock reads 11:40 when a workshop begins and 13:10 when it finishes. What is its duration in minutes?
+Steps:
+  MODEL_EQ|x = (13 * 60 + 10) - (11 * 60 + 40)|quantities in the story
+  M|11|60|660
+  A|660|40|700
+  M|13|60|780
+  A|780|10|790
+  S|790|700|90
+  CHECK|start plus elapsed|700 + 90|790
+  Z|x = (13 * 60 + 10) - (11 * 60 + 40); x = 90 minutes
+Answer: x = (13 * 60 + 10) - (11 * 60 + 40); x = 90 minutes
 ```
 
 ## Middle School (grades 6–8)
