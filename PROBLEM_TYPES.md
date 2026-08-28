@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**591 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**592 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12031,6 +12031,37 @@ Steps:
   NEWTON_STEP|2|147/125
   Z|IRR_estimate=147/125
 Answer: IRR_estimate=147/125
+```
+
+### Multinomial Probability — `MultinomialProbabilityGenerator`  ·  college · difficulty 3
+
+Generate exact three-category multinomial exercises.
+
+**Variants:** `probability_multinomial_bag_with_replacement`, `probability_multinomial_exact_counts`, `probability_multinomial_marginal_is_binomial`, `probability_multinomial_mean_cov`, `probability_multinomial_sequence_vs_counts`
+
+```
+Problem: At the solar review in Galveston, Quinn runs 6 independent trials. Each trial has exactly three outcomes: A (basic) with probability p_A=1/6, B (standard) with probability p_B=1/6, and C (premium) with probability p_C=2/3. Let X_A, X_B, and X_C be their counts. Specified sequence: C,B,B,B,B,B. Matching count target: (X_A,X_B,X_C)=(0,5,1). Find both the ordered-sequence probability and the count-vector probability.
+Steps:
+  MULTI_SETUP|sequence C,B,B,B,B,B|counts (0,5,1)
+  SEQUENCE_FORMULA|multiply probabilities in the stated order|equal symbols may be grouped as powers
+  MULTI_FORMULA|n!/(a!b!c!) times p_A^a p_B^b p_C^c|6!/(0!5!1!)
+  FACT|6|720
+  FACT|0|1
+  FACT|5|120
+  FACT|1|1
+  M|1|120|120
+  M|120|1|120
+  D|720|120|6
+  POW|base 1/6, exponent 0|1
+  POW|base 1/6, exponent 5|1/7776
+  POW|base 2/3, exponent 1|2/3
+  M|1|1/7776|1/7776
+  M|1/7776|2/3|1/11664
+  M|6|1/11664|1/1944
+  CHECK|a+b+c|0+5+1|6
+  CHECK|matching orders|6|count probability = orders times sequence probability
+  Z|specified sequence = 1/11664; matching counts = 1/1944
+Answer: specified sequence = 1/11664; matching counts = 1/1944
 ```
 
 ## Graduate
