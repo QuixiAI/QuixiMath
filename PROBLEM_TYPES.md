@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**643 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**644 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3115,6 +3115,28 @@ Steps:
   CHECK|recovered trip distance|12.5 km
   Z|t = 12.5/(8 - 3); t = 2.5 hours
 Answer: t = 12.5/(8 - 3); t = 2.5 hours
+```
+
+### Linear Model Word — `LinearModelWordGenerator`  ·  middle · difficulty 2
+
+Generate exact affine-model stories with standard modifiers.
+
+**Variants:** `applied_linear_model_break_even_distractor`, `applied_linear_model_break_even_estimate_first`, `applied_linear_model_break_even_plain`, `applied_linear_model_break_even_with_model`, `applied_linear_model_compare_plans_distractor`, `applied_linear_model_compare_plans_estimate_first`, `applied_linear_model_compare_plans_plain`, `applied_linear_model_compare_plans_with_model`, `applied_linear_model_evaluate_plain`, `applied_linear_model_evaluate_with_model`, `applied_linear_model_from_two_points_distractor`, `applied_linear_model_from_two_points_estimate_first`, `applied_linear_model_from_two_points_plain`, `applied_linear_model_from_two_points_with_model`, `applied_linear_model_interpret_parts_estimate_first`, `applied_linear_model_interpret_parts_plain`, `applied_linear_model_interpret_parts_with_model`, `applied_linear_model_invert_distractor`, `applied_linear_model_invert_estimate_first`, `applied_linear_model_invert_plain`, `applied_linear_model_invert_with_model`
+
+```
+Problem: At Room 12, record E71: a market stall pays $84.00 before opening. Each item then costs $4.00 to make and sells for $8.00. How many items must be sold for sales income to equal all costs?
+Steps:
+  MODEL_EQ|8x = 84 + 4x|linear relationship
+  DEFINE_VAR|x|items sold
+  MODEL_EQ|8x = 84 + 4x|sales income equals all costs
+  S|8|4|4
+  D|84|4|21
+  M|8|21|168
+  M|4|21|84
+  A|84|84|168
+  CHECK|income equals cost|$168.00
+  Z|8x = 84 + 4x; x = 21 items; $168.00 income and cost
+Answer: 8x = 84 + 4x; x = 21 items; $168.00 income and cost
 ```
 
 ## High School
