@@ -84,6 +84,7 @@ from generators.conditional_expectation_generator import ConditionalExpectationG
 from generators.distribution_of_sum_generator import DistributionOfSumGenerator
 from generators.probability_inequality_generator import ProbabilityInequalityGenerator
 from generators.pgf_generator import PGFGenerator
+from generators.negative_binomial_generator import NegativeBinomialGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -734,6 +735,7 @@ ALL_GENERATORS = [
     DistributionOfSumGenerator(),
     ProbabilityInequalityGenerator(),
     PGFGenerator(),
+    NegativeBinomialGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

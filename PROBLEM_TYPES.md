@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**590 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**591 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6878,6 +6878,29 @@ Steps:
   INEQ_BOUND|sample-mean deviation|≤ 625/668
   Z|625/668
 Answer: 625/668
+```
+
+### Negative Binomial — `NegativeBinomialGenerator`  ·  college · difficulty 3
+
+Generate exact rth-success waiting-time exercises.
+
+**Variants:** `probability_negative_binomial_at_most_trials`, `probability_negative_binomial_exact_trial`, `probability_negative_binomial_failures_form`, `probability_negative_binomial_geometric_special_case`, `probability_negative_binomial_mean`, `probability_negative_binomial_variance`
+
+```
+Problem: At the quartz program in Portland, Mina repeats independent trials with success probability p=2/3. Let N be the trial of the 2nd success. Target: P(N≤5). Compute P(N≤n) exactly.
+Steps:
+  NEGBIN_SETUP|r=2, p=2/3, n=5|P(N≤5)
+  NEGBIN_FORMULA|P(N≤n)=Σ from m=r to n of P(N=m)
+  TERM|m=2|4/9
+  TERM|m=3|8/27
+  TERM|m=4|4/27
+  TERM|m=5|16/243
+  A|4/9|8/27|20/27
+  A|20/27|4/27|8/9
+  A|8/9|16/243|232/243
+  CHECK|summed trials 2 through 5|232/243
+  Z|232/243
+Answer: 232/243
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
