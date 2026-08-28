@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**548 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**549 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6458,6 +6458,27 @@ Steps:
   CHECK|47/27
   Z|(47, 27) = 47/27
 Answer: (47, 27) = 47/27
+```
+
+### Dedekind Cut — `DedekindCutGenerator`  ·  college · difficulty 4
+
+Generate exact exercises using lower Dedekind cuts.
+
+**Variants:** `dedekind_cut_compare_cuts`, `dedekind_cut_largest_of_list`, `dedekind_cut_membership`, `dedekind_cut_rational_cut`
+
+```
+Problem: Define L(−3) by x ∈ L(−3) iff x < −3. Given q = −18/5 in L(−3), show with an exact intermediate rational that the lower cut has no maximum.
+Steps:
+  CUT_RULE|L(−3)|x < −3
+  CMP|−18/5|−3|<
+  A|−18/5|−3|−33/5
+  D|−33/5|2|−33/10
+  CMP|−18/5|−33/10|<
+  CMP|−33/10|−3|<
+  MEMBER|−33/10 ∈ L(−3)
+  CHECK|every listed q has a larger midpoint member
+  Z|no largest; −18/5 < −33/10 < −3
+Answer: no largest; −18/5 < −33/10 < −3
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2

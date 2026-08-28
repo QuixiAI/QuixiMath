@@ -570,6 +570,7 @@ from generators.hereditarily_finite_set_generator import HereditarilyFiniteSetGe
 from generators.peano_arithmetic_generator import PeanoArithmeticGenerator
 from generators.integers_as_pairs_generator import IntegersAsPairsGenerator
 from generators.rationals_as_pairs_generator import RationalsAsPairsGenerator
+from generators.dedekind_cut_generator import DedekindCutGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -773,6 +774,7 @@ ALL_GENERATORS = [
     PeanoArithmeticGenerator(),
     IntegersAsPairsGenerator(),
     RationalsAsPairsGenerator(),
+    DedekindCutGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
