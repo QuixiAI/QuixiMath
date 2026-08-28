@@ -115,6 +115,7 @@ from generators.two_way_table_generator import TwoWayTableGenerator
 from generators.covariance_correlation_generator import CovarianceCorrelationGenerator
 from generators.empirical_rule_generator import EmpiricalRuleGenerator
 from generators.inverse_normal_generator import InverseNormalGenerator
+from generators.sampling_distribution_enum_generator import SamplingDistributionEnumGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1350,6 +1351,7 @@ ALL_GENERATORS = [
     CovarianceCorrelationGenerator(),
     EmpiricalRuleGenerator(),
     InverseNormalGenerator(),
+    SamplingDistributionEnumGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

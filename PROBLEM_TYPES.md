@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**621 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**622 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7157,6 +7157,68 @@ Steps:
   CHECK|substitute x = μ + zσ|67.8|3
   Z|3
 Answer: 3
+```
+
+### Sampling Distribution Enum — `SamplingDistributionEnumGenerator`  ·  high · difficulty 3
+
+Generate exact sampling distributions by complete enumeration.
+
+**Variants:** `statistics_sampling_distribution_distribution_table`, `statistics_sampling_distribution_list_means`, `statistics_sampling_distribution_mean_of_xbar`, `statistics_sampling_distribution_prob_event`, `statistics_sampling_distribution_proportion_phat`, `statistics_sampling_distribution_variance_of_xbar`
+
+```
+Problem: At the valley school during the forest audit (cohort G48), population values are: 9, 16, 17. Sampling plan: n = 2; make ordered draws with replacement; ordered sequences are equally likely. There are 9 equally likely samples. Here σ² is the population variance (divide by N). Use the identity Var(x̄) = σ²/n.
+Compute the sampling variance and compare it with the formula.
+Steps:
+  STAT_SETUP|population 9,16,17|n=2, ordered draws, with replacement
+  SAMPLE_ENUM|{9, 9}|x̄=9
+  SAMPLE_ENUM|{9, 16}|x̄=12.5
+  SAMPLE_ENUM|{9, 17}|x̄=13
+  SAMPLE_ENUM|{16, 9}|x̄=12.5
+  SAMPLE_ENUM|{16, 16}|x̄=16
+  SAMPLE_ENUM|{16, 17}|x̄=16.5
+  SAMPLE_ENUM|{17, 9}|x̄=13
+  SAMPLE_ENUM|{17, 16}|x̄=16.5
+  SAMPLE_ENUM|{17, 17}|x̄=17
+  DIST_ROW|9|1/9|1/9
+  DIST_ROW|12.5|2/9|2/9
+  DIST_ROW|13|2/9|2/9
+  DIST_ROW|16|1/9|1/9
+  DIST_ROW|16.5|2/9|2/9
+  DIST_ROW|17|1/9|1/9
+  CHECK|distribution probability sum|1/9 + 2/9 + 2/9 + 1/9 + 2/9 + 1/9|1
+  S|9|14|-5
+  E|-5|2|25
+  M|25|1/9|25/9
+  VAR_ROW|9 - 14 = -5|(-5)^2 = 25|1/9·25 = 25/9
+  S|12.5|14|-1.5
+  E|-1.5|2|2.25
+  M|2.25|2/9|0.5
+  VAR_ROW|12.5 - 14 = -1.5|(-1.5)^2 = 2.25|2/9·2.25 = 0.5
+  S|13|14|-1
+  E|-1|2|1
+  M|1|2/9|2/9
+  VAR_ROW|13 - 14 = -1|(-1)^2 = 1|2/9·1 = 2/9
+  S|16|14|2
+  E|2|2|4
+  M|4|1/9|4/9
+  VAR_ROW|16 - 14 = 2|(2)^2 = 4|1/9·4 = 4/9
+  S|16.5|14|2.5
+  E|2.5|2|6.25
+  M|6.25|2/9|25/18
+  VAR_ROW|16.5 - 14 = 2.5|(2.5)^2 = 6.25|2/9·6.25 = 25/18
+  S|17|14|3
+  E|3|2|9
+  M|9|1/9|1
+  VAR_ROW|17 - 14 = 3|(3)^2 = 9|1/9·9 = 1
+  A|25/9|0.5|59/18
+  A|59/18|2/9|3.5
+  A|3.5|4/9|71/18
+  A|71/18|25/18|16/3
+  A|16/3|1|19/3
+  D|38/3|2|19/3
+  CHECK|enumeration = variance identity|19/3|19/3
+  Z|19/3; σ²/n = 19/3
+Answer: 19/3; σ²/n = 19/3
 ```
 
 ## College
