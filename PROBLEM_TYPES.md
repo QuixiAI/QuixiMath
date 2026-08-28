@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**577 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**578 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2811,6 +2811,25 @@ Steps:
   CHECK|second-draw marginal equals initial fraction|35/102|35/102
   Z|35/102
 Answer: 35/102
+```
+
+### Discrete Uniform Bernoulli — `DiscreteUniformBernoulliGenerator`  ·  high · difficulty 2
+
+Generate exact finite uniform and Bernoulli exercises.
+
+**Variants:** `probability_discrete_uniform_bernoulli_bernoulli_moments`, `probability_discrete_uniform_bernoulli_indicator`, `probability_discrete_uniform_bernoulli_uniform_interval_prob`, `probability_discrete_uniform_bernoulli_uniform_moments`, `probability_discrete_uniform_bernoulli_uniform_shift`
+
+```
+Problem: For the battery, X is 1 on success and 0 on failure. The success probability is 27/50. What are the mean and variance of the success indicator?
+Steps:
+  DIST_SETUP|Bernoulli|p = 27/50
+  EV_FORMULA|E[X] = p|27/50
+  S|1|27/50|23/50
+  VAR_FORMULA|Var(X) = p(1 − p)
+  M|27/50|23/50|621/2500
+  CHECK|definition over {0, 1}|621/2500
+  Z|E[X] = 27/50; Var(X) = 621/2500
+Answer: E[X] = 27/50; Var(X) = 621/2500
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2

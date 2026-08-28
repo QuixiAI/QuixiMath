@@ -71,6 +71,7 @@ from generators.probability_measure_generator import ProbabilityMeasureGenerator
 from generators.reliability_system_generator import ReliabilitySystemGenerator
 from generators.independence_check_generator import IndependenceCheckGenerator
 from generators.law_of_total_probability_generator import LawOfTotalProbabilityGenerator
+from generators.discrete_uniform_bernoulli_generator import DiscreteUniformBernoulliGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -708,6 +709,7 @@ ALL_GENERATORS = [
     ReliabilitySystemGenerator(),
     IndependenceCheckGenerator(),
     LawOfTotalProbabilityGenerator(),
+    DiscreteUniformBernoulliGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
