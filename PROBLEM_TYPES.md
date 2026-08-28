@@ -15084,28 +15084,24 @@ Answer: xbar=83/7; m2=165; mu_hat=83/7; sigma2_hat=1196/49
 
 Mechanical conjugate Bayesian parameter updates.
 
-**Variants:** `bayesian_update_beta_binomial`, `bayesian_update_normal_normal`
+**Variants:** `bayesian_update_beta_binomial`, `bayesian_update_beta_map`, `bayesian_update_beta_predictive`, `bayesian_update_gamma_poisson`, `bayesian_update_normal_normal`, `bayesian_update_normal_predictive_mean`
 
 ```
-Problem: For data [-7,0,8,7,4,1] from Normal(mu, sigma^2=9) with prior mu~Normal(-1, tau^2=4), compute the conjugate posterior mean and variance.
+Problem: Start with a Beta(8,2) prior for Bernoulli p. After 8 successes in 12 trials, find the posterior and its interior MAP estimate.
 Steps:
-  BAYES_UPDATE_SETUP|normal_normal|prior=Normal(-1,4)|sigma^2=9
-  BAYES_UPDATE_SETUP|data|[-7,0,8,7,4,1]
-  COUNT|n|6
-  SUM|sum x_i|-7 + 0 + 8 + 7 + 4 + 1|13
-  PRIOR_PRECISION|1/tau^2
-  D|1|4|1/4
-  DATA_PRECISION|n/sigma^2
-  D|6|9|2/3
-  POST_PRECISION|prior precision + data precision
-  A|1/4|2/3|11/12
-  D|-1|4|-1/4
-  D|13|9|13/9
-  A|-1/4|13/9|43/36
-  D|43/36|11/12|43/33
-  D|1|11/12|12/11
-  Z|posterior=Normal(mean=43/33, variance=12/11)
-Answer: posterior=Normal(mean=43/33, variance=12/11)
+  BAYES_UPDATE_SETUP|beta_map|prior=Beta(8,2)|successes=8, trials=12
+  S|12|8|4
+  A|8|8|16
+  A|2|4|6
+  POSTERIOR_PARAM|Beta(16,6)
+  S|16|1|15
+  S|6|1|5
+  A|15|5|20
+  D|15|20|3/4
+  MAP_ESTIMATE|(alpha'-1)/(alpha'+beta'-2)|3/4
+  CHECK|alpha'=16>1|beta'=6>1
+  Z|posterior=Beta(16,6); MAP=3/4
+Answer: posterior=Beta(16,6); MAP=3/4
 ```
 
 ### Order Statistics — `OrderStatisticsGenerator`  ·  graduate · difficulty 4
