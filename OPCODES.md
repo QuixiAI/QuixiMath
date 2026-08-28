@@ -1392,7 +1392,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PORT_SETUP` | 3 | `PORT_SETUP\|wA=1/3,wB=2/3\|rA=15%,rB=7%\|varA=0.04,varB=0.04,cov=-0.01` | portfolio_generator.py |
 | `POSTERIOR` | 3 | `POSTERIOR\|U1\|(1/20)/(17/36)\|9/85` | bayes_multiple_hypotheses_generator.py, probability_critic_generator.py |
 | `POSTERIOR_PARAM` | 1 | `POSTERIOR_PARAM\|alpha' = alpha + successes` | bayesian_update_generator.py |
-| `POSTERIOR_PREDICTIVE` | 2, 3 | `POSTERIOR_PREDICTIVE\|Normal\|mean=17/26\|variance=58/13` | bayesian_update_generator.py |
+| `POSTERIOR_PREDICTIVE` | 2, 3 | `POSTERIOR_PREDICTIVE\|Normal\|mean=-13/25\|variance=56/25` | bayesian_update_generator.py |
 | `POSTERIOR_ROW` | 2 | `POSTERIOR_ROW\|0.2\|32768/79469` | discrete_posterior_generator.py |
 | `POST_PRECISION` | 1 | `POST_PRECISION\|prior precision + data precision` | bayesian_update_generator.py |
 | `POTENTIAL_BUILD` | 3 | `POTENTIAL_BUILD\|integrate P dx\|5*x^2 - x*y + 3*x + g(y)\|g'(y) remains` | exact_ode_generator.py, line_integral_generator.py |

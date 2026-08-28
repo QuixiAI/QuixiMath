@@ -4,6 +4,8 @@ Variants: ``beta_binomial``, ``normal_normal``, ``gamma_poisson``,
 ``beta_map``, ``beta_predictive``, and ``normal_predictive_mean``.  Gamma
 models always state the rate parameterization, Beta MAP samples guarantee an
 interior mode, and all normal precisions are rational.
+Every variant has four prompt phrasings with the sufficient statistics stated
+verbatim for independent parsing.
 Op-codes: ``BAYES_UPDATE_SETUP``, ``COUNT``, ``SUM``, ``PRIOR_PRECISION``,
 ``DATA_PRECISION``, ``POST_PRECISION``, ``POSTERIOR_PARAM``, ``MAP_ESTIMATE``,
 ``POSTERIOR_PREDICTIVE``, ``A``, ``S``, ``D``, ``CHECK``, and ``Z``.
@@ -16,6 +18,93 @@ from helpers import step, jid
 
 
 STATISTICS = True
+PROMPTS = {
+    "beta_binomial": (
+        "Start with a Beta({alpha},{beta}) prior for Bernoulli p. After "
+        "{successes} successes in {n} trials, compute the conjugate posterior "
+        "parameters and posterior mean.",
+        "A Beta({alpha},{beta}) prior is assigned to Bernoulli p. After "
+        "{successes} successes in {n} trials, find the posterior parameters "
+        "and posterior mean.",
+        "Using a Beta({alpha},{beta}) prior for Bernoulli p and {successes} "
+        "successes in {n} trials, report the posterior parameters and "
+        "posterior mean.",
+        "For Bernoulli p, update the Beta({alpha},{beta}) prior after "
+        "{successes} successes in {n} trials; give the posterior parameters "
+        "and posterior mean.",
+    ),
+    "normal_normal": (
+        "For data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}), compute the conjugate posterior mean "
+        "and variance.",
+        "Observed data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}) require the posterior mean and "
+        "variance.",
+        "Using data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}), update mu and report its posterior "
+        "mean and variance.",
+        "Find the conjugate posterior mean and variance for data {data} from "
+        "Normal(mu, sigma^2={sigma2}) with prior mu~Normal({mu0}, "
+        "tau^2={tau2}).",
+    ),
+    "gamma_poisson": (
+        "A Poisson rate lambda has prior Gamma(alpha={alpha}, beta={beta}), "
+        "using the shape-rate parameterization. Given counts {data}, find "
+        "the conjugate posterior and its mean.",
+        "Given counts {data}, a Poisson rate lambda has prior "
+        "Gamma(alpha={alpha}, beta={beta}) in the shape-rate parameterization. "
+        "Compute the posterior and its mean.",
+        "Update a Poisson rate lambda from counts {data} under prior "
+        "Gamma(alpha={alpha}, beta={beta}), using the shape-rate "
+        "parameterization; report the posterior and mean.",
+        "For counts {data}, use prior Gamma(alpha={alpha}, beta={beta}) in "
+        "the shape-rate parameterization on Poisson rate lambda to find its "
+        "posterior and posterior mean.",
+    ),
+    "beta_map": (
+        "Start with a Beta({alpha},{beta}) prior for Bernoulli p. After "
+        "{successes} successes in {n} trials, find the posterior and its "
+        "interior MAP estimate.",
+        "A Beta({alpha},{beta}) prior is assigned to Bernoulli p. After "
+        "{successes} successes in {n} trials, compute the posterior and "
+        "interior MAP estimate.",
+        "Using a Beta({alpha},{beta}) prior for Bernoulli p and {successes} "
+        "successes in {n} trials, report the posterior and its interior MAP "
+        "estimate.",
+        "For Bernoulli p, update the Beta({alpha},{beta}) prior after "
+        "{successes} successes in {n} trials and find the interior MAP "
+        "estimate.",
+    ),
+    "beta_predictive": (
+        "Start with a Beta({alpha},{beta}) prior for Bernoulli p. After "
+        "{successes} successes in {n} trials, find the posterior and the "
+        "posterior predictive probability of success on the next trial.",
+        "A Beta({alpha},{beta}) prior is assigned to Bernoulli p. After "
+        "{successes} successes in {n} trials, compute the posterior predictive "
+        "probability for the next success.",
+        "Using a Beta({alpha},{beta}) prior for Bernoulli p and {successes} "
+        "successes in {n} trials, report the posterior predictive probability "
+        "of success next.",
+        "For Bernoulli p, update the Beta({alpha},{beta}) prior after "
+        "{successes} successes in {n} trials and find the posterior predictive "
+        "probability of a success on the next trial.",
+    ),
+    "normal_predictive_mean": (
+        "For data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}), find the posterior mean and variance, "
+        "then the posterior predictive distribution mean and variance for one "
+        "new observation.",
+        "Observed data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}) require the posterior and posterior "
+        "predictive distribution means and variances.",
+        "Using data {data} from Normal(mu, sigma^2={sigma2}) with prior "
+        "mu~Normal({mu0}, tau^2={tau2}), compute the posterior predictive "
+        "distribution mean and variance after updating mu.",
+        "Find the posterior mean, variance, and posterior predictive "
+        "distribution for data {data} from Normal(mu, sigma^2={sigma2}) with "
+        "prior mu~Normal({mu0}, tau^2={tau2}).",
+    ),
+}
 
 
 def fraction_text(value):
@@ -28,6 +117,10 @@ def data_text(values):
 
 def sum_expr(values):
     return " + ".join(str(v) for v in values)
+
+
+def prompt(variant, **fields):
+    return random.choice(PROMPTS[variant]).format(**fields)
 
 
 class BayesianUpdateGenerator(ProblemGenerator):
@@ -106,11 +199,8 @@ class BayesianUpdateGenerator(ProblemGenerator):
             f"posterior=Beta({post_alpha},{post_beta}); "
             f"posterior_mean={fraction_text(post_mean)}"
         )
-        problem = (
-            f"Start with a Beta({alpha},{beta}) prior for Bernoulli p. "
-            f"After {successes} successes in {n} trials, compute the "
-            "conjugate posterior parameters and posterior mean."
-        )
+        problem = prompt("beta_binomial", alpha=alpha, beta=beta,
+                         successes=successes, n=n)
         return problem, steps, answer
 
     def _generate_normal_normal(self):
@@ -157,11 +247,8 @@ class BayesianUpdateGenerator(ProblemGenerator):
             f"posterior=Normal(mean={fraction_text(post_mean)}, "
             f"variance={fraction_text(post_variance)})"
         )
-        problem = (
-            f"For data {data_text(values)} from Normal(mu, sigma^2={sigma_sq}) "
-            f"with prior mu~Normal({mu0}, tau^2={tau_sq}), compute the "
-            "conjugate posterior mean and variance."
-        )
+        problem = prompt("normal_normal", data=data_text(values),
+                         sigma2=sigma_sq, mu0=mu0, tau2=tau_sq)
         return problem, steps, answer
 
     def _generate_gamma_poisson(self):
@@ -188,12 +275,8 @@ class BayesianUpdateGenerator(ProblemGenerator):
         ]
         answer = (f"posterior=Gamma({post_alpha},{post_beta}) rate; "
                   f"posterior_mean={fraction_text(post_mean)}")
-        problem = (
-            f"A Poisson rate lambda has prior Gamma(alpha={alpha}, "
-            f"beta={beta}), using the shape-rate parameterization. Given "
-            f"counts {data_text(values)}, find the conjugate posterior and "
-            "its mean."
-        )
+        problem = prompt("gamma_poisson", alpha=alpha, beta=beta,
+                         data=data_text(values))
         return problem, steps, answer
 
     def _generate_beta_map(self):
@@ -226,11 +309,8 @@ class BayesianUpdateGenerator(ProblemGenerator):
         ]
         answer = (f"posterior=Beta({post_alpha},{post_beta}); "
                   f"MAP={fraction_text(estimate)}")
-        problem = (
-            f"Start with a Beta({alpha},{beta}) prior for Bernoulli p. After "
-            f"{successes} successes in {n} trials, find the posterior and "
-            "its interior MAP estimate."
-        )
+        problem = prompt("beta_map", alpha=alpha, beta=beta,
+                         successes=successes, n=n)
         return problem, steps, answer
 
     def _generate_beta_predictive(self):
@@ -260,12 +340,8 @@ class BayesianUpdateGenerator(ProblemGenerator):
         ]
         answer = (f"posterior=Beta({post_alpha},{post_beta}); "
                   f"P(next success)={fraction_text(predictive)}")
-        problem = (
-            f"Start with a Beta({alpha},{beta}) prior for Bernoulli p. After "
-            f"{successes} successes in {n} trials, find the posterior and "
-            "the posterior predictive probability of success on the next "
-            "trial."
-        )
+        problem = prompt("beta_predictive", alpha=alpha, beta=beta,
+                         successes=successes, n=n)
         return problem, steps, answer
 
     def _generate_normal_predictive(self):
@@ -316,10 +392,6 @@ class BayesianUpdateGenerator(ProblemGenerator):
                   f"posterior_variance={fraction_text(post_variance)}; "
                   f"predictive_mean={fraction_text(post_mean)}; "
                   f"predictive_variance={fraction_text(predictive_variance)}")
-        problem = (
-            f"For data {data_text(values)} from Normal(mu, sigma^2={sigma_sq}) "
-            f"with prior mu~Normal({mu0}, tau^2={tau_sq}), find the posterior "
-            "mean and variance, then the mean and variance of the posterior "
-            "predictive distribution for one new observation."
-        )
+        problem = prompt("normal_predictive_mean", data=data_text(values),
+                         sigma2=sigma_sq, mu0=mu0, tau2=tau_sq)
         return problem, steps, answer

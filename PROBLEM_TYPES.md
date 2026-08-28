@@ -15087,7 +15087,7 @@ Mechanical conjugate Bayesian parameter updates.
 **Variants:** `bayesian_update_beta_binomial`, `bayesian_update_beta_map`, `bayesian_update_beta_predictive`, `bayesian_update_gamma_poisson`, `bayesian_update_normal_normal`, `bayesian_update_normal_predictive_mean`
 
 ```
-Problem: Start with a Beta(8,2) prior for Bernoulli p. After 8 successes in 12 trials, find the posterior and its interior MAP estimate.
+Problem: For Bernoulli p, update the Beta(8,2) prior after 8 successes in 12 trials and find the interior MAP estimate.
 Steps:
   BAYES_UPDATE_SETUP|beta_map|prior=Beta(8,2)|successes=8, trials=12
   S|12|8|4

@@ -7,23 +7,22 @@ from fractions import Fraction
 from generators.bayesian_update_generator import (
     STATISTICS,
     BayesianUpdateGenerator,
+    PROMPTS,
 )
 from helpers import DELIM
 
 
 BETA_RE = re.compile(
-    r"Start with a Beta\((\d+),(\d+)\) prior for Bernoulli p\. After "
-    r"(\d+) successes in (\d+) trials,"
+    r"Beta\((\d+),(\d+)\) prior.*?(\d+) successes in (\d+) trials"
 )
 NORMAL_RE = re.compile(
-    r"For data \[([-0-9,]+)\] from Normal\(mu, sigma\^2=(\d+)\) with "
-    r"prior mu~Normal\((-?\d+), tau\^2=(\d+)\),"
+    r"data \[([-0-9,]+)\] from Normal\(mu, sigma\^2=(\d+)\) with "
+    r"prior mu~Normal\((-?\d+), tau\^2=(\d+)\)"
 )
 GAMMA_RE = re.compile(
-    r"A Poisson rate lambda has prior Gamma\(alpha=(\d+), beta=(\d+)\), "
-    r"using the shape-rate parameterization\. Given counts "
-    r"\[([0-9,]+)\],"
+    r"Gamma\(alpha=(\d+), beta=(\d+)\)"
 )
+DATA_RE = re.compile(r"\[([-0-9,]+)\]")
 
 
 def exact(value):
@@ -35,7 +34,7 @@ def parse_ints(raw):
 
 
 def normal_posterior(problem):
-    match = NORMAL_RE.match(problem)
+    match = NORMAL_RE.search(problem)
     if not match:
         raise AssertionError(f"cannot parse normal problem: {problem}")
     values = parse_ints(match.group(1))
@@ -52,17 +51,17 @@ def normal_posterior(problem):
 
 
 def oracle(problem):
-    gamma_match = GAMMA_RE.match(problem)
-    if gamma_match:
+    gamma_match = GAMMA_RE.search(problem)
+    if gamma_match and "Poisson rate lambda" in problem:
         alpha = int(gamma_match.group(1))
         beta = int(gamma_match.group(2))
-        values = parse_ints(gamma_match.group(3))
+        values = parse_ints(DATA_RE.search(problem).group(1))
         post_alpha = alpha + sum(values)
         post_beta = beta + len(values)
         return (f"posterior=Gamma({post_alpha},{post_beta}) rate; "
                 f"posterior_mean={exact(Fraction(post_alpha, post_beta))}")
 
-    beta_match = BETA_RE.match(problem)
+    beta_match = BETA_RE.search(problem)
     if beta_match:
         alpha, beta, successes, n = map(int, beta_match.groups())
         failures = n - successes
@@ -146,6 +145,27 @@ class TestBayesianUpdateGenerator(unittest.TestCase):
             self.assertEqual(result["final_answer"], oracle(result["problem"]))
         with self.assertRaises(ValueError):
             BayesianUpdateGenerator("bogus")
+
+    def test_every_variant_has_four_parseable_phrasings(self):
+        fields = {"alpha": 3, "beta": 4, "successes": 2, "n": 5,
+                  "data": "[1,2,3]", "sigma2": 4, "mu0": 1,
+                  "tau2": 2}
+        expected_markers = {
+            "beta_binomial": "posterior_mean=",
+            "normal_normal": "posterior=Normal(",
+            "gamma_poisson": "posterior=Gamma(",
+            "beta_map": "MAP=",
+            "beta_predictive": "P(next success)=",
+            "normal_predictive_mean": "predictive_mean=",
+        }
+        for variant in BayesianUpdateGenerator.VARIANTS:
+            templates = PROMPTS[variant]
+            self.assertEqual(len(templates), 4)
+            self.assertEqual(len(set(templates)), 4)
+            for template in templates:
+                problem = template.format(**fields)
+                with self.subTest(variant=variant, problem=problem):
+                    self.assertIn(expected_markers[variant], oracle(problem))
 
     def test_emitted_arithmetic(self):
         random.seed(887)
