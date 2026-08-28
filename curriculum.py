@@ -101,6 +101,7 @@ CURRICULUM = {
     "MultiStateMarkovGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "MonteCarloArithmeticGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ExpectedValueClassicsGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "FiniteSigmaAlgebraGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

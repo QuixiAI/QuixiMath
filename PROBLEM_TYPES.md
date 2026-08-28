@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**597 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**598 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15905,4 +15905,35 @@ Steps:
   BS_RESULT|call=12.65|put=1.65
   Z|call=12.65; put=1.65
 Answer: call=12.65; put=1.65
+```
+
+### Finite Sigma Algebra — `FiniteSigmaAlgebraGenerator`  ·  graduate · difficulty 3
+
+Generate exact finite sigma-algebra and conditioning exercises.
+
+**Variants:** `probability_finite_sigma_algebra_conditional_expectation_atoms`, `probability_finite_sigma_algebra_conditional_probability_given_G`, `probability_finite_sigma_algebra_generated_sigma_algebra`, `probability_finite_sigma_algebra_measurability_check`, `probability_finite_sigma_algebra_sigma_of_random_variable`
+
+```
+Problem: At the pearl audit in Lowell, Sofia studies a finite probability space. The uniform sample space is Omega={1, 2, 3, 4, 5, 6, 7}. Let G=sigma({1, 2, 3}). Random variable values by outcome are X=1:3, 2:2, 3:1, 4:9, 5:7, 6:8, 7:-1. Target: E[X given G] on every atom. Average X over each G-atom under the uniform measure.
+Steps:
+  SIGMA_GEN|generators|{1, 2, 3}
+  ATOM|{1, 2, 3}
+  ATOM|{4, 5, 6, 7}
+  A|3|2|5
+  A|5|1|6
+  D|6|3|2
+  COND_EXP_ATOM|{1, 2, 3}|sum 6 / 3|2
+  A|9|7|16
+  A|16|8|24
+  A|24|-1|23
+  D|23|4|23/4
+  COND_EXP_ATOM|{4, 5, 6, 7}|sum 23 / 4|23/4
+  M|3|2|6
+  M|4|23/4|23
+  A|6|23|29
+  D|29|7|29/7
+  D|29|7|29/7
+  CHECK|E[E[X given G]]=E[X]|29/7|29/7
+  Z|E[X given G] = 2 on {1, 2, 3}; 23/4 on {4, 5, 6, 7}
+Answer: E[X given G] = 2 on {1, 2, 3}; 23/4 on {4, 5, 6, 7}
 ```
