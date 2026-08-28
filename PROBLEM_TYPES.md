@@ -6455,18 +6455,19 @@ Answer: 3/5
 
 ### Geometric Distribution — `GeometricDistributionGenerator`  ·  high · difficulty 4
 
-Geometric distribution for the trial number of the first success. The scratchpad shows repeated failures followed by success, complement rules, tail probabilities, and the expected waiting time.
+Generate exact geometric distribution and memorylessness exercises.
 
-**Variants:** `geometric_distribution_after_k`, `geometric_distribution_at_most`, `geometric_distribution_exact_k`, `geometric_distribution_mean`
+**Variants:** `geometric_distribution_after_k`, `geometric_distribution_at_most`, `geometric_distribution_conditional_tail`, `geometric_distribution_exact_k`, `geometric_distribution_mean`, `geometric_distribution_memoryless_verify`, `geometric_distribution_remaining_wait`
 
 ```
-Problem: A geometric experiment has success probability p = 4/5. Let X be the trial number of the first success. Find the expected trial number of the first success.
+Problem: At the birch survey in Ithaca, Quinn repeats independent trials with success probability p=3/4. Let X be the trial number of the first success. Target: E[X-7 given X>7]. What is E[X-m given X>m] exactly?
 Steps:
-  GEOM_SETUP|p = 4/5|E[X]
-  GEOM_FORMULA|E[X] = 1/p
-  D|1|4/5|1.25
-  Z|1.25
-Answer: 1.25
+  GEOM_SETUP|p=3/4, elapsed=7|E[X-7 given X>7]
+  GEOM_FORMULA|E[X-m given X>m]=1/p
+  D|1|3/4|4/3
+  CHECK|remaining wait has fresh geometric law|4/3
+  Z|E[X - 7 given X > 7] = 4/3
+Answer: E[X - 7 given X > 7] = 4/3
 ```
 
 ### Fermi Estimation — `FermiEstimationGenerator`  ·  high · difficulty 4
