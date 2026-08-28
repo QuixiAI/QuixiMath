@@ -76,6 +76,7 @@ from generators.pmf_cdf_quantile_generator import PmfCdfQuantileGenerator
 from generators.expectation_of_function_generator import ExpectationOfFunctionGenerator
 from generators.bayes_multiple_hypotheses_generator import BayesMultipleHypothesesGenerator
 from generators.hypergeometric_generator import HypergeometricGenerator
+from generators.classic_probability_puzzles_generator import ClassicProbabilityPuzzlesGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -718,6 +719,7 @@ ALL_GENERATORS = [
     ExpectationOfFunctionGenerator(),
     BayesMultipleHypothesesGenerator(),
     HypergeometricGenerator(),
+    ClassicProbabilityPuzzlesGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

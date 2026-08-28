@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**582 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**583 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2987,6 +2987,30 @@ Steps:
   D|16|12|4/3
   Z|E[X] = 4/3
 Answer: E[X] = 4/3
+```
+
+### Classic Probability Puzzles — `ClassicProbabilityPuzzlesGenerator`  ·  high · difficulty 4
+
+Generate exact Monty Hall, birthday, child, and box puzzles.
+
+**Variants:** `probability_classic_bertrand_box`, `probability_classic_birthday`, `probability_classic_birthday_expected_pairs`, `probability_classic_birthday_specific_person`, `probability_classic_monty_hall`, `probability_classic_monty_hall_n_doors`, `probability_classic_two_child`
+
+```
+Problem: At the nova arena in Boston, three boxes contain orange-orange, orange-purple, and purple-purple tokens. A box is chosen uniformly, then one token from it is observed uniformly and is orange. Target: P(the other token is orange). Compute the exact other-token probability in the three-box puzzle.
+Steps:
+  SAMPLE_SPACE|six equally likely box-token positions
+  CASE|orange-orange token 1|observed orange|other orange
+  CASE|orange-orange token 2|observed orange|other orange
+  CASE|orange-purple token 1|observed orange|other purple
+  CASE|orange-purple token 2|observed purple|other orange
+  CASE|purple-purple token 1|observed purple|other purple
+  CASE|purple-purple token 2|observed purple|other purple
+  COUNT|observed orange|3
+  COUNT|observed orange and other orange|2
+  FRAC_BUILD|2/3|2/3
+  CHECK|condition on observed token|2 favorable of 3
+  Z|2/3
+Answer: 2/3
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
