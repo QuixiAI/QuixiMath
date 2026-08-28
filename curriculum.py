@@ -324,6 +324,7 @@ CURRICULUM = {
     "TypeTheoryGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ZFAxiomIdentifyGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "StructureIsomorphismGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "FoundationsCriticGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

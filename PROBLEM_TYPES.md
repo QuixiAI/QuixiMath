@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**560 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**561 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6589,6 +6589,26 @@ Steps:
   CHECK|differs from row 8 at position 8
   Z|diagonal 03954588; new string 11111111
 Answer: diagonal 03954588; new string 11111111
+```
+
+### Foundations Critic — `FoundationsCriticGenerator`  ·  college · difficulty 4
+
+Generate deterministic critic exercises for the foundations strand.
+
+**Variants:** `foundations_critic_membership_table_error`, `foundations_critic_missing_justification`, `foundations_critic_missing_line`, `foundations_critic_truth_table_error`
+
+```
+Problem: Natural-deduction proof with one blank.
+1) ((q → e) ∨ (b → ¬q)) ∧ (j ∨ (s ∨ m)) [premise]
+2) ____ [∧E 1]
+Determine the unique missing derived line.
+Steps:
+  VERIFY|1|ok
+  FLAG|2|(q → e) ∨ (b → ¬q)
+  APPLY|∧E 1|(q → e) ∨ (b → ¬q)
+  CHECK|line 2|(q → e) ∨ (b → ¬q)
+  Z|step 2; (q → e) ∨ (b → ¬q)
+Answer: step 2; (q → e) ∨ (b → ¬q)
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
