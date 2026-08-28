@@ -69,6 +69,7 @@ CURRICULUM = {
     "SampleSpaceListGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "ComplementProbabilityGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "ExperimentalProbabilityGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "FundamentalCountingPrincipleGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

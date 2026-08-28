@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**565 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**566 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -870,6 +870,23 @@ Steps:
   CHECK|experimental 1/17; theoretical 1/17; experimental is equal
   Z|experimental 1/17; theoretical 1/17; experimental is equal
 Answer: experimental 1/17; theoretical 1/17; experimental is equal
+```
+
+### Fundamental Counting Principle — `FundamentalCountingPrincipleGenerator`  ·  elementary · difficulty 3
+
+Generate exact multistage counting and probability exercises.
+
+**Variants:** `probability_fundamental_counting_codes`, `probability_fundamental_counting_count_only`, `probability_fundamental_counting_count_then_probability`, `probability_fundamental_counting_tree_count`, `probability_fundamental_counting_with_restriction`
+
+```
+Problem: A lunch menu has choice counts: fruits=8; desserts=6; drinks=9. Choose exactly one option from each category. Build the staged tree count from left to right.
+Steps:
+  TREE_LEVEL|fruits|8|8
+  TREE_LEVEL|desserts|6|48
+  TREE_LEVEL|drinks|9|432
+  CHECK|product of branch counts|432
+  Z|432 selections
+Answer: 432 selections
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1
