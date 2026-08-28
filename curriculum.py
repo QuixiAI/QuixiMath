@@ -74,6 +74,7 @@ CURRICULUM = {
     "ProbabilityAxiomsFiniteGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "TreeDiagramProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "RandomDigitSimulationGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "TwoWayTableProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**570 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**571 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1036,6 +1036,27 @@ Steps:
   SUM|49/100|49/100
   Z|estimate 5/16; theoretical 49/100
 Answer: estimate 5/16; theoretical 49/100
+```
+
+### Two Way Table Probability — `TwoWayTableProbabilityGenerator`  ·  middle · difficulty 3
+
+Generate joint, marginal, conditional, and union table questions.
+
+**Variants:** `probability_two_way_table_conditional_column`, `probability_two_way_table_conditional_row`, `probability_two_way_table_joint`, `probability_two_way_table_marginal`, `probability_two_way_table_two_by_three`, `probability_two_way_table_union`
+
+```
+Problem: A table records 173 players. Cells: team=red and result=win: 7; team=red and result=loss: 35; team=blue and result=win: 67; team=blue and result=loss: 64. One player is chosen uniformly. Target row: team=blue. Target column: result=loss. Use the column total as the denominator for the requested probability.
+Steps:
+  TABLE_CELL|team=red, result=win|7
+  TABLE_CELL|team=red, result=loss|35
+  TABLE_CELL|team=blue, result=win|67
+  TABLE_CELL|team=blue, result=loss|64
+  TABLE_TOTAL|grand|7 + 35 + 67 + 64 = 173
+  TABLE_TOTAL|result=loss|35 + 64 = 99
+  COND_FORMULA|P(team=blue given result=loss) = count(both)/count(result=loss)
+  FRAC_BUILD|64/99|64/99
+  Z|64/99
+Answer: 64/99
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
