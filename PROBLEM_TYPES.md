@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**575 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**576 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2760,6 +2760,35 @@ Steps:
   RELIABILITY|mixed system|39/40 × 9/10 × 3/8|1053/3200
   Z|1053/3200
 Answer: 1053/3200
+```
+
+### Independence Check — `IndependenceCheckGenerator`  ·  high · difficulty 3
+
+Generate exact finite-space tests of event independence.
+
+**Variants:** `probability_independence_die_events`, `probability_independence_given_probabilities`, `probability_independence_small_deck`, `probability_independence_table_events`, `probability_independence_three_events_pairwise_vs_mutual`, `probability_independence_two_dice_events`
+
+```
+Problem: A 2 by 2 table has counts R1C1=54; R1C2=6; R2C1=34; R2C2=66; total=160. Event A is row R1 and event B is column C1. Are the displayed row and column events independent? Show the exact check.
+Steps:
+  TABLE_CELL|R1C1|54
+  TABLE_CELL|R1C2|6
+  TABLE_CELL|R2C1|34
+  TABLE_CELL|R2C2|66
+  EVENT|A|{R1C1#1, R1C1#2, R1C1#3, R1C1#4, R1C1#5, R1C1#6, R1C1#7, R1C1#8, R1C1#9, R1C1#10, R1C1#11, R1C1#12, R1C1#13, R1C1#14, R1C1#15, R1C1#16, R1C1#17, R1C1#18, R1C1#19, R1C1#20, R1C1#21, R1C1#22, R1C1#23, R1C1#24, R1C1#25, R1C1#26, R1C1#27, R1C1#28, R1C1#29, R1C1#30, R1C1#31, R1C1#32, R1C1#33, R1C1#34, R1C1#35, R1C1#36, R1C1#37, R1C1#38, R1C1#39, R1C1#40, R1C1#41, R1C1#42, R1C1#43, R1C1#44, R1C1#45, R1C1#46, R1C1#47, R1C1#48, R1C1#49, R1C1#50, R1C1#51, R1C1#52, R1C1#53, R1C1#54, R1C2#1, R1C2#2, R1C2#3, R1C2#4, R1C2#5, R1C2#6}|60
+  EVENT|B|{R1C1#1, R1C1#2, R1C1#3, R1C1#4, R1C1#5, R1C1#6, R1C1#7, R1C1#8, R1C1#9, R1C1#10, R1C1#11, R1C1#12, R1C1#13, R1C1#14, R1C1#15, R1C1#16, R1C1#17, R1C1#18, R1C1#19, R1C1#20, R1C1#21, R1C1#22, R1C1#23, R1C1#24, R1C1#25, R1C1#26, R1C1#27, R1C1#28, R1C1#29, R1C1#30, R1C1#31, R1C1#32, R1C1#33, R1C1#34, R1C1#35, R1C1#36, R1C1#37, R1C1#38, R1C1#39, R1C1#40, R1C1#41, R1C1#42, R1C1#43, R1C1#44, R1C1#45, R1C1#46, R1C1#47, R1C1#48, R1C1#49, R1C1#50, R1C1#51, R1C1#52, R1C1#53, R1C1#54, R2C1#1, R2C1#2, R2C1#3, R2C1#4, R2C1#5, R2C1#6, R2C1#7, R2C1#8, R2C1#9, R2C1#10, R2C1#11, R2C1#12, R2C1#13, R2C1#14, R2C1#15, R2C1#16, R2C1#17, R2C1#18, R2C1#19, R2C1#20, R2C1#21, R2C1#22, R2C1#23, R2C1#24, R2C1#25, R2C1#26, R2C1#27, R2C1#28, R2C1#29, R2C1#30, R2C1#31, R2C1#32, R2C1#33, R2C1#34}|88
+  EVENT|A ∩ B|{R1C1#1, R1C1#2, R1C1#3, R1C1#4, R1C1#5, R1C1#6, R1C1#7, R1C1#8, R1C1#9, R1C1#10, R1C1#11, R1C1#12, R1C1#13, R1C1#14, R1C1#15, R1C1#16, R1C1#17, R1C1#18, R1C1#19, R1C1#20, R1C1#21, R1C1#22, R1C1#23, R1C1#24, R1C1#25, R1C1#26, R1C1#27, R1C1#28, R1C1#29, R1C1#30, R1C1#31, R1C1#32, R1C1#33, R1C1#34, R1C1#35, R1C1#36, R1C1#37, R1C1#38, R1C1#39, R1C1#40, R1C1#41, R1C1#42, R1C1#43, R1C1#44, R1C1#45, R1C1#46, R1C1#47, R1C1#48, R1C1#49, R1C1#50, R1C1#51, R1C1#52, R1C1#53, R1C1#54}|54
+  PROB_SETUP|60|160
+  F|60/160|3/8
+  PROB_SETUP|88|160
+  F|88/160|11/20
+  PROB_SETUP|54|160
+  F|54/160|27/80
+  INDEP_FORMULA|independent iff P(A ∩ B) = P(A)·P(B)
+  M|3/8|11/20|33/160
+  INDEP_CHECK|P(A ∩ B) = 27/80|product = 33/160|no
+  Z|dependent; P(A ∩ B) = 27/80 ≠ P(A)·P(B) = 33/160
+Answer: dependent; P(A ∩ B) = 27/80 ≠ P(A)·P(B) = 33/160
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2

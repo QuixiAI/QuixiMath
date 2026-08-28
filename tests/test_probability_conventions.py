@@ -124,7 +124,21 @@ def roster_violations(text):
     out = []
     for body in re.findall(r"\{([^{}]*)\}", str(text)):
         body = body.strip()
-        items = [] if not body else [i.strip() for i in body.split(",")]
+        items = []
+        current = []
+        depth = 0
+        for char in body:
+            if char in "([":
+                depth += 1
+            elif char in ")]":
+                depth -= 1
+            if char == "," and depth == 0:
+                items.append("".join(current).strip())
+                current = []
+            else:
+                current.append(char)
+        if current:
+            items.append("".join(current).strip())
         if len(set(items)) != len(items):
             out.append(f"duplicate item in roster {{{body}}}")
         if all(re.fullmatch(r"-?\d+", i) for i in items) and items:
@@ -276,6 +290,10 @@ class CheckerFixtureTest(unittest.TestCase):
         self.assertFalse(roster_violations("S = {H, T}"))
         self.assertFalse(roster_violations("A = {2, 4, 6}"))
         self.assertFalse(roster_violations("A = ∅"))
+
+    def test_ordered_pairs_are_single_roster_items(self):
+        self.assertFalse(roster_violations("S = {(1, 1), (1, 2), (2, 1)}"))
+        self.assertTrue(roster_violations("S = {(1, 1), (1, 1)}"))
 
     def test_mismatched_z_payload_is_rejected(self):
         example = self.good(steps=[f"Z{DELIM}3/4"])

@@ -69,6 +69,7 @@ from generators.venn_probability_generator import VennProbabilityGenerator
 from generators.counting_to_probability_generator import CountingToProbabilityGenerator
 from generators.probability_measure_generator import ProbabilityMeasureGenerator
 from generators.reliability_system_generator import ReliabilitySystemGenerator
+from generators.independence_check_generator import IndependenceCheckGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -704,6 +705,7 @@ ALL_GENERATORS = [
     CountingToProbabilityGenerator(),
     ProbabilityMeasureGenerator(),
     ReliabilitySystemGenerator(),
+    IndependenceCheckGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
