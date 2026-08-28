@@ -107,6 +107,7 @@ from generators.histogram_construct_generator import HistogramConstructGenerator
 from generators.weighted_mean_generator import WeightedMeanGenerator
 from generators.mean_adjustment_generator import MeanAdjustmentGenerator
 from generators.alternative_means_generator import AlternativeMeansGenerator
+from generators.grouped_data_generator import GroupedDataGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1334,6 +1335,7 @@ ALL_GENERATORS = [
     WeightedMeanGenerator(),
     MeanAdjustmentGenerator(),
     AlternativeMeansGenerator(),
+    GroupedDataGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**613 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**614 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6939,6 +6939,37 @@ Steps:
   CHECK|perfect power|36^4|1679616
   Z|36
 Answer: 36
+```
+
+### Grouped Data — `GroupedDataGenerator`  ·  high · difficulty 2
+
+Generate exact grouped-frequency reading and estimation exercises.
+
+**Variants:** `statistics_grouped_data_estimated_median`, `statistics_grouped_data_mean_from_midpoints`, `statistics_grouped_data_median_class`, `statistics_grouped_data_modal_class`, `statistics_grouped_data_total_and_percent_in_class`
+
+```
+Problem: At the jade pilot, grouped battery-life measurements use inclusive integer classes.
+Grouped frequencies: 90-99: 9; 100-109: 10; 110-119: 30; 120-129: 1
+Estimated-median rule: L + ((n/2 - CF before)/f)·w, where L is the lower endpoint of the first class whose cumulative frequency reaches n/2.
+Find the exact interpolated grouped median.
+Steps:
+  FREQ_SETUP|grouped battery-life measurements|n=50
+  BIN_COUNT|90-99|9
+  BIN_COUNT|100-109|10
+  BIN_COUNT|110-119|30
+  BIN_COUNT|120-129|1
+  RULE|estimated median|L + ((n/2 - CF before)/f)·w, where L is the lower endpoint of the first class whose cumulative frequency reaches n/2
+  CUM_ROW|90-99|9
+  CUM_ROW|100-109|19
+  CUM_ROW|110-119|49
+  D|50|2|25
+  S|25|19|6
+  D|6|30|0.2
+  M|0.2|10|2
+  A|110|2|112
+  CHECK|interpolation|L=110, w=10|112
+  Z|112
+Answer: 112
 ```
 
 ## College

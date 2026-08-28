@@ -117,6 +117,7 @@ CURRICULUM = {
     "WeightedMeanGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "MeanAdjustmentGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "AlternativeMeansGenerator": {"grade_level": HIGH, "difficulty": 2},
+    "GroupedDataGenerator": {"grade_level": HIGH, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
