@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**659 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**660 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7791,6 +7791,27 @@ Steps:
   CHECK|neighboring integer prices are lower|288
   Z|R = p(48 − 2p); $12.00; revenue $288.00
 Answer: R = p(48 − 2p); $12.00; revenue $288.00
+```
+
+### Growth Comparison — `GrowthComparisonGenerator`  ·  high · difficulty 3
+
+Generate six exact growth-comparison stories without method cues.
+
+**Variants:** `applied_growth_comparison_crossover_year_distractor`, `applied_growth_comparison_crossover_year_estimate_first`, `applied_growth_comparison_crossover_year_plain`, `applied_growth_comparison_crossover_year_with_model`, `applied_growth_comparison_depreciation_below_threshold_distractor`, `applied_growth_comparison_depreciation_below_threshold_estimate_first`, `applied_growth_comparison_depreciation_below_threshold_with_model`, `applied_growth_comparison_linear_vs_exponential_table_distractor`, `applied_growth_comparison_linear_vs_exponential_table_estimate_first`, `applied_growth_comparison_linear_vs_exponential_table_plain`, `applied_growth_comparison_linear_vs_exponential_table_with_model`, `applied_growth_comparison_repeated_doubling_count_distractor`, `applied_growth_comparison_repeated_doubling_count_estimate_first`, `applied_growth_comparison_repeated_doubling_count_with_model`, `applied_growth_comparison_rule_of_70_doubling_distractor`, `applied_growth_comparison_rule_of_70_doubling_estimate_first`, `applied_growth_comparison_rule_of_70_doubling_plain`, `applied_growth_comparison_rule_of_70_doubling_with_model`, `applied_growth_comparison_which_offer_distractor`, `applied_growth_comparison_which_offer_estimate_first`, `applied_growth_comparison_which_offer_plain`, `applied_growth_comparison_which_offer_with_model`
+
+```
+Problem: A report from the school woodshop, checked by Zane, states: A machine is worth $4250.00 and loses 20% of its value each year. A replacement is required once its value is below $1958.40. What is the first whole year when replacement is required?
+Steps:
+  MODEL_EQ|V(n) = 4250(0.8)^n|growth comparison
+  MODEL_EQ|V(n) = 4250(0.8)^n|value after n years
+  TRY|year 1|$3400.00
+  TRY|year 2|$2720.00
+  TRY|year 3|$2176.00
+  TRY|year 4|$1740.80
+  ACCEPT|year 4|$1740.80 < $1958.40
+  CHECK|year 3|$2176.00 ≥ $1958.40
+  Z|V(n) = 4250(0.8)^n; year 4; value $1740.80
+Answer: V(n) = 4250(0.8)^n; year 4; value $1740.80
 ```
 
 ## College

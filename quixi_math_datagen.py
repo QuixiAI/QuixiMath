@@ -681,6 +681,7 @@ from generators.measurement_uncertainty_generator import MeasurementUncertaintyG
 from generators.geometry_in_context_generator import GeometryInContextGenerator
 from generators.systems_word_generator import SystemsWordGenerator
 from generators.quadratic_word_generator import QuadraticWordGenerator
+from generators.growth_comparison_generator import GrowthComparisonGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1433,6 +1434,7 @@ ALL_GENERATORS = [
     GeometryInContextGenerator(),
     SystemsWordGenerator(),
     QuadraticWordGenerator(),
+    GrowthComparisonGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

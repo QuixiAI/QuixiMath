@@ -691,6 +691,7 @@ CURRICULUM = {
     "GeometryInContextGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SystemsWordGenerator": {"grade_level": HIGH, "difficulty": 3},
     "QuadraticWordGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "GrowthComparisonGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
