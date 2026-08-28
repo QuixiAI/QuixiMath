@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**636 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**637 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -17025,4 +17025,26 @@ Steps:
   LIKELIHOOD_FACTOR|g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]|h = 1
   Z|T = (Σx_i, Σx_i²) = (35, 245); g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]; h = 1
 Answer: T = (Σx_i, Σx_i²) = (35, 245); g = (2πσ²)^(-6/2) exp[-(245 - 2μ·35 + 6μ²)/(2σ²)]; h = 1
+```
+
+### Likelihood Ratio Test — `LikelihoodRatioTestGenerator`  ·  graduate · difficulty 4
+
+Generate exact likelihood-ratio calculations and Wilks checks.
+
+**Variants:** `statistics_likelihood_ratio_test_np_power`, `statistics_likelihood_ratio_test_np_ratio_bernoulli`, `statistics_likelihood_ratio_test_np_region`, `statistics_likelihood_ratio_test_wilks_df`, `statistics_likelihood_ratio_test_wilks_normal`
+
+```
+Problem: At the oak center during the pilot analysis (lrt E71), σ = 5, n = 25, and x̄ = 73. Test H0: μ = 71 against the unrestricted normal-mean alternative; χ² critical value = 3.841 (df = 1).
+Apply the known-variance normal Wilks statistic.
+Steps:
+  LR_FORMULA|-2 ln Λ = n(x̄ - μ0)²/σ²
+  S|73|71|2
+  E|2|2|4
+  M|25|4|100
+  E|5|2|25
+  D|100|25|4
+  LOOKUP_SUPPLIED|χ² critical value (df = 1)|3.841
+  CHECK|-2 ln Λ vs χ²|4 > 3.841|reject H0
+  Z|-2 ln Λ = 4; reject H0 (4 > 3.841)
+Answer: -2 ln Λ = 4; reject H0 (4 > 3.841)
 ```
