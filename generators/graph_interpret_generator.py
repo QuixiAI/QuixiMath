@@ -1,13 +1,65 @@
+"""Read and construct text bar, line, pictograph, and double-bar displays.
+
+Legacy variants remain ``bar`` (six operations), ``line`` (six), and
+``pictograph`` (five). The statistics extension adds ``double_bar`` with
+compare, total, and largest-gap questions, plus ``construct_bar`` from raw
+categorical observations. Op-codes include ``GRAPH_DATA``, ``GRAPH_READ``,
+``COUNT``, ``CMP``, ``GRAPH_MIN``, ``GRAPH_MAX``, ``GRAPH_CHANGE``,
+``GRAPH_MAX_CHANGE``, ``PICTO_KEY``, ``PICTO_COUNT``, ``SORT``, ``A``, ``S``,
+``M``, ``CHECK``, and ``Z``. All values and arithmetic are integers; distinct
+extrema and gaps are enforced when a question needs a unique answer. Random
+data, category sets, series labels, raw-data order, and four new-variant
+phrasings give unbounded capacity.
+"""
+import hashlib
 import random
+
 from base_generator import ProblemGenerator
 from helpers import step, jid
+from stats_common import running_sum_steps, text_list
+
+
+STATISTICS = True
+GRAPH_TYPES = ("bar", "line", "pictograph", "double_bar", "construct_bar")
+SERIES_PAIRS = (
+    ("Class A", "Class B"), ("Morning", "Afternoon"),
+    ("North", "South"), ("Team Blue", "Team Gold"),
+    ("Week 1", "Week 2"), ("Year 1", "Year 2"),
+)
+DOUBLE_BAR_QUERIES = {
+    "compare": (
+        "Question: At {category}, which series is greater and by how much?",
+        "Question: Compare {series1} and {series2} for {category}.",
+        "Question: Which group has the larger {category} bar, and what is the difference?",
+        "Question: For {category}, name the higher series and calculate its lead.",
+    ),
+    "total": (
+        "Question: What is the total of every bar in both series?",
+        "Question: Add all values across the two series.",
+        "Question: What combined total is represented by the double-bar chart?",
+        "Question: Find the sum of all bars from {series1} and {series2}.",
+    ),
+    "largest_gap": (
+        "Question: Which category has the largest gap between the two series?",
+        "Question: Find the category where the series differ most.",
+        "Question: Compare each pair of bars and report the unique largest difference.",
+        "Question: At which category is the absolute gap greatest?",
+    ),
+}
+CONSTRUCT_BAR_QUERIES = (
+    "Question: Construct the bar-chart data list in the stated category order.",
+    "Question: Count each category and report the complete bar data.",
+    "Question: Turn the raw observations into a category-to-count bar list.",
+    "Question: Build the text bar chart by tallying every observation.",
+)
 
 
 class GraphInterpretGenerator(ProblemGenerator):
     """
-    Generates problems for reading and interpreting bar charts, line graphs,
-    and pictographs. Problems include finding values, comparing categories,
-    calculating totals, differences, and identifying min/max.
+    Generate bar, line, pictograph, double-bar, and bar-construction problems.
+
+    Read values, comparisons, totals, differences, extrema, changes, and gaps,
+    or tally raw categorical observations into a complete bar-data list.
     """
 
     def __init__(self, graph_type: str = None):
@@ -15,19 +67,102 @@ class GraphInterpretGenerator(ProblemGenerator):
         Initialize with optional graph type.
 
         Args:
-            graph_type: One of 'bar', 'line', 'pictograph', or None for random.
+            graph_type: One of ``GRAPH_TYPES``, or None for random.
         """
+        if graph_type is not None and graph_type not in GRAPH_TYPES:
+            raise ValueError(f"graph_type must be one of {GRAPH_TYPES} or None")
         self.graph_type = graph_type
 
     def generate(self) -> dict:
-        graph_type = self.graph_type or random.choice(["bar", "line", "pictograph"])
+        if self.graph_type is not None:
+            return self._generate_type(self.graph_type)
+
+        # Preserve the exact global-RNG advancement of the legacy three-way
+        # wrapper. This class sits mid-registry, so changing its consumption
+        # would churn seeded examples for hundreds of unrelated generators.
+        legacy_type = random.choice(("bar", "line", "pictograph"))
+        legacy_result = self._generate_type(legacy_type)
+        post_legacy_state = random.getstate()
+        digest = hashlib.sha256(
+            legacy_result["problem"].encode("utf-8")
+        ).digest()
+        extension = digest[0] % 5
+        if extension not in (0, 1):
+            return legacy_result
+        random.seed(int.from_bytes(digest[1:9], "big"))
+        try:
+            graph_type = "double_bar" if extension == 0 else "construct_bar"
+            return self._generate_type(graph_type)
+        finally:
+            random.setstate(post_legacy_state)
+
+    def _generate_type(self, graph_type) -> dict:
 
         if graph_type == "bar":
             return self._generate_bar_chart()
         elif graph_type == "line":
             return self._generate_line_graph()
-        else:
+        elif graph_type == "pictograph":
             return self._generate_pictograph()
+        elif graph_type == "double_bar":
+            return self._generate_double_bar()
+        return self._generate_construct_bar()
+
+    def _generate_double_bar(self) -> dict:
+        """Generate one of the three planned double-bar interpretations."""
+        categories = random.sample(self._get_categories("bar"),
+                                   random.randint(4, 6))
+        series1, series2 = random.choice(SERIES_PAIRS)
+        question_type = random.choice(("compare", "total", "largest_gap"))
+        while True:
+            first = dict(zip(categories,
+                             random.sample(range(5, 51), len(categories))))
+            second = dict(zip(categories,
+                              random.sample(range(5, 51), len(categories))))
+            gaps = [abs(first[category] - second[category])
+                    for category in categories]
+            if question_type == "compare":
+                target = random.choice(categories)
+                if first[target] == second[target]:
+                    continue
+            elif question_type == "largest_gap":
+                if max(gaps) == 0 or gaps.count(max(gaps)) != 1:
+                    continue
+            break
+        return self._create_double_bar_problem(
+            categories, series1, series2, first, second, question_type)
+
+    def _generate_construct_bar(self) -> dict:
+        """Construct a bar-data text list from raw category observations."""
+        categories = sorted(random.sample(self._get_categories("bar"),
+                                          random.randint(4, 6)))
+        counts = {category: random.randint(1, 7) for category in categories}
+        observations = [category for category in categories
+                        for _ in range(counts[category])]
+        random.shuffle(observations)
+        chart = text_list(counts)
+        problem = (
+            f"Raw category observations: {', '.join(observations)}.\n"
+            f"Category order: {', '.join(categories)}.\n"
+            f"{random.choice(CONSTRUCT_BAR_QUERIES)}"
+        )
+        steps = [step("SORT", ", ".join(sorted(observations)))]
+        for category, count in counts.items():
+            steps.append(step("COUNT", category, count))
+        additions, total = running_sum_steps(counts.values())
+        steps.extend(additions)
+        steps.extend([
+            step("GRAPH_DATA", "bar_chart",
+                 ",".join(f"{category}:{count}"
+                          for category, count in counts.items())),
+            step("CHECK", "category counts sum",
+                 " + ".join(map(str, counts.values())), len(observations)),
+            step("Z", chart),
+        ])
+        return dict(
+            problem_id=jid(), operation="construct_bar", problem=problem,
+            steps=steps, final_answer=chart,
+        )
 
     def _generate_bar_chart(self) -> dict:
         """Generate a bar chart interpretation problem."""
@@ -162,6 +297,88 @@ class GraphInterpretGenerator(ProblemGenerator):
             symbols_str = symbol * count
             lines.append(f"  {cat}: {symbols_str}")
         return "\n".join(lines)
+
+    @staticmethod
+    def _format_double_bar(categories, series1, series2, first, second):
+        lines = ["Double Bar Chart Data:", f"Series {series1}:"]
+        lines.extend(f"  {category}: {first[category]}"
+                     for category in categories)
+        lines.append(f"Series {series2}:")
+        lines.extend(f"  {category}: {second[category]}"
+                     for category in categories)
+        return "\n".join(lines)
+
+    def _create_double_bar_problem(
+        self, categories, series1, series2, first, second, question_type
+    ) -> dict:
+        """Create a double-bar problem with two explicit data-series steps."""
+        chart = self._format_double_bar(
+            categories, series1, series2, first, second)
+        steps = [
+            step("GRAPH_DATA", f"double_bar {series1}",
+                 ",".join(f"{category}:{first[category]}"
+                          for category in categories)),
+            step("GRAPH_DATA", f"double_bar {series2}",
+                 ",".join(f"{category}:{second[category]}"
+                          for category in categories)),
+        ]
+        fields = {"series1": series1, "series2": series2}
+        if question_type == "compare":
+            category = random.choice(categories)
+            value1, value2 = first[category], second[category]
+            steps.extend([step("GRAPH_READ", f"{series1} {category}", value1),
+                          step("GRAPH_READ", f"{series2} {category}", value2)])
+            if value1 > value2:
+                winner, high, low = series1, value1, value2
+            else:
+                winner, high, low = series2, value2, value1
+            difference = high - low
+            steps.extend([step("S", high, low, difference),
+                          step("CMP", series1, series2, winner)])
+            answer = (f"{winner}; {category} {high} > {low} by "
+                      f"{difference}")
+            operation = "double_bar_compare"
+            fields["category"] = category
+        elif question_type == "total":
+            values = ([first[category] for category in categories]
+                      + [second[category] for category in categories])
+            for category in categories:
+                steps.append(step("GRAPH_READ", f"{series1} {category}",
+                                  first[category]))
+            for category in categories:
+                steps.append(step("GRAPH_READ", f"{series2} {category}",
+                                  second[category]))
+            additions, total = running_sum_steps(values)
+            steps.extend(additions)
+            steps.append(step("CHECK", "all bars included",
+                              " + ".join(map(str, values)), total))
+            answer = str(total)
+            operation = "double_bar_total"
+        else:
+            gaps = {}
+            for category in categories:
+                value1, value2 = first[category], second[category]
+                high, low = max(value1, value2), min(value1, value2)
+                gap = high - low
+                gaps[category] = gap
+                steps.extend([
+                    step("GRAPH_READ", f"{series1} {category}", value1),
+                    step("GRAPH_READ", f"{series2} {category}", value2),
+                    step("S", high, low, gap),
+                ])
+            category = max(gaps, key=gaps.get)
+            answer = (f"{category}; gap {gaps[category]} ({series1} "
+                      f"{first[category]}, {series2} {second[category]})")
+            steps.append(step("CHECK", "unique largest gap",
+                              category, gaps[category]))
+            operation = "double_bar_largest_gap"
+        query = random.choice(DOUBLE_BAR_QUERIES[question_type]).format(**fields)
+        problem = f"{chart}\n\n{query}"
+        steps.append(step("Z", answer))
+        return dict(
+            problem_id=jid(), operation=operation, problem=problem,
+            steps=steps, final_answer=answer,
+        )
 
     def _create_bar_problem(self, values: dict, question_type: str) -> dict:
         """Create a bar chart problem with steps."""

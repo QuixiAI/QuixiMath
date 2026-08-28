@@ -891,40 +891,37 @@ Answer: 432 selections
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1
 
-Generates problems for reading and interpreting bar charts, line graphs, and pictographs. Problems include finding values, comparing categories, calculating totals, differences, and identifying min/max.
+Generate bar, line, pictograph, double-bar, and bar-construction problems.
 
-**Variants:** `bar_chart_compare`, `bar_chart_difference`, `bar_chart_max`, `bar_chart_min`, `bar_chart_read`, `bar_chart_total`, `line_graph_decrease`, `line_graph_increase`, `line_graph_max`, `line_graph_min`, `line_graph_range`, `line_graph_read`, `pictograph_compare`, `pictograph_difference`, `pictograph_max`, `pictograph_read`, `pictograph_total`
+**Variants:** `bar_chart_compare`, `bar_chart_difference`, `bar_chart_max`, `bar_chart_min`, `bar_chart_read`, `bar_chart_total`, `construct_bar`, `double_bar_compare`, `double_bar_largest_gap`, `double_bar_total`, `line_graph_decrease`, `line_graph_increase`, `line_graph_max`, `line_graph_min`, `line_graph_range`, `line_graph_read`, `pictograph_compare`, `pictograph_difference`, `pictograph_max`, `pictograph_read`, `pictograph_total`
 
 ```
-Problem: Line Graph Data:
-  2018: 25
-  2019: 25
-  2020: 29
-  2021: 27
-  2022: 30
+Problem: Double Bar Chart Data:
+Series Year 1:
+  Art: 35
+  English: 24
+  History: 7
+  Math: 6
+  Science: 21
+  Music: 13
+Series Year 2:
+  Art: 13
+  English: 49
+  History: 37
+  Math: 15
+  Science: 11
+  Music: 45
 
-Question: Between which two consecutive time periods was there the largest decrease?
+Question: Which group has the larger English bar, and what is the difference?
 Steps:
-  GRAPH_DATA|line_graph|2018:25,2019:25,2020:29,2021:27,2022:30
-  GRAPH_READ|2018|25
-  GRAPH_READ|2019|25
-  S|25|25|0
-  GRAPH_CHANGE|2018|2019|0
-  GRAPH_READ|2019|25
-  GRAPH_READ|2020|29
-  S|25|29|-4
-  GRAPH_CHANGE|2019|2020|4
-  GRAPH_READ|2020|29
-  GRAPH_READ|2021|27
-  S|29|27|2
-  GRAPH_CHANGE|2020|2021|-2
-  GRAPH_READ|2021|27
-  GRAPH_READ|2022|30
-  S|27|30|-3
-  GRAPH_CHANGE|2021|2022|3
-  GRAPH_MAX_CHANGE|2020|2021|-2
-  Z|2020 to 2021 (decrease of 2)
-Answer: 2020 to 2021 (decrease of 2)
+  GRAPH_DATA|double_bar Year 1|Art:35,English:24,History:7,Math:6,Science:21,Music:13
+  GRAPH_DATA|double_bar Year 2|Art:13,English:49,History:37,Math:15,Science:11,Music:45
+  GRAPH_READ|Year 1 English|24
+  GRAPH_READ|Year 2 English|49
+  S|49|24|25
+  CMP|Year 1|Year 2|Year 2
+  Z|Year 2; English 49 > 24 by 25
+Answer: Year 2; English 49 > 24 by 25
 ```
 
 ### Composite Arithmetic — `CompositeArithmeticGenerator`  ·  elementary · difficulty 4

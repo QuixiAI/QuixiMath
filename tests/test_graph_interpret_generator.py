@@ -1,141 +1,312 @@
-import unittest
-import sys
-import os
+"""Independent prompt-only oracle for GraphInterpretGenerator."""
 import random
+import re
+import unittest
+from fractions import Fraction
 
-# Ensure repo root on path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-repo_root = os.path.dirname(current_dir)
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
-from generators.graph_interpret_generator import GraphInterpretGenerator
+from generators.graph_interpret_generator import (
+    CONSTRUCT_BAR_QUERIES,
+    DOUBLE_BAR_QUERIES,
+    GraphInterpretGenerator,
+)
 from helpers import DELIM
+
+
+LEGACY_OPERATIONS = {
+    "bar": {
+        "bar_chart_read", "bar_chart_compare", "bar_chart_total",
+        "bar_chart_difference", "bar_chart_max", "bar_chart_min",
+    },
+    "line": {
+        "line_graph_read", "line_graph_increase", "line_graph_decrease",
+        "line_graph_max", "line_graph_min", "line_graph_range",
+    },
+    "pictograph": {
+        "pictograph_read", "pictograph_compare", "pictograph_total",
+        "pictograph_difference", "pictograph_max",
+    },
+}
+NEW_OPERATIONS = {
+    "double_bar": {
+        "double_bar_compare", "double_bar_total", "double_bar_largest_gap",
+    },
+    "construct_bar": {"construct_bar"},
+}
+
+
+def _rows(lines):
+    result = {}
+    for line in lines:
+        label, value = line.strip().rsplit(": ", 1)
+        result[label] = int(value)
+    return result
+
+
+def _single_chart(problem):
+    body = problem.split("\n\nQuestion:", 1)[0]
+    lines = body.splitlines()
+    if lines[0] == "Bar Chart Data:":
+        return "bar", _rows(lines[1:])
+    if lines[0] == "Line Graph Data:":
+        return "line", _rows(lines[1:])
+    match = re.fullmatch(r"Pictograph \(each (.) = (\d+)\):", lines[0])
+    if match:
+        symbol, scale = match.group(1), int(match.group(2))
+        values = {}
+        for line in lines[1:]:
+            label, marks = line.strip().split(": ", 1)
+            values[label] = len(marks) * scale
+        return "pictograph", values
+    raise AssertionError(problem)
+
+
+def _double_chart(problem):
+    body = problem.split("\n\nQuestion:", 1)[0]
+    lines = body.splitlines()
+    assert lines[0] == "Double Bar Chart Data:"
+    series = {}
+    current = None
+    for line in lines[1:]:
+        if line.startswith("Series "):
+            current = line[len("Series "):-1]
+            series[current] = {}
+        else:
+            label, value = line.strip().rsplit(": ", 1)
+            series[current][label] = int(value)
+    return series
+
+
+def _target_in_question(question, labels):
+    found = [label for label in labels if label in question]
+    assert len(found) == 1, (question, found)
+    return found[0]
+
+
+def _construct_oracle(problem):
+    match = re.fullmatch(
+        r"Raw category observations: (.+)\.\nCategory order: (.+)\.\n"
+        r"Question: .+",
+        problem,
+    )
+    observations = match.group(1).split(", ")
+    categories = match.group(2).split(", ")
+    return "; ".join(f"{category}: {observations.count(category)}"
+                     for category in categories)
+
+
+def oracle_answer(example):
+    """Recompute solely from the display and question, never from steps."""
+    operation = example["operation"]
+    problem = example["problem"]
+    question = problem.rsplit("\n", 1)[-1]
+    if operation == "construct_bar":
+        return _construct_oracle(problem)
+    if operation.startswith("double_bar_"):
+        series = _double_chart(problem)
+        names = list(series)
+        categories = list(series[names[0]])
+        if operation == "double_bar_total":
+            return str(sum(sum(values.values()) for values in series.values()))
+        if operation == "double_bar_largest_gap":
+            gaps = {category: abs(series[names[0]][category]
+                                  - series[names[1]][category])
+                    for category in categories}
+            category = max(gaps, key=gaps.get)
+            return (f"{category}; gap {gaps[category]} ({names[0]} "
+                    f"{series[names[0]][category]}, {names[1]} "
+                    f"{series[names[1]][category]})")
+        category_question = question.replace(names[0], "").replace(names[1], "")
+        category = _target_in_question(category_question, categories)
+        value1, value2 = (series[names[0]][category],
+                          series[names[1]][category])
+        if value1 > value2:
+            winner, high, low = names[0], value1, value2
+        else:
+            winner, high, low = names[1], value2, value1
+        return f"{winner}; {category} {high} > {low} by {high - low}"
+
+    kind, values = _single_chart(problem)
+    labels = list(values)
+    if operation.endswith("_read"):
+        if kind == "line":
+            target = re.search(r"value at (.+)\?", question).group(1)
+        elif kind == "bar":
+            target = re.search(r"value for (.+)\?", question).group(1)
+        else:
+            target = re.search(r"does (.+) represent\?", question).group(1)
+        return str(values[target])
+    if operation.endswith("_compare"):
+        match = re.search(r"Compare (.+) and (.+)\. Which", question)
+        first, second = match.groups()
+        value1, value2 = values[first], values[second]
+        winner, high, low = ((first, value1, value2) if value1 > value2
+                             else (second, value2, value1))
+        if kind == "pictograph":
+            return f"{winner} has {high - low} more"
+        return f"{winner} is greater by {high - low}"
+    if operation.endswith("_total"):
+        return str(sum(values.values()))
+    if operation.endswith("_difference"):
+        match = re.search(r"difference between (.+) and (.+)\?", question)
+        first, second = match.groups()
+        return str(abs(values[first] - values[second]))
+    if operation.endswith("_max"):
+        target = max(values, key=values.get)
+        return f"{target} ({values[target]})"
+    if operation.endswith("_min"):
+        target = min(values, key=values.get)
+        return f"{target} ({values[target]})"
+    if operation == "line_graph_range":
+        return str(max(values.values()) - min(values.values()))
+    ordered = list(values.items())
+    if operation == "line_graph_increase":
+        changes = [(ordered[index][1] - ordered[index - 1][1],
+                    ordered[index - 1][0], ordered[index][0])
+                   for index in range(1, len(ordered))]
+        amount, first, second = max(changes)
+        return f"{first} to {second} (increase of {amount})"
+    if operation == "line_graph_decrease":
+        changes = [(ordered[index - 1][1] - ordered[index][1],
+                    ordered[index - 1][0], ordered[index][0])
+                   for index in range(1, len(ordered))]
+        amount, first, second = max(changes)
+        return f"{first} to {second} (decrease of {amount})"
+    raise AssertionError((operation, problem))
+
+
+def _query_template(example):
+    query = example["problem"].rsplit("\n", 1)[-1]
+    if example["operation"] == "construct_bar":
+        return next(template for template in CONSTRUCT_BAR_QUERIES
+                    if query == template)
+    question_type = example["operation"].removeprefix("double_bar_")
+    for template in DOUBLE_BAR_QUERIES[question_type]:
+        pattern = re.escape(template)
+        for field in ("category", "series1", "series2"):
+            pattern = pattern.replace(r"\{" + field + r"\}", r".+?")
+        if re.fullmatch(pattern, query):
+            return template
+    raise AssertionError(query)
 
 
 class TestGraphInterpretGenerator(unittest.TestCase):
     def setUp(self):
-        self.gen = GraphInterpretGenerator()
-        self.bar_gen = GraphInterpretGenerator(graph_type="bar")
-        self.line_gen = GraphInterpretGenerator(graph_type="line")
-        self.picto_gen = GraphInterpretGenerator(graph_type="pictograph")
+        random.seed(310008)
 
-    def test_output_structure(self):
-        """Test that output has all required keys and Z step."""
-        for _ in range(10):
-            res = self.gen.generate()
-            self.assertIn("problem_id", res)
-            self.assertIn("operation", res)
-            self.assertIn("problem", res)
-            self.assertIn("steps", res)
-            self.assertIn("final_answer", res)
-            self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
+    def test_output_contract(self):
+        for graph_type in (*LEGACY_OPERATIONS, *NEW_OPERATIONS):
+            result = GraphInterpretGenerator(graph_type).generate()
+            for key in ("problem_id", "operation", "problem", "steps",
+                        "final_answer"):
+                self.assertIn(key, result)
+            self.assertEqual(result["steps"][-1],
+                             f"Z{DELIM}{result['final_answer']}")
 
-    def test_bar_chart_generation(self):
-        """Test bar chart problems are generated correctly."""
-        random.seed(42)
-        for _ in range(5):
-            res = self.bar_gen.generate()
-            self.assertIn("bar_chart", res["operation"])
-            self.assertIn("Bar Chart Data:", res["problem"])
-            self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
-            # Verify GRAPH_DATA step exists
-            graph_data_steps = [s for s in res["steps"] if s.startswith("GRAPH_DATA")]
-            self.assertEqual(len(graph_data_steps), 1)
-            self.assertIn("bar_chart", graph_data_steps[0])
+    def test_oracle_recomputes_500_answers_from_problem_text(self):
+        generator = GraphInterpretGenerator()
+        for _ in range(500):
+            example = generator.generate()
+            self.assertEqual(example["final_answer"], oracle_answer(example),
+                             example["problem"])
 
-    def test_line_graph_generation(self):
-        """Test line graph problems are generated correctly."""
-        random.seed(43)
-        for _ in range(5):
-            res = self.line_gen.generate()
-            self.assertIn("line_graph", res["operation"])
-            self.assertIn("Line Graph Data:", res["problem"])
-            self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
-            # Verify GRAPH_DATA step exists
-            graph_data_steps = [s for s in res["steps"] if s.startswith("GRAPH_DATA")]
-            self.assertEqual(len(graph_data_steps), 1)
-            self.assertIn("line_graph", graph_data_steps[0])
+    def test_every_legacy_and_new_operation_has_prompt_oracle_coverage(self):
+        for graph_type, expected in {**LEGACY_OPERATIONS,
+                                     **NEW_OPERATIONS}.items():
+            generator = GraphInterpretGenerator(graph_type)
+            seen = set()
+            for _ in range(500):
+                example = generator.generate()
+                self.assertEqual(example["final_answer"], oracle_answer(example))
+                seen.add(example["operation"])
+            self.assertEqual(seen, expected)
 
-    def test_pictograph_generation(self):
-        """Test pictograph problems are generated correctly."""
-        random.seed(44)
-        for _ in range(5):
-            res = self.picto_gen.generate()
-            self.assertIn("pictograph", res["operation"])
-            self.assertIn("Pictograph", res["problem"])
-            self.assertIn("each", res["problem"])  # Key description
-            self.assertTrue(res["steps"][-1].startswith(f"Z{DELIM}"))
-            # Verify PICTO_KEY step exists
-            picto_key_steps = [s for s in res["steps"] if s.startswith("PICTO_KEY")]
-            self.assertEqual(len(picto_key_steps), 1)
+    def test_arithmetic_steps_are_exact(self):
+        generator = GraphInterpretGenerator()
+        for _ in range(600):
+            example = generator.generate()
+            oracle_answer(example)
+            for raw in example["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "S":
+                    self.assertEqual(Fraction(fields[1]) - Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]), raw)
+
+    def test_double_bar_has_exactly_two_graph_data_steps(self):
+        generator = GraphInterpretGenerator("double_bar")
+        for _ in range(250):
+            example = generator.generate()
+            rows = [raw for raw in example["steps"]
+                    if raw.startswith(f"GRAPH_DATA{DELIM}")]
+            self.assertEqual(len(rows), 2)
+            self.assertTrue(all("double_bar" in row for row in rows))
+
+    def test_construct_bar_counts_each_raw_observation(self):
+        generator = GraphInterpretGenerator("construct_bar")
+        for _ in range(250):
+            example = generator.generate()
+            self.assertEqual(example["final_answer"],
+                             _construct_oracle(example["problem"]))
+            observations = re.search(
+                r"Raw category observations: (.+)\.", example["problem"]
+            ).group(1).split(", ")
+            count_steps = [raw for raw in example["steps"]
+                           if raw.startswith(f"COUNT{DELIM}")]
+            self.assertEqual(sum(int(raw.split(DELIM)[2])
+                                 for raw in count_steps), len(observations))
+
+    def test_new_variants_have_four_phrasings_per_question(self):
+        construct = GraphInterpretGenerator("construct_bar")
+        seen = {_query_template(construct.generate()) for _ in range(300)}
+        self.assertEqual(seen, set(CONSTRUCT_BAR_QUERIES))
+
+        double = GraphInterpretGenerator("double_bar")
+        seen = {question_type: set() for question_type in DOUBLE_BAR_QUERIES}
+        for _ in range(1200):
+            example = double.generate()
+            question_type = example["operation"].removeprefix("double_bar_")
+            seen[question_type].add(_query_template(example))
+        for question_type, templates in DOUBLE_BAR_QUERIES.items():
+            self.assertEqual(seen[question_type], set(templates))
+
+    def test_all_new_verdict_outcomes_occur(self):
+        generator = GraphInterpretGenerator("double_bar")
+        winners = set()
+        for _ in range(500):
+            example = generator.generate()
+            if example["operation"] == "double_bar_compare":
+                winners.add(example["final_answer"].split(";", 1)[0])
+        self.assertGreaterEqual(len(winners), 4)
+
+    def test_invalid_graph_type_rejected(self):
+        with self.assertRaises(ValueError):
+            GraphInterpretGenerator("bogus")
 
     def test_deterministic_with_seed(self):
-        """Test that same seed produces same output."""
         random.seed(100)
-        res1 = self.gen.generate()
+        first = GraphInterpretGenerator().generate()
         random.seed(100)
-        res2 = self.gen.generate()
-        self.assertEqual(res1["problem"], res2["problem"])
-        self.assertEqual(res1["final_answer"], res2["final_answer"])
-        self.assertEqual(res1["steps"], res2["steps"])
+        second = GraphInterpretGenerator().generate()
+        self.assertEqual(first["problem"], second["problem"])
+        self.assertEqual(first["final_answer"], second["final_answer"])
+        self.assertEqual(first["steps"], second["steps"])
 
-    def test_bar_read_value_correctness(self):
-        """Test bar chart read value calculation."""
-        random.seed(200)
-        # Force a read_value question by generating multiple and checking
-        for _ in range(20):
-            res = self.bar_gen.generate()
-            if res["operation"] == "bar_chart_read":
-                # Parse the chart data from GRAPH_DATA step
-                graph_data = [s for s in res["steps"] if s.startswith("GRAPH_DATA")][0]
-                data_part = graph_data.split(DELIM)[2]
-                values = {}
-                for pair in data_part.split(","):
-                    k, v = pair.split(":")
-                    values[k] = int(v)
-                # Find what was asked
-                question = res["problem"].split("Question:")[1].strip()
-                for cat in values:
-                    if cat in question:
-                        self.assertEqual(res["final_answer"], str(values[cat]))
-                        break
-                break
-
-    def test_pictograph_multiplication(self):
-        """Test pictograph correctly multiplies symbols by key value."""
-        random.seed(300)
-        for _ in range(20):
-            res = self.picto_gen.generate()
-            if res["operation"] == "pictograph_read":
-                # Find PICTO_KEY step to get symbol value
-                picto_key = [s for s in res["steps"] if s.startswith("PICTO_KEY")][0]
-                symbol_value = int(picto_key.split(DELIM)[2])
-                # Find PICTO_COUNT step
-                picto_count = [s for s in res["steps"] if s.startswith("PICTO_COUNT")][0]
-                count = int(picto_count.split(DELIM)[2])
-                # Verify multiplication
-                expected = count * symbol_value
-                self.assertEqual(res["final_answer"], str(expected))
-                break
-
-    def test_all_operation_types_covered(self):
-        """Test that various operation types can be generated."""
-        random.seed(500)
-        operations_seen = set()
-        for _ in range(100):
-            res = self.gen.generate()
-            operations_seen.add(res["operation"])
-
-        # Should have at least some variety
-        self.assertGreater(len(operations_seen), 5)
-        # Should have all three graph types
-        bar_ops = [op for op in operations_seen if "bar_chart" in op]
-        line_ops = [op for op in operations_seen if "line_graph" in op]
-        picto_ops = [op for op in operations_seen if "pictograph" in op]
-        self.assertGreater(len(bar_ops), 0)
-        self.assertGreater(len(line_ops), 0)
-        self.assertGreater(len(picto_ops), 0)
+    def test_pipe_safety_and_render_sanity(self):
+        generator = GraphInterpretGenerator()
+        for _ in range(500):
+            example = generator.generate()
+            self.assertNotIn(DELIM, example["problem"])
+            self.assertNotIn(DELIM, example["final_answer"])
+            rendered = "\n".join([example["problem"], *example["steps"],
+                                   example["final_answer"]])
+            self.assertNotRegex(rendered, r"1x|\^1\b|\+ 0|--|− -")
+            for raw in example["steps"]:
+                self.assertLessEqual(len(raw.split(DELIM)) - 1, 4, raw)
 
 
 if __name__ == "__main__":
