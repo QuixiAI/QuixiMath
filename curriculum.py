@@ -673,6 +673,7 @@ CURRICULUM = {
     "MultiStepWordGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "IntegerPuzzleWordGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "WorkRateGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "MixtureGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 }
 
 

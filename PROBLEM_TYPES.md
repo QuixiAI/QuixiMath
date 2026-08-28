@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**641 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**642 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3073,6 +3073,28 @@ Steps:
   CHECK|net tank change|(323/2)/17 - (323/2)/19|1
   Z|1/17 - 1/19 = 1/t; t = 161.5 hours
 Answer: 1/17 - 1/19 = 1/t; t = 161.5 hours
+```
+
+### Mixture — `MixtureGenerator`  ·  middle · difficulty 3
+
+Generate exact conservation stories with standard modifiers.
+
+**Variants:** `applied_mixture_add_pure_distractor`, `applied_mixture_add_pure_estimate_first`, `applied_mixture_add_pure_plain`, `applied_mixture_add_pure_with_model`, `applied_mixture_add_water_distractor`, `applied_mixture_add_water_estimate_first`, `applied_mixture_add_water_plain`, `applied_mixture_add_water_with_model`, `applied_mixture_alloy_distractor`, `applied_mixture_alloy_estimate_first`, `applied_mixture_alloy_plain`, `applied_mixture_alloy_with_model`, `applied_mixture_price_blend_distractor`, `applied_mixture_price_blend_estimate_first`, `applied_mixture_price_blend_plain`, `applied_mixture_price_blend_with_model`, `applied_mixture_target_concentration_unknown_amount_distractor`, `applied_mixture_target_concentration_unknown_amount_estimate_first`, `applied_mixture_target_concentration_unknown_amount_plain`, `applied_mixture_target_concentration_unknown_amount_with_model`, `applied_mixture_two_solutions_distractor`, `applied_mixture_two_solutions_estimate_first`, `applied_mixture_two_solutions_plain`, `applied_mixture_two_solutions_with_model`
+
+```
+Problem: Batch D74 at the corner bakery — A coffee blend uses 8 kg costing $6.75 per kg and 14 kg costing $9.50 per kg. What does the combined blend cost per kg?
+Steps:
+  MODEL_EQ|x = (8*27/4 + 14*19/2)/(8+14)|amount conservation
+  M|8|6.75|54
+  AMOUNT|cost of first coffee|$54.00
+  M|14|9.5|133
+  AMOUNT|cost of second coffee|$133.00
+  A|54|133|187
+  A|8|14|22
+  D|187|22|8.5
+  CHECK|weighted cost|$187.00
+  Z|x = (8*27/4 + 14*19/2)/(8+14); x = $8.50 per kg
+Answer: x = (8*27/4 + 14*19/2)/(8+14); x = $8.50 per kg
 ```
 
 ## High School
