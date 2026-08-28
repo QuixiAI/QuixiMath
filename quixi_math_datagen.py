@@ -757,8 +757,10 @@ ALL_GENERATORS = [
     PercentWordProblemGenerator(modifier="estimate_first"),
     PercentWordProblemGenerator(modifier="with_model"),
     RepeatingDecimalGenerator(),
-    ProportionWordProblemGenerator(),
-    ProportionWordProblemGenerator(distractor=True),
+    ProportionWordProblemGenerator(modifier="plain"),
+    ProportionWordProblemGenerator(modifier="distractor"),
+    ProportionWordProblemGenerator(modifier="estimate_first"),
+    ProportionWordProblemGenerator(modifier="with_model"),
 
     # --- Data & Statistics (Elementary) ---
     SimpleStatsGenerator(),

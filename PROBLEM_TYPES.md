@@ -730,19 +730,20 @@ Answer: 0.8(513) (repeating)
 
 ### Proportion Word Problem — `ProportionWordProblemGenerator`  ·  elementary · difficulty 3
 
-Proportion word problems (rates like mi/hr, $/lb, cups/serving) solved by cross-multiplication. Supports several phrasings per scenario (A4) and an optional distractor quantity the scratchpad must first filter out (A6). Rates are integers by construction, so every answer is exact.
+Generate exact proportional applications with standard modifiers.
 
-**Variants:** `proportion_word_problem`, `proportion_word_problem_distractor`
+**Variants:** `applied_proportion_word_cost_distractor`, `applied_proportion_word_cost_estimate_first`, `applied_proportion_word_cost_plain`, `applied_proportion_word_cost_with_model`, `applied_proportion_word_map_scale_distractor`, `applied_proportion_word_map_scale_estimate_first`, `applied_proportion_word_map_scale_plain`, `applied_proportion_word_map_scale_with_model`, `applied_proportion_word_ratio_table_distractor`, `applied_proportion_word_ratio_table_estimate_first`, `applied_proportion_word_ratio_table_plain`, `applied_proportion_word_ratio_table_with_model`, `applied_proportion_word_recipe_distractor`, `applied_proportion_word_recipe_estimate_first`, `applied_proportion_word_recipe_plain`, `applied_proportion_word_recipe_scaling_distractor`, `applied_proportion_word_recipe_scaling_estimate_first`, `applied_proportion_word_recipe_scaling_plain`, `applied_proportion_word_recipe_scaling_with_model`, `applied_proportion_word_recipe_with_model`, `applied_proportion_word_scale_drawing_distractor`, `applied_proportion_word_scale_drawing_estimate_first`, `applied_proportion_word_scale_drawing_plain`, `applied_proportion_word_scale_drawing_with_model`, `applied_proportion_word_shadow_similar_triangles_distractor`, `applied_proportion_word_shadow_similar_triangles_estimate_first`, `applied_proportion_word_shadow_similar_triangles_plain`, `applied_proportion_word_shadow_similar_triangles_with_model`, `applied_proportion_word_speed_estimate_first`, `applied_proportion_word_speed_from_map_distractor`, `applied_proportion_word_speed_from_map_plain`, `applied_proportion_word_speed_from_map_with_model`, `applied_proportion_word_speed_plain`, `applied_proportion_word_speed_with_model`
 
 ```
-Problem: A ratio table pairs input 3 with output 3. What output goes with input 10?
+Problem: At the market cafe, Lena records this: The single-batch oil amount is 0.2 cup. Find the oil for 6 batches.
 Steps:
-  PROP_SETUP|3/3 = x/10
-  M|3|10|30
-  EQ_SETUP|x = 30/3
-  D|30|3|10
-  Z|10
-Answer: 10
+  PROP_SETUP|0.2/1 = x/6
+  M|1|6|6
+  EQ_SETUP|x = 6/5
+  D|6|5|1.2
+  CHECK|per-batch amount times batches|1.2
+  Z|1.2 cups
+Answer: 1.2 cups
 ```
 
 ### Simple Stats — `SimpleStatsGenerator`  ·  elementary · difficulty 2
