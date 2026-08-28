@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**657 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**658 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7732,6 +7732,39 @@ Steps:
   CHECK|nominal area|62.05
   Z|A ∈ [8 × 6.9, 9 × 7.7]; 55.2 cm² to 69.3 cm²
 Answer: A ∈ [8 × 6.9, 9 × 7.7]; 55.2 cm² to 69.3 cm²
+```
+
+### Systems Word — `SystemsWordGenerator`  ·  high · difficulty 3
+
+Generate six exact paired-constraint stories without method cues.
+
+**Variants:** `applied_systems_word_from_table_distractor`, `applied_systems_word_from_table_estimate_first`, `applied_systems_word_from_table_plain`, `applied_systems_word_from_table_with_model`, `applied_systems_word_investment_two_rates_distractor`, `applied_systems_word_investment_two_rates_estimate_first`, `applied_systems_word_investment_two_rates_plain`, `applied_systems_word_mixture_as_system_distractor`, `applied_systems_word_mixture_as_system_estimate_first`, `applied_systems_word_mixture_as_system_plain`, `applied_systems_word_mixture_as_system_with_model`, `applied_systems_word_perimeter_and_relation_distractor`, `applied_systems_word_perimeter_and_relation_estimate_first`, `applied_systems_word_perimeter_and_relation_plain`, `applied_systems_word_perimeter_and_relation_with_model`, `applied_systems_word_tickets_distractor`, `applied_systems_word_tickets_estimate_first`, `applied_systems_word_tickets_plain`, `applied_systems_word_tickets_with_model`, `applied_systems_word_two_item_purchase_distractor`, `applied_systems_word_two_item_purchase_estimate_first`, `applied_systems_word_two_item_purchase_plain`, `applied_systems_word_two_item_purchase_with_model`
+
+```
+Problem: A report from the library corner, checked by Milo, states: A blend uses solutions that are 90% and 80% concentrated. The final 13 L blend is 1070/13% concentrated. How many liters of each solution were used?
+Steps:
+  MODEL_EQ|h + l = 13; 90h + 80l = 1070|paired constraints
+  DEFINE_VAR|h|liters of higher concentration
+  DEFINE_VAR|l|liters of lower concentration
+  MODEL_EQ|h + l = 13|total quantity
+  MODEL_EQ|90h + 80l = 1070|solute percent-liters
+  SUBST|l|13 − h
+  REWRITE|90h + 80(13 − h) = 1070
+  M|80|13|1040
+  S|90|80|10
+  S|1070|1040|30
+  COMB_X|90h|−80h|10h
+  MODEL_EQ|10h = 30|combined equation
+  D|30|10|3
+  DIV_COEFF|30|10|h = 3
+  S|13|3|10
+  SUBST|l|13 − 3|10
+  M|90|3|270
+  M|80|10|800
+  A|270|800|1070
+  CHECK|solute percent-liters|1070
+  Z|h + l = 13; 90h + 80l = 1070; 90% solution 3 L; 80% solution 10 L
+Answer: h + l = 13; 90h + 80l = 1070; 90% solution 3 L; 80% solution 10 L
 ```
 
 ## College
