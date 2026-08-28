@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**653 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**654 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3226,6 +3226,25 @@ Steps:
   CHECK|claim $3500.00|correct $350.00|unreasonable
   Z|c = 20 × 17.5 = $350.00; unreasonable; correct $350.00
 Answer: c = 20 × 17.5 = $350.00; unreasonable; correct $350.00
+```
+
+### Rounding Effect — `RoundingEffectGenerator`  ·  middle · difficulty 2
+
+Generate exact examples where the point of rounding matters.
+
+**Variants:** `applied_rounding_effect_accumulated_rounding_distractor`, `applied_rounding_effect_accumulated_rounding_estimate_first`, `applied_rounding_effect_accumulated_rounding_plain`, `applied_rounding_effect_accumulated_rounding_with_model`, `applied_rounding_effect_front_end_estimate_distractor`, `applied_rounding_effect_front_end_estimate_estimate_first`, `applied_rounding_effect_front_end_estimate_with_model`, `applied_rounding_effect_leading_digit_estimate_distractor`, `applied_rounding_effect_leading_digit_estimate_estimate_first`, `applied_rounding_effect_leading_digit_estimate_plain`, `applied_rounding_effect_leading_digit_estimate_with_model`, `applied_rounding_effect_round_before_vs_after_distractor`, `applied_rounding_effect_round_before_vs_after_estimate_first`, `applied_rounding_effect_round_before_vs_after_plain`, `applied_rounding_effect_round_before_vs_after_with_model`, `applied_rounding_effect_true_range_of_display_distractor`, `applied_rounding_effect_true_range_of_display_estimate_first`, `applied_rounding_effect_true_range_of_display_plain`, `applied_rounding_effect_true_range_of_display_with_model`
+
+```
+Problem: Consider the numerical record from the market stand that Lena is checking. A product is 26 × 54. Replace each factor by its nearest multiple of ten for an initial size estimate. What estimate comes first, and what exact product verifies it?
+Steps:
+  MODEL_EQ|26 × 54 ≈ 30 × 50 = 1500|rounding point and exact relationship
+  ESTIMATE|26 ≈ 30, 54 ≈ 50|1500
+  ROUND|26|nearest 10|30
+  ROUND|54|nearest 10|50
+  M|26|54|1404
+  ESTIMATE_CHECK|1500|1404|same product scale
+  Z|26 × 54 ≈ 30 × 50 = 1500; about 1500; exact 1404
+Answer: 26 × 54 ≈ 30 × 50 = 1500; about 1500; exact 1404
 ```
 
 ## High School

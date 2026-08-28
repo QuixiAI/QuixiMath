@@ -675,6 +675,7 @@ from generators.assumption_check_generator import AssumptionCheckGenerator
 from generators.qualitative_reasoning_generator import QualitativeReasoningGenerator
 from generators.mental_strategy_generator import MentalStrategyGenerator
 from generators.magnitude_comparison_generator import MagnitudeComparisonGenerator
+from generators.rounding_effect_generator import RoundingEffectGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1421,6 +1422,7 @@ ALL_GENERATORS = [
     QualitativeReasoningGenerator(),
     MentalStrategyGenerator(),
     MagnitudeComparisonGenerator(),
+    RoundingEffectGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
