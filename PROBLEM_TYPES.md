@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**610 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**611 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2929,6 +2929,33 @@ Steps:
   CHECK|shape comparison|left count 4 = right count 4|symmetric
   Z|symmetric; peak in 25-29, equal side counts 4 = 4
 Answer: symmetric; peak in 25-29, equal side counts 4 = 4
+```
+
+### Weighted Mean — `WeightedMeanGenerator`  ·  middle · difficulty 2
+
+Generate exact weighted-mean and missing-weight exercises.
+
+**Variants:** `statistics_weighted_mean_frequency_table_mean`, `statistics_weighted_mean_missing_weight`, `statistics_weighted_mean_percent_weights`, `statistics_weighted_mean_price_per_unit`, `statistics_weighted_mean_weights`
+
+```
+Problem: Blend entries (unit price, amount): ($8.72 per kg, 3 kg); ($11.61 per kg, 5 kg); ($7.66 per kg, 3 kg); ($4.32 per kg, 2 kg).
+What exact price per kg does the combined blend cost?
+Steps:
+  STAT_SETUP|price mixture|entries=4
+  WEIGHT_ROW|8.72|3|26.16
+  WEIGHT_ROW|11.61|5|58.05
+  WEIGHT_ROW|7.66|3|22.98
+  WEIGHT_ROW|4.32|2|8.64
+  A|26.16|58.05|84.21
+  A|84.21|22.98|107.19
+  A|107.19|8.64|115.83
+  A|3|5|8
+  A|8|3|11
+  A|11|2|13
+  D|115.83|13|8.91
+  CHECK|weighted mean|115.83/13|8.91
+  Z|$8.91 per kg
+Answer: $8.91 per kg
 ```
 
 ## High School

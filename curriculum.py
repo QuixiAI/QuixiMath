@@ -114,6 +114,7 @@ CURRICULUM = {
     "PopulationSampleGenerator": {"grade_level": MIDDLE, "difficulty": 1},
     "BoxPlotGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "HistogramConstructGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "WeightedMeanGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
