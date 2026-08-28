@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**569 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**570 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1002,6 +1002,40 @@ Steps:
   CHECK|all branches|4/121 + 18/121 + 18/121 + 81/121|1
   Z|85/121
 Answer: 85/121
+```
+
+### Random Digit Simulation — `RandomDigitSimulationGenerator`  ·  middle · difficulty 2
+
+Generate exact random-digit simulation exercises.
+
+**Variants:** `probability_random_digit_assign_digits`, `probability_random_digit_compare_to_theoretical`, `probability_random_digit_estimate_from_digits`, `probability_random_digit_two_digit_blocks`
+
+```
+Problem: A free throw succeeds with probability 7/10. Digits 0–6 mean make and digits 7–9 mean miss. Each block of 2 digits is one game of 2 shots. Random digits: 76 47 59 38 24 21 94 89 24 11 57 81 56 59 38 77. Event: at least 2 makes. Use the random digits and an exact binomial sum to compare the two values.
+Steps:
+  DIGIT_MAP|make|0–6 (7 of 10 digits)
+  DIGIT_SCAN|76|makes 1|no
+  DIGIT_SCAN|47|makes 1|no
+  DIGIT_SCAN|59|makes 1|no
+  DIGIT_SCAN|38|makes 1|no
+  DIGIT_SCAN|24|makes 2|yes
+  DIGIT_SCAN|21|makes 2|yes
+  DIGIT_SCAN|94|makes 1|no
+  DIGIT_SCAN|89|makes 0|no
+  DIGIT_SCAN|24|makes 2|yes
+  DIGIT_SCAN|11|makes 2|yes
+  DIGIT_SCAN|57|makes 1|no
+  DIGIT_SCAN|81|makes 1|no
+  DIGIT_SCAN|56|makes 2|yes
+  DIGIT_SCAN|59|makes 1|no
+  DIGIT_SCAN|38|makes 1|no
+  DIGIT_SCAN|77|makes 0|no
+  COUNT|successful blocks|5
+  PROB_SETUP|5|16
+  TERM|2 makes|(7/10)^2|49/100
+  SUM|49/100|49/100
+  Z|estimate 5/16; theoretical 49/100
+Answer: estimate 5/16; theoretical 49/100
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
