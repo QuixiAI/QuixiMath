@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**585 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**586 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6763,6 +6763,22 @@ Steps:
   M|6|1/5|6/5
   Z|E[Y] = 6/5
 Answer: E[Y] = 6/5
+```
+
+### Covariance Algebra — `CovarianceAlgebraGenerator`  ·  college · difficulty 3
+
+Generate exact covariance and variance algebra exercises.
+
+**Variants:** `probability_covariance_corr_from_cov`, `probability_covariance_cov_bilinear`, `probability_covariance_cov_from_table_3x3`, `probability_covariance_cov_with_sum`, `probability_covariance_var_difference`, `probability_covariance_var_linear_combo`, `probability_covariance_var_sum_independent`
+
+```
+Problem: At the indigo review in Quincy, Priya knows Var(X) = 49, Var(Y) = 49, and Cov(X,Y) = -147/4. What is Cov(X,X+Y)?
+Steps:
+  COV_RULE|Cov(X,X+Y)|Var(X) + Cov(X,Y)
+  A|49|-147/4|49/4
+  CHECK|Cov(X,X) = Var(X)|49
+  Z|49/4
+Answer: 49/4
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
