@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**619 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**620 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7115,6 +7115,28 @@ Steps:
   CHECK|abs(r) ≤ 1|abs(r)=0.25
   Z|0.25
 Answer: 0.25
+```
+
+### Empirical Rule — `EmpiricalRuleGenerator`  ·  high · difficulty 1
+
+Generate exact empirical-rule percentages, intervals, and counts.
+
+**Variants:** `statistics_empirical_rule_count_of_n`, `statistics_empirical_rule_interval_for_percent`, `statistics_empirical_rule_percent_between_asymmetric`, `statistics_empirical_rule_percent_tail`, `statistics_empirical_rule_percent_within`
+
+```
+Problem: At the maple office during the harbor test, package weights follow model X ~ N(65, 15), where the second number is the standard deviation. Use empirical-rule constants: 68% within 1σ, 95% within 2σ, and 99.7% within 3σ.
+Population size N = 2000. Target region: above 95 (above μ + 2σ).
+How many members of the stated population fall in this region?
+Steps:
+  NORM_SETUP|X ~ N(65, 15)|above 95 (above μ + 2σ)
+  ZSCORE|(95 - 65)/15|2
+  RULE_68_95|within 2σ|95%
+  S|100|95|5
+  D|5|2|2.5
+  M|0.025|2000|50
+  CHECK|empirical-rule count|2.5%|50
+  Z|50
+Answer: 50
 ```
 
 ## College
