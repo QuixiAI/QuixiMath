@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**661 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**662 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7844,6 +7844,24 @@ Steps:
   CHECK|weight 8|8 ≤ 13
   Z|maximize total points with weight ≤ 13 kg; items A+B; value 91; weight 8 kg
 Answer: maximize total points with weight ≤ 13 kg; items A+B; value 91; weight 8 kg
+```
+
+### Rate Of Change Interpret — `RateOfChangeInterpretGenerator`  ·  high · difficulty 3
+
+Generate six exact rate computations and contextual interpretations.
+
+**Variants:** `applied_rate_of_change_average_rate_from_table_distractor`, `applied_rate_of_change_average_rate_from_table_estimate_first`, `applied_rate_of_change_average_rate_from_table_plain`, `applied_rate_of_change_average_rate_from_table_with_model`, `applied_rate_of_change_compare_rates_two_intervals_distractor`, `applied_rate_of_change_compare_rates_two_intervals_estimate_first`, `applied_rate_of_change_compare_rates_two_intervals_plain`, `applied_rate_of_change_compare_rates_two_intervals_with_model`, `applied_rate_of_change_interpret_derivative_sign_distractor`, `applied_rate_of_change_interpret_derivative_sign_plain`, `applied_rate_of_change_interpret_derivative_sign_with_model`, `applied_rate_of_change_interpret_intercept_distractor`, `applied_rate_of_change_interpret_intercept_estimate_first`, `applied_rate_of_change_interpret_intercept_plain`, `applied_rate_of_change_interpret_intercept_with_model`, `applied_rate_of_change_interpret_slope_distractor`, `applied_rate_of_change_interpret_slope_estimate_first`, `applied_rate_of_change_interpret_slope_plain`, `applied_rate_of_change_interpret_slope_with_model`, `applied_rate_of_change_units_of_a_rate_distractor`, `applied_rate_of_change_units_of_a_rate_estimate_first`, `applied_rate_of_change_units_of_a_rate_plain`, `applied_rate_of_change_units_of_a_rate_with_model`
+
+```
+Problem: A note from the print studio, checked by Milo, gives: For an object's height h in meters and time t in seconds, h'(2) = 5. What is happening to the object at t = 2?
+Steps:
+  MODEL_EQ|h'(2) = 5 m/s|quantities and units
+  MODEL_EQ|h'(2) = 5 m/s|instantaneous vertical change
+  INTERPRET|sign|rising
+  INTERPRET|magnitude|5 m per second
+  CHECK|t = 2|rising at 5 m/s
+  Z|h'(2) = 5 m/s; rising; 5 m per second at t = 2
+Answer: h'(2) = 5 m/s; rising; 5 m per second at t = 2
 ```
 
 ## College
