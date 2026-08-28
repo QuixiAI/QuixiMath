@@ -84,6 +84,7 @@ CURRICULUM = {
     "DiscreteUniformBernoulliGenerator": {"grade_level": HIGH, "difficulty": 2},
     "PmfCdfQuantileGenerator": {"grade_level": HIGH, "difficulty": 3},
     "ExpectationOfFunctionGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "BayesMultipleHypothesesGenerator": {"grade_level": HIGH, "difficulty": 4},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

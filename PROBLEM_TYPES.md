@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**580 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**581 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2900,6 +2900,76 @@ Steps:
   CHECK|constructed exact standard deviation|14
   Z|μ = 94; σ = 14; z = -2
 Answer: μ = 94; σ = 14; z = -2
+```
+
+### Bayes Multiple Hypotheses — `BayesMultipleHypothesesGenerator`  ·  high · difficulty 4
+
+Generate exact multi-hypothesis and sequential Bayes exercises.
+
+**Variants:** `probability_bayes_multiple_all_posteriors`, `probability_bayes_multiple_coin_identification`, `probability_bayes_multiple_four_hypotheses`, `probability_bayes_multiple_posterior_odds`, `probability_bayes_multiple_sequential_two_observations`, `probability_bayes_multiple_three_hypotheses`
+
+```
+Problem: Urns: U1 has 160 teal and 64 amber; U2 has 155 teal and 124 amber; U3 has 70 teal and 42 amber. Priors: U1=1/4; U2=1/6; U3=7/12. One urn is chosen and retained. Draws are with replacement. Observations: teal, teal. Target: P(U3 given teal, teal). Perform the two Bayes updates in sequence.
+Steps:
+  A|160|64|224
+  D|160|224|5/7
+  LIKELIHOOD|U1|teal count 160/224|5/7
+  A|155|124|279
+  D|155|279|5/9
+  LIKELIHOOD|U2|teal count 155/279|5/9
+  A|70|42|112
+  D|70|112|5/8
+  LIKELIHOOD|U3|teal count 70/112|5/8
+  BAYES_STAGE|observe teal|prior × likelihood for every hypothesis
+  M|1/4|5/7|5/28
+  BAYES_TERM|U1|1/4 × 5/7|5/28
+  M|1/6|5/9|5/54
+  BAYES_TERM|U2|1/6 × 5/9|5/54
+  M|7/12|5/8|35/96
+  BAYES_TERM|U3|7/12 × 5/8|35/96
+  A|5/28|5/54|205/756
+  A|205/756|35/96|3845/6048
+  BAYES_EVIDENCE|sum of Bayes terms|3845/6048
+  D|5/28|3845/6048|216/769
+  POSTERIOR|U1|(5/28)/(3845/6048)|216/769
+  D|5/54|3845/6048|112/769
+  POSTERIOR|U2|(5/54)/(3845/6048)|112/769
+  D|35/96|3845/6048|441/769
+  POSTERIOR|U3|(35/96)/(3845/6048)|441/769
+  A|216/769|112/769|328/769
+  A|328/769|441/769|1
+  CHECK|posteriors sum|216/769 + 112/769 + 441/769|1
+  A|160|64|224
+  D|160|224|5/7
+  LIKELIHOOD|U1|teal count 160/224|5/7
+  A|155|124|279
+  D|155|279|5/9
+  LIKELIHOOD|U2|teal count 155/279|5/9
+  A|70|42|112
+  D|70|112|5/8
+  LIKELIHOOD|U3|teal count 70/112|5/8
+  BAYES_STAGE|observe teal using previous posteriors as priors|prior × likelihood for every hypothesis
+  M|216/769|5/7|1080/5383
+  BAYES_TERM|U1|216/769 × 5/7|1080/5383
+  M|112/769|5/9|560/6921
+  BAYES_TERM|U2|112/769 × 5/9|560/6921
+  M|441/769|5/8|2205/6152
+  BAYES_TERM|U3|441/769 × 5/8|2205/6152
+  A|1080/5383|560/6921|13640/48447
+  A|13640/48447|2205/6152|248035/387576
+  BAYES_EVIDENCE|sum of Bayes terms|248035/387576
+  D|1080/5383|248035/387576|15552/49607
+  POSTERIOR|U1|(1080/5383)/(248035/387576)|15552/49607
+  D|560/6921|248035/387576|6272/49607
+  POSTERIOR|U2|(560/6921)/(248035/387576)|6272/49607
+  D|2205/6152|248035/387576|27783/49607
+  POSTERIOR|U3|(2205/6152)/(248035/387576)|27783/49607
+  A|15552/49607|6272/49607|21824/49607
+  A|21824/49607|27783/49607|1
+  CHECK|posteriors sum|15552/49607 + 6272/49607 + 27783/49607|1
+  CHECK|two updates equal direct joint update|27783/49607|27783/49607
+  Z|P(U3 given teal) = 441/769; P(U3 given teal, teal) = 27783/49607
+Answer: P(U3 given teal) = 441/769; P(U3 given teal, teal) = 27783/49607
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2

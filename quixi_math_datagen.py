@@ -74,6 +74,7 @@ from generators.law_of_total_probability_generator import LawOfTotalProbabilityG
 from generators.discrete_uniform_bernoulli_generator import DiscreteUniformBernoulliGenerator
 from generators.pmf_cdf_quantile_generator import PmfCdfQuantileGenerator
 from generators.expectation_of_function_generator import ExpectationOfFunctionGenerator
+from generators.bayes_multiple_hypotheses_generator import BayesMultipleHypothesesGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -714,6 +715,7 @@ ALL_GENERATORS = [
     DiscreteUniformBernoulliGenerator(),
     PmfCdfQuantileGenerator(),
     ExpectationOfFunctionGenerator(),
+    BayesMultipleHypothesesGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
