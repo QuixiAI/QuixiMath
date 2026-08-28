@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**633 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**634 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16948,4 +16948,33 @@ Steps:
   CHECK|complete equally likely sample space|16|E[max] = 3.125
   Z|E[max] = 3.125; N = 4; bias = -0.875
 Answer: E[max] = 3.125; N = 4; bias = -0.875
+```
+
+### MSEDecomposition — `MSEDecompositionGenerator`  ·  graduate · difficulty 3
+
+Generate exact MSE decompositions and estimator comparisons.
+
+**Variants:** `statistics_mse_decomposition_compare_two`, `statistics_mse_decomposition_enumerated_mse`, `statistics_mse_decomposition_mse_from_parts`, `statistics_mse_decomposition_mse_scaled_mean`, `statistics_mse_decomposition_optimal_shrinkage`
+
+```
+Problem: At the cedar archive during the quality study (mse E75), x̄ has μ = 16, σ² = 10, and n = 10. For T_c = c·x̄, use the supplied identity c* = μ²/(μ² + σ²/n).
+Use c* = μ²/(μ² + σ²/n) and evaluate its MSE.
+Steps:
+  D|10|10|1
+  E|16|2|256
+  A|256|1|257
+  D|256|257|256/257
+  D|10|10|1
+  M|256/257|16|4096/257
+  S|4096/257|16|-16/257
+  BIAS|E[T(c*)] = 4096/257|θ = 16|-16/257
+  E|256/257|2|65536/66049
+  M|65536/66049|1|65536/66049
+  MSE_DECOMP|MSE(T(c*)) = Var(T(c*)) + bias(T(c*))²
+  E|-16/257|2|256/66049
+  A|65536/66049|256/66049|256/257
+  MSE_ROW|T(c*)|bias = -16/257|Var = 65536/66049|MSE = 256/257
+  CHECK|minimum-MSE identity|μ²·Var(x̄)/(μ² + Var(x̄))|256/257
+  Z|c* = 256/257; MSE(c*) = 256/257
+Answer: c* = 256/257; MSE(c*) = 256/257
 ```

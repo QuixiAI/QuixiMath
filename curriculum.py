@@ -281,6 +281,7 @@ CURRICULUM = {
     "EmpiricalCDFGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "StudyDesignGenerator": {"grade_level": HIGH, "difficulty": 1},
     "EstimatorBiasEnumGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "MSEDecompositionGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},
