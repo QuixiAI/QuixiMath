@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**566 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**567 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -947,6 +947,22 @@ Answer: 26 1/10 square feet
 ```
 
 ## Middle School (grades 6–8)
+
+### Odds Probability — `OddsProbabilityGenerator`  ·  middle · difficulty 1
+
+Generate exact conversions between probabilities, odds, and counts.
+
+**Variants:** `probability_odds_from_counts`, `probability_odds_odds_of_complement`, `probability_odds_odds_to_prob`, `probability_odds_prob_to_odds_against`, `probability_odds_prob_to_odds_for`
+
+```
+Problem: Observed outcome counts are teal=42; orange=266. Focus outcome: teal. Use the observed counts to form a colon ratio.
+Steps:
+  ODDS|for|42:266
+  ODDS_REDUCE|42:266|3:19
+  CHECK|gcd=14|3:19
+  Z|3:19
+Answer: 3:19
+```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
 
