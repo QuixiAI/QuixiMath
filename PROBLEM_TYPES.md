@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**556 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**557 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11315,6 +11315,35 @@ Steps:
   CHECK|unfactored remainder|1
   Z|) ( p ∨
 Answer: ) ( p ∨
+```
+
+### Combinatory Logic — `CombinatoryLogicGenerator`  ·  graduate · difficulty 4
+
+Generate terminating leftmost-outermost combinator reductions.
+
+**Variants:** `combinatory_logic_bck`, `combinatory_logic_define_by_ski`, `combinatory_logic_normal_form_count`, `combinatory_logic_ski_reduce`
+
+```
+Problem: Rule system BCK: B x y z → x (y z); C x y z → x z y; K x y → x. Term: ((K (((B (K (((C K) ((c y) (m s))) (((C K) ((k e) (d w))) ((t s) (p k)))))) ((m w) (x g))) (((b u) (a c)) ((p z) (y x))))) (((m z) (c g)) ((h h) (e u)))). Policy: contract the leftmost-outermost redex first. Count each leftmost-outermost contraction through normal form.
+Steps:
+  REWRITE|((K (((B (K (((C K) ((c y) (m s))) (((C K) ((k e) (d w))) ((t s) (p k)))))) ((m w) (x g))) (((b u) (a c)) ((p z) (y x))))) (((m z) (c g)) ((h h) (e u))))
+  COMB_RULE|K x y|x
+  REWRITE|(((B (K (((C K) ((c y) (m s))) (((C K) ((k e) (d w))) ((t s) (p k)))))) ((m w) (x g))) (((b u) (a c)) ((p z) (y x))))
+  COMB_RULE|B x y z|x (y z)
+  REWRITE|((K (((C K) ((c y) (m s))) (((C K) ((k e) (d w))) ((t s) (p k))))) (((m w) (x g)) (((b u) (a c)) ((p z) (y x)))))
+  COMB_RULE|K x y|x
+  REWRITE|(((C K) ((c y) (m s))) (((C K) ((k e) (d w))) ((t s) (p k))))
+  COMB_RULE|C x y z|x z y
+  REWRITE|((K (((C K) ((k e) (d w))) ((t s) (p k)))) ((c y) (m s)))
+  COMB_RULE|K x y|x
+  REWRITE|(((C K) ((k e) (d w))) ((t s) (p k)))
+  COMB_RULE|C x y z|x z y
+  REWRITE|((K ((t s) (p k))) ((k e) (d w)))
+  COMB_RULE|K x y|x
+  REWRITE|((t s) (p k))
+  CHECK|normal form|((t s) (p k))|steps 7
+  Z|normal form = ((t s) (p k)); steps = 7
+Answer: normal form = ((t s) (p k)); steps = 7
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
