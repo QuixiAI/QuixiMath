@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**587 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**588 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6844,6 +6844,22 @@ Steps:
   CHECK|direct variance equals decomposition|27/16|27/16
   Z|Var(X) = 27/16; E[Var(X given Y)] = 1971/3196; Var(E[X given Y]) = 13689/12784
 Answer: Var(X) = 27/16; E[Var(X given Y)] = 1971/3196; Var(E[X given Y]) = 13689/12784
+```
+
+### Distribution Of Sum — `DistributionOfSumGenerator`  ·  college · difficulty 3
+
+Generate exact convolution and independent-distribution closure tasks.
+
+**Variants:** `probability_distribution_sum_convolution_pmf`, `probability_distribution_sum_max_of_two`, `probability_distribution_sum_min_of_two`, `probability_distribution_sum_single_value`, `probability_distribution_sum_sum_binomial_rule`, `probability_distribution_sum_sum_poisson_rule`, `probability_distribution_sum_weighted_dice_sum`
+
+```
+Problem: At the birch survey in Ithaca, Quinn has independent X~Poisson(13) and Y~Poisson(14). Let S=X+Y. What Poisson law describes S?
+Steps:
+  DIST_RULE|independent Poisson sum|rates add
+  A|13|14|27
+  CHECK|Poisson mean equals variance|27|27
+  Z|Poisson(27); mean 27; variance 27
+Answer: Poisson(27); mean 27; variance 27
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3

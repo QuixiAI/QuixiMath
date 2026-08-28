@@ -81,6 +81,7 @@ from generators.normal_approx_binomial_generator import NormalApproxBinomialGene
 from generators.linearity_of_expectation_generator import LinearityOfExpectationGenerator
 from generators.covariance_algebra_generator import CovarianceAlgebraGenerator
 from generators.conditional_expectation_generator import ConditionalExpectationGenerator
+from generators.distribution_of_sum_generator import DistributionOfSumGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -728,6 +729,7 @@ ALL_GENERATORS = [
     LinearityOfExpectationGenerator(),
     CovarianceAlgebraGenerator(),
     ConditionalExpectationGenerator(),
+    DistributionOfSumGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
