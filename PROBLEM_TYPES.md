@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**648 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**649 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7562,6 +7562,24 @@ Steps:
   CHECK|final values|17, 486
   Z|A=2+3*5; B=2*3^5; A: additive, 17 units; B: multiplicative, 486 units
 Answer: A=2+3*5; B=2*3^5; A: additive, 17 units; B: multiplicative, 486 units
+```
+
+### Plausibility Critic — `PlausibilityCriticGenerator`  ·  high · difficulty 3
+
+Generate exact quantitative claim checks with positive controls.
+
+**Variants:** `applied_plausibility_critic_bounds_distractor`, `applied_plausibility_critic_bounds_estimate_first`, `applied_plausibility_critic_bounds_plain`, `applied_plausibility_critic_bounds_with_model`, `applied_plausibility_critic_control_plausible_distractor`, `applied_plausibility_critic_control_plausible_estimate_first`, `applied_plausibility_critic_control_plausible_plain`, `applied_plausibility_critic_control_plausible_with_model`, `applied_plausibility_critic_direction_distractor`, `applied_plausibility_critic_direction_estimate_first`, `applied_plausibility_critic_direction_plain`, `applied_plausibility_critic_direction_with_model`, `applied_plausibility_critic_magnitude_distractor`, `applied_plausibility_critic_magnitude_estimate_first`, `applied_plausibility_critic_magnitude_plain`, `applied_plausibility_critic_magnitude_with_model`, `applied_plausibility_critic_monotonicity_distractor`, `applied_plausibility_critic_monotonicity_estimate_first`, `applied_plausibility_critic_monotonicity_plain`, `applied_plausibility_critic_monotonicity_with_model`, `applied_plausibility_critic_units_distractor`, `applied_plausibility_critic_units_with_model`
+
+```
+Problem: At the campus store, a note handed to Milo reads: A box holds 4 blue beads among 10 beads in all. One bead will be chosen without looking. Milo says the chance of blue is 1.4. Is that claim consistent with the recorded counts?
+Steps:
+  MODEL_EQ|p = 4/10 = 0.4|relationship among the recorded quantities
+  BOUND|0 ≤ chance ≤ 1|1.4|a part cannot exceed the whole
+  D|4|10|0.4
+  PLAUSIBLE|no|claim exceeds the upper bound 1
+  CHECK|claim 1.4|correct 0.4|implausible
+  Z|p = 4/10 = 0.4; implausible; correct 0.4
+Answer: p = 4/10 = 0.4; implausible; correct 0.4
 ```
 
 ## College

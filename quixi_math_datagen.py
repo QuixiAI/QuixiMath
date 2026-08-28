@@ -670,6 +670,7 @@ from generators.percent_chain_generator import PercentChainGenerator
 from generators.money_life_generator import MoneyLifeGenerator
 from generators.missing_information_generator import MissingInformationGenerator
 from generators.method_discrimination_generator import MethodDiscriminationGenerator
+from generators.plausibility_critic_generator import PlausibilityCriticGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1411,6 +1412,7 @@ ALL_GENERATORS = [
     MoneyLifeGenerator(),
     MissingInformationGenerator(),
     MethodDiscriminationGenerator(),
+    PlausibilityCriticGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

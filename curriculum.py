@@ -680,6 +680,7 @@ CURRICULUM = {
     "MoneyLifeGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "MissingInformationGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "MethodDiscriminationGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "PlausibilityCriticGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
