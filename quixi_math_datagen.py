@@ -92,6 +92,7 @@ from generators.multi_state_markov_generator import MultiStateMarkovGenerator
 from generators.monte_carlo_arithmetic_generator import MonteCarloArithmeticGenerator
 from generators.expected_value_classics_generator import ExpectedValueClassicsGenerator
 from generators.finite_sigma_algebra_generator import FiniteSigmaAlgebraGenerator
+from generators.ballot_reflection_generator import BallotReflectionGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1304,6 +1305,7 @@ ALL_GENERATORS = [
     MonteCarloArithmeticGenerator(),
     ExpectedValueClassicsGenerator(),
     FiniteSigmaAlgebraGenerator(),
+    BallotReflectionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

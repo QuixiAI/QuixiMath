@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**598 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**599 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15936,4 +15936,39 @@ Steps:
   CHECK|E[E[X given G]]=E[X]|29/7|29/7
   Z|E[X given G] = 2 on {1, 2, 3}; 23/4 on {4, 5, 6, 7}
 Answer: E[X given G] = 2 on {1, 2, 3}; 23/4 on {4, 5, 6, 7}
+```
+
+### Ballot Reflection — `BallotReflectionGenerator`  ·  graduate · difficulty 4
+
+Generate exact ballot, reflection, first-return, and Catalan exercises.
+
+**Variants:** `probability_ballot_reflection_ballot_probability`, `probability_ballot_reflection_dyck_probability`, `probability_ballot_reflection_first_return`, `probability_ballot_reflection_max_at_least`, `probability_ballot_reflection_paths_touching_level`, `probability_ballot_reflection_stay_nonnegative`
+
+```
+Problem: At the indigo review in Quincy, Priya studies a reflection-principle problem. A simple symmetric walk starts at 0 and takes n=9 steps. Target: P(max from t=0 to n of S_t is at least level a=1). Count endpoints at and beyond the reflected threshold.
+Steps:
+  REFLECT|maximum at least 1|endpoints at least a plus endpoints greater than a
+  NCR|C(9, 5)|126
+  ENDPOINT_COUNT|1|126
+  NCR|C(9, 6)|84
+  ENDPOINT_COUNT|3|84
+  NCR|C(9, 7)|36
+  ENDPOINT_COUNT|5|36
+  NCR|C(9, 8)|9
+  ENDPOINT_COUNT|7|9
+  NCR|C(9, 9)|1
+  ENDPOINT_COUNT|9|1
+  A|126|84|210
+  A|210|36|246
+  A|246|9|255
+  A|255|1|256
+  A|84|36|120
+  A|120|9|129
+  A|129|1|130
+  A|256|130|386
+  POW|base 2, exponent 9|512
+  D|386|512|193/256
+  CHECK|reflection count|386
+  Z|193/256
+Answer: 193/256
 ```
