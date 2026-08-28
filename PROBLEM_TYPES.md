@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**559 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**560 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11381,6 +11381,47 @@ Steps:
   CHECK|A_794772 × B_933488|Pairing, Power Set, Power Set, Separation
   Z|Pairing, Power Set, Power Set, Separation
 Answer: Pairing, Power Set, Power Set, Separation
+```
+
+### Structure Isomorphism — `StructureIsomorphismGenerator`  ·  graduate · difficulty 4
+
+Generate exact finite-structure isomorphism exercises.
+
+**Variants:** `structure_isomorphism_check_given_map`, `structure_isomorphism_find_map`, `structure_isomorphism_non_isomorphic_invariant`
+
+```
+Problem: Structure kind: strict poset. Left points: {664, 4243, 7962, 8377}; left relation: {(664, 7962), (8377, 664), (8377, 7962)}. Right points: {k, n, p, s}; right relation: {(n, k), (p, k), (p, n)}. Test bijections in lexicographic order of the right-side image tuple. Use degree pruning, then return the lexicographically first isomorphism.
+Steps:
+  REJECT|f = 664→k, 4243→n, 7962→p, 8377→s|degree mismatch at 664
+  REJECT|f = 664→k, 4243→n, 7962→s, 8377→p|degree mismatch at 664
+  REJECT|f = 664→k, 4243→p, 7962→n, 8377→s|degree mismatch at 664
+  REJECT|f = 664→k, 4243→p, 7962→s, 8377→n|degree mismatch at 664
+  REJECT|f = 664→k, 4243→s, 7962→n, 8377→p|degree mismatch at 664
+  REJECT|f = 664→k, 4243→s, 7962→p, 8377→n|degree mismatch at 664
+  REJECT|f = 664→n, 4243→k, 7962→p, 8377→s|degree mismatch at 4243
+  REJECT|f = 664→n, 4243→k, 7962→s, 8377→p|degree mismatch at 4243
+  REJECT|f = 664→n, 4243→p, 7962→k, 8377→s|degree mismatch at 4243
+  REJECT|f = 664→n, 4243→p, 7962→s, 8377→k|degree mismatch at 4243
+  TRY|f = 664→n, 4243→s, 7962→k, 8377→p
+  EDGE_CHECK|(664, 664)|(n, n)|absent
+  EDGE_CHECK|(664, 4243)|(n, s)|absent
+  EDGE_CHECK|(664, 7962)|(n, k)|present
+  EDGE_CHECK|(664, 8377)|(n, p)|absent
+  EDGE_CHECK|(4243, 664)|(s, n)|absent
+  EDGE_CHECK|(4243, 4243)|(s, s)|absent
+  EDGE_CHECK|(4243, 7962)|(s, k)|absent
+  EDGE_CHECK|(4243, 8377)|(s, p)|absent
+  EDGE_CHECK|(7962, 664)|(k, n)|absent
+  EDGE_CHECK|(7962, 4243)|(k, s)|absent
+  EDGE_CHECK|(7962, 7962)|(k, k)|absent
+  EDGE_CHECK|(7962, 8377)|(k, p)|absent
+  EDGE_CHECK|(8377, 664)|(p, n)|present
+  EDGE_CHECK|(8377, 4243)|(p, s)|absent
+  EDGE_CHECK|(8377, 7962)|(p, k)|present
+  EDGE_CHECK|(8377, 8377)|(p, p)|absent
+  ACCEPT|isomorphic; f = 664→n, 4243→s, 7962→k, 8377→p
+  Z|isomorphic; f = 664→n, 4243→s, 7962→k, 8377→p
+Answer: isomorphic; f = 664→n, 4243→s, 7962→k, 8377→p
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
