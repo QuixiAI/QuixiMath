@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**647 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**648 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7541,6 +7541,27 @@ Steps:
   DIGIT_PICK|26|accept
   Z|27, 03, 17, 33, 32, 26
 Answer: 27, 03, 17, 33, 32, 26
+```
+
+### Method Discrimination — `MethodDiscriminationGenerator`  ·  high · difficulty 3
+
+Generate exact contrast pairs with standard applied modifiers.
+
+**Variants:** `applied_method_discrimination_additive_vs_multiplicative_distractor`, `applied_method_discrimination_additive_vs_multiplicative_estimate_first`, `applied_method_discrimination_additive_vs_multiplicative_with_model`, `applied_method_discrimination_area_vs_perimeter_distractor`, `applied_method_discrimination_area_vs_perimeter_estimate_first`, `applied_method_discrimination_area_vs_perimeter_plain`, `applied_method_discrimination_area_vs_perimeter_with_model`, `applied_method_discrimination_combination_vs_permutation_estimate_first`, `applied_method_discrimination_combination_vs_permutation_plain`, `applied_method_discrimination_combination_vs_permutation_with_model`, `applied_method_discrimination_independent_vs_dependent_distractor`, `applied_method_discrimination_independent_vs_dependent_estimate_first`, `applied_method_discrimination_independent_vs_dependent_plain`, `applied_method_discrimination_independent_vs_dependent_with_model`, `applied_method_discrimination_linear_vs_exponential_distractor`, `applied_method_discrimination_linear_vs_exponential_estimate_first`, `applied_method_discrimination_linear_vs_exponential_plain`, `applied_method_discrimination_linear_vs_exponential_with_model`, `applied_method_discrimination_mean_vs_median_distractor`, `applied_method_discrimination_mean_vs_median_estimate_first`, `applied_method_discrimination_mean_vs_median_plain`, `applied_method_discrimination_proportional_vs_not_distractor`, `applied_method_discrimination_proportional_vs_not_estimate_first`, `applied_method_discrimination_proportional_vs_not_plain`, `applied_method_discrimination_proportional_vs_not_with_model`, `applied_method_discrimination_pythagoras_vs_similar_distractor`, `applied_method_discrimination_pythagoras_vs_similar_estimate_first`, `applied_method_discrimination_pythagoras_vs_similar_with_model`
+
+```
+Problem: At the highway rest stop, the paired record from Milo says: Two machines start at 2 units and run for 5 rounds. Machine A adds 3 units each round. Machine B makes its current value 3 times as large each round. Name each update pattern and compute both final values.
+Steps:
+  MODEL_EQ|A=2+3*5; B=2*3^5|paired structures
+  DISCRIMINATE|A|additive|fixed amount each round
+  M|3|5|15
+  A|2|15|17
+  DISCRIMINATE|B|multiplicative|current value scaled
+  E|3|5|243
+  M|2|243|486
+  CHECK|final values|17, 486
+  Z|A=2+3*5; B=2*3^5; A: additive, 17 units; B: multiplicative, 486 units
+Answer: A=2+3*5; B=2*3^5; A: additive, 17 units; B: multiplicative, 486 units
 ```
 
 ## College
