@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**618 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**619 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7085,6 +7085,34 @@ Steps:
   CHECK|conditional col|25%
   Z|25%
 Answer: 25%
+```
+
+### Covariance Correlation — `CovarianceCorrelationGenerator`  ·  high · difficulty 3
+
+Generate exact covariance and standalone correlation exercises.
+
+**Variants:** `statistics_covariance_correlation_covariance_sign`, `statistics_covariance_correlation_population_covariance`, `statistics_covariance_correlation_r_from_summaries`, `statistics_covariance_correlation_r_from_z_products`, `statistics_covariance_correlation_r_properties`, `statistics_covariance_correlation_sample_covariance`
+
+```
+Problem: At the river center during the cedar trial, paired sample z-scores are: (-1, 0), (1, -1), (-1, -1), (0, 1), (1, 1). Use r = Σ(zx·zy)/(n - 1).
+Use the supplied z-score products to find sample r.
+Steps:
+  STAT_SETUP|correlation from z products|n=5
+  ZPROD_ROW|-1|0|0
+  ZPROD_ROW|1|-1|-1
+  ZPROD_ROW|-1|-1|1
+  ZPROD_ROW|0|1|0
+  ZPROD_ROW|1|1|1
+  A|0|-1|-1
+  A|-1|1|0
+  A|0|0|0
+  A|0|1|1
+  SUM|z products|1
+  EVAL|n - 1|4
+  D|1|4|0.25
+  CHECK|abs(r) ≤ 1|abs(r)=0.25
+  Z|0.25
+Answer: 0.25
 ```
 
 ## College
