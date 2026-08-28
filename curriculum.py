@@ -128,6 +128,7 @@ CURRICULUM = {
     "SamplingDistributionEnumGenerator": {"grade_level": HIGH, "difficulty": 3},
     "CLTProbabilityGenerator": {"grade_level": HIGH, "difficulty": 3},
     "PValueGenerator": {"grade_level": HIGH, "difficulty": 4},
+    "InferenceSetupGenerator": {"grade_level": HIGH, "difficulty": 1},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

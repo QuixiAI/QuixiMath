@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**624 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**625 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7269,6 +7269,29 @@ Steps:
   CHECK|p vs α|p = 0.0107 ≥ 0.01|fail to reject H0
   Z|reject at 0.05, fail at 0.01; p = 0.0107
 Answer: reject at 0.05, fail at 0.01; p = 0.0107
+```
+
+### Inference Setup — `InferenceSetupGenerator`  ·  high · difficulty 1
+
+Generate exact, parseable inference-setup procedures.
+
+**Variants:** `statistics_inference_setup_clt_condition`, `statistics_inference_setup_min_n_for_np`, `statistics_inference_setup_np_condition`, `statistics_inference_setup_parameter_identify`, `statistics_inference_setup_state_hypotheses`, `statistics_inference_setup_ten_percent_condition`, `statistics_inference_setup_type_I_II_describe`
+
+```
+Problem: At the river center during the indigo review (sample G15), the null proportion is p = 7/10. Use both large-count rules np ≥ 10 and n(1 − p) ≥ 10.
+What minimum sample size meets both count rules?
+Steps:
+  RULE|large counts|np ≥ 10 and n(1 − p) ≥ 10
+  REWRITE|n ≥ 10/p and n ≥ 10/(1 − p)
+  D|10|7/10|100/7
+  CEIL|100/7|15
+  S|1|7/10|3/10
+  D|10|3/10|100/3
+  CEIL|100/3|34
+  MAX|15|34|34
+  CHECK|both expected counts at n|np = 23.8, n(1 − p) = 10.2|both ≥ 10
+  Z|34
+Answer: 34
 ```
 
 ## College
