@@ -90,6 +90,7 @@ from generators.poisson_process_generator import PoissonProcessGenerator
 from generators.random_walk_generator import RandomWalkGenerator
 from generators.multi_state_markov_generator import MultiStateMarkovGenerator
 from generators.monte_carlo_arithmetic_generator import MonteCarloArithmeticGenerator
+from generators.expected_value_classics_generator import ExpectedValueClassicsGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1300,6 +1301,7 @@ ALL_GENERATORS = [
     RandomWalkGenerator(),
     MultiStateMarkovGenerator(),
     MonteCarloArithmeticGenerator(),
+    ExpectedValueClassicsGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

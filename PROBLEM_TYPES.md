@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**596 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**597 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12147,6 +12147,24 @@ Steps:
   CHECK|F(sample)=u|1/16
   Z|sample x = 2
 Answer: sample x = 2
+```
+
+### Expected Value Classics — `ExpectedValueClassicsGenerator`  ·  college · difficulty 4
+
+Generate coupon, matching, Buffon, and St. Petersburg exercises.
+
+**Variants:** `probability_expected_value_classics_buffon_pi_estimate`, `probability_expected_value_classics_buffon_probability`, `probability_expected_value_classics_coupon_all_in_n`, `probability_expected_value_classics_coupon_collector`, `probability_expected_value_classics_coupon_first_k`, `probability_expected_value_classics_coupon_next`, `probability_expected_value_classics_matching_at_least_one`, `probability_expected_value_classics_matching_exactly_k`, `probability_expected_value_classics_st_petersburg_truncated`
+
+```
+Problem: At the indigo review in Quincy, Priya analyzes a classic probability model. Parallel lines are d=8 units apart, and a randomly dropped needle has length L=1, with L≤d. Target: the exact Buffon crossing probability. Evaluate the crossing chance as a reduced pi-form.
+Steps:
+  BUFFON_FORMULA|P(cross)=2L/(pi*d)
+  M|2|1|2
+  D|2|8|1/4
+  PI_FORM|1/4/pi|1/(4π)
+  CHECK|L≤d|1≤8
+  Z|1/(4π)
+Answer: 1/(4π)
 ```
 
 ## Graduate
