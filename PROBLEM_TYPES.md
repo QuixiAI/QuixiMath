@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**555 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**556 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11279,6 +11279,42 @@ Steps:
   CHECK|simultaneous substitution|((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
   Z|((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
 Answer: ((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
+```
+
+### Godel Numbering — `GodelNumberingGenerator`  ·  graduate · difficulty 4
+
+Generate exact finite Gödel-number calculations.
+
+**Variants:** `godel_numbering_decode`, `godel_numbering_encode`, `godel_numbering_symbol_lookup`
+
+```
+Problem: Symbol table: ¬ → 4; ∨ → 1; ( → 3; ) → 7; p → 2; q → 5. Decoding rule: the exponents of consecutive primes 2,3,5,7,11 are the symbol codes. Gödel number: 604800. Find the exact sequence encoded by the integer.
+Steps:
+  PF_PRIME|2
+  PF_STEP|604800|2|302400
+  PF_STEP|302400|2|151200
+  PF_STEP|151200|2|75600
+  PF_STEP|75600|2|37800
+  PF_STEP|37800|2|18900
+  PF_STEP|18900|2|9450
+  PF_STEP|9450|2|4725
+  SYMBOL_CODE|exponent 7|)
+  PF_PRIME|3
+  PF_STEP|4725|3|1575
+  PF_STEP|1575|3|525
+  PF_STEP|525|3|175
+  SYMBOL_CODE|exponent 3|(
+  PF_PRIME|5
+  PF_STEP|175|5|35
+  PF_STEP|35|5|7
+  SYMBOL_CODE|exponent 2|p
+  PF_PRIME|7
+  PF_STEP|7|7|1
+  SYMBOL_CODE|exponent 1|∨
+  GODEL_DECODE|7, 3, 2, 1|) ( p ∨
+  CHECK|unfactored remainder|1
+  Z|) ( p ∨
+Answer: ) ( p ∨
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3

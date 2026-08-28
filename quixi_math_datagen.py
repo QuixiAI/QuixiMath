@@ -577,6 +577,7 @@ from generators.cantor_diagonal_generator import CantorDiagonalGenerator
 from generators.ordinal_arithmetic_generator import OrdinalArithmeticGenerator
 from generators.cardinal_arithmetic_generator import CardinalArithmeticGenerator
 from generators.hilbert_axiom_derivation_generator import HilbertAxiomDerivationGenerator
+from generators.godel_numbering_generator import GodelNumberingGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -787,6 +788,7 @@ ALL_GENERATORS = [
     OrdinalArithmeticGenerator(),
     CardinalArithmeticGenerator(),
     HilbertAxiomDerivationGenerator(),
+    GodelNumberingGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),
