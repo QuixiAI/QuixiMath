@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**620 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**621 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7137,6 +7137,26 @@ Steps:
   CHECK|empirical-rule count|2.5%|50
   Z|50
 Answer: 50
+```
+
+### Inverse Normal — `InverseNormalGenerator`  ·  high · difficulty 3
+
+Generate exact inverse-normal calculations from supplied z entries.
+
+**Variants:** `statistics_inverse_normal_cutoff_above`, `statistics_inverse_normal_cutoff_below`, `statistics_inverse_normal_middle_interval`, `statistics_inverse_normal_mu_from_cutoff`, `statistics_inverse_normal_sigma_from_cutoff`
+
+```
+Problem: At the river center during the harbor test, normally distributed plant heights have mean μ = 63 cm. Their 94.5th percentile cutoff is 67.8 cm. Selected z-scores: 94.5th percentile z = 1.6; 99.4th percentile z = 2.5.
+Recover the model's exact standard deviation from this percentile.
+Steps:
+  NORM_SETUP|normal model with unknown σ|x=67.8, μ=63
+  LOOKUP_SUPPLIED|z for 94.5th percentile|1.6
+  RAW_FORMULA|σ = (x - μ)/z
+  S|67.8|63|4.8
+  D|4.8|1.6|3
+  CHECK|substitute x = μ + zσ|67.8|3
+  Z|3
+Answer: 3
 ```
 
 ## College

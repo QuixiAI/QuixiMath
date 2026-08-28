@@ -124,6 +124,7 @@ CURRICULUM = {
     "TwoWayTableGenerator": {"grade_level": HIGH, "difficulty": 2},
     "CovarianceCorrelationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "EmpiricalRuleGenerator": {"grade_level": HIGH, "difficulty": 1},
+    "InverseNormalGenerator": {"grade_level": HIGH, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

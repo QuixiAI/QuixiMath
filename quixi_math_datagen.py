@@ -114,6 +114,7 @@ from generators.scatter_plot_describe_generator import ScatterPlotDescribeGenera
 from generators.two_way_table_generator import TwoWayTableGenerator
 from generators.covariance_correlation_generator import CovarianceCorrelationGenerator
 from generators.empirical_rule_generator import EmpiricalRuleGenerator
+from generators.inverse_normal_generator import InverseNormalGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1348,6 +1349,7 @@ ALL_GENERATORS = [
     TwoWayTableGenerator(),
     CovarianceCorrelationGenerator(),
     EmpiricalRuleGenerator(),
+    InverseNormalGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
