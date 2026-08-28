@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**586 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**587 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6779,6 +6779,71 @@ Steps:
   CHECK|Cov(X,X) = Var(X)|49
   Z|49/4
 Answer: 49/4
+```
+
+### Conditional Expectation — `ConditionalExpectationGenerator`  ·  college · difficulty 4
+
+Generate exact conditional-expectation and variance decompositions.
+
+**Variants:** `probability_conditional_expectation_conditional_variance`, `probability_conditional_expectation_from_table`, `probability_conditional_expectation_random_sum_mean`, `probability_conditional_expectation_random_sum_variance`, `probability_conditional_expectation_total_variance_check`, `probability_conditional_expectation_tower_check`, `probability_conditional_expectation_two_stage_experiment`
+
+```
+Problem: At the quartz program in Portland, Mina has joint pmf: P(X=6,Y=0)=3/64; P(X=9,Y=0)=7/32; P(X=6,Y=1)=45/64; P(X=9,Y=1)=1/32. Target: total variance decomposition. What are the within-slice and between-slice variance terms?
+Steps:
+  JOINT_ROW|x=6, y=0|3/64
+  JOINT_ROW|x=9, y=0|7/32
+  JOINT_ROW|x=6, y=1|45/64
+  JOINT_ROW|x=9, y=1|1/32
+  A|3/64|7/32|17/64
+  MARGINAL|P(Y=0)|3/64 + 7/32|17/64
+  M|6|3/64|9/32
+  M|9|7/32|63/32
+  A|9/32|63/32|9/4
+  COND_FORMULA|E[X given Y=y] = Σ xP(x,y)/P(Y=y)
+  D|9/4|17/64|144/17
+  COND_EXP|E[X given Y=0]|144/17
+  S|6|144/17|-42/17
+  E|-42/17|2|1764/289
+  M|1764/289|3/64|1323/4624
+  S|9|144/17|9/17
+  E|9/17|2|81/289
+  M|81/289|7/32|567/9248
+  A|1323/4624|567/9248|189/544
+  D|189/544|17/64|378/289
+  COND_VAR|Var(X given Y=0)|378/289
+  A|45/64|1/32|47/64
+  MARGINAL|P(Y=1)|45/64 + 1/32|47/64
+  M|6|45/64|135/32
+  M|9|1/32|9/32
+  A|135/32|9/32|9/2
+  COND_FORMULA|E[X given Y=y] = Σ xP(x,y)/P(Y=y)
+  D|9/2|47/64|288/47
+  COND_EXP|E[X given Y=1]|288/47
+  S|6|288/47|-6/47
+  E|-6/47|2|36/2209
+  M|36/2209|45/64|405/35344
+  S|9|288/47|135/47
+  E|135/47|2|18225/2209
+  M|18225/2209|1/32|18225/70688
+  A|405/35344|18225/70688|405/1504
+  D|405/1504|47/64|810/2209
+  COND_VAR|Var(X given Y=1)|810/2209
+  M|17/64|144/17|9/4
+  M|47/64|288/47|9/2
+  A|9/4|9/2|27/4
+  TOWER|E[X] = Σ P(Y=y)E[X given Y=y]|27/4
+  CHECK|direct E[X]|27/4
+  M|17/64|378/289|189/544
+  M|47/64|810/2209|405/1504
+  A|189/544|405/1504|1971/3196
+  M|17/64|13689/4624|13689/17408
+  M|47/64|13689/35344|13689/48128
+  A|13689/17408|13689/48128|13689/12784
+  A|1971/3196|13689/12784|27/16
+  TOTAL_VARIANCE|Var(X) = E[Var(X given Y)] + Var(E[X given Y])|27/16
+  CHECK|direct variance equals decomposition|27/16|27/16
+  Z|Var(X) = 27/16; E[Var(X given Y)] = 1971/3196; Var(E[X given Y]) = 13689/12784
+Answer: Var(X) = 27/16; E[Var(X given Y)] = 1971/3196; Var(E[X given Y]) = 13689/12784
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3

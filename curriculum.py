@@ -90,6 +90,7 @@ CURRICULUM = {
     "NormalApproxBinomialGenerator": {"grade_level": HIGH, "difficulty": 4},
     "LinearityOfExpectationGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "CovarianceAlgebraGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ConditionalExpectationGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

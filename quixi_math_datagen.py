@@ -80,6 +80,7 @@ from generators.classic_probability_puzzles_generator import ClassicProbabilityP
 from generators.normal_approx_binomial_generator import NormalApproxBinomialGenerator
 from generators.linearity_of_expectation_generator import LinearityOfExpectationGenerator
 from generators.covariance_algebra_generator import CovarianceAlgebraGenerator
+from generators.conditional_expectation_generator import ConditionalExpectationGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -726,6 +727,7 @@ ALL_GENERATORS = [
     NormalApproxBinomialGenerator(),
     LinearityOfExpectationGenerator(),
     CovarianceAlgebraGenerator(),
+    ConditionalExpectationGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
