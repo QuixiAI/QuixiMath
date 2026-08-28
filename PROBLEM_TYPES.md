@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**563 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**564 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -831,6 +831,24 @@ Steps:
   CHECK|favorable outcomes rescanned|10
   Z|(3, 54), (3, 63), (3, 71), (3, 78), (17, 54), (17, 63), (17, 71), (17, 78), (26, 54), (26, 63), (26, 71), (26, 78), (32, 54), (32, 63), (32, 71), (32, 78), (33, 54), (33, 63), (33, 71), (33, 78); 20 outcomes; 1/2
 Answer: (3, 54), (3, 63), (3, 71), (3, 78), (17, 54), (17, 63), (17, 71), (17, 78), (26, 54), (26, 63), (26, 71), (26, 78), (32, 54), (32, 63), (32, 71), (32, 78), (33, 54), (33, 63), (33, 71), (33, 78); 20 outcomes; 1/2
+```
+
+### Complement Probability — `ComplementProbabilityGenerator`  ·  elementary · difficulty 2
+
+Generate exact finite complement-probability exercises.
+
+**Variants:** `probability_complement_at_least_one_two_stage`, `probability_complement_complement_of_described`, `probability_complement_missing_probability`, `probability_complement_not_event`
+
+```
+Problem: At the classroom, numbered cards form S = {823, 824, 825, 826, 827, 828, 829, 830, 831, 832, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852}. Event A is drawing a number at least 838; A = {838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852}. Use the displayed event roster to compute its complement.
+Steps:
+  EVENT|A|{838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848, 849, 850, 851, 852}|15
+  PROB_SETUP|15|30
+  F|15/30|1/2
+  COMPLEMENT|P(Aᶜ) = 1 − P(A)|1 − 1/2|1/2
+  CHECK|P(A) + P(Aᶜ)|1/2 + 1/2|1
+  Z|1/2
+Answer: 1/2
 ```
 
 ### Graph Interpret — `GraphInterpretGenerator`  ·  elementary · difficulty 1
