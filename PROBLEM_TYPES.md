@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**578 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**579 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2830,6 +2830,33 @@ Steps:
   CHECK|definition over {0, 1}|621/2500
   Z|E[X] = 27/50; Var(X) = 621/2500
 Answer: E[X] = 27/50; Var(X) = 621/2500
+```
+
+### Pmf Cdf Quantile — `PmfCdfQuantileGenerator`  ·  high · difficulty 3
+
+Generate exact finite-distribution conversion and lookup exercises.
+
+**Variants:** `probability_pmf_cdf_quantile_cdf_to_pmf`, `probability_pmf_cdf_quantile_interval_from_cdf`, `probability_pmf_cdf_quantile_median`, `probability_pmf_cdf_quantile_mode`, `probability_pmf_cdf_quantile_pmf_to_cdf`, `probability_pmf_cdf_quantile_quantile`
+
+```
+Problem: X has pmf: P(X=-25) = 7/32; P(X=3) = 9/64; P(X=8) = 29/128; P(X=21) = 5/16; P(X=32) = 1/64; P(X=35) = 11/128. Use the exact cdf to identify the distribution median.
+Steps:
+  DIST_SETUP|finite pmf|P(X=-25) = 7/32; P(X=3) = 9/64; P(X=8) = 29/128; P(X=21) = 5/16; P(X=32) = 1/64; P(X=35) = 11/128
+  CDF_ROW|-25|7/32
+  A|7/32|9/64|23/64
+  CDF_ROW|3|23/64
+  A|23/64|29/128|75/128
+  CDF_ROW|8|75/128
+  A|75/128|5/16|115/128
+  CDF_ROW|21|115/128
+  A|115/128|1/64|117/128
+  CDF_ROW|32|117/128
+  A|117/128|11/128|1
+  CDF_ROW|35|1
+  QUANTILE|1/2|first x with F(x) ≥ q|8
+  CHECK|total probability|1
+  Z|median 8
+Answer: median 8
 ```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
