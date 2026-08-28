@@ -4,6 +4,7 @@ Variants: ``poisson``, ``exponential``, ``uniform_zero_theta``,
 ``normal_two_param``, ``gamma_two_param``, and ``uniform_a_b``.  Integer
 samples keep every sample moment rational; the two-sided uniform samples use
 zero-sum deviation patterns for which ``3(m2-xbar^2)`` is a perfect square.
+Every variant has four parseable prompt phrasings.
 Op-codes: ``MOM_SETUP``, ``COUNT``, ``SUM``, ``SAMPLE_MOMENT``,
 ``MOM_EQUATION``, ``REWRITE``, ``E``, ``A``, ``S``, ``M``, ``D``, ``ROOT``,
 ``CHECK``, and ``Z``.
@@ -16,6 +17,69 @@ from helpers import step, jid
 
 
 STATISTICS = True
+PROMPTS = {
+    "poisson": (
+        "For data {data} from a Poisson(lambda) model, use the first moment "
+        "equation to find the method-of-moments estimator lambda_hat.",
+        "A Poisson(lambda) sample is {data}. Match its sample mean to E[X] "
+        "and obtain lambda_hat by method of moments.",
+        "Observed Poisson(lambda) counts are {data}; use the first raw moment "
+        "to estimate lambda.",
+        "Using Poisson(lambda) data {data}, solve the method-of-moments "
+        "equation E[X]=lambda for lambda_hat.",
+    ),
+    "exponential": (
+        "For data {data} from an Exponential(lambda) model, use "
+        "E[X]=1/lambda to find the method-of-moments estimator lambda_hat.",
+        "An Exponential(lambda) sample is {data}. Match xbar to 1/lambda and "
+        "solve for lambda_hat.",
+        "Observed Exponential(lambda) waiting times are {data}; estimate the "
+        "rate by the first-moment method.",
+        "Using Exponential(lambda) data {data}, apply E[X]=1/lambda to obtain "
+        "the method-of-moments rate estimate.",
+    ),
+    "uniform_zero_theta": (
+        "For data {data} from a Uniform(0,theta) model, use E[X]=theta/2 to "
+        "find the method-of-moments estimator theta_hat.",
+        "A Uniform(0,theta) sample is {data}. Match xbar to theta/2 and solve "
+        "for theta_hat.",
+        "Observed Uniform(0,theta) values are {data}; estimate the upper "
+        "endpoint with the first moment.",
+        "Using Uniform(0,theta) data {data}, apply E[X]=theta/2 to obtain the "
+        "method-of-moments endpoint estimate.",
+    ),
+    "normal_two_param": (
+        "For normal data {data} with both mu and sigma^2 unknown, match the "
+        "first two raw moments to find mu_hat and sigma2_hat.",
+        "A normal data sample is {data}. With both mu and sigma^2 unknown, "
+        "use xbar and m2 for the two method-of-moments estimates.",
+        "Observed normal data are {data}; estimate both mu and sigma^2 by "
+        "matching E[X] and E[X^2].",
+        "Using normal data {data} with both mu and sigma^2 unknown, solve the "
+        "first two moment equations.",
+    ),
+    "gamma_two_param": (
+        "For Gamma(alpha,beta) data {data}, where beta is the rate parameter, "
+        "match the sample mean and second raw moment to find alpha_hat and "
+        "beta_hat.",
+        "A Gamma(alpha,beta) sample is {data}, where beta is the rate "
+        "parameter. Use two moments to estimate alpha and beta.",
+        "Observed Gamma(alpha,beta) values are {data}; with beta as the rate "
+        "parameter, match xbar and m2.",
+        "Using Gamma(alpha,beta) data {data}, where beta is the rate "
+        "parameter, solve the two method-of-moments equations.",
+    ),
+    "uniform_a_b": (
+        "For data {data} from a Uniform(a,b) model, match the first two raw "
+        "moments to find the endpoint estimates a_hat and b_hat.",
+        "A Uniform(a,b) sample is {data}. Use xbar and m2 to estimate both "
+        "endpoints by method of moments.",
+        "Observed Uniform(a,b) values are {data}; recover a_hat and b_hat "
+        "from the first two raw moments.",
+        "Using Uniform(a,b) data {data}, solve the mean and variance moment "
+        "equations for the two endpoints.",
+    ),
+}
 
 
 def fraction_text(value):
@@ -28,6 +92,10 @@ def data_text(values):
 
 def sum_expr(values):
     return " + ".join(str(v) for v in values)
+
+
+def prompt(variant, values):
+    return random.choice(PROMPTS[variant]).format(data=data_text(values))
 
 
 class MethodOfMomentsGenerator(ProblemGenerator):
@@ -125,11 +193,7 @@ class MethodOfMomentsGenerator(ProblemGenerator):
             f"xbar={fraction_text(mean)}; "
             f"lambda_hat={fraction_text(lambda_hat)}"
         )
-        problem = (
-            f"For data {data_text(values)} from a Poisson(lambda) model, "
-            "use the first moment equation to find the method-of-moments "
-            "estimator lambda_hat."
-        )
+        problem = prompt("poisson", values)
         return problem, steps, answer
 
     def _generate_exponential(self):
@@ -150,11 +214,7 @@ class MethodOfMomentsGenerator(ProblemGenerator):
             f"xbar={fraction_text(mean)}; "
             f"lambda_hat={fraction_text(lambda_hat)}"
         )
-        problem = (
-            f"For data {data_text(values)} from an Exponential(lambda) "
-            "model, use E[X]=1/lambda to find the method-of-moments "
-            "estimator lambda_hat."
-        )
+        problem = prompt("exponential", values)
         return problem, steps, answer
 
     def _generate_uniform(self):
@@ -175,11 +235,7 @@ class MethodOfMomentsGenerator(ProblemGenerator):
             f"xbar={fraction_text(mean)}; "
             f"theta_hat={fraction_text(theta_hat)}"
         )
-        problem = (
-            f"For data {data_text(values)} from a Uniform(0,theta) model, "
-            "use E[X]=theta/2 to find the method-of-moments estimator "
-            "theta_hat."
-        )
+        problem = prompt("uniform_zero_theta", values)
         return problem, steps, answer
 
     def _generate_normal_two_param(self):
@@ -208,11 +264,7 @@ class MethodOfMomentsGenerator(ProblemGenerator):
                   f"m2={fraction_text(second_moment)}; "
                   f"mu_hat={fraction_text(mean)}; "
                   f"sigma2_hat={fraction_text(variance)}")
-        problem = (
-            f"For normal data {data_text(values)} with both mu and sigma^2 "
-            "unknown, match the first two raw moments to find the "
-            "method-of-moments estimates mu_hat and sigma2_hat."
-        )
+        problem = prompt("normal_two_param", values)
         return problem, steps, answer
 
     def _generate_gamma_two_param(self):
@@ -248,11 +300,7 @@ class MethodOfMomentsGenerator(ProblemGenerator):
                   f"m2={fraction_text(second_moment)}; "
                   f"alpha_hat={fraction_text(alpha_hat)}; "
                   f"beta_hat={fraction_text(beta_hat)}")
-        problem = (
-            f"For Gamma(alpha,beta) data {data_text(values)}, where beta is "
-            "the rate parameter, match the sample mean and second raw moment "
-            "to find the method-of-moments estimates alpha_hat and beta_hat."
-        )
+        problem = prompt("gamma_two_param", values)
         return problem, steps, answer
 
     def _generate_uniform_a_b(self):
@@ -296,9 +344,5 @@ class MethodOfMomentsGenerator(ProblemGenerator):
                   f"m2={fraction_text(second_moment)}; "
                   f"a_hat={fraction_text(a_hat)}; "
                   f"b_hat={fraction_text(b_hat)}")
-        problem = (
-            f"For data {data_text(values)} from a Uniform(a,b) model, match "
-            "the first two raw moments to find the method-of-moments endpoint "
-            "estimates a_hat and b_hat."
-        )
+        problem = prompt("uniform_a_b", values)
         return problem, steps, answer

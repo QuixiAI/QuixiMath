@@ -15059,7 +15059,7 @@ Exact first- and second-moment method-of-moments estimators.
 **Variants:** `method_of_moments_exponential`, `method_of_moments_gamma_two_param`, `method_of_moments_normal_two_param`, `method_of_moments_poisson`, `method_of_moments_uniform_a_b`, `method_of_moments_uniform_zero_theta`
 
 ```
-Problem: For normal data [2,9,17,16,13,10,16] with both mu and sigma^2 unknown, match the first two raw moments to find the method-of-moments estimates mu_hat and sigma2_hat.
+Problem: Observed normal data are [2,9,17,16,13,10,16]; estimate both mu and sigma^2 by matching E[X] and E[X^2].
 Steps:
   MOM_SETUP|normal|parameter=mu,sigma^2|data=[2,9,17,16,13,10,16]
   COUNT|n|7

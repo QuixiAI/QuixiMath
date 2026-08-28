@@ -8,11 +8,12 @@ from fractions import Fraction
 from generators.method_of_moments_generator import (
     STATISTICS,
     MethodOfMomentsGenerator,
+    PROMPTS,
 )
 from helpers import DELIM
 
 
-DATA_RE = re.compile(r"data \[(-?\d+(?:,-?\d+)*)\]")
+DATA_RE = re.compile(r"\[(-?\d+(?:,-?\d+)*)\]")
 
 
 def exact(value):
@@ -45,7 +46,7 @@ def oracle(problem):
         return f"xbar={exact(mean)}; theta_hat={exact(2 * mean)}"
 
     variance = second - mean * mean
-    if problem.startswith("For normal data"):
+    if "normal data" in problem.lower():
         return (f"xbar={exact(mean)}; m2={exact(second)}; "
                 f"mu_hat={exact(mean)}; sigma2_hat={exact(variance)}")
     if "Gamma(alpha,beta)" in problem:
@@ -133,6 +134,26 @@ class TestMethodOfMomentsGenerator(unittest.TestCase):
         with self.assertRaises(ValueError):
             MethodOfMomentsGenerator("bogus")
 
+    def test_every_variant_has_four_parseable_phrasings(self):
+        for variant in MethodOfMomentsGenerator.VARIANTS:
+            templates = PROMPTS[variant]
+            self.assertEqual(len(templates), 4)
+            self.assertEqual(len(set(templates)), 4)
+            for template in templates:
+                problem = template.format(data="[8,8,9,11,12,12]")
+                with self.subTest(variant=variant, problem=problem):
+                    answer = oracle(problem)
+                    if variant == "normal_two_param":
+                        self.assertIn("mu_hat=", answer)
+                    elif variant == "gamma_two_param":
+                        self.assertIn("alpha_hat=", answer)
+                    elif variant == "uniform_a_b":
+                        self.assertIn("a_hat=", answer)
+                    else:
+                        self.assertIn("lambda_hat=" if variant !=
+                                      "uniform_zero_theta" else "theta_hat=",
+                                      answer)
+
     def test_emitted_arithmetic(self):
         random.seed(992)
         for _ in range(500):
@@ -190,7 +211,8 @@ class TestMethodOfMomentsGenerator(unittest.TestCase):
     def test_rate_parameterization_is_stated(self):
         for _ in range(100):
             result = MethodOfMomentsGenerator("gamma_two_param").generate()
-            self.assertIn("beta is the rate parameter", result["problem"])
+            self.assertIn("rate parameter", result["problem"])
+            self.assertIn("beta", result["problem"])
 
     def test_pipe_and_render_safety(self):
         # ``+ 0`` is legitimate here when a sampled Poisson observation is 0.
