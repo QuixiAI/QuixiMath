@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**557 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**558 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11344,6 +11344,25 @@ Steps:
   CHECK|normal form|((t s) (p k))|steps 7
   Z|normal form = ((t s) (p k)); steps = 7
 Answer: normal form = ((t s) (p k)); steps = 7
+```
+
+### Type Theory — `TypeTheoryGenerator`  ·  graduate · difficulty 4
+
+Generate simple-type and PM-level exercises.
+
+**Variants:** `type_theory_pm_levels`, `type_theory_simple_type_inference`, `type_theory_typing_check`
+
+```
+Problem: Declarations: q : H → G; b : G → E; j : H. Term: (b (q j)). Report the typing verdict with its type or first mismatch.
+Steps:
+  TYPE_ASSIGN|q|H → G
+  TYPE_ASSIGN|b|G → E
+  TYPE_ASSIGN|j|H
+  TYPE_APP|(q j)|unify|G
+  TYPE_APP|(b (q j))|unify|E
+  CHECK|well-typed; type E
+  Z|well-typed; type E
+Answer: well-typed; type E
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3

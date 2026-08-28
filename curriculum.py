@@ -321,6 +321,7 @@ CURRICULUM = {
     "HilbertAxiomDerivationGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "GodelNumberingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "CombinatoryLogicGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "TypeTheoryGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
