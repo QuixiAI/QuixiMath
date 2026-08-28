@@ -810,7 +810,10 @@ ALL_GENERATORS = [
     SetOperationsGenerator(),
 
     # --- Ratios & Proportions ---
-    UnitRateGenerator(),
+    UnitRateGenerator(modifier="plain"),
+    UnitRateGenerator(modifier="distractor"),
+    UnitRateGenerator(modifier="estimate_first"),
+    UnitRateGenerator(modifier="with_model"),
     UnitRateFromTableGenerator(),
     RatioTableGenerator(),
     TipBillSplitGenerator(),

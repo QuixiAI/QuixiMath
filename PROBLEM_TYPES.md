@@ -1526,40 +1526,38 @@ Answer: {3, 14, 17, 23, 26, 27, 31, 32, 38}
 
 ### Unit Rate — `UnitRateGenerator`  ·  middle · difficulty 3
 
-Generates unit rate calculation problems.
+Generate exact one-unit comparisons with standard modifiers.
 
-**Variants:** `unit_rate`
+**Variants:** `applied_unit_rate_best_buy_distractor`, `applied_unit_rate_best_buy_estimate_first`, `applied_unit_rate_best_buy_plain`, `applied_unit_rate_best_buy_with_model`, `applied_unit_rate_cost_per_item_distractor`, `applied_unit_rate_cost_per_item_estimate_first`, `applied_unit_rate_cost_per_item_plain`, `applied_unit_rate_cost_per_item_with_model`, `applied_unit_rate_time_per_distance_distractor`, `applied_unit_rate_time_per_distance_estimate_first`, `applied_unit_rate_time_per_distance_plain`, `applied_unit_rate_time_per_distance_with_model`, `applied_unit_rate_time_per_task_distractor`, `applied_unit_rate_time_per_task_estimate_first`, `applied_unit_rate_time_per_task_plain`, `applied_unit_rate_time_per_task_with_model`
 
 ```
-Problem: If 8 shirts cost $40.00, what is the cost of 1 shirt?
+Problem: At the corner bakery, brand A offers 18 oz for $6.30. Brand B offers 6 oz for $3.30. Zane asks: Which brand costs less for each ounce?
 Steps:
-  UNIT_RATE_SETUP|8|shirts|$40.00
-  UNIT_RATE_DIV|$40.00|8|$5.00
-  Z|$5.00
-Answer: $5.00
+  D|6.3|18|0.35
+  UNIT_PRICE|A|6.3/18|$0.35
+  D|3.3|6|0.55
+  UNIT_PRICE|B|3.3/6|$0.55
+  CMP|0.35|0.55|<
+  CHECK|brand A|$0.35
+  Z|brand A; $0.35 vs $0.55 per oz
+Answer: brand A; $0.35 vs $0.55 per oz
 ```
 
 ### Unit Rate From Table — `UnitRateFromTableGenerator`  ·  middle · difficulty 3
 
-Generates unit rate problems where students find rate from a table of values.
+Generate a constant per-one comparison from a supplied text table.
 
 **Variants:** `unit_rate_table`
 
 ```
-Problem: Find the unit rate (total cost in dollars per pound) from the table:
-| pounds of fruit | total cost in dollars |
-|-----------------|-----------------------|
-| 1 | 10 |
-| 4 | 40 |
-| 5 | 50 |
-| 8 | 80 |
-
+Problem: A data note lists pounds of fruit to total cost in dollars as follows: 1 to 10; 4 to 40; 5 to 50; 8 to 80. How many total cost in dollars correspond to one pound?
 Steps:
   UNIT_RATE_TABLE|1,4,5,8|10,40,50,80
   UNIT_RATE_PICK|1|10
+  D|10|1|10
   UNIT_RATE_DIV|10|1|10
-  Z|10
-Answer: 10
+  Z|10 total cost in dollars per pound
+Answer: 10 total cost in dollars per pound
 ```
 
 ### Ratio Table — `RatioTableGenerator`  ·  middle · difficulty 3

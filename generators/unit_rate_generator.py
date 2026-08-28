@@ -1,179 +1,229 @@
+"""Exact per-item, per-distance, per-task, and best-buy stories.
+
+``UnitRateGenerator`` variants are ``cost_per_item``, ``time_per_distance``,
+``time_per_task``, and ``best_buy``. Five shared-context renderings and all
+four applied modifiers are supported; the historical ``distractor=True``
+constructor remains valid. ``UnitRateFromTableGenerator`` remains the table
+counterpart and now uses pipe-safe prose without naming a method. Op-codes:
+``SELECT_RELEVANT``, ``ESTIMATE``, ``ESTIMATE_CHECK``, ``MODEL_EQ``,
+``UNIT_RATE_SETUP``, ``UNIT_RATE_DIV``, ``UNIT_PRICE``, ``CMP``, ``D``,
+``CHECK``, and ``Z``.
+"""
 import random
+import re
+from fractions import Fraction
+
+from applied_common import (CONTEXTS, NAMES, estimate_first, exact, money,
+                            select_relevant_step, unit)
 from base_generator import ProblemGenerator
-from helpers import step, jid
+from helpers import jid, step
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
+VARIANTS = ("cost_per_item", "time_per_distance", "time_per_task", "best_buy")
+FRAMES = (
+    "At {place}, {name} records this: {facts} {question}",
+    "{question} A note by {name} at {place} says: {facts}",
+    "For {name} at {place}, {facts_lc} {question}",
+    "At {place}, {facts_lc} {name} asks: {question}",
+    "Consider {name}'s report from {place}: {facts} {question}",
+)
+ITEMS = (("notebooks", "notebook"), ("oranges", "orange"),
+         ("books", "book"), ("pencil packs", "pencil pack"),
+         ("shirts", "shirt"), ("tickets", "ticket"))
+PLACE_KEYS = {
+    "cost_per_item": ("shop", "business"),
+    "time_per_distance": ("trip", "sports"),
+    "time_per_task": ("classroom", "workshop", "business"),
+    "best_buy": ("shop", "business"),
+}
+
+
+def _render(facts, question, variant):
+    places = tuple(
+        setting
+        for key in PLACE_KEYS[variant]
+        for setting in CONTEXTS[key].settings
+    )
+    return random.choice(FRAMES).format(
+        facts=facts[:1].upper() + facts[1:],
+        facts_lc=facts[:1].lower() + facts[1:], question=question,
+        place=random.choice(places), name=random.choice(NAMES))
+
+
+def dollars(value):
+    return money(Fraction(value))
 
 
 class UnitRateGenerator(ProblemGenerator):
-    """
-    Generates unit rate calculation problems.
+    """Generate exact one-unit comparisons with standard modifiers."""
 
-    Problems involve finding how much of something corresponds to one unit.
-    For example: "If 5 apples cost $3.50, how much does 1 apple cost?"
+    VARIANTS = VARIANTS
+    MODIFIERS = MODIFIERS
+    ANSWER_UNIT = ("$", "hours", "minutes")
 
-    Op-codes used:
-    - UNIT_RATE_SETUP: Set up the problem (total_quantity, total_amount, unit_label)
-    - UNIT_RATE_DIV: Divide to find rate (total_amount, quantity, unit_rate)
-    - Z: Final answer
-    """
+    def __init__(self, distractor=False, modifier=None, variant=None):
+        if modifier is None:
+            modifier = "distractor" if distractor else "plain"
+        elif distractor and modifier != "distractor":
+            raise ValueError("distractor=True requires modifier='distractor'")
+        if modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS}")
+        if variant is not None and variant not in self.VARIANTS:
+            raise ValueError(f"variant must be one of {self.VARIANTS} or None")
+        self.modifier = modifier
+        self.variant = variant
+        self.distractor = modifier == "distractor"
 
-    # Context templates: (item_plural, item_singular, unit_type, unit_symbol)
-    CONTEXTS = [
-        ("apples", "apple", "dollars", "$"),
-        ("oranges", "orange", "dollars", "$"),
-        ("books", "book", "dollars", "$"),
-        ("pencils", "pencil", "cents", "¢"),
-        ("cookies", "cookie", "cents", "¢"),
-        ("miles", "mile", "hours", " hours"),
-        ("kilometers", "kilometer", "hours", " hours"),
-        ("pages", "page", "minutes", " minutes"),
-        ("laps", "lap", "minutes", " minutes"),
-        ("gallons", "gallon", "dollars", "$"),
-        ("liters", "liter", "dollars", "$"),
-        ("pounds", "pound", "dollars", "$"),
-        ("kilograms", "kilogram", "dollars", "$"),
-        ("shirts", "shirt", "dollars", "$"),
-        ("tickets", "ticket", "dollars", "$"),
-    ]
+    @staticmethod
+    def _cost_per_item():
+        plural, singular = random.choice(ITEMS)
+        quantity = random.randint(2, 16)
+        unit_price = Fraction(random.randrange(25, 1001, 25), 100)
+        total = quantity * unit_price
+        facts = f"{quantity} {plural} cost {dollars(total)}."
+        question = f"How much does one {singular} cost?"
+        model = f"x = {exact(total)}/{quantity}"
+        steps = [step("UNIT_RATE_SETUP", quantity, plural, dollars(total)),
+                 step("D", exact(total), quantity, exact(unit_price)),
+                 step("UNIT_RATE_DIV", dollars(total), quantity,
+                      f"{dollars(unit_price)} per {singular}"),
+                 step("CHECK", "one-item cost", dollars(unit_price))]
+        answer = f"{dollars(unit_price)} per {singular}"
+        used = [f"{quantity} {plural}", f"total {dollars(total)}"]
+        renderer = lambda value: f"{dollars(value)} per {singular}"
+        return facts, question, steps, answer, unit_price, model, used, renderer
 
-    def generate(self) -> dict:
-        """Generate a unit rate calculation problem."""
-        # Pick a random context
-        item_plural, item_singular, unit_type, unit_symbol = random.choice(self.CONTEXTS)
+    @staticmethod
+    def _time_per_distance():
+        quantity = random.randint(2, 16)
+        per_mile = random.choice((Fraction(1, 2), Fraction(1), Fraction(3, 2),
+                                  Fraction(2), Fraction(5, 2), Fraction(3)))
+        total = quantity * per_mile
+        total_text = f"{exact(total)} {('hour' if total == 1 else 'hours')}"
+        facts = (f"Traveling {quantity} miles takes {total_text} at a "
+                 "steady pace.")
+        question = "How much time does one mile take?"
+        model = f"x = {exact(total)}/{quantity}"
+        answer = f"{exact(per_mile)} {('hour' if per_mile == 1 else 'hours')} per mile"
+        steps = [step("UNIT_RATE_SETUP", quantity, "miles", total_text),
+                 step("D", exact(total), quantity, exact(per_mile)),
+                 step("UNIT_RATE_DIV", total_text, quantity, answer),
+                 step("CHECK", "time per mile", answer)]
+        used = [f"{quantity} miles", total_text]
+        renderer = lambda value: (f"{exact(value)} "
+                                  f"{('hour' if Fraction(value) == 1 else 'hours')} per mile")
+        return facts, question, steps, answer, per_mile, model, used, renderer
 
-        # Generate quantity (number of items)
-        quantity = random.randint(2, 12)
+    @staticmethod
+    def _time_per_task():
+        plural, singular = random.choice((("pages", "page"), ("laps", "lap"),
+                                          ("packages", "package")))
+        quantity = random.randint(2, 16)
+        per_task = random.choice((2, 3, 4, 5, 6, 8, 10, 12, 15))
+        total = quantity * per_task
+        facts = f"Completing {quantity} {plural} takes {total} minutes."
+        question = f"How much time does one {singular} take?"
+        model = f"x = {total}/{quantity}"
+        steps = [step("UNIT_RATE_SETUP", quantity, plural, f"{total} minutes"),
+                 step("D", total, quantity, per_task),
+                 step("UNIT_RATE_DIV", f"{total} minutes", quantity,
+                      f"{per_task} minutes per {singular}"),
+                 step("CHECK", f"time per {singular}", f"{per_task} minutes")]
+        answer = f"{per_task} minutes per {singular}"
+        used = [f"{quantity} {plural}", f"{total} minutes"]
+        renderer = lambda value: f"{exact(value)} minutes per {singular}"
+        return (facts, question, steps, answer, Fraction(per_task), model, used,
+                renderer)
 
-        # Generate total amount based on unit type
-        if unit_type == "dollars":
-            # Create a total that divides evenly or to nice decimals
-            # Unit price between $0.50 and $10.00
-            unit_price_cents = random.choice([25, 50, 75, 100, 125, 150, 175, 200, 250, 300, 350, 400, 450, 500, 600, 750, 800, 900, 1000])
-            total_cents = unit_price_cents * quantity
-            total_amount = total_cents / 100
-            unit_rate = unit_price_cents / 100
+    @staticmethod
+    def _best_buy():
+        quantity1, quantity2 = random.sample(range(6, 25, 2), 2)
+        unit1, unit2 = random.sample(range(15, 61, 5), 2)
+        price1, price2 = Fraction(quantity1 * unit1, 100), Fraction(quantity2 * unit2, 100)
+        winner = "A" if unit1 < unit2 else "B"
+        low, high = sorted((Fraction(unit1, 100), Fraction(unit2, 100)))
+        facts = (f"Brand A offers {quantity1} oz for {dollars(price1)}. Brand B "
+                 f"offers {quantity2} oz for {dollars(price2)}.")
+        question = "Which brand costs less for each ounce?"
+        model = (f"u_A = {exact(price1)}/{quantity1}; "
+                 f"u_B = {exact(price2)}/{quantity2}")
+        steps = [step("D", exact(price1), quantity1, exact(Fraction(unit1, 100))),
+                 step("UNIT_PRICE", "A", f"{exact(price1)}/{quantity1}",
+                      dollars(Fraction(unit1, 100))),
+                 step("D", exact(price2), quantity2, exact(Fraction(unit2, 100))),
+                 step("UNIT_PRICE", "B", f"{exact(price2)}/{quantity2}",
+                      dollars(Fraction(unit2, 100))),
+                 step("CMP", exact(Fraction(unit1, 100)),
+                      exact(Fraction(unit2, 100)), "<" if unit1 < unit2 else ">"),
+                 step("CHECK", f"brand {winner}", dollars(low))]
+        answer = f"brand {winner}; {dollars(low)} vs {dollars(high)} per oz"
+        used = [f"A {quantity1} oz for {dollars(price1)}",
+                f"B {quantity2} oz for {dollars(price2)}"]
+        return facts, question, steps, answer, low, model, used, dollars
 
-            # Format amounts
-            total_str = f"${total_amount:.2f}"
-            unit_rate_str = f"${unit_rate:.2f}"
+    @classmethod
+    def _case(cls, variant):
+        if variant == "cost_per_item":
+            return cls._cost_per_item()
+        if variant == "time_per_distance":
+            return cls._time_per_distance()
+        if variant == "time_per_task":
+            return cls._time_per_task()
+        return cls._best_buy()
 
-        elif unit_type == "cents":
-            # Unit price between 5 and 50 cents
-            unit_rate = random.choice([5, 10, 15, 20, 25, 30, 35, 40, 45, 50])
-            total_amount = unit_rate * quantity
-
-            total_str = f"{total_amount}¢"
-            unit_rate_str = f"{unit_rate}¢"
-
-        elif unit_type == "hours":
-            # Time rates - ensure clean division
-            unit_rate = random.choice([0.5, 1, 1.5, 2, 2.5, 3, 4, 5, 6])
-            total_amount = unit_rate * quantity
-
-            total_str = f"{total_amount} {unit_type}"
-            if unit_rate == int(unit_rate):
-                unit_rate_str = f"{int(unit_rate)} {unit_type}" if unit_rate != 1 else f"1 hour"
-            else:
-                unit_rate_str = f"{unit_rate} {unit_type}"
-
-        else:  # minutes
-            unit_rate = random.choice([2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30])
-            total_amount = unit_rate * quantity
-
-            total_str = f"{total_amount} {unit_type}"
-            unit_rate_str = f"{unit_rate} {unit_type}" if unit_rate != 1 else f"1 minute"
-
-        # Create problem text
-        if unit_type == "dollars" or unit_type == "cents":
-            problem = f"If {quantity} {item_plural} cost {total_str}, what is the cost of 1 {item_singular}?"
-        elif unit_type == "hours":
-            problem = f"If it takes {total_str} to travel {quantity} {item_plural}, how long does it take to travel 1 {item_singular}?"
-        else:  # minutes
-            problem = f"If it takes {total_str} to complete {quantity} {item_plural}, how long does it take to complete 1 {item_singular}?"
-
-        # Build solution steps
-        steps = []
-
-        # Step 1: Set up the unit rate problem
-        steps.append(step("UNIT_RATE_SETUP", quantity, item_plural, total_str))
-
-        # Step 2: Divide total by quantity
-        steps.append(step("UNIT_RATE_DIV", total_str, quantity, unit_rate_str))
-
-        # Final answer
-        steps.append(step("Z", unit_rate_str))
-
-        return dict(
-            problem_id=jid(),
-            operation="unit_rate",
-            problem=problem,
-            steps=steps,
-            final_answer=unit_rate_str,
-        )
+    def generate(self):
+        variant = self.variant or random.choice(self.VARIANTS)
+        facts, question, steps, answer, value, model, used, renderer = self._case(variant)
+        problem = _render(facts, question, variant)
+        if self.modifier == "distractor":
+            occupied = {int(token) for token in re.findall(r"\d+", problem)}
+            extra = random.choice([value for value in range(41, 100)
+                                   if value not in occupied])
+            problem = f"A sign nearby shows aisle {extra}. {problem}"
+            steps.insert(0, select_relevant_step(used, f"aisle {extra}"))
+        elif self.modifier == "estimate_first":
+            steps = estimate_first(
+                steps + [step("Z", answer)], value,
+                "round the total before dividing by the count",
+                render=renderer)[:-1]
+        elif self.modifier == "with_model":
+            steps.insert(0, step("MODEL_EQ", model, "per-one comparison"))
+            variable = "choice" if variant == "best_buy" else "x"
+            answer = f"{model}; {variable} = {answer}"
+        steps.append(step("Z", answer))
+        return {"problem_id": jid(),
+                "operation": f"applied_unit_rate_{variant}_{self.modifier}",
+                "problem": problem, "steps": steps, "final_answer": answer}
 
 
 class UnitRateFromTableGenerator(ProblemGenerator):
-    """
-    Generates unit rate problems where students find rate from a table of values.
+    """Generate a constant per-one comparison from a supplied text table."""
 
-    Op-codes used:
-    - UNIT_RATE_TABLE: Show the table data (x_values, y_values)
-    - UNIT_RATE_PICK: Pick a row to calculate from (x, y)
-    - UNIT_RATE_DIV: Divide to find rate (y, x, rate)
-    - Z: Final answer
-    """
-
-    def generate(self) -> dict:
-        """Generate a unit rate from table problem."""
-        # Generate a unit rate
-        rate = random.choice([2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25])
-
-        # Generate 3-4 x values
-        num_rows = random.randint(3, 4)
-        x_values = sorted(random.sample(range(1, 11), num_rows))
+    def generate(self):
+        rate = random.choice((2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25))
+        count = random.randint(3, 4)
+        x_values = sorted(random.sample(range(1, 11), count))
         y_values = [x * rate for x in x_values]
-
-        # Create table representation
-        table_x = ",".join(str(x) for x in x_values)
-        table_y = ",".join(str(y) for y in y_values)
-
-        # Choose context
-        contexts = [
+        contexts = (
             ("hours worked", "dollars earned", "hour"),
             ("gallons of gas", "miles traveled", "gallon"),
             ("pounds of fruit", "total cost in dollars", "pound"),
             ("hours", "pages read", "hour"),
             ("days", "miles run", "day"),
-        ]
-        x_label, y_label, unit = random.choice(contexts)
-
-        # Create problem
-        table_str = f"| {x_label} | {y_label} |\n"
-        table_str += "|" + "-" * (len(x_label) + 2) + "|" + "-" * (len(y_label) + 2) + "|\n"
-        for x, y in zip(x_values, y_values):
-            table_str += f"| {x} | {y} |\n"
-
-        problem = f"Find the unit rate ({y_label} per {unit}) from the table:\n{table_str}"
-
-        # Build steps
-        steps = []
-
-        # Show table data
-        steps.append(step("UNIT_RATE_TABLE", table_x, table_y))
-
-        # Pick a row (use the first one for simplicity)
-        x_pick, y_pick = x_values[0], y_values[0]
-        steps.append(step("UNIT_RATE_PICK", x_pick, y_pick))
-
-        # Calculate rate
-        steps.append(step("UNIT_RATE_DIV", y_pick, x_pick, rate))
-
-        # Final answer
-        steps.append(step("Z", rate))
-
-        return dict(
-            problem_id=jid(),
-            operation="unit_rate_table",
-            problem=problem,
-            steps=steps,
-            final_answer=str(rate),
         )
+        x_label, y_label, one_unit = random.choice(contexts)
+        rows = "; ".join(f"{x} to {y}" for x, y in zip(x_values, y_values))
+        problem = (f"A data note lists {x_label} to {y_label} as follows: "
+                   f"{rows}. How many {y_label} correspond to one {one_unit}?")
+        x_pick, y_pick = x_values[0], y_values[0]
+        steps = [step("UNIT_RATE_TABLE", ",".join(map(str, x_values)),
+                      ",".join(map(str, y_values))),
+                 step("UNIT_RATE_PICK", x_pick, y_pick),
+                 step("D", y_pick, x_pick, rate),
+                 step("UNIT_RATE_DIV", y_pick, x_pick, rate),
+                 step("Z", f"{rate} {y_label} per {one_unit}")]
+        return {"problem_id": jid(), "operation": "unit_rate_table",
+                "problem": problem, "steps": steps,
+                "final_answer": f"{rate} {y_label} per {one_unit}"}
