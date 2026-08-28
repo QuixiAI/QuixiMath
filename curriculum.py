@@ -322,6 +322,7 @@ CURRICULUM = {
     "GodelNumberingGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "CombinatoryLogicGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "TypeTheoryGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ZFAxiomIdentifyGenerator": {"grade_level": GRADUATE, "difficulty": 3},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

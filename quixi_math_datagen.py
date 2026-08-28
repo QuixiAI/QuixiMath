@@ -580,6 +580,7 @@ from generators.hilbert_axiom_derivation_generator import HilbertAxiomDerivation
 from generators.godel_numbering_generator import GodelNumberingGenerator
 from generators.combinatory_logic_generator import CombinatoryLogicGenerator
 from generators.type_theory_generator import TypeTheoryGenerator
+from generators.zf_axiom_identify_generator import ZFAxiomIdentifyGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -793,6 +794,7 @@ ALL_GENERATORS = [
     GodelNumberingGenerator(),
     CombinatoryLogicGenerator(),
     TypeTheoryGenerator(),
+    ZFAxiomIdentifyGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

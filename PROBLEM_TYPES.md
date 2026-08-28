@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**558 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**559 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11363,6 +11363,24 @@ Steps:
   CHECK|well-typed; type E
   Z|well-typed; type E
 Answer: well-typed; type E
+```
+
+### ZFAxiom Identify — `ZFAxiomIdentifyGenerator`  ·  graduate · difficulty 3
+
+Generate exact ZF axiom-identification and expansion exercises.
+
+**Variants:** `zf_axiom_identify_construction_sequence`, `zf_axiom_identify_definition_expansion`, `zf_axiom_identify_single_step`
+
+```
+Problem: ZF construction target: A_794772 × B_933488. Assume A_794772, B_933488, and A_794772 ∪ B_933488 already exist. Displayed expansion: Sep(P(P(A_794772 ∪ B_933488)); ordered pairs from A_794772 and B_933488). List the required ZF axioms in construction order.
+Steps:
+  FORM|ordered pairs|Pairing
+  FORM|P(A_794772 ∪ B_933488)|Power Set
+  FORM|P(P(A_794772 ∪ B_933488))|Power Set
+  FORM|Sep(P(P(A_794772 ∪ B_933488)); ordered pairs from A_794772 and B_933488)|Separation
+  CHECK|A_794772 × B_933488|Pairing, Power Set, Power Set, Separation
+  Z|Pairing, Power Set, Power Set, Separation
+Answer: Pairing, Power Set, Power Set, Separation
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
