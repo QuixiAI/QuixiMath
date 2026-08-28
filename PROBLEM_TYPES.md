@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**573 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**574 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6389,6 +6389,71 @@ Answer: x=1; [A]=8, [B]=2
 ```
 
 ## College
+
+### Probability Measure — `ProbabilityMeasureGenerator`  ·  college · difficulty 2
+
+Generate exact calculations for finite probability measures.
+
+**Variants:** `probability_measure_derive_identity`, `probability_measure_inclusion_exclusion_three`, `probability_measure_monotonicity`, `probability_measure_renormalize`, `probability_measure_set_expression`, `probability_measure_union_bound_compare`
+
+```
+Problem: Ω = {a, b, c, d, e, f, g, h}. Weights: P(a) = 3/185; P(b) = 17/185; P(c) = 33/185; P(d) = 32/185; P(e) = 26/185; P(f) = 4/37; P(g) = 31/185; P(h) = 23/185. A = {b, c, d, e, f}. B = {a, b, c, d, e, g, h}. C = {b, c, d, e, f, g}. Use three-set inclusion-exclusion to find P(A ∪ B ∪ C).
+Steps:
+  WEIGHT|a|3/185
+  WEIGHT|b|17/185
+  WEIGHT|c|33/185
+  WEIGHT|d|32/185
+  WEIGHT|e|26/185
+  WEIGHT|f|4/37
+  WEIGHT|g|31/185
+  WEIGHT|h|23/185
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  A|108/185|4/37|128/185
+  MEASURE|A|{b, c, d, e, f}|128/185
+  A|3/185|17/185|4/37
+  A|4/37|33/185|53/185
+  A|53/185|32/185|17/37
+  A|17/37|26/185|3/5
+  A|3/5|31/185|142/185
+  A|142/185|23/185|33/37
+  MEASURE|B|{a, b, c, d, e, g, h}|33/37
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  A|108/185|4/37|128/185
+  A|128/185|31/185|159/185
+  MEASURE|C|{b, c, d, e, f, g}|159/185
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  MEASURE|A ∩ B|{b, c, d, e}|108/185
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  A|108/185|4/37|128/185
+  MEASURE|A ∩ C|{b, c, d, e, f}|128/185
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  A|108/185|31/185|139/185
+  MEASURE|B ∩ C|{b, c, d, e, g}|139/185
+  A|17/185|33/185|10/37
+  A|10/37|32/185|82/185
+  A|82/185|26/185|108/185
+  MEASURE|A ∩ B ∩ C|{b, c, d, e}|108/185
+  IE_FORMULA|P(A ∪ B ∪ C) = singles − pairs + triple
+  A|128/185|33/37|293/185
+  A|293/185|159/185|452/185
+  S|452/185|108/185|344/185
+  S|344/185|128/185|216/185
+  S|216/185|139/185|77/185
+  A|77/185|108/185|1
+  MEASURE|A ∪ B ∪ C|{a, b, c, d, e, f, g, h}|1
+  Z|1
+Answer: 1
+```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
 

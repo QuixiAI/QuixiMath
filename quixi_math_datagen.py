@@ -67,6 +67,7 @@ from generators.random_digit_simulation_generator import RandomDigitSimulationGe
 from generators.two_way_table_probability_generator import TwoWayTableProbabilityGenerator
 from generators.venn_probability_generator import VennProbabilityGenerator
 from generators.counting_to_probability_generator import CountingToProbabilityGenerator
+from generators.probability_measure_generator import ProbabilityMeasureGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -700,6 +701,7 @@ ALL_GENERATORS = [
     TwoWayTableProbabilityGenerator(),
     VennProbabilityGenerator(),
     CountingToProbabilityGenerator(),
+    ProbabilityMeasureGenerator(),
     GraphInterpretGenerator(),
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

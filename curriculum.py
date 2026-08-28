@@ -77,6 +77,7 @@ CURRICULUM = {
     "TwoWayTableProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "VennProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "CountingToProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
+    "ProbabilityMeasureGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
