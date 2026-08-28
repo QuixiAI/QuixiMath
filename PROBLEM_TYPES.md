@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**602 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**603 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12165,6 +12165,29 @@ Steps:
   CHECK|L≤d|1≤8
   Z|1/(4π)
 Answer: 1/(4π)
+```
+
+### Probability Critic — `ProbabilityCriticGenerator`  ·  college · difficulty 4
+
+Generate probability calculations with one seeded error or blank.
+
+**Variants:** `probability_critic_bayes_error`, `probability_critic_complement_forgotten`, `probability_critic_missing_step`, `probability_critic_tree_error`
+
+```
+Problem: One line of a correct probability-tree solution is blank.
+Source problem: Two independent stages have success counts 2/27 and 5/16. Event A: exactly one stage succeeds. Use S for success and F for failure. Build the full branch check for exactly one success.
+1) Branch SF: 2/27 × 11/16 = 11/216
+2) ____
+3) Add favorable branches: 11/216 + 125/432 = 49/144
+4) Answer: 49/144
+Check the shown branch, then supply the unique omitted branch.
+Steps:
+  VERIFY|1|ok
+  FLAG|2|Branch FS: 25/27 × 5/16 = 125/432
+  TREE_BRANCH|FS|25/27 × 5/16|125/432
+  CHECK|branch sum|49/144
+  Z|step 2; branch FS = 125/432; answer 49/144
+Answer: step 2; branch FS = 125/432; answer 49/144
 ```
 
 ## Graduate

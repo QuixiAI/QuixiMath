@@ -106,6 +106,7 @@ CURRICULUM = {
     "PolyaUrnGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MarkovStateClassificationGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "MartingaleCheckGenerator": {"grade_level": GRADUATE, "difficulty": 4},
+    "ProbabilityCriticGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====
