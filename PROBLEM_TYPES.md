@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**609 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**610 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2906,6 +2906,32 @@ Steps:
   CHECK|spreads|IQR 6, range 17
   Z|IQR = 6; range = 17
 Answer: IQR = 6; range = 17
+```
+
+### Histogram Construct — `HistogramConstructGenerator`  ·  middle · difficulty 2
+
+Generate exact histogram construction and interpretation exercises.
+
+**Variants:** `statistics_histogram_construct_bin_counts`, `statistics_histogram_construct_bin_of_value`, `statistics_histogram_construct_count_between`, `statistics_histogram_construct_relative_bin`, `statistics_histogram_construct_shape`
+
+```
+Problem: At the indigo review, a histogram of package weights uses contiguous inclusive integer bins.
+Histogram bins: 20-24: 4; 25-29: 5; 30-34: 3; 35-39: 1
+Shape rule: find the unique modal bin; compare total counts strictly left and strictly right of it; larger right means right-skewed, larger left means left-skewed, and a tie means symmetric.
+Report the skew label together with the peak bin and tail endpoint.
+Steps:
+  RULE|inclusive bins|width 5, start 20, both endpoints included
+  STAT_SETUP|histogram of package weights|n=13
+  BIN_COUNT|20-24|4
+  BIN_COUNT|25-29|5
+  BIN_COUNT|30-34|3
+  BIN_COUNT|35-39|1
+  CHECK|split|4 + 5 + 3 + 1|13
+  RULE|histogram shape|find the unique modal bin; compare total counts strictly left and strictly right of it; larger right means right-skewed, larger left means left-skewed, and a tie means symmetric
+  A|3|1|4
+  CHECK|shape comparison|left count 4 = right count 4|symmetric
+  Z|symmetric; peak in 25-29, equal side counts 4 = 4
+Answer: symmetric; peak in 25-29, equal side counts 4 = 4
 ```
 
 ## High School

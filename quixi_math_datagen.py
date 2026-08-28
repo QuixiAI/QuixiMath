@@ -103,6 +103,7 @@ from generators.fraction_line_plot_generator import FractionLinePlotGenerator
 from generators.stem_and_leaf_generator import StemAndLeafGenerator
 from generators.population_sample_generator import PopulationSampleGenerator
 from generators.box_plot_generator import BoxPlotGenerator
+from generators.histogram_construct_generator import HistogramConstructGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1326,6 +1327,7 @@ ALL_GENERATORS = [
     StemAndLeafGenerator(),
     PopulationSampleGenerator(),
     BoxPlotGenerator(),
+    HistogramConstructGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
