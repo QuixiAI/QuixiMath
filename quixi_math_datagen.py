@@ -574,6 +574,7 @@ from generators.dedekind_cut_generator import DedekindCutGenerator
 from generators.cantor_pairing_generator import CantorPairingGenerator
 from generators.countability_bijection_generator import CountabilityBijectionGenerator
 from generators.cantor_diagonal_generator import CantorDiagonalGenerator
+from generators.ordinal_arithmetic_generator import OrdinalArithmeticGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -781,6 +782,7 @@ ALL_GENERATORS = [
     CantorPairingGenerator(),
     CountabilityBijectionGenerator(),
     CantorDiagonalGenerator(),
+    OrdinalArithmeticGenerator(),
 
     # --- Algebra ---
     QuadraticGenerator(),

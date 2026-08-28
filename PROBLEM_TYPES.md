@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**552 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**553 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11230,6 +11230,23 @@ Answer: IRR_estimate=147/125
 ```
 
 ## Graduate
+
+### Ordinal Arithmetic — `OrdinalArithmeticGenerator`  ·  graduate · difficulty 4
+
+Generate exact ordinal arithmetic below ω^ω.
+
+**Variants:** `ordinal_arithmetic_add`, `ordinal_arithmetic_compare`, `ordinal_arithmetic_multiply`, `ordinal_arithmetic_normal_form`
+
+```
+Problem: Convert an ordinal expression to Cantor normal form. Expression: ((ω^3·5 + ω^2·3 + 2) + (ω^3·3 + ω^2 + 5)) + (1). Apply ordinal absorption and multiplication rules as needed.
+Steps:
+  ORD_RULE|normalization|evaluate additions from the inner parentheses outward
+  REWRITE|((ω^3·5 + ω^2·3 + 2) + (ω^3·3 + ω^2 + 5)) + (1) = ω^3·8 + ω^2 + 6
+  CNF|ω^3·8 + ω^2 + 6
+  CHECK|canonical CNF|ω^3·8 + ω^2 + 6
+  Z|ω^3·8 + ω^2 + 6
+Answer: ω^3·8 + ω^2 + 6
+```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
 
