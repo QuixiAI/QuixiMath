@@ -277,6 +277,7 @@ CURRICULUM = {
     "TypeErrorPowerGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "ANOVAGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "SlopeInferenceGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "NonparametricTestGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},

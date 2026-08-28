@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**629 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**630 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12943,6 +12943,42 @@ Steps:
   CHECK|abs(t) vs critical|3.875 > 2.228|reject H0
   Z|reject H0 (3.875 > 2.228)
 Answer: reject H0 (3.875 > 2.228)
+```
+
+### Nonparametric Test — `NonparametricTestGenerator`  ·  college · difficulty 3
+
+Generate six exact nonparametric procedures from supplied raw data.
+
+**Variants:** `statistics_nonparametric_test_bootstrap_percentile_ci`, `statistics_nonparametric_test_permutation_pvalue`, `statistics_nonparametric_test_rank_sum_stat`, `statistics_nonparametric_test_sign_test_decision`, `statistics_nonparametric_test_sign_test_pvalue`, `statistics_nonparametric_test_sign_test_two_sided`
+
+```
+Problem: At the east annex during the birch survey (case C46), a one-sided permutation test has group A = 4, 33, 34 and group B = 18, 21, 27. The statistic is mean(A) − mean(B).
+Compute the exact randomization-test tail.
+Steps:
+  RULE|permutation tail|count mean differences ≥ observed
+  PERM_ROW|{4, 18, 21} vs {27, 33, 34}|43/3 − 94/3 = -17
+  PERM_ROW|{4, 18, 27} vs {21, 33, 34}|49/3 − 88/3 = -13
+  PERM_ROW|{4, 18, 33} vs {21, 27, 34}|55/3 − 82/3 = -9
+  PERM_ROW|{4, 18, 34} vs {21, 27, 33}|56/3 − 27 = -25/3
+  PERM_ROW|{4, 21, 27} vs {18, 33, 34}|52/3 − 85/3 = -11
+  PERM_ROW|{4, 21, 33} vs {18, 27, 34}|58/3 − 79/3 = -7
+  PERM_ROW|{4, 21, 34} vs {18, 27, 33}|59/3 − 26 = -19/3
+  PERM_ROW|{4, 27, 33} vs {18, 21, 34}|64/3 − 73/3 = -3
+  PERM_ROW|{4, 27, 34} vs {18, 21, 33}|65/3 − 24 = -7/3
+  PERM_ROW|{4, 33, 34} vs {18, 21, 27}|71/3 − 22 = 5/3
+  PERM_ROW|{18, 21, 27} vs {4, 33, 34}|22 − 71/3 = -5/3
+  PERM_ROW|{18, 21, 33} vs {4, 27, 34}|24 − 65/3 = 7/3
+  PERM_ROW|{18, 21, 34} vs {4, 27, 33}|73/3 − 64/3 = 3
+  PERM_ROW|{18, 27, 33} vs {4, 21, 34}|26 − 59/3 = 19/3
+  PERM_ROW|{18, 27, 34} vs {4, 21, 33}|79/3 − 58/3 = 7
+  PERM_ROW|{18, 33, 34} vs {4, 21, 27}|85/3 − 52/3 = 11
+  PERM_ROW|{21, 27, 33} vs {4, 18, 34}|27 − 56/3 = 25/3
+  PERM_ROW|{21, 27, 34} vs {4, 18, 33}|82/3 − 55/3 = 9
+  PERM_ROW|{21, 33, 34} vs {4, 18, 27}|88/3 − 49/3 = 13
+  PERM_ROW|{27, 33, 34} vs {4, 18, 21}|94/3 − 43/3 = 17
+  COUNT|diff ≥ 5/3|10 of 20
+  Z|1/2
+Answer: 1/2
 ```
 
 ## Graduate
