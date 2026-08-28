@@ -318,6 +318,7 @@ CURRICULUM = {
     "CantorDiagonalGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "OrdinalArithmeticGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "CardinalArithmeticGenerator": {"grade_level": GRADUATE, "difficulty": 3},
+    "HilbertAxiomDerivationGenerator": {"grade_level": GRADUATE, "difficulty": 5},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

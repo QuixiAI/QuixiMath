@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**554 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**555 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -11264,6 +11264,21 @@ Steps:
   CHECK|5307 · (c^ℵ0)|c
   Z|c (5307 · (c^ℵ0))
 Answer: c (5307 · (c^ℵ0))
+```
+
+### Hilbert Axiom Derivation — `HilbertAxiomDerivationGenerator`  ·  graduate · difficulty 5
+
+Generate exact Hilbert-system instantiation and derivation tasks.
+
+**Variants:** `hilbert_axiom_derivation_instance_identify`, `hilbert_axiom_derivation_justify`, `hilbert_axiom_derivation_lukasiewicz_axioms`, `hilbert_axiom_derivation_pm_axioms`, `hilbert_axiom_derivation_substitute`
+
+```
+Problem: Formula schema: (q ∨ p) ∨ ¬r. Uniform substitution: p := (d ∨ e) ∨ (a ∨ m); q := k → h; r := ¬m. Carry out the displayed formula substitution.
+Steps:
+  SUBSTITUTE|(q ∨ p) ∨ ¬r|p := (d ∨ e) ∨ (a ∨ m); q := k → h; r := ¬m|((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
+  CHECK|simultaneous substitution|((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
+  Z|((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
+Answer: ((k → h) ∨ ((d ∨ e) ∨ (a ∨ m))) ∨ ¬¬m
 ```
 
 ### Matrix Exponential — `MatrixExponentialGenerator`  ·  graduate · difficulty 3
