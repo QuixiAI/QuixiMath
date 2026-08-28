@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**574 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**575 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2740,6 +2740,27 @@ Answer: D|72|8|9
 ```
 
 ## High School
+
+### Reliability System — `ReliabilitySystemGenerator`  ·  high · difficulty 2
+
+Generate exact series, parallel, and mixed reliability exercises.
+
+**Variants:** `probability_reliability_at_least_one_distinct`, `probability_reliability_both`, `probability_reliability_exactly_one`, `probability_reliability_mixed`, `probability_reliability_parallel`, `probability_reliability_series`
+
+```
+Problem: Components have independent working states. Working probabilities: battery=4/5; pump=7/8; compressor=9/10; wire=3/8. Design: battery and pump form a parallel block; that block is in series with compressor, wire. Use independence for the parallel pair and the remaining series components.
+Steps:
+  COMPLEMENT|P(battery fails) = 1 − P(battery works)|1 − 4/5|1/5
+  COMPLEMENT|P(pump fails) = 1 − P(pump works)|1 − 7/8|1/8
+  M|1/5|1/8|1/40
+  S|1|1/40|39/40
+  RELIABILITY|parallel block|1 − 1/5 × 1/8|39/40
+  M|39/40|9/10|351/400
+  M|351/400|3/8|1053/3200
+  RELIABILITY|mixed system|39/40 × 9/10 × 3/8|1053/3200
+  Z|1053/3200
+Answer: 1053/3200
+```
 
 ### Truth Table — `TruthTableGenerator`  ·  high · difficulty 2
 
