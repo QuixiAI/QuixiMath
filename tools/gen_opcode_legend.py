@@ -13,6 +13,7 @@ Usage:
 """
 import argparse
 import ast
+import hashlib
 import os
 import random
 import re
@@ -39,6 +40,53 @@ class OpInfo:
     def __init__(self):
         self.arities = set()   # payload field counts observed at call sites
         self.files = set()     # generator file basenames using the code
+
+
+def _stable_state(value, seen=None):
+    """Represent constructor state without process-specific memory addresses."""
+    if seen is None:
+        seen = set()
+    if value is None or isinstance(value, (bool, int, float, str)):
+        return value
+    marker = id(value)
+    if marker in seen:
+        return ("cycle", type(value).__module__, type(value).__qualname__)
+    seen.add(marker)
+    try:
+        if isinstance(value, (list, tuple)):
+            return (type(value).__name__,
+                    tuple(_stable_state(item, seen) for item in value))
+        if isinstance(value, dict):
+            items = [(_stable_state(key, seen), _stable_state(item, seen))
+                     for key, item in value.items()]
+            return ("dict", tuple(sorted(items, key=repr)))
+        if isinstance(value, (set, frozenset)):
+            items = [_stable_state(item, seen) for item in value]
+            return (type(value).__name__, tuple(sorted(items, key=repr)))
+        if hasattr(value, "__dict__"):
+            fields = [(name, _stable_state(item, seen))
+                      for name, item in vars(value).items()
+                      if not name.startswith("_")]
+            return (type(value).__module__, type(value).__qualname__,
+                    tuple(sorted(fields)))
+        return (type(value).__module__, type(value).__qualname__, str(value))
+    finally:
+        seen.remove(marker)
+
+
+def _generator_seed(gen, seed):
+    """Return a stable sample seed for one configured generator instance.
+
+    The legend used to share one global random stream across the registry, so
+    adding a variant to an early generator changed examples for every later
+    op-code.  Class name plus constructor state identifies an instance without
+    depending on registration order or Python's randomized ``hash()``.
+    """
+    state = _stable_state(gen)
+    identity = (f"{seed}:{type(gen).__module__}.{type(gen).__qualname__}:"
+                f"{state}")
+    digest = hashlib.sha256(identity.encode("utf-8")).digest()
+    return int.from_bytes(digest[:8], "big")
 
 
 def _opcodes_from_first_arg(node):
@@ -138,17 +186,21 @@ def collect_examples(seed=EXAMPLE_SEED, samples_per_gen=SAMPLES_PER_GENERATOR):
     """Sample every registered generator and record one example step per code."""
     from quixi_math_datagen import ALL_GENERATORS
 
-    random.seed(seed)
     examples = {}
     for gen in ALL_GENERATORS:
-        for _ in range(samples_per_gen):
-            try:
-                result = gen.generate()
-            except Exception:
-                continue
-            for s in result.get("steps", []):
-                code = s.split("|", 1)[0]
-                examples.setdefault(code, s)
+        caller_state = random.getstate()
+        random.seed(_generator_seed(gen, seed))
+        try:
+            for _ in range(samples_per_gen):
+                try:
+                    result = gen.generate()
+                except Exception:
+                    continue
+                for s in result.get("steps", []):
+                    code = s.split("|", 1)[0]
+                    examples.setdefault(code, s)
+        finally:
+            random.setstate(caller_state)
     return examples
 
 

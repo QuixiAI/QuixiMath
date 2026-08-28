@@ -7,7 +7,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from tools.gen_opcode_legend import (
-    scan_opcodes, render_markdown, _harvest_catalog_codes,
+    scan_opcodes, render_markdown, _generator_seed, _harvest_catalog_codes,
 )
 import ast
 
@@ -55,6 +55,27 @@ class TestGenOpcodeLegend(unittest.TestCase):
         self.assertEqual(found["FOO"], {1})   # empty field omitted
         self.assertEqual(found["BAR"], {2})
         self.assertNotIn("lower", found)      # not an op-code token
+
+    def test_generator_seed_is_stable_and_configuration_sensitive(self):
+        class ExampleGenerator:
+            def __init__(self, variant):
+                self.variant = variant
+
+        first = ExampleGenerator("a")
+        same = ExampleGenerator("a")
+        different = ExampleGenerator("b")
+        self.assertEqual(_generator_seed(first, 0), _generator_seed(same, 0))
+        self.assertNotEqual(_generator_seed(first, 0),
+                            _generator_seed(different, 0))
+        self.assertNotEqual(_generator_seed(first, 0),
+                            _generator_seed(first, 1))
+
+        wrapper_one = ExampleGenerator("wrapper")
+        wrapper_one.children = [ExampleGenerator("a")]
+        wrapper_two = ExampleGenerator("wrapper")
+        wrapper_two.children = [ExampleGenerator("a")]
+        self.assertEqual(_generator_seed(wrapper_one, 0),
+                         _generator_seed(wrapper_two, 0))
 
     def test_z_used_by_all_step_emitting_generators(self):
         # Every generator module that emits steps ends with Z.
