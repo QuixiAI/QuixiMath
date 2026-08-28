@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**608 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**609 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2886,6 +2886,26 @@ Steps:
   CHECK|marked fraction|17/306 = 7/126
   Z|estimated population: 306 butterflies
 Answer: estimated population: 306 butterflies
+```
+
+### Box Plot — `BoxPlotGenerator`  ·  middle · difficulty 2
+
+Generate exact text box-plot reading and comparison exercises.
+
+**Variants:** `statistics_box_plot_compare_two`, `statistics_box_plot_from_description`, `statistics_box_plot_iqr_from_plot`, `statistics_box_plot_outliers_marked`, `statistics_box_plot_percent_region`, `statistics_box_plot_read_summary`, `statistics_box_plot_shape`
+
+```
+Problem: At the granite program, a box plot of quiz scores is described by min=57, Q1=62, median=64, Q3=68, max=74.
+Subtract the quartiles and endpoints to report both spreads.
+Steps:
+  STAT_SETUP|described box plot of quiz scores|min = 57, Q1 = 62, median = 64, Q3 = 68, max = 74
+  PLOT_READ|Q1 and Q3|62, 68
+  S|68|62|6
+  PLOT_READ|min and max|57, 74
+  S|74|57|17
+  CHECK|spreads|IQR 6, range 17
+  Z|IQR = 6; range = 17
+Answer: IQR = 6; range = 17
 ```
 
 ## High School
