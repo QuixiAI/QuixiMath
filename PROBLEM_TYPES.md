@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**639 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**640 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3030,6 +3030,29 @@ Steps:
   CHECK|quadrant majority|no association; 4 of 8 points agree in sign
   Z|no association; 4 of 8 points agree in sign
 Answer: no association; 4 of 8 points agree in sign
+```
+
+### Integer Puzzle Word — `IntegerPuzzleWordGenerator`  ·  middle · difficulty 2
+
+Generate seven exact integer-story families with standard modifiers.
+
+**Variants:** `applied_integer_puzzle_age_future_distractor`, `applied_integer_puzzle_age_future_estimate_first`, `applied_integer_puzzle_age_future_plain`, `applied_integer_puzzle_age_future_with_model`, `applied_integer_puzzle_age_now_distractor`, `applied_integer_puzzle_age_now_estimate_first`, `applied_integer_puzzle_age_now_plain`, `applied_integer_puzzle_age_now_with_model`, `applied_integer_puzzle_coins_count_value_distractor`, `applied_integer_puzzle_coins_count_value_estimate_first`, `applied_integer_puzzle_coins_count_value_with_model`, `applied_integer_puzzle_consecutive_even_odd_distractor`, `applied_integer_puzzle_consecutive_even_odd_estimate_first`, `applied_integer_puzzle_consecutive_even_odd_plain`, `applied_integer_puzzle_consecutive_even_odd_with_model`, `applied_integer_puzzle_consecutive_integers_distractor`, `applied_integer_puzzle_consecutive_integers_estimate_first`, `applied_integer_puzzle_consecutive_integers_plain`, `applied_integer_puzzle_digit_reversal_distractor`, `applied_integer_puzzle_digit_reversal_estimate_first`, `applied_integer_puzzle_digit_reversal_plain`, `applied_integer_puzzle_digit_reversal_with_model`, `applied_integer_puzzle_number_relationship_distractor`, `applied_integer_puzzle_number_relationship_estimate_first`, `applied_integer_puzzle_number_relationship_plain`, `applied_integer_puzzle_number_relationship_with_model`
+
+```
+Problem: Consider the G48 report from the family game: A two-digit number has digit sum 3. It is 9 greater than the number made by reversing its digits. What is the number and its reversal?
+Steps:
+  MODEL_EQ|a + b = 3; (10a+b) - (10b+a) = 9|relationships in the story
+  DEFINE_VAR|a|tens digit
+  DEFINE_VAR|b|ones digit
+  MODEL_EQ|a + b = 3|digit sum
+  MODEL_EQ|9(a - b) = 9|reversal gap
+  D|9|9|1
+  A|3|1|4
+  D|4|2|2
+  S|3|2|1
+  CHECK|21 - 12|9
+  Z|a + b = 3; (10a+b) - (10b+a) = 9; x = number 21; reversed 12
+Answer: a + b = 3; (10a+b) - (10b+a) = 9; x = number 21; reversed 12
 ```
 
 ## High School
