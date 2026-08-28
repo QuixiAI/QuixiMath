@@ -1,11 +1,26 @@
 import random
+from fractions import Fraction
 
 from base_generator import ProblemGenerator
 from helpers import step, jid
 # The supplied-table helpers live in prob_common (plans/probability_plan.md §4);
 # they stay importable from this module for the generators and tests that
 # already reach for them here.
-from prob_common import p4, phi, phi_table
+from prob_common import exact, p4, phi, phi_table
+
+
+PROBABILITY = True
+STATISTICS = True
+SETTINGS = ("amber study", "birch survey", "cedar trial", "delta project",
+            "ember lab", "forest audit", "granite program", "harbor test",
+            "indigo review", "jade pilot", "kestrel study", "lunar trial",
+            "maple project", "nova lab", "onyx survey", "pearl audit",
+            "quartz program", "river test", "solar review", "topaz pilot",
+            "umber study", "violet trial", "willow project", "zephyr lab")
+CITIES = ("Albany", "Boston", "Cedarville", "Dover", "Erie", "Fresno",
+          "Galveston", "Hartford", "Ithaca", "Juneau", "Kingston", "Lowell",
+          "Madison", "Norfolk", "Olympia", "Portland", "Quincy", "Raleigh",
+          "Salem", "Trenton", "Utica", "Ventura", "Wichita", "Yonkers")
 
 
 class NormalTableGenerator(ProblemGenerator):
@@ -15,12 +30,18 @@ class NormalTableGenerator(ProblemGenerator):
     The scratchpad standardizes, reads the provided table, and applies the
     complement / symmetry / between rule explicitly.
 
+    Variants: below, below_negative, above, between, inverse_lookup, and
+    symmetric_interval. Inverse cases use half-integer z values with even
+    standard deviations, and symmetric cases are constructed from an exact
+    z radius, so every boundary is exact.
+
     Op-codes used:
     - NORM_SETUP: distribution and target probability (distribution, target)
     - ZSCORE: standardize (work, z)
     - TABLE_LOOKUP: read a provided table value (entry, value)
     - REWRITE: probability rule being applied (string)
-    - S: subtraction on table values (a, b, difference)
+    - RAW_FORMULA: invert x = μ + zσ
+    - M / A / S: exact arithmetic on parameters and table values
     - Z: final answer (4-decimal probability)
     """
 
@@ -32,7 +53,8 @@ class NormalTableGenerator(ProblemGenerator):
         ("Commute times", "minutes", 25, 45, 4, 9),
     ]
 
-    VARIANTS = ["below", "below_negative", "above", "between"]
+    VARIANTS = ["below", "below_negative", "above", "between",
+                "inverse_lookup", "symmetric_interval"]
 
     def __init__(self, variant=None):
         if variant is not None and variant not in self.VARIANTS:
@@ -58,7 +80,53 @@ class NormalTableGenerator(ProblemGenerator):
             return round(random.randint(3, 25) / 10, 1)
 
         steps = []
-        if variant == "between":
+        if variant == "inverse_lookup":
+            even_sigmas = [value for value in range(s_lo, s_hi + 1)
+                           if value % 2 == 0]
+            sigma = random.choice(even_sigmas)
+            z_fraction = random.choice((Fraction(1, 2), Fraction(1),
+                                        Fraction(3, 2), Fraction(2),
+                                        Fraction(5, 2)))
+            z = float(z_fraction)
+            target_probability = p4(phi(z))
+            x = Fraction(mu) + z_fraction * sigma
+            table = self._table([z])
+            target = f"find x with P(X < x) = {target_probability}"
+            steps.extend([
+                step("NORM_SETUP", f"X ~ N({mu}, {sigma})", target),
+                step("TABLE_LOOKUP", f"Φ(z) = {target_probability}",
+                     f"{z:.2f}"),
+                step("RAW_FORMULA", "x = μ + z·σ"),
+                step("M", f"{z:.2f}", sigma, exact(z_fraction * sigma)),
+                step("A", mu, exact(z_fraction * sigma), exact(x)),
+                step("CHECK", f"P(X < {exact(x)})", target_probability),
+            ])
+            answer = exact(x)
+            question = (f"Find x such that P(X < x) = {target_probability} "
+                        "by reading the supplied table backwards.")
+        elif variant == "symmetric_interval":
+            z = round(random.randint(3, 25) / 10, 1)
+            z_fraction = Fraction(str(z))
+            radius = z_fraction * sigma
+            lower, upper = Fraction(mu) - radius, Fraction(mu) + radius
+            target = f"P({exact(lower)} < X < {exact(upper)})"
+            table = self._table([z])
+            cdf = Fraction(p4(phi(z)))
+            doubled = 2 * cdf
+            answer_value = doubled - 1
+            steps.extend([
+                step("NORM_SETUP", f"X ~ N({mu}, {sigma})", target),
+                step("ZSCORE", f"({exact(upper)} - {mu})/{sigma}", f"{z:.2f}"),
+                step("TABLE_LOOKUP", f"Φ({z:.2f})", p4(cdf)),
+                step("REWRITE", f"{target} = 2Φ({z:.2f}) − 1"),
+                step("M", 2, p4(cdf), p4(doubled)),
+                step("S", p4(doubled), "1.0000", p4(answer_value)),
+                step("CHECK", "symmetric tails have equal area", p4(answer_value)),
+            ])
+            answer = p4(answer_value)
+            question = (f"What is the probability in the symmetric interval "
+                        f"from {exact(lower)} to {exact(upper)} {unit}?")
+        elif variant == "between":
             z1, z2 = sorted(random.sample([round(v / 10, 1)
                                            for v in range(3, 26)], 2))
             a = mu + z1 * sigma
@@ -112,8 +180,12 @@ class NormalTableGenerator(ProblemGenerator):
                 "above": f"What is the probability of a value above {self._fmt(x)} {unit}?",
             }[variant]
 
-        steps.append(step("Z", p4(answer)))
-        problem = (f"{name} are normally distributed with mean {mu} {unit} "
+        final_answer = answer if variant in ("inverse_lookup", "symmetric_interval") \
+            else p4(answer)
+        steps.append(step("Z", final_answer))
+        setting, city = random.choice(SETTINGS), random.choice(CITIES)
+        problem = (f"At the {setting} in {city}, {name} are normally distributed "
+                   f"with mean {mu} {unit} "
                    f"and standard deviation {sigma} {unit}. {question}\n{table}")
 
         return dict(
@@ -121,5 +193,5 @@ class NormalTableGenerator(ProblemGenerator):
             operation=f"normal_{'below' if variant == 'below_negative' else variant}",
             problem=problem,
             steps=steps,
-            final_answer=p4(answer),
+            final_answer=final_answer,
         )

@@ -6494,10 +6494,10 @@ Answer: 1.3 × 10^4 seats
 
 Normal-distribution probabilities with the z-table excerpt supplied in the problem text (Principle 5: no lookups the problem doesn't provide). The scratchpad standardizes, reads the provided table, and applies the complement / symmetry / between rule explicitly.
 
-**Variants:** `normal_above`, `normal_below`, `normal_between`
+**Variants:** `normal_above`, `normal_below`, `normal_between`, `normal_inverse_lookup`, `normal_symmetric_interval`
 
 ```
-Problem: Package weights are normally distributed with mean 482 grams and standard deviation 9 grams. What is the probability of a value between 498.2 and 499.1 grams?
+Problem: At the maple project in Juneau, Package weights are normally distributed with mean 482 grams and standard deviation 9 grams. What is the probability of a value between 498.2 and 499.1 grams?
 Standard normal table, Φ(z) = P(Z < z): z=1.80: 0.9641; z=1.90: 0.9713; z=2.00: 0.9772; z=2.20: 0.9861
 Steps:
   NORM_SETUP|X ~ N(482, 9)|P(498.2 < X < 499.1)

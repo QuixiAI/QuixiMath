@@ -13,12 +13,28 @@ from generators.normal_table_generator import NormalTableGenerator
 from helpers import DELIM
 
 
+def decimal_text(value):
+    value = Decimal(value)
+    if value == value.to_integral_value():
+        return str(int(value))
+    return format(value.normalize(), "f")
+
+
 def parse_problem(problem):
     """Returns (mu, sigma, kind, values, table) parsed from the text alone."""
     m = re.search(r"mean (\d+) \S+ and standard deviation (\d+)", problem)
     mu, sigma = int(m.group(1)), int(m.group(2))
     table = {Decimal(z): Decimal(v) for z, v in
              re.findall(r"z=(\d+\.\d{2}): (0\.\d{4})", problem)}
+    inverse = re.search(r"Find x such that P\(X < x\) = (0\.\d{4})", problem)
+    if inverse:
+        return mu, sigma, "inverse", (Decimal(inverse.group(1)),), table
+    symmetric = re.search(
+        r"symmetric interval from (-?\d+(?:\.\d+)?) to (-?\d+(?:\.\d+)?) ",
+        problem)
+    if symmetric:
+        return (mu, sigma, "symmetric",
+                (Decimal(symmetric.group(1)), Decimal(symmetric.group(2))), table)
     if "between" in problem:
         q = re.search(r"between (\d+(?:\.\d+)?) and (\d+(?:\.\d+)?) ", problem)
         return mu, sigma, "between", (Decimal(q.group(1)), Decimal(q.group(2))), table
@@ -29,6 +45,15 @@ def parse_problem(problem):
 def oracle_answer(example):
     """Recomputes the probability using ONLY the printed table values."""
     mu, sigma, kind, vals, table = parse_problem(example["problem"])
+    if kind == "inverse":
+        matches = [z for z, probability in table.items()
+                   if probability == vals[0]]
+        assert len(matches) == 1, (matches, table, vals[0])
+        return decimal_text(Decimal(mu) + matches[0] * Decimal(sigma))
+    if kind == "symmetric":
+        z = (vals[1] - Decimal(mu)) / Decimal(sigma)
+        assert vals[0] == Decimal(mu) - z * Decimal(sigma)
+        return f"{Decimal(2) * table[z] - Decimal(1):.4f}"
     def z_of(x):
         z = (x - mu) / sigma
         assert z == z.quantize(Decimal("0.1")), f"z not clean: {z}"
@@ -56,12 +81,15 @@ class TestNormalTableGenerator(unittest.TestCase):
         self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
         self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
                          result["final_answer"])
-        self.assertRegex(result["final_answer"], r"^0\.\d{4}$")
+        if result["operation"] == "normal_inverse_lookup":
+            self.assertRegex(result["final_answer"], r"^-?\d+(?:\.\d+)?$")
+        else:
+            self.assertRegex(result["final_answer"], r"^0\.\d{4}$")
 
     def test_oracle_from_printed_table_only(self):
         """A9 oracle: recompute the probability using only the z-table
         excerpt printed in the problem (Principle 5 end to end)."""
-        for _ in range(400):
+        for _ in range(500):
             result = self.gen.generate()
             self.assertEqual(oracle_answer(result), result["final_answer"],
                              result["problem"])
@@ -70,7 +98,13 @@ class TestNormalTableGenerator(unittest.TestCase):
         for _ in range(200):
             result = self.gen.generate()
             mu, sigma, kind, vals, table = parse_problem(result["problem"])
-            needed = {abs((x - mu) / sigma) for x in vals}
+            if kind == "inverse":
+                needed = {z for z, probability in table.items()
+                          if probability == vals[0]}
+            elif kind == "symmetric":
+                needed = {abs((vals[1] - mu) / sigma)}
+            else:
+                needed = {abs((x - mu) / sigma) for x in vals}
             for z in needed:
                 self.assertIn(z, table, result["problem"])
             self.assertGreater(len(table), len(needed),
@@ -84,23 +118,29 @@ class TestNormalTableGenerator(unittest.TestCase):
                 if f[0] == "S":
                     self.assertEqual(Decimal(f[1]) - Decimal(f[2]),
                                      Decimal(f[3]), s)
+                elif f[0] == "M":
+                    self.assertEqual(Decimal(f[1]) * Decimal(f[2]),
+                                     Decimal(f[3]), s)
+                elif f[0] == "A":
+                    self.assertEqual(Decimal(f[1]) + Decimal(f[2]),
+                                     Decimal(f[3]), s)
                 elif f[0] == "TABLE_LOOKUP":
-                    # the looked-up value must appear in the printed table
-                    self.assertIn(f"{f[1].strip('Φ()')}: {f[2]}"
-                                  .replace("Φ", ""),
-                                  result["problem"].replace("z=", ""), s)
+                    # Forward lookups quote the probability; inverse lookups
+                    # quote the z value. Either must be visibly supplied.
+                    self.assertIn(f[-1], result["problem"], s)
 
     def test_all_variants_reachable(self):
         ops = set()
         negatives = 0
-        for _ in range(200):
+        for _ in range(300):
             result = self.gen.generate()
             ops.add(result["operation"])
             if any(s.startswith(f"ZSCORE{DELIM}") and "|-" in s
                    for s in result["steps"]):
                 negatives += 1
         self.assertEqual(ops, {"normal_below", "normal_above",
-                               "normal_between"})
+                               "normal_between", "normal_inverse_lookup",
+                               "normal_symmetric_interval"})
         self.assertGreater(negatives, 10, "symmetry cases should appear")
 
     def test_fixed_variant_constructor(self):
@@ -109,6 +149,16 @@ class TestNormalTableGenerator(unittest.TestCase):
             self.assertEqual(gen.generate()["operation"], "normal_between")
         with self.assertRaises(ValueError):
             NormalTableGenerator("bogus")
+
+    def test_inverse_lookup_and_symmetric_interval_fixed_variants(self):
+        for variant, operation in (("inverse_lookup", "normal_inverse_lookup"),
+                                   ("symmetric_interval",
+                                    "normal_symmetric_interval")):
+            gen = NormalTableGenerator(variant)
+            for _ in range(100):
+                result = gen.generate()
+                self.assertEqual(result["operation"], operation)
+                self.assertEqual(result["final_answer"], oracle_answer(result))
 
 
 if __name__ == "__main__":
