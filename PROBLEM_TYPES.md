@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**606 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**607 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2841,6 +2841,33 @@ Steps:
   CHECK|arithmetic|72 ÷ 8 = 9|9
   Z|D|72|8|9
 Answer: D|72|8|9
+```
+
+### Stem And Leaf — `StemAndLeafGenerator`  ·  middle · difficulty 1
+
+Generate exact keyed stem-and-leaf construction and reading tasks.
+
+**Variants:** `statistics_stem_and_leaf_construct`, `statistics_stem_and_leaf_count_between`, `statistics_stem_and_leaf_count_in_stem`, `statistics_stem_and_leaf_decimal_key`, `statistics_stem_and_leaf_list_values`, `statistics_stem_and_leaf_median_from_plot`, `statistics_stem_and_leaf_range_from_plot`
+
+```
+Problem: At the birch survey, read the display below.
+Stem-and-leaf plot of commute times
+Stem ∣ Leaves
+   4 ∣ 2 8
+   5 ∣ 6 7 8 9
+   6 ∣ 4
+Key: 4 ∣ 2 means 42
+Count observations between 56 and 58, including both endpoints.
+Steps:
+  STAT_SETUP|stem-and-leaf plot of commute times|n=7
+  LEAF_KEY|4 ∣ 2|42
+  STEM_ROW|4|2 8|42,48
+  STEM_ROW|5|6 7 8 9|56,57,58,59
+  STEM_ROW|6|4|64
+  PLOT_READ|interval 56 to 58|3
+  CHECK|inclusive endpoints|3
+  Z|3
+Answer: 3
 ```
 
 ## High School

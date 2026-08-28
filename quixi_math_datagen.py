@@ -100,6 +100,7 @@ from generators.probability_critic_generator import ProbabilityCriticGenerator
 from generators.tally_frequency_generator import TallyFrequencyGenerator
 from generators.dot_plot_generator import DotPlotGenerator
 from generators.fraction_line_plot_generator import FractionLinePlotGenerator
+from generators.stem_and_leaf_generator import StemAndLeafGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1320,6 +1321,7 @@ ALL_GENERATORS = [
     TallyFrequencyGenerator(),
     DotPlotGenerator(),
     FractionLinePlotGenerator(),
+    StemAndLeafGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
