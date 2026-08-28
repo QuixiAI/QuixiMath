@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**662 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**663 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7862,6 +7862,24 @@ Steps:
   CHECK|t = 2|rising at 5 m/s
   Z|h'(2) = 5 m/s; rising; 5 m per second at t = 2
 Answer: h'(2) = 5 m/s; rising; 5 m per second at t = 2
+```
+
+### Representation Translation — `RepresentationTranslationGenerator`  ·  high · difficulty 3
+
+Generate eight exact translations among textual representations.
+
+**Variants:** `applied_representation_translation_equation_to_table_estimate_first`, `applied_representation_translation_equation_to_table_plain`, `applied_representation_translation_equation_to_table_with_model`, `applied_representation_translation_equation_to_words_distractor`, `applied_representation_translation_equation_to_words_estimate_first`, `applied_representation_translation_equation_to_words_plain`, `applied_representation_translation_equation_to_words_with_model`, `applied_representation_translation_graph_features_to_equation_distractor`, `applied_representation_translation_graph_features_to_equation_estimate_first`, `applied_representation_translation_graph_features_to_equation_plain`, `applied_representation_translation_intercept_meaning_distractor`, `applied_representation_translation_intercept_meaning_estimate_first`, `applied_representation_translation_intercept_meaning_plain`, `applied_representation_translation_intercept_meaning_with_model`, `applied_representation_translation_table_to_equation_exponential_distractor`, `applied_representation_translation_table_to_equation_exponential_estimate_first`, `applied_representation_translation_table_to_equation_exponential_plain`, `applied_representation_translation_table_to_equation_exponential_with_model`, `applied_representation_translation_table_to_equation_linear_distractor`, `applied_representation_translation_table_to_equation_linear_estimate_first`, `applied_representation_translation_table_to_equation_linear_plain`, `applied_representation_translation_table_to_equation_linear_with_model`, `applied_representation_translation_which_representation_matches_distractor`, `applied_representation_translation_which_representation_matches_estimate_first`, `applied_representation_translation_which_representation_matches_plain`, `applied_representation_translation_which_representation_matches_with_model`, `applied_representation_translation_words_to_equation_distractor`, `applied_representation_translation_words_to_equation_estimate_first`, `applied_representation_translation_words_to_equation_plain`, `applied_representation_translation_words_to_equation_with_model`
+
+```
+Problem: Consider the representation Lena received from the back of the garage. A plumber's total charge C dollars for h hours is C = 25 + 26h. What does 25 mean in this situation?
+Steps:
+  MODEL_EQ|C = 25 + 26h|canonical relationship
+  M|26|0|0
+  A|25|0|25
+  INTERPRET|25|fixed call-out fee
+  CHECK|h = 0|$25.00
+  Z|C = 25 + 26h; 25; the fixed call-out fee
+Answer: C = 25 + 26h; 25; the fixed call-out fee
 ```
 
 ## College

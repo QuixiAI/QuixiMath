@@ -684,6 +684,7 @@ from generators.quadratic_word_generator import QuadraticWordGenerator
 from generators.growth_comparison_generator import GrowthComparisonGenerator
 from generators.optimization_in_context_generator import OptimizationInContextGenerator
 from generators.rate_of_change_interpret_generator import RateOfChangeInterpretGenerator
+from generators.representation_translation_generator import RepresentationTranslationGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1439,6 +1440,7 @@ ALL_GENERATORS = [
     GrowthComparisonGenerator(),
     OptimizationInContextGenerator(),
     RateOfChangeInterpretGenerator(),
+    RepresentationTranslationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

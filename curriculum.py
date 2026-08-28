@@ -694,6 +694,7 @@ CURRICULUM = {
     "GrowthComparisonGenerator": {"grade_level": HIGH, "difficulty": 3},
     "OptimizationInContextGenerator": {"grade_level": HIGH, "difficulty": 4},
     "RateOfChangeInterpretGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "RepresentationTranslationGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
