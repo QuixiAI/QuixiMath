@@ -6695,29 +6695,27 @@ Answer: t = 2.75; df = 14
 
 ### Chi Square — `ChiSquareGenerator`  ·  high · difficulty 5
 
-Chi-square tests worked cell by cell: a goodness-of-fit test against a uniform model, and a 2×2 test of independence with an expected-count table. Data are built so every expected count and every χ² contribution is exact; the critical value is supplied in the problem (Principle 5).
+Chi-square procedures worked cell by cell: uniform and nonuniform goodness of fit, 2×2 and r×c independence, expected-count tables, homogeneity, and degrees of freedom from shape. Integer margins and zero-sum perturbations make every expected count and χ² contribution exact; each required critical value is supplied in the problem.
 
-**Variants:** `chi_square_gof_decision`, `chi_square_gof_stat`, `chi_square_independence_decision`, `chi_square_independence_stat`
+**Variants:** `chi_square_df_from_shape`, `chi_square_expected_table`, `chi_square_gof_decision`, `chi_square_gof_nonuniform`, `chi_square_gof_stat`, `chi_square_homogeneity`, `chi_square_independence_decision`, `chi_square_independence_stat`, `chi_square_rxc_decision`, `chi_square_rxc_stat`
 
 ```
-Problem: A worksheet for Jonas at the learning center gives this information. Independence table data [rows method one, method two; columns success, failure; counts: 37, 43; 123, 197; N = 400; critical value of 3.841 (df = 1)]. State the conclusion: reject H0 or fail to reject H0.
+Problem: A worksheet for Maya at the community center gives this information. Goodness-of-fit data [observed counts by category: tram=16, ferry=13, bike=16, train=28, car=27; each expected count is 20; critical value of 9.488 (df = 4)]. State the conclusion: reject H0 or fail to reject H0.
 Steps:
-  CHI_SETUP|row 1: 37, 43; row 2: 123, 197; N = 400|independence; df = 1, critical value = 3.841
-  CHI_FORMULA|E = (row·col)/N; χ² = Σ (O - E)^2/E
-  EXP_CELL|(80·160)/400|32
-  EXP_CELL|(80·240)/400|48
-  EXP_CELL|(320·160)/400|128
-  EXP_CELL|(320·240)/400|192
-  CHI_TERM|37 - 32 = 5|5^2 = 25|25/32 = 0.78125
-  CHI_TERM|43 - 48 = -5|(-5)^2 = 25|25/48 = 25/48
-  CHI_TERM|123 - 128 = -5|(-5)^2 = 25|25/128 = 0.1953125
-  CHI_TERM|197 - 192 = 5|5^2 = 25|25/192 = 25/192
-  A|0.78125|25/48|125/96
-  A|125/96|0.1953125|575/384
-  A|575/384|25/192|625/384
-  CHECK|χ² vs critical value|625/384 ≤ 3.841|fail to reject H0
-  Z|fail to reject H0 (625/384 ≤ 3.841)
-Answer: fail to reject H0 (625/384 ≤ 3.841)
+  CHI_SETUP|observed: 16, 13, 16, 28, 27; expected: 20 each|goodness of fit; df = 4, critical value = 9.488
+  CHI_FORMULA|χ² = Σ (O - E)^2/E
+  CHI_TERM|16 - 20 = -4|(-4)^2 = 16|16/20 = 0.8
+  CHI_TERM|13 - 20 = -7|(-7)^2 = 49|49/20 = 2.45
+  CHI_TERM|16 - 20 = -4|(-4)^2 = 16|16/20 = 0.8
+  CHI_TERM|28 - 20 = 8|8^2 = 64|64/20 = 3.2
+  CHI_TERM|27 - 20 = 7|7^2 = 49|49/20 = 2.45
+  A|0.8|2.45|3.25
+  A|3.25|0.8|4.05
+  A|4.05|3.2|7.25
+  A|7.25|2.45|9.7
+  CHECK|χ² vs critical value|9.7 > 9.488|reject H0
+  Z|reject H0 (9.7 > 9.488)
+Answer: reject H0 (9.7 > 9.488)
 ```
 
 ### Conditional Probability — `ConditionalProbabilityGenerator`  ·  high · difficulty 3
