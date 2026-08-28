@@ -1,115 +1,106 @@
-import os
+"""Extended prompt-text oracles for ConditionalProbabilityGenerator."""
+import itertools
 import random
 import re
-import sys
 import unittest
 from fractions import Fraction
 
-repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if repo_root not in sys.path:
-    sys.path.insert(0, repo_root)
-
 from generators.conditional_probability_generator import (
-    ConditionalProbabilityGenerator, exact,
+    QUERIES, ConditionalProbabilityGenerator, exact,
 )
 from helpers import DELIM
 
 
-TABLE_RE = re.compile(
-    r"club=yes and commute=bike: (\d+); "
-    r"club=no and commute=bike: (\d+); "
-    r"club=yes and commute=bus: (\d+); "
-    r"club=no and commute=bus: (\d+)"
-)
-BAYES_RE = re.compile(
-    r"used for (\d+) people\. Disease=yes count is (\d+) and "
-    r"disease=no count is (\d+)\. Sensitivity P\(test positive given "
-    r"disease=yes\) = (\d+/\d+)\. Specificity P\(test negative given "
-    r"disease=no\) = (\d+/\d+)\. Find P\(disease=(yes|no) given "
-    r"test (positive|negative)\)"
-)
+def split_query(problem):
+    for variant, queries in QUERIES.items():
+        for query in queries:
+            suffix = " " + query
+            if problem.endswith(suffix):
+                return problem[:-len(suffix)], variant, query
+    raise AssertionError(problem)
 
 
-def parse_table(problem):
-    yes_bike, no_bike, yes_bus, no_bus = (
-        int(v) for v in TABLE_RE.search(problem).groups()
-    )
-    return {
-        ("yes", "bike"): yes_bike,
-        ("no", "bike"): no_bike,
-        ("yes", "bus"): yes_bus,
-        ("no", "bus"): no_bus,
-    }
+def ptext(value):
+    value = Fraction(value)
+    return str(value.numerator) if value.denominator == 1 else str(value)
 
 
-def oracle_answer(example):
-    """A9 oracle: recompute the answer from the problem text alone."""
-    problem = example["problem"]
-    if "two-way table" in problem:
-        cells = parse_table(problem)
-        target, given = re.search(
-            r"Find P\((club=(?:yes|no)|commute=(?:bike|bus)) given "
-            r"(club=(?:yes|no)|commute=(?:bike|bus))\)",
-            problem,
-        ).groups()
-        target_var, target_val = target.split("=")
-        given_var, given_val = given.split("=")
-
-        numerator = 0
-        denominator = 0
-        for club_val in ("yes", "no"):
-            for commute_val in ("bike", "bus"):
-                count = cells[(club_val, commute_val)]
-                row = {"club": club_val, "commute": commute_val}
-                if row[given_var] == given_val:
-                    denominator += count
-                    if row[target_var] == target_val:
-                        numerator += count
-        return exact(Fraction(numerator, denominator))
-
-    _, disease, no_disease, sensitivity, specificity, target, test = (
-        BAYES_RE.search(problem).groups()
-    )
-    disease = int(disease)
-    no_disease = int(no_disease)
-    sensitivity = Fraction(sensitivity)
-    specificity = Fraction(specificity)
-    true_positive = disease * sensitivity
-    false_negative = disease - true_positive
-    true_negative = no_disease * specificity
-    false_positive = no_disease - true_negative
-    if target == "yes" and test == "positive":
-        return exact(true_positive / (true_positive + false_positive))
-    return exact(true_negative / (true_negative + false_negative))
-
-
-def check_step_arithmetic(example):
-    for raw_step in example["steps"]:
-        parts = raw_step.split(DELIM)
-        code = parts[0]
-        if code == "COND_TOTAL":
-            a, b, total = (int(v) for v in re.search(
-                r"(\d+) \+ (\d+) = (\d+)", parts[2]
-            ).groups())
-            if a + b != total:
-                return False
-        elif code == "BAYES_CELL":
-            expr, result = parts[2], int(parts[3])
-            if "*" in expr:
-                left, right = expr.split(" * ")
-                value = int(left) * Fraction(right)
-            else:
-                left, right = expr.split(" - ")
-                value = int(left) - int(right)
-            if value != result:
-                return False
-        elif code == "A":
-            if Fraction(parts[1]) + Fraction(parts[2]) != Fraction(parts[3]):
-                return False
-        elif code == "FRAC_BUILD":
-            if exact(Fraction(parts[1])) != parts[2]:
-                return False
-    return True
+def oracle_parts(example):
+    body, variant, query = split_query(example["problem"])
+    if variant == "table":
+        match = re.fullmatch(
+            r"A two-way table for ([a-z]+) has counts: (.+)\. One ([a-z]+) "
+            r"is selected uniformly\. Target: P\(([a-z]+)=([a-z]+) given "
+            r"([a-z]+)=([a-z]+)\)\.", body)
+        assert match is not None, body
+        cells = {}
+        row_key = col_key = None
+        for item in match.group(2).split("; "):
+            cell = re.fullmatch(
+                r"([a-z]+)=([a-z]+) and ([a-z]+)=([a-z]+): (\d+)", item)
+            assert cell is not None, item
+            rkey, row, ckey, col, count = cell.groups()
+            row_key, col_key = row_key or rkey, col_key or ckey
+            cells[row, col] = int(count)
+        target_key, target_value = match.group(4), match.group(5)
+        given_key, given_value = match.group(6), match.group(7)
+        numerator = denominator = 0
+        for (row, col), count in cells.items():
+            record = {row_key: row, col_key: col}
+            if record[given_key] == given_value:
+                denominator += count
+                if record[target_key] == target_value:
+                    numerator += count
+        answer = exact(Fraction(numerator, denominator))
+        context = match.group(1)
+    elif variant in ("bayes_positive", "bayes_negative"):
+        match = re.fullmatch(
+            r"A screening test is used for (\d+) people\. Disease=yes count is "
+            r"(\d+) and disease=no count is (\d+)\. Sensitivity P\(test positive "
+            r"given disease=yes\) = (\d+(?:/\d+)?)\. Specificity P\(test negative "
+            r"given disease=no\) = (\d+(?:/\d+)?)\. Target: P\(disease=(yes|no) "
+            r"given test (positive|negative)\)\.", body)
+        assert match is not None, body
+        total, disease, no_disease = map(int, match.groups()[:3])
+        assert disease + no_disease == total
+        sensitivity, specificity = Fraction(match.group(4)), Fraction(match.group(5))
+        tp, fn = disease * sensitivity, disease * (1 - sensitivity)
+        tn, fp = no_disease * specificity, no_disease * (1 - specificity)
+        value = tp / (tp + fp) if variant == "bayes_positive" else tn / (tn + fn)
+        answer, context = exact(value), None
+    elif variant == "given_probabilities":
+        match = re.fullmatch(
+            r"Events A and B have P\(A ∩ B\) = (\d+(?:/\d+)?) and P\(B\) = "
+            r"(\d+(?:/\d+)?)\.", body)
+        assert match is not None, body
+        answer = ptext(Fraction(match.group(1)) / Fraction(match.group(2)))
+        context = None
+    elif variant == "chain_rule":
+        match = re.fullmatch(
+            r"A bag has (.+) balls\. Three balls are drawn without replacement "
+            r"in this order: ([a-z]+), ([a-z]+), ([a-z]+)\.", body)
+        assert match is not None, body
+        items = []
+        for part in match.group(1).split(", "):
+            count, color = part.split()
+            items.extend((color, index) for index in range(int(count)))
+        wanted = match.groups()[1:4]
+        favorable = total = 0
+        for outcome in itertools.permutations(items, 3):
+            total += 1
+            favorable += tuple(item[0] for item in outcome) == wanted
+        answer = ptext(Fraction(favorable, total))
+        context = None
+    else:
+        match = re.fullmatch(
+            r"Events A and B have P\(A given B\) = (\d+(?:/\d+)?), P\(A\) = "
+            r"(\d+(?:/\d+)?), and P\(B\) = (\d+(?:/\d+)?)\.", body)
+        assert match is not None, body
+        p_a_given_b, p_a, p_b = map(Fraction, match.groups())
+        answer = ptext(p_a_given_b * p_b / p_a)
+        context = None
+    return {"variant": variant, "query": query, "answer": answer,
+            "context": context}
 
 
 class TestConditionalProbabilityGenerator(unittest.TestCase):
@@ -121,46 +112,84 @@ class TestConditionalProbabilityGenerator(unittest.TestCase):
         result = self.gen.generate()
         for key in ("problem_id", "operation", "problem", "steps", "final_answer"):
             self.assertIn(key, result)
-        self.assertTrue(result["steps"][-1].startswith(f"Z{DELIM}"))
-        self.assertEqual(result["steps"][-1].split(DELIM, 1)[1],
-                         result["final_answer"])
+        self.assertEqual(result["steps"][-1], f"Z{DELIM}{result['final_answer']}")
 
-    def test_oracle_all_variants(self):
+    def test_oracle_all_variants_from_problem_text(self):
         for _ in range(500):
             result = self.gen.generate()
-            self.assertEqual(result["final_answer"], oracle_answer(result),
+            self.assertEqual(result["final_answer"], oracle_parts(result)["answer"],
                              result["problem"])
 
     def test_step_arithmetic(self):
         for _ in range(300):
             result = self.gen.generate()
-            self.assertTrue(check_step_arithmetic(result), result["steps"])
+            oracle_parts(result)
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] == "COND_TOTAL":
+                    left, total = fields[2].split(" = ")
+                    self.assertEqual(sum(map(int, left.split(" + "))), int(total))
+                elif fields[0] == "BAYES_CELL":
+                    expression = fields[2]
+                    if " × " in expression:
+                        left, right = expression.split(" × ")
+                        value = int(left) * Fraction(right)
+                    else:
+                        left, right = expression.split(" − ")
+                        value = int(left) - int(right)
+                    self.assertEqual(value, int(fields[3]))
+                elif fields[0] == "A":
+                    self.assertEqual(Fraction(fields[1]) + Fraction(fields[2]),
+                                     Fraction(fields[3]))
+                elif fields[0] == "M":
+                    self.assertEqual(Fraction(fields[1]) * Fraction(fields[2]),
+                                     Fraction(fields[3]))
+                elif fields[0] == "D":
+                    self.assertEqual(Fraction(fields[1]) / Fraction(fields[2]),
+                                     Fraction(fields[3]))
+                elif fields[0] == "FRAC_BUILD":
+                    self.assertEqual(fields[2], exact(Fraction(fields[1])))
 
     def test_probabilities_valid(self):
         for _ in range(300):
-            result = self.gen.generate()
-            val = float(Fraction(result["final_answer"]))
-            self.assertGreaterEqual(val, 0)
-            self.assertLessEqual(val, 1)
+            value = float(Fraction(self.gen.generate()["final_answer"]))
+            self.assertGreaterEqual(value, 0)
+            self.assertLessEqual(value, 1)
 
-    def test_formula_present(self):
+    def test_formula_present_for_every_variant(self):
         for variant in ConditionalProbabilityGenerator.VARIANTS:
-            gen = ConditionalProbabilityGenerator(variant)
-            result = gen.generate()
-            formula_codes = {s.split(DELIM)[0] for s in result["steps"]}
-            self.assertTrue({"COND_FORMULA", "BAYES_FORMULA"} & formula_codes)
+            result = ConditionalProbabilityGenerator(variant).generate()
+            codes = {raw.split(DELIM)[0] for raw in result["steps"]}
+            self.assertTrue({"COND_FORMULA", "BAYES_FORMULA"} & codes)
 
-    def test_pipe_safe(self):
+    def test_six_table_contexts_are_reachable(self):
+        generator = ConditionalProbabilityGenerator("table")
+        seen = {oracle_parts(generator.generate())["context"] for _ in range(600)}
+        self.assertEqual(len(seen), 6)
+
+    def test_all_variants_and_five_phrasings_are_reachable(self):
+        for variant in ConditionalProbabilityGenerator.VARIANTS:
+            generator = ConditionalProbabilityGenerator(variant)
+            seen = set()
+            for _ in range(240):
+                example = generator.generate()
+                parts = oracle_parts(example)
+                self.assertEqual(parts["variant"], variant)
+                self.assertEqual(example["operation"],
+                                 f"conditional_probability_{variant}")
+                seen.add(parts["query"])
+            self.assertEqual(seen, set(QUERIES[variant]))
+
+    def test_pipe_safe_and_render_sane(self):
         for _ in range(300):
             result = self.gen.generate()
-            for s in result["steps"]:
-                self.assertLessEqual(len(s.split(DELIM)) - 1, 4, s)
-
-    def test_all_variants_reachable(self):
-        ops = set()
-        for _ in range(100):
-            ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 3)
+            self.assertNotIn(DELIM, result["problem"])
+            self.assertNotIn(DELIM, result["final_answer"])
+            rendered = "\n".join([result["problem"], *result["steps"],
+                                   result["final_answer"]])
+            self.assertNotRegex(rendered, r"1x|\^1\b|\+ 0|--")
+            for raw in result["steps"]:
+                self.assertLessEqual(len(raw.split(DELIM)) - 1, 4, raw)
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

@@ -228,7 +228,7 @@ CURRICULUM = {
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},
-    "ConditionalProbabilityGenerator": {"grade_level": HIGH, "difficulty": 5},
+    "ConditionalProbabilityGenerator": {"grade_level": HIGH, "difficulty": 3},
     "GeometricDistributionGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FermiEstimationGenerator": {"grade_level": HIGH, "difficulty": 4},
     "FillInStepGenerator": {"grade_level": MIDDLE, "difficulty": 3},

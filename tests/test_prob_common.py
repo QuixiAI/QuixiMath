@@ -468,9 +468,11 @@ class TwoWayTableTest(unittest.TestCase):
         for _ in range(50):
             example = generator.generate()
             row_name, col_name, cells = oracle.parse_two_way(example["problem"])
-            table = pc.TwoWayTable(row_name, ["yes", "no"],
-                                   col_name, ["bike", "bus"], cells)
-            self.assertIn(table.cells_text("column"), example["problem"])
+            row_values = list(dict.fromkeys(row for row, _ in cells))
+            col_values = list(dict.fromkeys(col for _, col in cells))
+            table = pc.TwoWayTable(row_name, row_values,
+                                   col_name, col_values, cells)
+            self.assertIn(table.cells_text("row"), example["problem"])
 
     def test_random_counts_and_guards(self):
         random.seed(4)

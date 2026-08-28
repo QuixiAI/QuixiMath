@@ -6211,26 +6211,21 @@ Steps:
 Answer: fail to reject H0 (625/384 ≤ 3.841)
 ```
 
-### Conditional Probability — `ConditionalProbabilityGenerator`  ·  high · difficulty 5
+### Conditional Probability — `ConditionalProbabilityGenerator`  ·  high · difficulty 3
 
-Conditional probability from a two-way table and Bayes-style diagnostic test questions built from sensitivity and specificity. Counts are small integers, so each answer is exact.
+Generate conditional-probability calculations in six exact forms.
 
-**Variants:** `conditional_probability_bayes_negative`, `conditional_probability_bayes_positive`, `conditional_probability_table`
+**Variants:** `conditional_probability_bayes_negative`, `conditional_probability_bayes_positive`, `conditional_probability_chain_rule`, `conditional_probability_given_probabilities`, `conditional_probability_reverse_conditioning`, `conditional_probability_table`
 
 ```
-Problem: A screening test is used for 104 people. Disease=yes count is 40 and disease=no count is 64. Sensitivity P(test positive given disease=yes) = 7/10. Specificity P(test negative given disease=no) = 3/4. Find P(disease=yes given test positive). Give an exact answer.
+Problem: Events A and B have P(A ∩ B) = 27/85 and P(B) = 9/17. Apply P(A given B) = P(A ∩ B)/P(B).
 Steps:
-  BAYES_SETUP|disease=yes 40, disease=no 64|sensitivity 7/10, specificity 3/4|P(disease=yes given test positive)
-  BAYES_CELL|true positive|40 * 7/10|28
-  BAYES_CELL|false negative|40 - 28|12
-  BAYES_CELL|true negative|64 * 3/4|48
-  BAYES_CELL|false positive|64 - 48|16
-  A|28|16|44
-  BAYES_FORMULA|P(disease=yes given positive) = TP/(TP + FP)
-  FRAC_BUILD|28/44|7/11
-  CHECK|positive tests|posterior denominator = 44
-  Z|7/11
-Answer: 7/11
+  COND_SETUP|P(A ∩ B) = 27/85|P(B) = 9/17|P(A given B)
+  COND_FORMULA|P(A given B) = P(A ∩ B)/P(B)
+  D|27/85|9/17|3/5
+  CHECK|intersection ≤ conditioning event|27/85 ≤ 9/17
+  Z|3/5
+Answer: 3/5
 ```
 
 ### Geometric Distribution — `GeometricDistributionGenerator`  ·  high · difficulty 4
