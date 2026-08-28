@@ -21,6 +21,7 @@ from quixi_math_datagen import (
     parse_weights,
     resolve_pool,
     validate_example,
+    write_jsonl,
 )
 from generators.multi_digit_addition_generator import MultiDigitAdditionGenerator
 from generators.factors_generator import FactorsGenerator
@@ -128,6 +129,15 @@ class TestValidateExample(unittest.TestCase):
             ex["difficulty"] = bad
             with self.assertRaises(ValueError, msg=repr(bad)):
                 validate_example(ex)
+
+    def test_optional_skills_metadata_passes_validation_and_jsonl(self):
+        ex = make_valid_example()
+        ex["skills"] = ["proportion", "percent_change"]
+        validate_example(ex)
+        stream = io.StringIO()
+        write_jsonl(stream, ex)
+        decoded = json.loads(stream.getvalue())
+        self.assertEqual(decoded["skills"], ex["skills"])
 
 
 class _UnregisteredGenerator(ProblemGenerator):

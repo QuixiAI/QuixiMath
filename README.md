@@ -229,6 +229,11 @@ Required fields:
 - `grade_level`: `elementary`, `middle`, `high`, `college`, or `graduate`
 - `difficulty`: integer from 1 to 5, read relative to the grade band
 
+Scenario and discrimination records may additionally include `skills`, an
+ordered list of the procedures they compose. JSONL and Hugging Face Parquet
+releases preserve this optional metadata; ordinary records leave it absent or
+null.
+
 The final step must be exactly `Z|<final_answer>`. Metadata is stamped from
 `curriculum.py` after generation unless a generator intentionally overrides it.
 

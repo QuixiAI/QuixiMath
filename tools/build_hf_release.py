@@ -62,6 +62,7 @@ SCHEMA = pa.schema(
         ("generator", pa.string()),
         ("generator_label", pa.string()),
         ("operation", pa.string()),
+        ("skills", pa.list_(pa.string())),
         ("grade_level", pa.string()),
         ("difficulty", pa.int64()),
         ("problem", pa.string()),
@@ -249,6 +250,7 @@ def make_row(
     row_id: int,
 ) -> dict:
     text = text_for_example(example)
+    skills = example.get("skills")
     return {
         "row_id": row_id,
         "example_id": f"{split}-{row_id:09d}",
@@ -256,6 +258,8 @@ def make_row(
         "generator": gen_instance.__class__.__name__,
         "generator_label": _instance_label(gen_instance),
         "operation": str(example["operation"]),
+        "skills": ([str(skill) for skill in skills]
+                   if skills is not None else None),
         "grade_level": str(example["grade_level"]),
         "difficulty": int(example["difficulty"]),
         "problem": str(example["problem"]),
@@ -530,6 +534,8 @@ Columns:
 - `generator`: generator class name.
 - `generator_label`: generator class plus variant marker when applicable.
 - `operation`: problem operation/category label.
+- `skills`: optional list of procedures composed by scenario or
+  discrimination records; null for ordinary records.
 - `grade_level`: one of `elementary`, `middle`, `high`, `college`, `graduate`.
 - `difficulty`: integer 1-5, relative to `grade_level`.
 - `problem`: problem text.
