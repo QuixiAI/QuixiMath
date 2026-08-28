@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**601 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**602 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16031,4 +16031,20 @@ Steps:
   ABSORBING_CHECK|state 5|outgoing {3, 5}|no
   Z|absorbing states {3}; nonabsorbing states {1, 2, 4, 5}
 Answer: absorbing states {3}; nonabsorbing states {1, 2, 4, 5}
+```
+
+### Martingale Check — `MartingaleCheckGenerator`  ·  graduate · difficulty 4
+
+Generate exact finite-state martingale checks and stopped-walk tasks.
+
+**Variants:** `probability_martingale_check_doob_product`, `probability_martingale_check_drift_corrected`, `probability_martingale_check_exponential`, `probability_martingale_check_not_martingale`, `probability_martingale_check_optional_stopping_ruin`, `probability_martingale_check_quadratic`
+
+```
+Problem: At the quartz program in Portland, Mina studies a nearest-neighbor random walk. The walk starts at S_0=0 and has independent increments +1 with probability p=2/5 and -1 with probability q=3/5. At time n=7, condition on S_7=-7. The process is X_k=S_k. Show exactly why the biased walk is not a martingale.
+Steps:
+  MARTINGALE_SETUP|X_k=S_k|condition S_7=-7
+  MARTINGALE_STEP|E[S_8 given S_7=-7]|-7 + (2/5)(1) + (3/5)(−1)|-36/5
+  CHECK|-36/5|<|-7
+  Z|supermartingale; -36/5 < -7
+Answer: supermartingale; -36/5 < -7
 ```
