@@ -686,6 +686,7 @@ CURRICULUM = {
     "MentalStrategyGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "MagnitudeComparisonGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "RoundingEffectGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "SignificantFiguresGenerator": {"grade_level": HIGH, "difficulty": 2},
 }
 
 

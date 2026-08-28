@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**654 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**655 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7672,6 +7672,25 @@ Steps:
   CHECK|new/old|4
   Z|q1=6²=36; q2=12²=144; multiplies by 4; 36 m² → 144 m²
 Answer: q1=6²=36; q2=12²=144; multiplies by 4; 36 m² → 144 m²
+```
+
+### Significant Figures — `SignificantFiguresGenerator`  ·  high · difficulty 2
+
+Generate exact measurement-digit interpretation and rounding tasks.
+
+**Variants:** `applied_significant_figures_add_subtract_rule_estimate_first`, `applied_significant_figures_add_subtract_rule_plain`, `applied_significant_figures_add_subtract_rule_with_model`, `applied_significant_figures_count_sig_figs_distractor`, `applied_significant_figures_count_sig_figs_estimate_first`, `applied_significant_figures_count_sig_figs_plain`, `applied_significant_figures_count_sig_figs_with_model`, `applied_significant_figures_multiply_divide_rule_distractor`, `applied_significant_figures_multiply_divide_rule_estimate_first`, `applied_significant_figures_multiply_divide_rule_plain`, `applied_significant_figures_multiply_divide_rule_with_model`, `applied_significant_figures_round_to_sig_figs_distractor`, `applied_significant_figures_round_to_sig_figs_estimate_first`, `applied_significant_figures_round_to_sig_figs_plain`, `applied_significant_figures_round_to_sig_figs_with_model`, `applied_significant_figures_scientific_notation_measurement_distractor`, `applied_significant_figures_scientific_notation_measurement_estimate_first`, `applied_significant_figures_scientific_notation_measurement_plain`, `applied_significant_figures_scientific_notation_measurement_with_model`
+
+```
+Problem: At the community garden, a note reviewed by Zane reads: Two measurements give 4.65 + 8.5 g. When adding measurements, report to the fewest decimal places shown by either input. What reported result follows?
+Steps:
+  MODEL_EQ|4.65 + 8.5 → 13.2 g|measurement reporting relationship
+  ROUND|4.65|2 decimal places|4.65
+  ROUND|8.5|1 decimal place|8.5
+  A|4.65|8.5|13.15
+  ROUND|13.15|1 decimal place|13.2
+  CHECK|fewest decimal places 1|13.2
+  Z|4.65 + 8.5 → 13.2 g; 13.2 g
+Answer: 4.65 + 8.5 → 13.2 g; 13.2 g
 ```
 
 ## College
