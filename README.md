@@ -28,16 +28,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **510 problem-type entries** in the generated catalog, one per registered
+- **561 problem-type entries** in the generated catalog, one per registered
   generator class
-- **526 registered generator instances**; **525** are in the default pool
-- **509 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **577 registered generator instances**; **576** are in the default pool
+- **560 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **1,149 distinct operation variant labels** across the catalog
-- **1,619 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
-- Catalog grade-band distribution: **36 elementary**, **64 middle**,
-  **148 high**, **153 college**, **109 graduate**
+- **1,426 distinct operation variant labels** across the catalog
+- **1,774 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- Catalog grade-band distribution: **41 elementary**, **71 middle**,
+  **161 high**, **171 college**, **117 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
@@ -68,6 +68,10 @@ Coverage now spans elementary through graduate-level topics:
   information, Lie/group and tensor notation, relativity, particle/field
   physics, advanced probability/statistics, information theory, deep learning,
   kernel methods, transformer arithmetic, and quantitative finance.
+- **Foundations strand:** concrete classification and correspondence, formal
+  propositional and predicate logic, proof systems, sets, relations, functions,
+  number constructions, ordinals and cardinals, type theory, ZF axiom
+  identification, finite-structure isomorphism, and critic records.
 
 Signature behaviors:
 
