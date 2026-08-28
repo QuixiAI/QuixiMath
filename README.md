@@ -28,16 +28,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **603 problem-type entries** in the generated catalog, one per registered
+- **638 problem-type entries** in the generated catalog, one per registered
   generator class
-- **619 registered generator instances**; **618** are in the default pool
-- **602 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **654 registered generator instances**; **653** are in the default pool
+- **637 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **1,697 distinct operation variant labels** across the catalog
-- **1,883 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
-- Catalog grade-band distribution: **46 elementary**, **78 middle**,
-  **171 high**, **185 college**, **123 graduate**
+- **1,938 distinct operation variant labels** across the catalog
+- **1,963 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- Catalog grade-band distribution: **49 elementary**, **85 middle**,
+  **185 high**, **190 college**, **129 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
@@ -77,6 +77,12 @@ Coverage now spans elementary through graduate-level topics:
   named distributions, limit bounds, random walks, finite Markov chains,
   sigma-algebras, martingales, optional stopping, and critic records. Every
   variant has 3–5 prompt phrasings and a prompt-only exact oracle test.
+- **Statistics strand:** 46 generator classes and 297 internal variants span
+  data displays and descriptive measures through sampling distributions,
+  confidence intervals, hypothesis tests, study design, likelihood theory,
+  estimator quality, and conjugate Bayesian updating. Every variant has 3–5
+  prompt phrasings and a problem-text-only oracle; required normal and critical
+  values are supplied in the prompt, while other arithmetic remains exact.
 
 ### Hugging Face dataset-card note
 
@@ -87,6 +93,9 @@ and observed grade/difficulty/operation distributions for that release. For the
 probability strand, the card should also state that answers use reduced exact
 fractions wherever possible; four-decimal probabilities appear only when the
 needed normal-table or exponential constant is supplied inside the prompt.
+For the statistics strand, the card should state that Φ, z, t, χ², and F values
+are supplied inline whenever needed, rule-dependent procedures name their rule,
+and estimator or sampling-enumeration results use exact rational arithmetic.
 
 Signature behaviors:
 

@@ -490,6 +490,12 @@ The canonical corpus is coverage-first rather than prescriptively stratified:
 trainers can choose their own sampling mix using the included metadata columns.
 The size configs are nested prefix subsets within each split.
 
+The statistics strand covers data displays, descriptive measures, sampling
+distributions, inference, study design, estimator theory, and conjugate Bayes.
+Problems supply every required Φ, z, t, χ², or F lookup value inline and state
+rule-dependent procedures explicitly; non-table arithmetic and finite
+enumerations retain exact rational answers.
+
 ## How to Load
 
 ```python
