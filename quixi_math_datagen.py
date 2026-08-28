@@ -105,6 +105,7 @@ from generators.population_sample_generator import PopulationSampleGenerator
 from generators.box_plot_generator import BoxPlotGenerator
 from generators.histogram_construct_generator import HistogramConstructGenerator
 from generators.weighted_mean_generator import WeightedMeanGenerator
+from generators.mean_adjustment_generator import MeanAdjustmentGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1330,6 +1331,7 @@ ALL_GENERATORS = [
     BoxPlotGenerator(),
     HistogramConstructGenerator(),
     WeightedMeanGenerator(),
+    MeanAdjustmentGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

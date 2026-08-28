@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**611 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**612 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2956,6 +2956,27 @@ Steps:
   CHECK|weighted mean|115.83/13|8.91
   Z|$8.91 per kg
 Answer: $8.91 per kg
+```
+
+### Mean Adjustment — `MeanAdjustmentGenerator`  ·  middle · difficulty 3
+
+Generate exact mean-update and outlier-effect exercises.
+
+**Variants:** `statistics_mean_adjustment_add_value`, `statistics_mean_adjustment_combined_groups`, `statistics_mean_adjustment_correction`, `statistics_mean_adjustment_needed_score`, `statistics_mean_adjustment_outlier_effect`, `statistics_mean_adjustment_remove_value`
+
+```
+Problem: Two groups of daily rainfall: Group A has 10 values with mean 18; Group B has 10 values with mean 2.
+Calculate the exact weighted average across both groups.
+Steps:
+  STAT_SETUP|combine daily rainfall|groups A and B
+  M|10|18|180
+  M|10|2|20
+  A|180|20|200
+  A|10|10|20
+  D|200|20|10
+  CHECK|combined mean|200/20|10
+  Z|10
+Answer: 10
 ```
 
 ## High School
