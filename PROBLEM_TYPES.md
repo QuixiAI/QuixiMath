@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**658 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**659 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7765,6 +7765,32 @@ Steps:
   CHECK|solute percent-liters|1070
   Z|h + l = 13; 90h + 80l = 1070; 90% solution 3 L; 80% solution 10 L
 Answer: h + l = 13; 90h + 80l = 1070; 90% solution 3 L; 80% solution 10 L
+```
+
+### Quadratic Word — `QuadraticWordGenerator`  ·  high · difficulty 4
+
+Generate six exact contextual quadratic problems without method cues.
+
+**Variants:** `applied_quadratic_word_area_with_border_distractor`, `applied_quadratic_word_area_with_border_estimate_first`, `applied_quadratic_word_area_with_border_plain`, `applied_quadratic_word_area_with_border_with_model`, `applied_quadratic_word_consecutive_product_distractor`, `applied_quadratic_word_consecutive_product_estimate_first`, `applied_quadratic_word_consecutive_product_plain`, `applied_quadratic_word_consecutive_product_with_model`, `applied_quadratic_word_projectile_ground_time_distractor`, `applied_quadratic_word_projectile_ground_time_estimate_first`, `applied_quadratic_word_projectile_ground_time_plain`, `applied_quadratic_word_projectile_ground_time_with_model`, `applied_quadratic_word_projectile_max_height_distractor`, `applied_quadratic_word_projectile_max_height_estimate_first`, `applied_quadratic_word_projectile_max_height_plain`, `applied_quadratic_word_projectile_max_height_with_model`, `applied_quadratic_word_rectangle_from_area_perimeter_distractor`, `applied_quadratic_word_rectangle_from_area_perimeter_plain`, `applied_quadratic_word_rectangle_from_area_perimeter_with_model`, `applied_quadratic_word_revenue_linear_demand_distractor`, `applied_quadratic_word_revenue_linear_demand_estimate_first`, `applied_quadratic_word_revenue_linear_demand_plain`, `applied_quadratic_word_revenue_linear_demand_with_model`
+
+```
+Problem: Consider the situation Lena recorded at the after-school club. At price p dollars, a seller can sell q = 48 − 2p items. Revenue is the price times the number sold. What price gives the greatest revenue, and what is that revenue?
+Steps:
+  MODEL_EQ|R = p(48 − 2p)|quadratic model from the situation
+  MODEL_EQ|q = 48 − 2p|items sold
+  REVENUE|R = p(48 − 2p)
+  REWRITE|R = −2p² + 48p
+  M|2|-2|-4
+  D|-48|-4|12
+  M|2|12|24
+  S|48|24|24
+  M|12|24|288
+  TRY|p = 11|286
+  TRY|p = 13|286
+  ACCEPT|p = 12|288
+  CHECK|neighboring integer prices are lower|288
+  Z|R = p(48 − 2p); $12.00; revenue $288.00
+Answer: R = p(48 − 2p); $12.00; revenue $288.00
 ```
 
 ## College

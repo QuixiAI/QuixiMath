@@ -690,6 +690,7 @@ CURRICULUM = {
     "MeasurementUncertaintyGenerator": {"grade_level": HIGH, "difficulty": 3},
     "GeometryInContextGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SystemsWordGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "QuadraticWordGenerator": {"grade_level": HIGH, "difficulty": 4},
 }
 
 
