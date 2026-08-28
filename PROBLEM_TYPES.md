@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**615 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**616 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6997,6 +6997,27 @@ Steps:
   CHECK|inclusive rank count|16 through 24|9
   Z|9
 Answer: 9
+```
+
+### Linear Transform Effect — `LinearTransformEffectGenerator`  ·  high · difficulty 2
+
+Generate exact effects of ``y = kx + c`` on summary statistics.
+
+**Variants:** `statistics_linear_transform_affine`, `statistics_linear_transform_reverse`, `statistics_linear_transform_scale`, `statistics_linear_transform_shift`, `statistics_linear_transform_unit_conversion`, `statistics_linear_transform_which_change`
+
+```
+Problem: At the maple office during the harbor test, measurements have mean 30 cm and standard deviation 10 cm. Convert every value by inches = 0.4·centimeters. The supplied scale factor is 0.4.
+Calculate both summaries on the converted measurement scale.
+Steps:
+  STAT_SETUP|unit conversion|cm to in
+  CONV_FACTOR|cm|0.4
+  LINEAR_EFFECT|mean|k·value + c|0.4·30
+  M|0.4|30|12
+  LINEAR_EFFECT|sd|abs(k)·spread|0.4·10
+  M|0.4|10|4
+  CHECK|converted summaries|mean 12 in; sd 4 in
+  Z|mean 12 in; sd 4 in
+Answer: mean 12 in; sd 4 in
 ```
 
 ## College

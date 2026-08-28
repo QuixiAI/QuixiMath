@@ -119,6 +119,7 @@ CURRICULUM = {
     "AlternativeMeansGenerator": {"grade_level": HIGH, "difficulty": 2},
     "GroupedDataGenerator": {"grade_level": HIGH, "difficulty": 2},
     "PercentileGenerator": {"grade_level": HIGH, "difficulty": 2},
+    "LinearTransformEffectGenerator": {"grade_level": HIGH, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

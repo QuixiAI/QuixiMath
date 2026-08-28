@@ -109,6 +109,7 @@ from generators.mean_adjustment_generator import MeanAdjustmentGenerator
 from generators.alternative_means_generator import AlternativeMeansGenerator
 from generators.grouped_data_generator import GroupedDataGenerator
 from generators.percentile_generator import PercentileGenerator
+from generators.linear_transform_effect_generator import LinearTransformEffectGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1338,6 +1339,7 @@ ALL_GENERATORS = [
     AlternativeMeansGenerator(),
     GroupedDataGenerator(),
     PercentileGenerator(),
+    LinearTransformEffectGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
