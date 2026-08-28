@@ -111,6 +111,7 @@ CURRICULUM = {
     "DotPlotGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "FractionLinePlotGenerator": {"grade_level": ELEMENTARY, "difficulty": 3},
     "StemAndLeafGenerator": {"grade_level": MIDDLE, "difficulty": 1},
+    "PopulationSampleGenerator": {"grade_level": MIDDLE, "difficulty": 1},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

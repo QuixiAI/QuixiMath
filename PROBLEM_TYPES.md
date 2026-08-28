@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**607 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**608 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -2868,6 +2868,24 @@ Steps:
   CHECK|inclusive endpoints|3
   Z|3
 Answer: 3
+```
+
+### Population Sample — `PopulationSampleGenerator`  ·  middle · difficulty 1
+
+Generate exact finite-population sampling and labeling exercises.
+
+**Variants:** `statistics_population_sample_capture_recapture`, `statistics_population_sample_identify`, `statistics_population_sample_parameter_vs_statistic`, `statistics_population_sample_scale_up`
+
+```
+Problem: At the pearl audit, a wildlife team marks M=17 butterflies and releases them. Later it captures C=126 butterflies; R=7 of those are marked. Assume the marked fraction mixed uniformly. Solve the proportional mark-recapture estimate exactly.
+Steps:
+  STAT_SETUP|capture-recapture|N=M·C/R
+  LABEL|M, C, R|17, 126, 7
+  M|17|126|2142
+  D|2142|7|306
+  CHECK|marked fraction|17/306 = 7/126
+  Z|estimated population: 306 butterflies
+Answer: estimated population: 306 butterflies
 ```
 
 ## High School
