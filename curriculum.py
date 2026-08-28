@@ -99,6 +99,7 @@ CURRICULUM = {
     "PoissonProcessGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RandomWalkGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "MultiStateMarkovGenerator": {"grade_level": COLLEGE, "difficulty": 4},
+    "MonteCarloArithmeticGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

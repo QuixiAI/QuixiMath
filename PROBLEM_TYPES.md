@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**595 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**596 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12130,6 +12130,23 @@ Steps:
   CHECK|target state|E_3[T_3]=0
   Z|E_1[T_3] = 19/4; E_2[T_3] = 29/6
 Answer: E_1[T_3] = 19/4; E_2[T_3] = 29/6
+```
+
+### Monte Carlo Arithmetic — `MonteCarloArithmeticGenerator`  ·  college · difficulty 3
+
+Generate exact LCG, inverse-transform, and sample-average exercises.
+
+**Variants:** `probability_monte_carlo_estimate_from_samples`, `probability_monte_carlo_hit_or_miss_pi`, `probability_monte_carlo_inverse_transform_discrete`, `probability_monte_carlo_inverse_transform_linear`, `probability_monte_carlo_lcg_period`, `probability_monte_carlo_lcg_sequence`
+
+```
+Problem: At the indigo review in Quincy, Priya performs a simulation calculation. Method: inverse transform on 0≤x≤8 with cdf F(x)=x^2/64. Uniform input u=1/16. Target: the exact sampled x. Solve F(x)=u on the stated support.
+Steps:
+  INV_TRANSFORM|F(x)=x^2/64|x=8*sqrt(u)
+  ROOT|1/16|1/4
+  M|8|1/4|2
+  CHECK|F(sample)=u|1/16
+  Z|sample x = 2
+Answer: sample x = 2
 ```
 
 ## Graduate
