@@ -4,7 +4,7 @@ import re
 import unittest
 from fractions import Fraction
 
-from generators.mle_generator import MLEGenerator
+from generators.mle_generator import MLEGenerator, PROMPTS
 from helpers import DELIM
 
 
@@ -21,7 +21,7 @@ def oracle_parts(example):
     values = values_from(problem)
     n = len(values)
     total = sum(values)
-    if problem.startswith("For Bernoulli data"):
+    if "Bernoulli" in problem and "Binomial(" not in problem:
         successes = total
         failures = n - successes
         estimate = Fraction(successes, n)
@@ -30,14 +30,14 @@ def oracle_parts(example):
         return {"variant": "bernoulli", "values": values,
                 "answer": f"{loglik}; {score}; p_hat={fraction(estimate)}",
                 "estimate": estimate}
-    if problem.startswith("For exponential data"):
+    if "exponential" in problem.lower():
         estimate = Fraction(n, total)
         loglik = f"ell(lambda)={n}*log(lambda)-{total}*lambda"
         score = f"score={n}/lambda-{total}"
         return {"variant": "exponential", "values": values,
                 "answer": f"{loglik}; {score}; lambda_hat={fraction(estimate)}",
                 "estimate": estimate}
-    if "with known sigma^2=" in problem:
+    if "known sigma^2=" in problem:
         sigma2 = int(re.search(r"known sigma\^2=(\d+)", problem).group(1))
         estimate = Fraction(total, n)
         loglik = f"ell(mu)=-(1/(2*{sigma2}))*sum((x_i-mu)^2)+C"
@@ -45,7 +45,7 @@ def oracle_parts(example):
         return {"variant": "normal_mu", "values": values,
                 "answer": f"{loglik}; {score}; mu_hat={fraction(estimate)}",
                 "estimate": estimate}
-    if "with both mu and sigma^2 unknown" in problem:
+    if "both mu and sigma^2 unknown" in problem:
         mean = Fraction(total, n)
         squares = [(Fraction(value) - mean) ** 2 for value in values]
         ss = sum(squares, Fraction(0))
@@ -55,20 +55,20 @@ def oracle_parts(example):
                 "variance": variance,
                 "answer": f"mu_hat={fraction(mean)}; SS={fraction(ss)}; "
                           f"sigma2_hat={fraction(variance)}"}
-    if problem.startswith("For Poisson data"):
+    if "Poisson" in problem:
         estimate = Fraction(total, n)
         loglik = f"ell(lambda)={total}*log(lambda)-{n}*lambda+C"
         score = f"score={total}/lambda-{n}"
         return {"variant": "poisson", "values": values,
                 "answer": f"{loglik}; {score}; lambda_hat={fraction(estimate)}",
                 "estimate": estimate}
-    if "from Uniform(0,theta)" in problem:
+    if "Uniform(0,theta)" in problem:
         maximum = max(values)
         return {"variant": "uniform_theta", "values": values,
                 "maximum": maximum,
                 "answer": f"theta_hat = max = {maximum}; "
                           "score equation has no root"}
-    if problem.startswith("For geometric data"):
+    if "geometric" in problem.lower():
         failures = total - n
         mean = Fraction(total, n)
         estimate = Fraction(n, total)
@@ -190,6 +190,19 @@ class MLEGeneratorTest(unittest.TestCase):
             self.assertEqual(result["operation"], f"mle_{variant}")
             self.assertEqual(result["final_answer"],
                              oracle_parts(result)["answer"])
+
+    def test_every_variant_has_four_parseable_phrasings(self):
+        fields = {"data": "[1,2,3,4]", "sigma2": 4,
+                  "trials_each": 5}
+        for variant in MLEGenerator.VARIANTS:
+            templates = PROMPTS[variant]
+            self.assertEqual(len(templates), 4)
+            self.assertEqual(len(set(templates)), 4)
+            for template in templates:
+                problem = template.format(**fields)
+                with self.subTest(variant=variant, problem=problem):
+                    self.assertEqual(oracle_parts({"problem": problem})["variant"],
+                                     variant)
 
     def test_invalid_variant_rejected(self):
         with self.assertRaises(ValueError):

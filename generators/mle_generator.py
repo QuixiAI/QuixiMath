@@ -4,6 +4,8 @@ Variants: ``bernoulli``, ``exponential``, ``normal_mu``, ``normal_sigma2``,
 ``poisson``, ``uniform_theta``, ``geometric``, and ``binomial_n_known``.
 Normal two-parameter data come from zero-sum deviation patterns with SS/n an
 integer; all remaining estimates are exact fractions or an observed boundary.
+Each variant has four prompt phrasings that preserve its parseable model and
+support statement.
 Op-codes: ``MLE_SETUP``, ``COUNT``, ``SUM``, ``DEV_ROW``, ``MAX``,
 ``LOG_LIKELIHOOD``, ``DERIVATIVE``, ``SCORE_EQ``, ``REWRITE``,
 ``BOUNDARY_MLE``, ``A``, ``S``, ``M``, ``D``, ``CHECK``, and ``Z``.
@@ -17,6 +19,88 @@ from stats_common import patterns
 
 
 STATISTICS = True
+PROMPTS = {
+    "bernoulli": (
+        "For Bernoulli data {data}, write the log-likelihood for p, "
+        "differentiate, and solve for the MLE p_hat.",
+        "Observed Bernoulli outcomes are {data}. Derive the log-likelihood "
+        "and score, then find p_hat.",
+        "A Bernoulli sample is {data}; use maximum likelihood to obtain p_hat "
+        "after writing and differentiating ell(p).",
+        "Using Bernoulli observations {data}, compute the likelihood score "
+        "and its maximum-likelihood estimate p_hat.",
+    ),
+    "exponential": (
+        "For exponential data {data}, write the log-likelihood for lambda, "
+        "differentiate, and solve for the MLE lambda_hat.",
+        "Observed exponential waiting times are {data}. Derive the score for "
+        "lambda and find lambda_hat.",
+        "An exponential sample is {data}; maximize its log-likelihood to "
+        "estimate the rate lambda.",
+        "Using exponential observations {data}, write ell(lambda), take its "
+        "derivative, and obtain the MLE lambda_hat.",
+    ),
+    "normal_mu": (
+        "For normal data {data} with known sigma^2={sigma2}, write the "
+        "log-likelihood for mu, differentiate, and solve for the MLE mu_hat.",
+        "Observed normal values are {data}, with known sigma^2={sigma2}. "
+        "Derive the score and estimate mu by maximum likelihood.",
+        "A normal sample {data} has known sigma^2={sigma2}; maximize ell(mu) "
+        "and report mu_hat.",
+        "Using normal observations {data} and known sigma^2={sigma2}, write "
+        "the score equation for mu and solve for its MLE.",
+    ),
+    "normal_sigma2": (
+        "For normal data {data} with both mu and sigma^2 unknown, find the "
+        "MLEs mu_hat and sigma2_hat=SS/n.",
+        "Observed normal values are {data}, with both mu and sigma^2 unknown. "
+        "Compute mu_hat, SS, and the MLE sigma2_hat=SS/n.",
+        "A normal sample is {data}; when both mu and sigma^2 unknown, derive "
+        "the two maximum-likelihood estimates.",
+        "Using normal observations {data} with both mu and sigma^2 unknown, "
+        "maximize the likelihood for mu_hat and sigma2_hat.",
+    ),
+    "poisson": (
+        "For Poisson data {data}, write the log-likelihood for lambda, "
+        "differentiate, and solve for the MLE lambda_hat.",
+        "Observed Poisson counts are {data}. Derive the score and find the "
+        "maximum-likelihood rate lambda_hat.",
+        "A Poisson sample is {data}; maximize ell(lambda) and report "
+        "lambda_hat.",
+        "Using Poisson observations {data}, write and differentiate the "
+        "log-likelihood to estimate lambda.",
+    ),
+    "uniform_theta": (
+        "For data {data} from Uniform(0,theta), find the boundary MLE "
+        "theta_hat and explain why no score root is used.",
+        "Observed values {data} follow Uniform(0,theta). Identify the boundary "
+        "maximum-likelihood estimate and the lack of a score root.",
+        "A Uniform(0,theta) sample is {data}; use the support boundary, not a "
+        "score root, to obtain theta_hat.",
+        "Using Uniform(0,theta) observations {data}, determine the boundary "
+        "MLE and explain the monotone likelihood.",
+    ),
+    "geometric": (
+        "For geometric data {data} on support 1,2,..., write the "
+        "log-likelihood and find the MLE p_hat=1/xbar.",
+        "Observed geometric waiting counts are {data} on support 1,2,... . "
+        "Derive the score and estimate p.",
+        "A geometric sample on support 1,2,... is {data}; maximize ell(p) and "
+        "show that p_hat=1/xbar.",
+        "Using geometric observations {data} with support 1,2,..., find xbar "
+        "and the maximum-likelihood estimate p_hat.",
+    ),
+    "binomial_n_known": (
+        "For independent Binomial(N={trials_each},p) counts {data}, with N "
+        "known, write the log-likelihood and find the MLE p_hat.",
+        "Observed independent Binomial(N={trials_each},p) counts are {data}. "
+        "Treat N as known and estimate p by maximum likelihood.",
+        "A sample of Binomial(N={trials_each},p) success counts is {data}; "
+        "derive the score and obtain p_hat for known N.",
+        "Using independent Binomial(N={trials_each},p) observations {data}, "
+        "combine all trials and find the MLE of p.",
+    ),
+}
 
 
 def fraction_text(value):
@@ -29,6 +113,10 @@ def data_text(values):
 
 def sum_expr(values):
     return " + ".join(str(v) for v in values)
+
+
+def prompt(variant, **fields):
+    return random.choice(PROMPTS[variant]).format(**fields)
 
 
 class MLEGenerator(ProblemGenerator):
@@ -107,11 +195,7 @@ class MLEGenerator(ProblemGenerator):
                  "valid Bernoulli parameter"),
         ]
         answer = f"{loglik}; {score}; p_hat={fraction_text(p_hat)}"
-        problem = (
-            f"For Bernoulli data {data_text(values)}, write the "
-            "log-likelihood for p, differentiate, and solve for the MLE "
-            "p_hat."
-        )
+        problem = prompt("bernoulli", data=data_text(values))
         return problem, steps, answer
 
     def _generate_exponential(self):
@@ -136,11 +220,7 @@ class MLEGenerator(ProblemGenerator):
         answer = (
             f"{loglik}; {score}; lambda_hat={fraction_text(lambda_hat)}"
         )
-        problem = (
-            f"For exponential data {data_text(values)}, write the "
-            "log-likelihood for lambda, differentiate, and solve for the "
-            "MLE lambda_hat."
-        )
+        problem = prompt("exponential", data=data_text(values))
         return problem, steps, answer
 
     def _generate_normal_mu(self):
@@ -166,11 +246,7 @@ class MLEGenerator(ProblemGenerator):
                  fraction_text(mu_hat)),
         ]
         answer = f"{loglik}; {score}; mu_hat={fraction_text(mu_hat)}"
-        problem = (
-            f"For normal data {data_text(values)} with known "
-            f"sigma^2={sigma_sq}, write the log-likelihood for mu, "
-            "differentiate, and solve for the MLE mu_hat."
-        )
+        problem = prompt("normal_mu", data=data_text(values), sigma2=sigma_sq)
         return problem, steps, answer
 
     def _generate_normal_sigma2(self):
@@ -215,10 +291,7 @@ class MLEGenerator(ProblemGenerator):
         ])
         answer = (f"mu_hat={fraction_text(mu_hat)}; SS={ss}; "
                   f"sigma2_hat={fraction_text(sigma2_hat)}")
-        problem = (
-            f"For normal data {data_text(values)} with both mu and sigma^2 "
-            "unknown, find the MLEs mu_hat and sigma2_hat=SS/n."
-        )
+        problem = prompt("normal_sigma2", data=data_text(values))
         return problem, steps, answer
 
     def _generate_poisson(self):
@@ -243,10 +316,7 @@ class MLEGenerator(ProblemGenerator):
                  "valid Poisson parameter"),
         ]
         answer = f"{loglik}; {score}; lambda_hat={fraction_text(lambda_hat)}"
-        problem = (
-            f"For Poisson data {data_text(values)}, write the log-likelihood "
-            "for lambda, differentiate, and solve for the MLE lambda_hat."
-        )
+        problem = prompt("poisson", data=data_text(values))
         return problem, steps, answer
 
     def _generate_uniform_theta(self):
@@ -265,10 +335,7 @@ class MLEGenerator(ProblemGenerator):
         ]
         answer = (f"theta_hat = max = {maximum}; "
                   "score equation has no root")
-        problem = (
-            f"For data {data_text(values)} from Uniform(0,theta), find the "
-            "boundary MLE theta_hat and explain why no score root is used."
-        )
+        problem = prompt("uniform_theta", data=data_text(values))
         return problem, steps, answer
 
     def _generate_geometric(self):
@@ -296,10 +363,7 @@ class MLEGenerator(ProblemGenerator):
         ]
         answer = (f"xbar={fraction_text(mean)}; {score}; "
                   f"p_hat={fraction_text(p_hat)}")
-        problem = (
-            f"For geometric data {data_text(values)} on support 1,2,..., "
-            "write the log-likelihood and find the MLE p_hat=1/xbar."
-        )
+        problem = prompt("geometric", data=data_text(values))
         return problem, steps, answer
 
     def _generate_binomial_n_known(self):
@@ -331,9 +395,6 @@ class MLEGenerator(ProblemGenerator):
                  "interior binomial parameter"),
         ]
         answer = f"{loglik}; {score}; p_hat={fraction_text(p_hat)}"
-        problem = (
-            f"For independent Binomial(N={trials_each},p) counts "
-            f"{data_text(values)}, with N known, write the log-likelihood "
-            "and find the MLE p_hat."
-        )
+        problem = prompt("binomial_n_known", data=data_text(values),
+                         trials_each=trials_each)
         return problem, steps, answer

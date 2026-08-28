@@ -15036,7 +15036,7 @@ Maximum-likelihood estimates from log-likelihood score equations.
 **Variants:** `mle_bernoulli`, `mle_binomial_n_known`, `mle_exponential`, `mle_geometric`, `mle_normal_mu`, `mle_normal_sigma2`, `mle_poisson`, `mle_uniform_theta`
 
 ```
-Problem: For geometric data [1,5,9,8,7,5,8,6,10] on support 1,2,..., write the log-likelihood and find the MLE p_hat=1/xbar.
+Problem: Observed geometric waiting counts are [1,5,9,8,7,5,8,6,10] on support 1,2,... . Derive the score and estimate p.
 Steps:
   MLE_SETUP|geometric|support=1,2,...|data=[1,5,9,8,7,5,8,6,10]
   COUNT|n|9
