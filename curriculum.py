@@ -275,6 +275,7 @@ CURRICULUM = {
     "TwoSampleTestGenerator": {"grade_level": HIGH, "difficulty": 5},
     "ChiSquareGenerator": {"grade_level": HIGH, "difficulty": 5},
     "TypeErrorPowerGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "ANOVAGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "PermutationCombinationGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "BinomialProbabilityGenerator": {"grade_level": MIDDLE, "difficulty": 4},
     "ProbabilityAdditionRuleGenerator": {"grade_level": MIDDLE, "difficulty": 4},

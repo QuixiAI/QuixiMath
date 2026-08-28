@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**627 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**628 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12867,6 +12867,59 @@ Steps:
   S|1.0000|0.9901|0.0099
   Z|α = 0.0099
 Answer: α = 0.0099
+```
+
+### ANOVA — `ANOVAGenerator`  ·  college · difficulty 4
+
+Generate exact one-way ANOVA summaries and critical-value decisions.
+
+**Variants:** `statistics_anova_anova_table`, `statistics_anova_df_only`, `statistics_anova_f_decision`, `statistics_anova_f_stat`, `statistics_anova_group_means`, `statistics_anova_ss_between`, `statistics_anova_ss_within`
+
+```
+Problem: At the west annex during a crop-height trial (batch F84), equal-size groups give raw data [A: 10, 12, 14, 16; B: 19, 21, 23, 25; C: 26, 27, 29, 30; D: 34, 36, 38, 40]. Use α = 0.05 and F critical value = 3.49 (df 3, 12).
+Report df for treatments and error.
+Steps:
+  ANOVA_SETUP|k = 4, n = 4|one-way ANOVA; equal group sizes
+  SUM|10 + 12 + 14 + 16|52
+  MEAN_DIV|52|4|13
+  DEV_ROW|10|-3|9
+  DEV_ROW|12|-1|1
+  DEV_ROW|14|1|1
+  DEV_ROW|16|3|9
+  ANOVA_ROW|A|mean 13|SS 20
+  SUM|19 + 21 + 23 + 25|88
+  MEAN_DIV|88|4|22
+  DEV_ROW|19|-3|9
+  DEV_ROW|21|-1|1
+  DEV_ROW|23|1|1
+  DEV_ROW|25|3|9
+  ANOVA_ROW|B|mean 22|SS 20
+  SUM|26 + 27 + 29 + 30|112
+  MEAN_DIV|112|4|28
+  DEV_ROW|26|-2|4
+  DEV_ROW|27|-1|1
+  DEV_ROW|29|1|1
+  DEV_ROW|30|2|4
+  ANOVA_ROW|C|mean 28|SS 10
+  SUM|34 + 36 + 38 + 40|148
+  MEAN_DIV|148|4|37
+  DEV_ROW|34|-3|9
+  DEV_ROW|36|-1|1
+  DEV_ROW|38|1|1
+  DEV_ROW|40|3|9
+  ANOVA_ROW|D|mean 37|SS 20
+  SUM|13 + 22 + 28 + 37|100
+  MEAN_DIV|100|4|25
+  SS_BETWEEN|4·((13 − 25)^2 + (22 − 25)^2 + (28 − 25)^2 + (37 − 25)^2)|1224
+  SS_WITHIN|20 + 20 + 10 + 20|70
+  CHECK|SST|SSB + SSW = 1294|Σ(y − ȳ)^2 = 1294
+  EVAL|df|3, 12
+  D|1224|3|408
+  D|70|12|35/6
+  F_FORMULA|F = MSB/MSW
+  D|408|35/6|2448/35
+  Z|df = 3, 12
+Answer: df = 3, 12
 ```
 
 ## Graduate
