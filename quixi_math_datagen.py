@@ -98,6 +98,7 @@ from generators.markov_state_classification_generator import MarkovStateClassifi
 from generators.martingale_check_generator import MartingaleCheckGenerator
 from generators.probability_critic_generator import ProbabilityCriticGenerator
 from generators.tally_frequency_generator import TallyFrequencyGenerator
+from generators.dot_plot_generator import DotPlotGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1316,6 +1317,7 @@ ALL_GENERATORS = [
     MartingaleCheckGenerator(),
     ProbabilityCriticGenerator(),
     TallyFrequencyGenerator(),
+    DotPlotGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -108,6 +108,7 @@ CURRICULUM = {
     "MartingaleCheckGenerator": {"grade_level": GRADUATE, "difficulty": 4},
     "ProbabilityCriticGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "TallyFrequencyGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
+    "DotPlotGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "GraphInterpretGenerator": {"grade_level": ELEMENTARY, "difficulty": 1},
 
     # ===== MIDDLE SCHOOL (Grades 6-8) =====

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**604 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**605 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -966,6 +966,39 @@ Steps:
   CHECK|unique extremes|max 8, min 5
   Z|most: Robotics (8); least: Music (5)
 Answer: most: Robotics (8); least: Music (5)
+```
+
+### Dot Plot — `DotPlotGenerator`  ·  elementary · difficulty 2
+
+Generate exact integer dot-plot construction and reading exercises.
+
+**Variants:** `statistics_dot_plot_construct`, `statistics_dot_plot_count_above_below`, `statistics_dot_plot_median_from_plot`, `statistics_dot_plot_most_common`, `statistics_dot_plot_range_from_plot`, `statistics_dot_plot_read_count`, `statistics_dot_plot_total_from_plot`
+
+```
+Problem: At the jade pilot, read the display below.
+Dot plot of shoe sizes (each ● is one person):
+13 ∣ ● ● ●
+14 ∣ ● ●
+15 ∣ ● ● ● ●
+16 ∣ ● ● ●
+17 ∣ ● ● ●
+18 ∣ ● ● ● ● ● ●
+19 ∣ ● ● ● ●
+Expand the row counts in order and determine the median.
+Steps:
+  STAT_SETUP|dot plot of shoe sizes|n=25
+  PLOT_READ|row 13|●●●|3
+  PLOT_READ|row 14|●●|2
+  PLOT_READ|row 15|●●●●|4
+  PLOT_READ|row 16|●●●|3
+  PLOT_READ|row 17|●●●|3
+  PLOT_READ|row 18|●●●●●●|6
+  PLOT_READ|row 19|●●●●|4
+  SORT|13,13,13,14,14,15,15,15,15,16,16,16,17,17,17,18,18,18,18,18,18,19,19,19,19
+  MEDIAN_PICK|position 13|17
+  CHECK|ordered middle|17
+  Z|17
+Answer: 17
 ```
 
 ## Middle School (grades 6–8)
