@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**632 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**633 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -16906,4 +16906,46 @@ Steps:
   CHECK|-36/5|<|-7
   Z|supermartingale; -36/5 < -7
 Answer: supermartingale; -36/5 < -7
+```
+
+### Estimator Bias Enum — `EstimatorBiasEnumGenerator`  ·  graduate · difficulty 3
+
+Generate exact estimator-bias enumerations with bounded row counts.
+
+**Variants:** `statistics_estimator_bias_enum_max_estimator_bias`, `statistics_estimator_bias_enum_mean_unbiased`, `statistics_estimator_bias_enum_range_estimator`, `statistics_estimator_bias_enum_variance_n_bias`, `statistics_estimator_bias_enum_variance_n_minus_1_unbiased`, `statistics_estimator_bias_enum_without_replacement`
+
+```
+Problem: At the amber campus during the process audit (enum A43), population = {1, 2, 3, 4}; treat its members as equally likely. For ordered samples of size n = 2 with replacement, use the sample maximum to estimate endpoint N.
+Report E[max], its target, and its bias.
+Steps:
+  SUM|1 + 2 + 3 + 4|10
+  MEAN_DIV|10|4|2.5
+  DEV_ROW|1|1 - 2.5|2.25
+  DEV_ROW|2|2 - 2.5|0.25
+  DEV_ROW|3|3 - 2.5|0.25
+  DEV_ROW|4|4 - 2.5|2.25
+  SUM|2.25 + 0.25 + 0.25 + 2.25|5
+  D|5|4|1.25
+  SAMPLE_ENUM|(1, 1)|max = 1
+  SAMPLE_ENUM|(1, 2)|max = 2
+  SAMPLE_ENUM|(1, 3)|max = 3
+  SAMPLE_ENUM|(1, 4)|max = 4
+  SAMPLE_ENUM|(2, 1)|max = 2
+  SAMPLE_ENUM|(2, 2)|max = 2
+  SAMPLE_ENUM|(2, 3)|max = 3
+  SAMPLE_ENUM|(2, 4)|max = 4
+  SAMPLE_ENUM|(3, 1)|max = 3
+  SAMPLE_ENUM|(3, 2)|max = 3
+  SAMPLE_ENUM|(3, 3)|max = 3
+  SAMPLE_ENUM|(3, 4)|max = 4
+  SAMPLE_ENUM|(4, 1)|max = 4
+  SAMPLE_ENUM|(4, 2)|max = 4
+  SAMPLE_ENUM|(4, 3)|max = 4
+  SAMPLE_ENUM|(4, 4)|max = 4
+  SUM|1 + 2 + 3 + 4 + 2 + 2 + 3 + 4 + 3 + 3 + 3 + 4 + 4 + 4 + 4 + 4|50
+  D|50|16|3.125
+  BIAS|E[max] = 3.125|N = 4|-0.875
+  CHECK|complete equally likely sample space|16|E[max] = 3.125
+  Z|E[max] = 3.125; N = 4; bias = -0.875
+Answer: E[max] = 3.125; N = 4; bias = -0.875
 ```

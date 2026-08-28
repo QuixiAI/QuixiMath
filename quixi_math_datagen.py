@@ -263,6 +263,7 @@ from generators.slope_inference_generator import SlopeInferenceGenerator
 from generators.nonparametric_test_generator import NonparametricTestGenerator
 from generators.empirical_cdf_generator import EmpiricalCDFGenerator
 from generators.study_design_generator import StudyDesignGenerator
+from generators.estimator_bias_enum_generator import EstimatorBiasEnumGenerator
 from generators.permutation_combination_generator import PermutationCombinationGenerator
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
 from generators.probability_addition_rule_generator import ProbabilityAdditionRuleGenerator
@@ -1372,6 +1373,7 @@ ALL_GENERATORS = [
     NonparametricTestGenerator(),
     EmpiricalCDFGenerator(),
     StudyDesignGenerator(),
+    EstimatorBiasEnumGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
