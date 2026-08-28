@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**571 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**572 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1057,6 +1057,32 @@ Steps:
   FRAC_BUILD|64/99|64/99
   Z|64/99
 Answer: 64/99
+```
+
+### Venn Probability — `VennProbabilityGenerator`  ·  middle · difficulty 3
+
+Generate exact Venn-region probability exercises.
+
+**Variants:** `probability_venn_exactly_one`, `probability_venn_from_probabilities`, `probability_venn_neither`, `probability_venn_only_A`, `probability_venn_three_set`, `probability_venn_union`
+
+```
+Problem: Of 169 customers, 40 buy tea, 100 buy pastry, and 34 do both. Let A mean 'buy tea' and B mean 'buy pastry'. One customer is chosen uniformly. Compute the probability of belonging to exactly one set.
+Steps:
+  VENN_REGION|A ∩ B|34
+  S|40|34|6
+  VENN_REGION|A only|6
+  S|100|34|66
+  VENN_REGION|B only|66
+  A|6|34|40
+  A|40|66|106
+  VENN_REGION|A ∪ B|106
+  S|169|106|63
+  VENN_REGION|neither|63
+  A|6|66|72
+  VENN_REGION|exactly one|72
+  PROB_SETUP|72|169
+  Z|72/169
+Answer: 72/169
 ```
 
 ### Integer Operations — `IntegerOperationsGenerator`  ·  middle · difficulty 3
