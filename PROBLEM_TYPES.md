@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**588 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**589 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6860,6 +6860,24 @@ Steps:
   CHECK|Poisson mean equals variance|27|27
   Z|Poisson(27); mean 27; variance 27
 Answer: Poisson(27); mean 27; variance 27
+```
+
+### Probability Inequality — `ProbabilityInequalityGenerator`  ·  college · difficulty 3
+
+Generate exact probability-inequality and LLN-bound exercises.
+
+**Variants:** `probability_inequality_bonferroni_lower`, `probability_inequality_boole_union_bound`, `probability_inequality_chebyshev`, `probability_inequality_chebyshev_find_k`, `probability_inequality_chebyshev_within`, `probability_inequality_compare_exact`, `probability_inequality_lln_bound`, `probability_inequality_lln_sample_size`, `probability_inequality_markov`
+
+```
+Problem: At the indigo review in Quincy, Priya studies iid variables with variance 25 and sample size n=167. For tolerance ε=2/5. Target: P(abs(Xbar−μ)≥2/5). What upper bound applies to the sample-mean error?
+Steps:
+  INEQ_FORMULA|LLN via Chebyshev|P(abs(Xbar−μ)≥ε)≤Var(X)/(nε²)
+  E|2/5|2|4/25
+  M|167|4/25|668/25
+  D|25|668/25|625/668
+  INEQ_BOUND|sample-mean deviation|≤ 625/668
+  Z|625/668
+Answer: 625/668
 ```
 
 ### Relation Operations — `RelationOperationsGenerator`  ·  college · difficulty 3
