@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**623 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**624 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7247,6 +7247,28 @@ Steps:
   S|0.9772|0.0287|0.9485
   Z|0.9485
 Answer: 0.9485
+```
+
+### PValue — `PValueGenerator`  ·  high · difficulty 4
+
+Generate supplied-table p-values and p-value decisions.
+
+**Variants:** `statistics_p_value_compare_alphas`, `statistics_p_value_decision_alpha`, `statistics_p_value_from_mean_data`, `statistics_p_value_from_prop_data`, `statistics_p_value_left_tail`, `statistics_p_value_right_tail`, `statistics_p_value_two_sided`
+
+```
+Problem: At the river center during the indigo review (batch G15), a z-test uses H0: p = 1/2; Ha: p < 1/2 (left-tailed). Data: z = -2.30. Target: compare decisions at α = 0.05 and α = 0.01.
+Standard normal table, Φ(z) = P(Z < z): z=2.30: 0.9893; z=2.50: 0.9938; z=2.60: 0.9953
+Give the two-alpha composite verdict with p.
+Steps:
+  HT_SETUP|H0: p = 1/2; Ha: p < 1/2|z = -2.30
+  PVALUE_RULE|left tail|p = Φ(z)
+  TABLE_LOOKUP|Φ(2.30)|0.9893
+  REWRITE|Φ(-2.30) = 1 − Φ(2.30)
+  S|1.0000|0.9893|0.0107
+  CHECK|p vs α|p = 0.0107 < 0.05|reject H0
+  CHECK|p vs α|p = 0.0107 ≥ 0.01|fail to reject H0
+  Z|reject at 0.05, fail at 0.01; p = 0.0107
+Answer: reject at 0.05, fail at 0.01; p = 0.0107
 ```
 
 ## College

@@ -117,6 +117,7 @@ from generators.empirical_rule_generator import EmpiricalRuleGenerator
 from generators.inverse_normal_generator import InverseNormalGenerator
 from generators.sampling_distribution_enum_generator import SamplingDistributionEnumGenerator
 from generators.clt_probability_generator import CLTProbabilityGenerator
+from generators.p_value_generator import PValueGenerator
 from generators.graph_interpret_generator import GraphInterpretGenerator
 
 # Middle School (6-8) Generators
@@ -1354,6 +1355,7 @@ ALL_GENERATORS = [
     InverseNormalGenerator(),
     SamplingDistributionEnumGenerator(),
     CLTProbabilityGenerator(),
+    PValueGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
