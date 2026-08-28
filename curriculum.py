@@ -314,6 +314,7 @@ CURRICULUM = {
     "RationalsAsPairsGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "DedekindCutGenerator": {"grade_level": COLLEGE, "difficulty": 4},
     "CantorPairingGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "CountabilityBijectionGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "PartialDerivativeGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "GradientGenerator": {"grade_level": COLLEGE, "difficulty": 2},
     "MultivarChainRuleGenerator": {"grade_level": COLLEGE, "difficulty": 3},

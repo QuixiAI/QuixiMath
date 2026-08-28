@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**550 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**551 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -6503,6 +6503,54 @@ Steps:
   CHECK|(194, 107)|45558
   Z|z = 45558 ↔ (194, 107)
 Answer: z = 45558 ↔ (194, 107)
+```
+
+### Countability Bijection — `CountabilityBijectionGenerator`  ·  college · difficulty 3
+
+Generate calculations with concrete bijections to countable sets.
+
+**Variants:** `countability_bijection_calkin_wilf`, `countability_bijection_hilbert_hotel`, `countability_bijection_nat_to_evens`, `countability_bijection_nat_to_int`, `countability_bijection_nat_to_squares`
+
+```
+Problem: For n ≥ 1, the Calkin–Wilf binary walk starts at 1/1, skips the leading 1 of n in binary, then sends bit 0: a/b → a/(a + b) and bit 1: a/b → (a + b)/b. Index: n = 49674. Use each remaining binary digit to update the fraction.
+Steps:
+  BIJECTION_RULE|0|a/b → a/(a + b)
+  BIJECTION_RULE|1|a/b → (a + b)/b
+  BINARY|49674|1100001000001010
+  CW_START|leading 1|1/1
+  A|1|1|2
+  CW_STEP|bit 1|1/1|2/1
+  A|2|1|3
+  CW_STEP|bit 0|2/1|2/3
+  A|2|3|5
+  CW_STEP|bit 0|2/3|2/5
+  A|2|5|7
+  CW_STEP|bit 0|2/5|2/7
+  A|2|7|9
+  CW_STEP|bit 0|2/7|2/9
+  A|2|9|11
+  CW_STEP|bit 1|2/9|11/9
+  A|11|9|20
+  CW_STEP|bit 0|11/9|11/20
+  A|11|20|31
+  CW_STEP|bit 0|11/20|11/31
+  A|11|31|42
+  CW_STEP|bit 0|11/31|11/42
+  A|11|42|53
+  CW_STEP|bit 0|11/42|11/53
+  A|11|53|64
+  CW_STEP|bit 0|11/53|11/64
+  A|11|64|75
+  CW_STEP|bit 1|11/64|75/64
+  A|75|64|139
+  CW_STEP|bit 0|75/64|75/139
+  A|75|139|214
+  CW_STEP|bit 1|75/139|214/139
+  A|214|139|353
+  CW_STEP|bit 0|214/139|214/353
+  CHECK|49674|214/353
+  Z|term 49674 = 214/353
+Answer: term 49674 = 214/353
 ```
 
 ### Partial Derivative — `PartialDerivativeGenerator`  ·  college · difficulty 2
