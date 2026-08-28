@@ -257,6 +257,7 @@ from generators.confidence_interval_generator import ConfidenceIntervalGenerator
 from generators.hypothesis_test_generator import HypothesisTestGenerator
 from generators.two_sample_test_generator import TwoSampleTestGenerator
 from generators.chi_square_generator import ChiSquareGenerator
+from generators.type_error_power_generator import TypeErrorPowerGenerator
 from generators.permutation_combination_generator import PermutationCombinationGenerator
 from generators.binomial_probability_generator import BinomialProbabilityGenerator
 from generators.probability_addition_rule_generator import ProbabilityAdditionRuleGenerator
@@ -1360,6 +1361,7 @@ ALL_GENERATORS = [
     PValueGenerator(),
     InferenceSetupGenerator(),
     TIntervalGenerator(),
+    TypeErrorPowerGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

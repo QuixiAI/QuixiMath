@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**626 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**627 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -12845,6 +12845,28 @@ Steps:
   CHECK|branch sum|49/144
   Z|step 2; branch FS = 125/432; answer 49/144
 Answer: step 2; branch FS = 125/432; answer 49/144
+```
+
+### Type Error Power — `TypeErrorPowerGenerator`  ·  college · difficulty 3
+
+Generate critical cutoffs, Type-II errors, and exact table powers.
+
+**Variants:** `statistics_type_error_power_alpha_from_cutoff`, `statistics_type_error_power_beta`, `statistics_type_error_power_critical_xbar`, `statistics_type_error_power_effect_of_n`, `statistics_type_error_power_power`
+
+```
+Problem: At the river center during the harbor test (cohort H61), a right-tailed known-σ test uses H0: μ = 150 versus Ha: μ > 150. Data: σ = 5, n = 100, critical x̄ = 151.165, and supplied z = 2.33.
+Standard normal table, Φ(z) = P(Z < z): z=2.33: 0.9901; z=2.53: 0.9943; z=2.63: 0.9957
+What Type-I error probability corresponds to this boundary?
+Steps:
+  HT_SETUP|H0: μ = 150; Ha: μ > 150|σ = 5, n = 100
+  ROOT|100|2|10
+  D|5|10|0.5
+  S|151.165|150|1.165
+  D|1.165|0.5|2.33
+  TABLE_LOOKUP|Φ(2.33)|0.9901
+  S|1.0000|0.9901|0.0099
+  Z|α = 0.0099
+Answer: α = 0.0099
 ```
 
 ## Graduate
