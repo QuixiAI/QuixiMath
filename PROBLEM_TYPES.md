@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**656 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**657 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -562,7 +562,7 @@ Steps:
   PERIM|50
   D|24|2|12
   M|12|12|144
-  AREA|144
+  AREA|12 × 12|144
   Z|Perimeter=50, Area=144
 Answer: Perimeter=50, Area=144
 ```
@@ -3245,6 +3245,26 @@ Steps:
   ESTIMATE_CHECK|1500|1404|same product scale
   Z|26 × 54 ≈ 30 × 50 = 1500; about 1500; exact 1404
 Answer: 26 × 54 ≈ 30 × 50 = 1500; about 1500; exact 1404
+```
+
+### Geometry In Context — `GeometryInContextGenerator`  ·  middle · difficulty 3
+
+Solve seven practical geometry models without naming the method.
+
+**Variants:** `applied_geometry_in_context_border_area_distractor`, `applied_geometry_in_context_border_area_estimate_first`, `applied_geometry_in_context_border_area_plain`, `applied_geometry_in_context_border_area_with_model`, `applied_geometry_in_context_fence_against_wall_distractor`, `applied_geometry_in_context_fence_against_wall_estimate_first`, `applied_geometry_in_context_fence_against_wall_plain`, `applied_geometry_in_context_fence_against_wall_with_model`, `applied_geometry_in_context_garden_path_distractor`, `applied_geometry_in_context_garden_path_estimate_first`, `applied_geometry_in_context_garden_path_plain`, `applied_geometry_in_context_garden_path_with_model`, `applied_geometry_in_context_ladder_or_shadow_distractor`, `applied_geometry_in_context_ladder_or_shadow_estimate_first`, `applied_geometry_in_context_ladder_or_shadow_plain`, `applied_geometry_in_context_ladder_or_shadow_with_model`, `applied_geometry_in_context_packaging_cost_distractor`, `applied_geometry_in_context_packaging_cost_estimate_first`, `applied_geometry_in_context_packaging_cost_plain`, `applied_geometry_in_context_packaging_cost_with_model`, `applied_geometry_in_context_paint_coverage_distractor`, `applied_geometry_in_context_paint_coverage_estimate_first`, `applied_geometry_in_context_paint_coverage_with_model`, `applied_geometry_in_context_tiles_with_waste_distractor`, `applied_geometry_in_context_tiles_with_waste_estimate_first`, `applied_geometry_in_context_tiles_with_waste_plain`, `applied_geometry_in_context_tiles_with_waste_with_model`
+
+```
+Problem: Consider the layout from the after-school club that Lena is checking. A 21 m by 6 m garden has a 3 m wide path running outside all four edges. What area does the path cover?
+Steps:
+  MODEL_EQ|path = (27 × 12) − (21 × 6)|geometry from the situation
+  M|2|3|6
+  A|21|6|27
+  A|6|6|12
+  AREA|27 × 12|324
+  AREA|21 × 6|126
+  S|324|126|198
+  Z|path = (27 × 12) − (21 × 6); 198 m²
+Answer: path = (27 × 12) − (21 × 6); 198 m²
 ```
 
 ## High School

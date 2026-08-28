@@ -678,6 +678,7 @@ from generators.magnitude_comparison_generator import MagnitudeComparisonGenerat
 from generators.rounding_effect_generator import RoundingEffectGenerator
 from generators.significant_figures_generator import SignificantFiguresGenerator
 from generators.measurement_uncertainty_generator import MeasurementUncertaintyGenerator
+from generators.geometry_in_context_generator import GeometryInContextGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1427,6 +1428,7 @@ ALL_GENERATORS = [
     RoundingEffectGenerator(),
     SignificantFiguresGenerator(),
     MeasurementUncertaintyGenerator(),
+    GeometryInContextGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -688,6 +688,7 @@ CURRICULUM = {
     "RoundingEffectGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "SignificantFiguresGenerator": {"grade_level": HIGH, "difficulty": 2},
     "MeasurementUncertaintyGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "GeometryInContextGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 }
 
 

@@ -46,7 +46,7 @@ class GeometryAreaPerimeterGenerator(ProblemGenerator):
             # Area: w*h
             area = w * h
             steps.append(step("M", w, h, area))
-            steps.append(step("AREA", area))
+            steps.append(step("AREA", f"{w} × {h}", area))
 
         elif shape == "triangle":
             # Compose two right triangles sharing the height leg: the
@@ -65,7 +65,7 @@ class GeometryAreaPerimeterGenerator(ProblemGenerator):
             steps.append(step("M", base, height, mult))
             area = mult // 2
             steps.append(step("D", mult, 2, area))
-            steps.append(step("AREA", area))
+            steps.append(step("AREA", f"{mult} ÷ 2", area))
 
         elif shape == "parallelogram":
             height = random.randint(3, 12)
@@ -78,7 +78,7 @@ class GeometryAreaPerimeterGenerator(ProblemGenerator):
             steps.append(step("PERIM", perim))
             area = base * height
             steps.append(step("M", base, height, area))
-            steps.append(step("AREA", area))
+            steps.append(step("AREA", f"{base} × {height}", area))
 
         else:  # trapezoid (isosceles)
             # leg^2 = height^2 + offset^2 with a Pythagorean triple
@@ -98,10 +98,10 @@ class GeometryAreaPerimeterGenerator(ProblemGenerator):
             steps.append(step("D", sum_bases, 2, half_sum))
             area = half_sum * height
             steps.append(step("M", half_sum, height, area))
-            steps.append(step("AREA", area))
+            steps.append(step("AREA", f"{half_sum} × {height}", area))
 
         perim_val = next(s.split("|")[1] for s in steps if s.startswith("PERIM"))
-        area_val = next(s.split("|")[1] for s in steps if s.startswith("AREA"))
+        area_val = next(s.split("|")[-1] for s in steps if s.startswith("AREA"))
         final_answer = f"Perimeter={perim_val}, Area={area_val}"
         steps.append(step("Z", final_answer))
 

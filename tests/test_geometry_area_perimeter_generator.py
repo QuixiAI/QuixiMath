@@ -40,6 +40,16 @@ class TestGeometryAreaPerimeterGenerator(unittest.TestCase):
         area = 4 * 5
         self.assertEqual(res["final_answer"], f"Perimeter={perim}, Area={area}")
 
+    def test_area_opcode_keeps_expression_and_result(self):
+        for _ in range(100):
+            res = self.gen.generate()
+            area_steps = [s.split(DELIM) for s in res["steps"]
+                          if s.startswith(f"AREA{DELIM}")]
+            self.assertEqual(len(area_steps), 1)
+            self.assertEqual(len(area_steps[0]), 3)
+            self.assertEqual(area_steps[0][2],
+                             res["final_answer"].split("Area=")[1])
+
 
     def test_oracle_geometric_consistency(self):
         """A9 oracle: recompute perimeter/area from the problem text and
