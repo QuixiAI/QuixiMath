@@ -21,6 +21,56 @@ CITIES = ("Albany", "Boston", "Cedarville", "Dover", "Erie", "Fresno",
           "Galveston", "Hartford", "Ithaca", "Juneau", "Kingston", "Lowell",
           "Madison", "Norfolk", "Olympia", "Portland", "Quincy", "Raleigh",
           "Salem", "Trenton", "Utica", "Ventura", "Wichita", "Yonkers")
+QUERIES = {
+    "below": (
+        "What is the probability of a value below {x} {unit}?",
+        "Find the probability of a value below {x} {unit}.",
+        "Use the supplied table to compute the probability of a value below {x} {unit}.",
+        "Determine the normal-model probability of a value below {x} {unit}.",
+        "Standardize, then report the probability of a value below {x} {unit}.",
+    ),
+    "below_negative": (
+        "What is the probability of a value below {x} {unit}?",
+        "Find the probability of a value below {x} {unit} using symmetry.",
+        "Use the supplied table to compute the probability of a value below {x} {unit}.",
+        "Determine the lower-tail probability of a value below {x} {unit}.",
+        "Standardize the negative z-score and find the probability of a value below {x} {unit}.",
+    ),
+    "above": (
+        "What is the probability of a value above {x} {unit}?",
+        "Find the probability of a value above {x} {unit}.",
+        "Use the supplied table to compute the probability of a value above {x} {unit}.",
+        "Determine the upper-tail probability of a value above {x} {unit}.",
+        "Standardize, then report the probability of a value above {x} {unit}.",
+    ),
+    "between": (
+        "What is the probability of a value between {a} and {b} {unit}?",
+        "Find the probability of a value between {a} and {b} {unit}.",
+        "Use the table to compute the probability of a value between {a} and {b} {unit}.",
+        "Determine the normal area for a value between {a} and {b} {unit}.",
+        "Standardize both bounds and report the probability of a value between {a} and {b} {unit}.",
+    ),
+    "inverse_lookup": (
+        "Find x such that P(X < x) = {probability} by reading the supplied table backwards.",
+        "Find x such that P(X < x) = {probability} using the matching supplied z entry.",
+        "Find x such that P(X < x) = {probability}; invert the standardization exactly.",
+        "Find x such that P(X < x) = {probability} from the supplied inverse lookup.",
+        "Find x such that P(X < x) = {probability}, then check the resulting raw score.",
+    ),
+    "symmetric_interval": (
+        "What is the probability in the symmetric interval from {lower} to {upper} {unit}?",
+        "Find the probability in the symmetric interval from {lower} to {upper} {unit}.",
+        "Use the table to compute the symmetric interval from {lower} to {upper} {unit}.",
+        "Determine the normal area in the symmetric interval from {lower} to {upper} {unit}.",
+        "Standardize the symmetric interval from {lower} to {upper} {unit} and report its probability.",
+    ),
+}
+
+
+def _query(variant, selector, **fields):
+    """Choose wording from generated parameters without consuming RNG state."""
+    templates = QUERIES[variant]
+    return templates[selector % len(templates)].format(**fields)
 
 
 class NormalTableGenerator(ProblemGenerator):
@@ -102,8 +152,8 @@ class NormalTableGenerator(ProblemGenerator):
                 step("CHECK", f"P(X < {exact(x)})", target_probability),
             ])
             answer = exact(x)
-            question = (f"Find x such that P(X < x) = {target_probability} "
-                        "by reading the supplied table backwards.")
+            question = _query(variant, mu + sigma + int(10 * z),
+                              probability=target_probability)
         elif variant == "symmetric_interval":
             z = round(random.randint(3, 25) / 10, 1)
             z_fraction = Fraction(str(z))
@@ -124,8 +174,8 @@ class NormalTableGenerator(ProblemGenerator):
                 step("CHECK", "symmetric tails have equal area", p4(answer_value)),
             ])
             answer = p4(answer_value)
-            question = (f"What is the probability in the symmetric interval "
-                        f"from {exact(lower)} to {exact(upper)} {unit}?")
+            question = _query(variant, mu + sigma + int(10 * z),
+                              lower=exact(lower), upper=exact(upper), unit=unit)
         elif variant == "between":
             z1, z2 = sorted(random.sample([round(v / 10, 1)
                                            for v in range(3, 26)], 2))
@@ -141,8 +191,9 @@ class NormalTableGenerator(ProblemGenerator):
             steps.append(step("REWRITE", f"{target} = Φ({z2:.2f}) - Φ({z1:.2f})"))
             answer = round(phi(z2) - phi(z1), 4)
             steps.append(step("S", p4(phi(z2)), p4(phi(z1)), p4(answer)))
-            question = (f"What is the probability of a value between "
-                        f"{self._fmt(a)} and {self._fmt(b)} {unit}?")
+            question = _query(variant,
+                              mu + sigma + int(10 * z1) + int(10 * z2),
+                              a=self._fmt(a), b=self._fmt(b), unit=unit)
         else:
             z = zpick()
             if variant == "below_negative":
@@ -174,11 +225,8 @@ class NormalTableGenerator(ProblemGenerator):
                                   f"Φ({z_signed:.2f}) = 1 - Φ({z:.2f})"))
                 answer = round(1 - phi(z), 4)
                 steps.append(step("S", "1.0000", p4(phi(z)), p4(answer)))
-            question = {
-                "below": f"What is the probability of a value below {self._fmt(x)} {unit}?",
-                "below_negative": f"What is the probability of a value below {self._fmt(x)} {unit}?",
-                "above": f"What is the probability of a value above {self._fmt(x)} {unit}?",
-            }[variant]
+            question = _query(variant, mu + sigma + int(10 * z),
+                              x=self._fmt(x), unit=unit)
 
         final_answer = answer if variant in ("inverse_lookup", "symmetric_interval") \
             else p4(answer)

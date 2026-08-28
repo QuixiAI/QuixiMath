@@ -28,16 +28,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **561 problem-type entries** in the generated catalog, one per registered
+- **603 problem-type entries** in the generated catalog, one per registered
   generator class
-- **577 registered generator instances**; **576** are in the default pool
-- **560 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **619 registered generator instances**; **618** are in the default pool
+- **602 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **1,426 distinct operation variant labels** across the catalog
-- **1,774 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
-- Catalog grade-band distribution: **41 elementary**, **71 middle**,
-  **161 high**, **171 college**, **117 graduate**
+- **1,697 distinct operation variant labels** across the catalog
+- **1,883 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- Catalog grade-band distribution: **46 elementary**, **78 middle**,
+  **171 high**, **185 college**, **123 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
@@ -72,6 +72,21 @@ Coverage now spans elementary through graduate-level topics:
   propositional and predicate logic, proof systems, sets, relations, functions,
   number constructions, ordinals and cardinals, type theory, ZF axiom
   identification, finite-structure isomorphism, and critic records.
+- **Probability strand:** 47 generator classes and 280 internal variants span
+  likelihood language and finite experiments through conditional expectation,
+  named distributions, limit bounds, random walks, finite Markov chains,
+  sigma-algebras, martingales, optional stopping, and critic records. Every
+  variant has 3–5 prompt phrasings and a prompt-only exact oracle test.
+
+### Hugging Face dataset-card note
+
+The hosted [QuixiMath-1B dataset](https://huggingface.co/datasets/QuixiAI/QuixiMath-1B)
+is a release artifact and may lag the current generator registry. Future
+dataset cards should pin the source commit and publish the generated inventory
+and observed grade/difficulty/operation distributions for that release. For the
+probability strand, the card should also state that answers use reduced exact
+fractions wherever possible; four-decimal probabilities appear only when the
+needed normal-table or exponential constant is supplied inside the prompt.
 
 Signature behaviors:
 
@@ -282,6 +297,7 @@ quixi-math/
 ├── curriculum.py                # class -> grade_level/difficulty table
 ├── generators/                  # generator implementations
 ├── tests/                       # unittest coverage and oracle helpers
+├── plans/                       # implementation and dataset release plans
 ├── tools/
 │   ├── gen_opcode_legend.py     # regenerates OPCODES.md
 │   ├── gen_problem_types.py     # regenerates PROBLEM_TYPES.md

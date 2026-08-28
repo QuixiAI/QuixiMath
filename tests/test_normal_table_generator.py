@@ -9,7 +9,7 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.normal_table_generator import NormalTableGenerator
+from generators.normal_table_generator import QUERIES, NormalTableGenerator
 from helpers import DELIM
 
 
@@ -159,6 +159,23 @@ class TestNormalTableGenerator(unittest.TestCase):
                 result = gen.generate()
                 self.assertEqual(result["operation"], operation)
                 self.assertEqual(result["final_answer"], oracle_answer(result))
+
+    def test_all_variants_have_five_reachable_phrasings(self):
+        for variant in NormalTableGenerator.VARIANTS:
+            generator = NormalTableGenerator(variant)
+            seen = set()
+            for _ in range(300):
+                problem = generator.generate()["problem"].splitlines()[0]
+                for template in QUERIES[variant]:
+                    fixed = re.escape(template)
+                    fixed = re.sub(r"\\\{(?:x|a|b|lower|upper)\\\}",
+                                   r"-?\\d+(?:\\.\\d+)?", fixed)
+                    fixed = fixed.replace(r"\{unit\}", r"\S+")
+                    fixed = fixed.replace(r"\{probability\}", r"0\.\d{4}")
+                    if re.search(fixed + r"$", problem):
+                        seen.add(template)
+                        break
+            self.assertEqual(seen, set(QUERIES[variant]))
 
 
 if __name__ == "__main__":

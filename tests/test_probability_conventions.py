@@ -180,6 +180,26 @@ class ProbabilityConventionsTest(unittest.TestCase):
 
     SAMPLE = 200
 
+    def test_every_variant_has_three_to_five_phrasings(self):
+        """Phase 7 close-out: every flagged class exposes parseable wording
+        diversity, either per variant or as one shared template bank."""
+        for generator in flagged_generators("PROBABILITY"):
+            cls = type(generator)
+            module = importlib.import_module(cls.__module__)
+            variants = tuple(getattr(cls, "VARIANTS", ()))
+            queries = getattr(module, "QUERIES", None)
+            with self.subTest(generator=cls.__name__):
+                self.assertTrue(variants, "missing VARIANTS")
+                if isinstance(queries, dict):
+                    self.assertEqual(set(queries), set(variants))
+                    for variant, templates in queries.items():
+                        self.assertGreaterEqual(len(templates), 3, variant)
+                        self.assertLessEqual(len(templates), 5, variant)
+                else:
+                    self.assertIsInstance(queries, (tuple, list))
+                    self.assertGreaterEqual(len(queries), 3)
+                    self.assertLessEqual(len(queries), 5)
+
     def test_flagged_generators_obey_the_conventions(self):
         for gen in flagged_generators("PROBABILITY"):
             with self.subTest(generator=type(gen).__name__):
@@ -192,6 +212,7 @@ class ProbabilityConventionsTest(unittest.TestCase):
         flagging one for the duration of the test."""
         module = importlib.import_module(
             "generators.simple_probability_generator")
+        original = getattr(module, "PROBABILITY", None)
         module.PROBABILITY = True
         try:
             found = flagged_generators("PROBABILITY")
@@ -202,10 +223,13 @@ class ProbabilityConventionsTest(unittest.TestCase):
                     for example in sample_examples(gen, self.SAMPLE, seed=3):
                         check_example(self, example)
         finally:
-            del module.PROBABILITY
-        self.assertNotIn("SimpleProbabilityGenerator",
-                         {type(g).__name__
-                          for g in flagged_generators("PROBABILITY")})
+            if original is None:
+                del module.PROBABILITY
+            else:
+                module.PROBABILITY = original
+        self.assertIn("SimpleProbabilityGenerator",
+                      {type(g).__name__
+                       for g in flagged_generators("PROBABILITY")})
 
 
 class CheckerFixtureTest(unittest.TestCase):
