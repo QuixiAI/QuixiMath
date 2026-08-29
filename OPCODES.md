@@ -46,7 +46,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `ALLOCATE` | 3 | `ALLOCATE\|freshmen\|96/168 × 21\|12` | study_design_generator.py |
 | `ALPHA` | 2 | `ALPHA\|line 2\|4: g; 5: ¬f ∨ ¬f` | kernel_ridge_generator.py, semantic_tableau_generator.py |
 | `ALPHA_RENAME` | 2 | `ALPHA_RENAME\|lambda s. m\|lambda z. m` | lambda_reduction_generator.py |
-| `AMORT_ROW` | 3 | `AMORT_ROW\|1\|interest=$13455.00\|principal=$30370.00,balance=$59330.00` | annuity_generator.py |
+| `AMORT_ROW` | 3 | `AMORT_ROW\|1\|interest=$10300.00\|principal=$1750.00,balance=$18850.00` | annuity_generator.py |
 | `AMOUNT` | 2 | `AMOUNT\|dye initially\|1.05` | mixture_generator.py |
 | `AMPLITUDE` | 2 | `AMPLITUDE\|abs(-3)\|3` | sinusoid_features_generator.py |
 | `ANALOGY_SETUP` | 3 | `ANALOGY_SETUP\|man=(2,3)\|woman=(2,1)\|king=(2,6)` | embedding_similarity_generator.py |
@@ -59,8 +59,8 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `ANGLE_SETUP` | 2 | `ANGLE_SETUP\|vertical\|Vertical angles are equal` | angle_relationships_generator.py |
 | `ANGLE_SOLVE` | 2 | `ANGLE_SOLVE\|-1x = -10\|x = 10` | angle_relationships_generator.py |
 | `ANGLE_WRAP` | 2 | `ANGLE_WRAP\|191 deg\|-169 deg` | complex_log_generator.py |
-| `ANNUITY_FORMULA` | 1 | `ANNUITY_FORMULA\|interest=balance*r; principal=payment-interest` | annuity_generator.py |
-| `ANNUITY_SETUP` | 2, 3 | `ANNUITY_SETUP\|amortization schedule\|balance=89700,payment=43825,r=15%\|periods=2` | annuity_generator.py |
+| `ANNUITY_FORMULA` | 1 | `ANNUITY_FORMULA\|FV = PMT*((1+r)^n - 1)/r` | annuity_generator.py |
+| `ANNUITY_SETUP` | 2, 3 | `ANNUITY_SETUP\|ordinary annuity future value\|PMT=4470,r=8%,n=2` | annuity_generator.py |
 | `ANOVA_ROW` | 3 | `ANOVA_ROW\|A\|mean 68\|SS 20` | anova_generator.py |
 | `ANOVA_SETUP` | 2 | `ANOVA_SETUP\|k = 4, n = 4\|one-way ANOVA; equal group sizes` | anova_generator.py |
 | `ANTICHAIN` | 2 | `ANTICHAIN\|{1, 9, 46}\|size 3` | partial_order_generator.py |
@@ -193,7 +193,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `BUFFON_FORMULA` | 1, 2 | `BUFFON_FORMULA\|P(cross)=2L/(pi*d)` | expected_value_classics_generator.py |
 | `C` | 2, 3 | `C\|1/2\|14\|7/14` | alternative_means_generator.py, complement_probability_generator.py, experimental_probability_generator.py, fraction_comparison_generator.py, fraction_op_generator.py, mixed_number_operation_generator.py, rational_expr_add_sub_generator.py |
 | `CAGR` | 2 | `CAGR\|(25/16)^(1/2)\|1.25` | index_and_growth_generator.py |
-| `CALC` | 1 | `CALC\|x = 8` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `CALC` | 1 | `CALC\|x = 5` | systems_elimination_generator.py, systems_substitution_generator.py |
 | `CAL_DIVMOD` | 3 | `CAL_DIVMOD\|22\|7\|3 R1` | calendar_arithmetic_generator.py |
 | `CAL_FORMULA` | 1 | `CAL_FORMULA\|warm ice: q1=m*c_ice*(0-Ti)` | calorimetry_generator.py |
 | `CAL_SETUP` | 3 | `CAL_SETUP\|start 2027-05-03\|end 2027-10-24\|days between` | calendar_arithmetic_generator.py, calorimetry_generator.py |
@@ -295,7 +295,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `COMB_CONST` | 3 | `COMB_CONST\|7\|+6\|13` | derivative_product_quotient_generator.py, equation_from_two_points_generator.py, linear_complex_generator.py, rational_expr_add_sub_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py |
 | `COMB_FORMULA` | 1 | `COMB_FORMULA\|C(n, r) = P(n, r)/r!` | permutation_combination_generator.py |
 | `COMB_RULE` | 2 | `COMB_RULE\|S x y z\|x z (y z)` | combinatory_logic_generator.py |
-| `COMB_SETUP` | 2 | `COMB_SETUP\|choose 3 of 4\|order does not matter` | counting_classics_generator.py, permutation_combination_generator.py, stars_and_bars_generator.py |
+| `COMB_SETUP` | 2 | `COMB_SETUP\|C(18, 5)\|n!/(r!·(n-r)!)` | counting_classics_generator.py, permutation_combination_generator.py, stars_and_bars_generator.py |
 | `COMB_X` | 1, 3 | `COMB_X\|3x\|+4x\|7x` | derivative_product_quotient_generator.py, integer_puzzle_word_generator.py, linear_complex_generator.py, rational_expr_add_sub_generator.py, simplify_expression_generator.py, special_solution_equation_generator.py, systems_word_generator.py |
 | `COMMON_DEN` | 1 | `COMMON_DEN\|14` | formula_derivation_generator.py |
 | `COMMON_DIFF` | 2 | `COMMON_DIFF\|-4 - (-6)\|2` | arithmetic_sequence_generator.py, recursive_explicit_generator.py |
@@ -512,7 +512,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `DISC_CLASSIFY` | 2 | `DISC_CLASSIFY\|169 > 0\|two real solutions` | complex_quadratic_generator.py, discriminant_generator.py, polynomial_zeros_generator.py |
 | `DIST` | 3 | `DIST\|2\|2x+3\|4x+6` | derivative_limit_def_generator.py, derivative_product_quotient_generator.py, equation_from_two_points_generator.py, function_composition_generator.py, parallel_perpendicular_line_generator.py, point_slope_generator.py, polar_parametric_generator.py, radical_multiply_generator.py, radical_rationalize_generator.py, rational_expr_add_sub_generator.py, recursive_explicit_generator.py, simplify_expression_generator.py, solid_revolution_generator.py, special_solution_equation_generator.py, tangent_line_generator.py |
 | `DIST2` | 2, 3 | `DIST2\|P1\|C1\|10` | embedding_similarity_generator.py, kernel_evaluation_generator.py, kmeans_step_generator.py |
-| `DIST_COMBINE` | 1 | `DIST_COMBINE\|-18y + 172 = 46` | systems_substitution_generator.py |
+| `DIST_COMBINE` | 1 | `DIST_COMBINE\|24y - 65 = -17` | systems_substitution_generator.py |
 | `DIST_ENTRY` | 3 | `DIST_ENTRY\|state 1\|sum incoming flow\|181/540` | multi_state_markov_generator.py |
 | `DIST_FORMULA` | 1 | `DIST_FORMULA\|d = √((x2 - x1)^2 + (y2 - y1)^2)` | complex_locus_generator.py, distance_formula_generator.py, hypercube_counting_generator.py |
 | `DIST_ROW` | 3 | `DIST_ROW\|15\|1/9\|1/9` | sampling_distribution_enum_generator.py |
@@ -677,9 +677,9 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `FACTOR_PAIR_GOAL` | 2 | `FACTOR_PAIR_GOAL\|m·n = -27\|m + n = 6` | factor_trinomial_generator.py |
 | `FACTOR_SETUP` | 1 | `FACTOR_SETUP\|72` | totient_generator.py |
 | `FACT_CHECK` | 3 | `FACT_CHECK\|112\|1\|0` | factors_generator.py |
-| `FACT_FORMULA` | 1 | `FACT_FORMULA\|13! = 1·2·3·4·5·6·7·8·9·10·11·12·13` | derangement_generator.py, permutation_combination_generator.py |
+| `FACT_FORMULA` | 1 | `FACT_FORMULA\|8! = 1·2·3·4·5·6·7·8` | derangement_generator.py, permutation_combination_generator.py |
 | `FACT_PAIR` | 2 | `FACT_PAIR\|1\|112` | factors_generator.py |
-| `FACT_SETUP` | 2 | `FACT_SETUP\|13!\|expand the factorial` | permutation_combination_generator.py |
+| `FACT_SETUP` | 2 | `FACT_SETUP\|8!\|expand the factorial` | permutation_combination_generator.py |
 | `FACT_VALUE` | 2 | `FACT_VALUE\|11!\|39916800` | stars_and_bars_generator.py |
 | `FAIR_PRICE` | 2 | `FAIR_PRICE\|0.4·120 + 0.6·40\|$72.00` | decision_under_uncertainty_generator.py |
 | `FCP` | 3 | `FCP\|fonts\|6\|6` | classic_probability_puzzles_generator.py, counting_to_probability_generator.py, fundamental_counting_principle_generator.py |
@@ -694,7 +694,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `FIND_SLOPE` | 2 | `FIND_SLOPE\|Given slope (m1)\|-1/2` | parallel_perpendicular_line_generator.py |
 | `FINITE_DIFF_SETUP` | 3 | `FINITE_DIFF_SETUP\|central_derivative\|x0=-4,h=2\|f-=140,f+=24` | finite_difference_generator.py |
 | `FIN_FORMULA` | 1 | `FIN_FORMULA\|interest = balance*monthly rate; principal = payment - interest` | finance_generator.py |
-| `FIN_SETUP` | 3 | `FIN_SETUP\|loan balance = 3400\|payment = 159, annual rate = 12%\|one-payment breakdown` | finance_generator.py |
+| `FIN_SETUP` | 3 | `FIN_SETUP\|loan balance = 2700\|payment = 165, annual rate = 18%\|one-payment breakdown` | finance_generator.py |
 | `FIRSTLAW_FORMULA` | 1 | `FIRSTLAW_FORMULA\|isothermal ideal gas: DeltaU=0` | first_law_generator.py |
 | `FIRSTLAW_SETUP` | 3 | `FIRSTLAW_SETUP\|isothermal\|W=-15\|ideal gas` | first_law_generator.py |
 | `FIRST_STEP` | 2 | `FIRST_STEP\|t_1=1+P11*t_1+P12*t_2\|t_2=1+P21*t_1+P22*t_2` | multi_state_markov_generator.py |
@@ -840,7 +840,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `HYP_STATE` | 3 | `HYP_STATE\|H0: μ = 392\|Ha: μ > 392\|right-tailed` | inference_setup_generator.py |
 | `I` | 2 | `I\|5/3\|3/5` | fraction_op_generator.py, mixed_number_operation_generator.py, rational_expr_mult_div_generator.py |
 | `ICE_ROW` | 2 | `ICE_ROW\|equilibrium\|[A]=3, [B]=4.5` | equilibrium_ice_generator.py |
-| `IDENTIFY` | 2 | `IDENTIFY\|order does not matter\|use C(n, r)` | permutation_combination_generator.py |
+| `IDENTIFY` | 2 | `IDENTIFY\|order matters\|use P(n, r)` | permutation_combination_generator.py |
 | `IDENTITY` | 2 | `IDENTITY\|Vandermonde\|Σ C(3,i)C(8,6-i) = C(11,6)` | counting_classics_generator.py, function_inner_product_generator.py, index_gymnastics_generator.py |
 | `IDENTITY_SETUP` | 2 | `IDENTITY_SETUP\|verify: sin^2 β = (1 - cos β)(1 + cos β)\|transform the right side` | trig_identity_verify_generator.py |
 | `IDENT_MATCH` | 1 | `IDENT_MATCH\|sin^2 β = sin^2 β` | trig_identity_verify_generator.py |
@@ -1275,7 +1275,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `OPTICS_FORMULA` | 1 | `OPTICS_FORMULA\|1/f=1/d_o+1/d_i` | optics_generator.py |
 | `OPTICS_SETUP` | 3 | `OPTICS_SETUP\|mirror_magnification\|f=12, d_o=58\|h_o=2` | optics_generator.py |
 | `OPTION` | 2 | `OPTION\|A\|$740.00` | optimization_in_context_generator.py, representation_translation_generator.py |
-| `OPT_SETUP` | 2 | `OPT_SETUP\|1156 m of fence, barn forms the fourth side; sides x, x, and 1156 - 2x\|maximize area` | optimization_generator.py |
+| `OPT_SETUP` | 2 | `OPT_SETUP\|square sheet 6 by 6; cut corners x and fold\|maximize volume` | optimization_generator.py |
 | `ORBIT_FORMULA` | 1 | `ORBIT_FORMULA\|a_c=v^2/r` | orbital_mechanics_generator.py |
 | `ORBIT_SETUP` | 3 | `ORBIT_SETUP\|centripetal_force\|m=6\|r=40, v=16` | orbital_mechanics_generator.py |
 | `ORDER_MAG` | 3 | `ORDER_MAG\|$57800000.00\|10^7 dollars\|5.78 × 10^7` | magnitude_comparison_generator.py |
@@ -1356,7 +1356,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PEANO_BASE` | 2 | `PEANO_BASE\|S0 + 0\|S0` | peano_arithmetic_generator.py |
 | `PEANO_EQ` | 2 | `PEANO_EQ\|SSSSS0^S0\|SSSSS0^0 · SSSSS0` | peano_arithmetic_generator.py |
 | `PERCENTILE_PICK` | 2 | `PERCENTILE_PICK\|position 2\|32.5` | nonparametric_test_generator.py |
-| `PERCENT_CALC_PART` | 3 | `PERCENT_CALC_PART\|0.55\|1840\|1012` | percent_problem_generator.py |
+| `PERCENT_CALC_PART` | 3 | `PERCENT_CALC_PART\|1.555\|1225\|1904.875` | percent_problem_generator.py |
 | `PERCENT_TO_DEC` | 2 | `PERCENT_TO_DEC\|51%\|0.51` | annuity_generator.py, bond_pricing_generator.py, composite_arithmetic_generator.py, exponential_model_generator.py, fill_in_step_generator.py, finance_generator.py, fraction_decimal_percent_converter.py, mixture_generator.py, npv_irr_generator.py, percent_chain_generator.py, percent_problem_generator.py, percent_word_problem_generator.py, piecewise_evaluation_generator.py, plausibility_critic_generator.py, portfolio_generator.py, qualitative_reasoning_generator.py, tip_bill_split_generator.py, weighted_mean_generator.py |
 | `PERCEPTRON_RULE` | 2 | `PERCEPTRON_RULE\|score=w0+w1*x1+w2*x2\|if y*score <= 0 update` | perceptron_generator.py |
 | `PERCEPTRON_SAMPLE` | 3 | `PERCEPTRON_SAMPLE\|i=1\|x=(-2,0)\|y=1` | perceptron_generator.py |
@@ -1366,10 +1366,10 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PERIM` | 1 | `PERIM\|40` | geometry_area_perimeter_generator.py, polygon_perimeter_generator.py |
 | `PERIOD` | 1 | `PERIOD\|180°` | sinusoid_features_generator.py |
 | `PERM_COMPOSE` | 3 | `PERM_COMPOSE\|i=1\|tau(i)=3\|sigma(tau(i))=5` | permutation_group_generator.py |
-| `PERM_FORMULA` | 1 | `PERM_FORMULA\|P(n, r) = n·(n-1)···(n-r+1), 7 factors` | permutation_combination_generator.py |
+| `PERM_FORMULA` | 1 | `PERM_FORMULA\|P(n, r) = n·(n-1)···(n-r+1), 4 factors` | permutation_combination_generator.py |
 | `PERM_RESULT` | 1 | `PERM_RESULT\|[5, 4, 1, 3, 2]` | permutation_group_generator.py |
 | `PERM_ROW` | 2 | `PERM_ROW\|{5, 18, 21} vs {25, 30, 37}\|44/3 − 92/3 = -16` | nonparametric_test_generator.py |
-| `PERM_SETUP` | 2, 3 | `PERM_SETUP\|P(16, 7)\|n!/(n-r)!` | permutation_combination_generator.py, permutation_group_generator.py |
+| `PERM_SETUP` | 2, 3 | `PERM_SETUP\|P(14, 4)\|n!/(n-r)!` | permutation_combination_generator.py, permutation_group_generator.py |
 | `PERPLEXITY` | 2 | `PERPLEXITY\|exp(CE)\|16` | perplexity_generator.py |
 | `PERPLEXITY_SETUP` | 2 | `PERPLEXITY_SETUP\|tokens=200\|p=1/16` | perplexity_generator.py |
 | `PER_1000` | 2 | `PER_1000\|37 × 1000/50000\|0.74 per 1000` | risk_communication_generator.py |
@@ -1502,10 +1502,10 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PURITY` | 1 | `PURITY\|Tr(rho^2)=265/361` | density_matrix_generator.py |
 | `PUZZLE_REL` | 2 | `PUZZLE_REL\|consecutive\|x, x+1, x+2` | integer_puzzle_word_generator.py |
 | `PVALUE_RULE` | 2 | `PVALUE_RULE\|right tail\|p = 1 − Φ(z)` | p_value_generator.py |
-| `PYTHAG_CALCULATE` | 2 | `PYTHAG_CALCULATE\|d² = 20736 + 321489 = 342225\|342225` | pythag_leg_generator.py |
-| `PYTHAG_CONTEXT` | 3 | `PYTHAG_CONTEXT\|displacement\|east=144m, north=567m\|diagram=WTA` | pythag_leg_generator.py |
+| `PYTHAG_CALCULATE` | 2 | `PYTHAG_CALCULATE\|h² = 900 - 324 = 576\|576` | pythag_leg_generator.py |
+| `PYTHAG_CONTEXT` | 3 | `PYTHAG_CONTEXT\|ladder\|ladder=30ft, given=18ft\|diagram=ULJ` | pythag_leg_generator.py |
 | `PYTHAG_FORMULA` | 1 | `PYTHAG_FORMULA\|a² + b² = c²` | pythag_hyp_generator.py, pythag_leg_generator.py |
-| `PYTHAG_MODEL` | 3 | `PYTHAG_MODEL\|east=144\|north=567\|distance=?` | pythag_leg_generator.py |
+| `PYTHAG_MODEL` | 3 | `PYTHAG_MODEL\|ground=18\|wall=?\|ladder=30` | pythag_leg_generator.py |
 | `PYTHAG_ROOT` | 2 | `PYTHAG_ROOT\|13225\|115` | pythag_leg_generator.py |
 | `PYTHAG_SETUP` | 2, 3 | `PYTHAG_SETUP\|legs=120,442\|hypotenuse YL=?` | pythag_hyp_generator.py, pythag_leg_generator.py |
 | `PYTHAG_SOLVE` | 2 | `PYTHAG_SOLVE\|b² = 1755625 - 1742400\|13225` | pythag_leg_generator.py |
@@ -1546,8 +1546,8 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `RAPIDITY_SUM` | 2 | `RAPIDITY_SUM\|collinear boosts\|1` | minkowski_interval_generator.py |
 | `RATE` | 2, 3 | `RATE\|together\|1/5 job per hour` | work_rate_generator.py |
 | `RATE_FORMULA` | 1 | `RATE_FORMULA\|P(T_2≤t)=1-e^(-lambda*t)(1+lambda*t)` | poisson_process_generator.py |
-| `RATE_MONTHLY` | 2 | `RATE_MONTHLY\|12% / 12\|0.01` | finance_generator.py |
-| `RATE_SETUP` | 2 | `RATE_SETUP\|cube: ds/dt = 3 ft/min; s = 20 ft\|dV/dt` | related_rates_generator.py |
+| `RATE_MONTHLY` | 2 | `RATE_MONTHLY\|18% / 12\|0.015` | finance_generator.py |
+| `RATE_SETUP` | 2 | `RATE_SETUP\|91 ft ladder; the base slides away at 2 ft/min; base is 84 ft from the wall\|dy/dt` | related_rates_generator.py |
 | `RATE_SUM` | 2 | `RATE_SUM\|1/15 + 1/10\|1/6` | work_rate_generator.py |
 | `RATE_SUPPLIED` | 2 | `RATE_SUPPLIED\|1 USD\|0.9 EUR` | money_life_generator.py |
 | `RATIO` | 2, 3 | `RATIO\|3*y = x\|y = x/3` | lagrange_multiplier_generator.py, simplex_generator.py |
@@ -1559,7 +1559,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `RAW_FORMULA` | 1 | `RAW_FORMULA\|x = μ + z·σ` | inverse_normal_generator.py, normal_table_generator.py, z_score_generator.py |
 | `REACH_PASS` | 2 | `REACH_PASS\|k=0\|R1=(1,1,0,0,0); R2=(0,1,1,0,0); R3=(1,0,1,0,1); R4=(0,0,0,1,1); R5=(0,0,0,1,1)` | markov_state_classification_generator.py |
 | `REAL_RATE` | 2 | `REAL_RATE\|100·(100 + 56)/(100 + 0) − 100\|56%` | index_and_growth_generator.py |
-| `REARRANGE_EQ` | 1 | `REARRANGE_EQ\|whole = 12927 / 0.62` | percent_problem_generator.py |
+| `REARRANGE_EQ` | 1 | `REARRANGE_EQ\|whole = 5678 / 0.085` | percent_problem_generator.py |
 | `RECIPROCAL` | 2 | `RECIPROCAL\|csc θ = 1/sin θ\|-17/15` | trig_six_functions_generator.py |
 | `RECIP_ROW` | 2 | `RECIP_ROW\|36\|1/36` | alternative_means_generator.py |
 | `RECOVER_DATA` | 2 | `RECOVER_DATA\|positions 3,5,6,7\|1101` | hamming_code_generator.py |
@@ -1722,7 +1722,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `SERIES_SETUP` | 2 | `SERIES_SETUP\|Σ (-1)^(n+1)·1/n^5, n ≥ 1\|absolutely convergent, conditionally convergent, or divergent?` | legendre_construction_generator.py, power_series_generator.py, series_convergence_generator.py |
 | `SERIES_TERM` | 3 | `SERIES_TERM\|n=0\|1\|1` | grassmann_generator.py |
 | `SETUP` | 1, 2 | `SETUP\|assume u is the greatest integer; consider u + 1` | direct_proof_algebra_generator.py, induction_verify_generator.py, weighted_mean_generator.py |
-| `SETUP_PERCENT_EQ` | 1 | `SETUP_PERCENT_EQ\|percent_dec = 131929 / 80200` | percent_problem_generator.py |
+| `SETUP_PERCENT_EQ` | 1 | `SETUP_PERCENT_EQ\|percent_dec = 1904 / 3400` | percent_problem_generator.py |
 | `SET_SETUP` | 2, 3, 4 | `SET_SETUP\|A = {k}\|B = {d}\|A ∪ B` | set_expression_generator.py, set_operations_generator.py |
 | `SET_SIDE` | 2 | `SET_SIDE\|left\|∅` | counterexample_search_generator.py |
 | `SE_FORMULA` | 1 | `SE_FORMULA\|SE(x̄) = σ/√n` | clt_probability_generator.py, slope_inference_generator.py, t_interval_generator.py |
@@ -1746,8 +1746,8 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `SIGN_RULE` | 2 | `SIGN_RULE\|arctan of a negative\|negative angle` | trig_equation_generator.py, trig_identity_eval_generator.py, trig_six_functions_generator.py, unit_circle_generator.py |
 | `SIGN_TEST` | 4 | `SIGN_TEST\|(-inf, -10)\|y = -11\|f(y) = -17 (negative)\|down` | stability_generator.py |
 | `SIMILAR_APPLY` | 3 | `SIMILAR_APPLY\|6\|4\|24` | scaling_generator.py |
-| `SIMILAR_SCALE` | 3 | `SIMILAR_SCALE\|20\|5\|4` | scaling_generator.py |
-| `SIMILAR_SETUP` | 3 | `SIMILAR_SETUP\|triangle\|6,5,7\|20 (others unknown)` | scaling_generator.py |
+| `SIMILAR_SCALE` | 3 | `SIMILAR_SCALE\|45\|9\|5` | scaling_generator.py |
+| `SIMILAR_SETUP` | 3 | `SIMILAR_SETUP\|square\|9\|45` | scaling_generator.py |
 | `SIMPLEX_SETUP` | 3 | `SIMPLEX_SETUP\|max z=6x+y\|x<=4\|y<=15` | simplex_generator.py |
 | `SIM_SETUP` | 2 | `SIM_SETUP\|△ABC ~ △DEF; DE = 9, AB = 6, EF = 12\|find BC` | similar_triangles_generator.py |
 | `SIN` | 2 | `SIN\|pi\|0` | positional_encoding_generator.py |
@@ -1871,14 +1871,14 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `SYN_DROP` | 1 | `SYN_DROP\|1` | horner_evaluation_generator.py, polynomial_zeros_generator.py, synthetic_division_generator.py |
 | `SYN_ROW` | 1 | `SYN_ROW\|1, -4, -3, 2, 4` | polynomial_zeros_generator.py, synthetic_division_generator.py |
 | `SYSTEMATIC_PICK` | 2 | `SYSTEMATIC_PICK\|1\|3` | study_design_generator.py |
-| `SYS_ADD` | 1 | `SYS_ADD\|Add equations: 8y = 64` | systems_elimination_generator.py |
-| `SYS_EQ_NEW` | 1 | `SYS_EQ_NEW\|New equation with x only` | systems_substitution_generator.py |
-| `SYS_ISOLATE` | 2 | `SYS_ISOLATE\|Isolate x in Eq 1\|x = -5y + 43` | systems_substitution_generator.py |
+| `SYS_ADD` | 1 | `SYS_ADD\|Add equations: -4x = -16` | systems_elimination_generator.py |
+| `SYS_EQ_NEW` | 1 | `SYS_EQ_NEW\|New equation with y only` | systems_substitution_generator.py |
+| `SYS_ISOLATE` | 2 | `SYS_ISOLATE\|Isolate x in Eq 1\|x = -3y + 19` | systems_substitution_generator.py |
 | `SYS_MULT` | 1 | `SYS_MULT\|Eq2 * -1` | systems_elimination_generator.py |
-| `SYS_REWRITE` | 2 | `SYS_REWRITE\|x - 3y = -38\|-x + 5y = 58` | systems_elimination_generator.py |
-| `SYS_SETUP` | 2 | `SYS_SETUP\|x + 5y = 43\|4x + 2y = 46` | systems_elimination_generator.py, systems_substitution_generator.py |
-| `SYS_SUBST` | 1 | `SYS_SUBST\|Substitute x in Eq 2` | systems_substitution_generator.py |
-| `SYS_SUBST_BACK` | 1 | `SYS_SUBST_BACK\|Substitute y=7 into x = -5y + 43` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `SYS_REWRITE` | 2 | `SYS_REWRITE\|-4x + 5y = 46\|3x - 5y = -37` | systems_elimination_generator.py |
+| `SYS_SETUP` | 2 | `SYS_SETUP\|x = -4y + 13\|-5x + 4y = -17` | systems_elimination_generator.py, systems_substitution_generator.py |
+| `SYS_SUBST` | 1 | `SYS_SUBST\|Substitute (-4y + 13) for x in Eq 2` | systems_substitution_generator.py |
+| `SYS_SUBST_BACK` | 1 | `SYS_SUBST_BACK\|Substitute y=2 into Eq 1` | systems_elimination_generator.py, systems_substitution_generator.py |
 | `TABLEAU` | 2, 3 | `TABLEAU\|initial\|s1: x + s1 = 4\|s2: y + s2 = 15` | simplex_generator.py |
 | `TABLEAU_ROOT` | 1 | `TABLEAU_ROOT\|(g ∧ (¬f ∨ ¬f)) ∨ (g ∨ t)` | semantic_tableau_generator.py |
 | `TABLEAU_RULE` | 3 | `TABLEAU_RULE\|3bar x 3bar\|two antiboxes split into symmetric plus antisymmetric\|6bar + 3` | young_tableaux_generator.py |

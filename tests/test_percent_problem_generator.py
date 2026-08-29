@@ -12,8 +12,20 @@ repo_root = os.path.dirname(current_dir)
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.percent_problem_generator import PercentProblemGenerator
+from generators.percent_problem_generator import MODIFIERS, PercentProblemGenerator
 from helpers import DELIM
+
+
+def base_op(operation):
+    """Strips the trailing ``_<modifier>`` the applied-strand sweep added."""
+    for modifier in MODIFIERS:
+        if operation.endswith(f"_{modifier}"):
+            return operation[: -(len(modifier) + 1)]
+    return operation
+
+
+def clean(problem):
+    return re.sub(r"^An unrelated note mentions \d+ unrelated items\. ", "", problem)
 
 
 def decimal_text(value):
@@ -77,7 +89,7 @@ class TestPercentProblemGenerator(unittest.TestCase):
         self.assertEqual(final_step.split(DELIM)[1], result["final_answer"])
 
         # Check for core percent steps based on operation type
-        op = result["operation"]
+        op = base_op(result["operation"])
         steps_str = "|".join(result["steps"]) # For easier searching
 
         if op == "percent_find_part":
@@ -127,8 +139,8 @@ class TestPercentProblemGenerator(unittest.TestCase):
             self.test_generate_output_format()
 
             # Check if problem string looks reasonable based on type
-            op = result["operation"]
-            problem = result["problem"]
+            op = base_op(result["operation"])
+            problem = clean(result["problem"])
             if op == "percent_find_part":
                 self.assertIn("What is", problem)
                 self.assertIn("% of", problem)
@@ -138,8 +150,10 @@ class TestPercentProblemGenerator(unittest.TestCase):
                  self.assertIn("is", problem)
                  self.assertIn("% of what number", problem)
 
-            # Check final answer format
+            # Check final answer format (stripping any with_model prefix)
             final_answer = result["final_answer"]
+            if "; " in final_answer:
+                final_answer = final_answer.rsplit("; ", 1)[-1]
             if op == "percent_find_percent":
                 self.assertTrue(final_answer.endswith('%'), "Find Percent answer should end with %")
                 try:
@@ -156,8 +170,9 @@ class TestPercentProblemGenerator(unittest.TestCase):
         """A9 oracle: independently solve all three percent forms."""
         for _ in range(1000):
             result = self.generator.generate()
-            self.assertEqual(oracle_answer(result["problem"]),
-                             result["final_answer"], result["problem"])
+            self.assertTrue(
+                result["final_answer"].endswith(oracle_answer(clean(result["problem"]))),
+                result["problem"])
 
     def test_long_division_arithmetic(self):
         for _ in range(500):
@@ -177,10 +192,29 @@ class TestPercentProblemGenerator(unittest.TestCase):
     def test_pipe_safe_and_plain_numbers(self):
         for _ in range(300):
             result = self.generator.generate()
-            self.assertNotIn("E", result["final_answer"].upper())
+            answer = result["final_answer"]
+            if "; " in answer:
+                answer = answer.rsplit("; ", 1)[-1]
+            self.assertNotIn("E", answer.upper())
             for raw_step in result["steps"]:
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(58)
+        for modifier in MODIFIERS:
+            result = PercentProblemGenerator(modifier).generate()
+            codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+            self.assertTrue(result["operation"].endswith(f"_{modifier}"))
+            if modifier == "distractor":
+                self.assertEqual(codes[0], "SELECT_RELEVANT")
+            elif modifier == "estimate_first":
+                self.assertEqual(codes[0], "ESTIMATE")
+                self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+            elif modifier == "with_model":
+                self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            PercentProblemGenerator(modifier="bogus")
 
 
 if __name__ == '__main__':

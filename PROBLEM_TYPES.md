@@ -1653,14 +1653,16 @@ Answer: 17 centimeters
 
 Generates scale factor problems involving similar figures.
 
-**Variants:** `similar_missing_side`, `similar_scale_factor`
+**Variants:** `similar_missing_side_distractor`, `similar_missing_side_estimate_first`, `similar_missing_side_plain`, `similar_missing_side_with_model`, `similar_scale_factor_distractor`, `similar_scale_factor_estimate_first`, `similar_scale_factor_plain`, `similar_scale_factor_with_model`
 
 ```
 Problem: Parallelograms ABCD and EFGH are similar with sides 9 and 3 units in ABCD. If the 9-unit side corresponds to 22.5 units in EFGH, what is the length of the side corresponding to 3 units?
 Steps:
+  ESTIMATE|predict the scale of the answer|8
   SIMILAR_SETUP|parallelogram|9,3|22.5 (others unknown)
   SIMILAR_SCALE|22.5|9|2.5
   SIMILAR_APPLY|3|2.5|7.5
+  ESTIMATE_CHECK|8|15/2|15/2 ≈ 8 ✓
   Z|7.5
 Answer: 7.5
 ```
@@ -2163,11 +2165,12 @@ Answer: 27 units
 
 Generates word problems involving the Pythagorean theorem.
 
-**Variants:** `pythagorean_word_problem`
+**Variants:** `pythagorean_word_problem_distractor`, `pythagorean_word_problem_estimate_first`, `pythagorean_word_problem_plain`, `pythagorean_word_problem_with_model`
 
 ```
-Problem: A rectangle has a length of 36 units and a width of 27 units. What is the length of its diagonal? Use right-triangle diagram KRM, with the right angle at R.
+Problem: An unrelated note mentions 589 unrelated items. A rectangle has a length of 36 units and a width of 27 units. What is the length of its diagonal? Use right-triangle diagram KRM, with the right angle at R.
 Steps:
+  SELECT_RELEVANT|used: length 36, width 27|ignored: 589 unrelated items
   PYTHAG_CONTEXT|rectangle_diagonal|length=36, width=27|diagram=KRM
   PYTHAG_MODEL|length=36|width=27|diagonal=?
   PYTHAG_FORMULA|d² = l² + w²
@@ -2338,11 +2341,12 @@ Answer: 5/12
 
 Everyday financial arithmetic: simple interest, annual compounding, loan payment breakdowns, and budget percentage splits. Amounts are constructed so dollar-and-cent answers are exact.
 
-**Variants:** `finance_budget_split`, `finance_compound_interest`, `finance_loan_payment`, `finance_simple_interest`
+**Variants:** `finance_budget_split_distractor`, `finance_budget_split_estimate_first`, `finance_budget_split_plain`, `finance_budget_split_with_model`, `finance_compound_interest_distractor`, `finance_compound_interest_estimate_first`, `finance_compound_interest_plain`, `finance_compound_interest_with_model`, `finance_loan_payment_distractor`, `finance_loan_payment_estimate_first`, `finance_loan_payment_plain`, `finance_loan_payment_with_model`, `finance_simple_interest_distractor`, `finance_simple_interest_estimate_first`, `finance_simple_interest_plain`, `finance_simple_interest_with_model`
 
 ```
 Problem: A monthly income of $3800 is split into needs 50%, savings 20%, and fun 30%. Find the dollar amount for each category.
 Steps:
+  MODEL_EQ|category amount = income × category percent|established relationship
   FIN_SETUP|income = 3800|needs 50%, savings 20%, fun 30%|budget amounts
   FIN_FORMULA|category amount = income * category percent
   PERCENT_TO_DEC|50%|0.5
@@ -2353,8 +2357,8 @@ Steps:
   M|3800|0.3|1140
   A|1900|760|2660
   A|2660|1140|3800
-  Z|needs $1900.00; savings $760.00; fun $1140.00
-Answer: needs $1900.00; savings $760.00; fun $1140.00
+  Z|category amount = income × category percent; needs $1900.00; savings $760.00; fun $1140.00
+Answer: category amount = income × category percent; needs $1900.00; savings $760.00; fun $1140.00
 ```
 
 ### Kinematics — `KinematicsGenerator`  ·  middle · difficulty 4
@@ -2794,11 +2798,12 @@ Answer: 22
 
 Factorials, permutations, and combinations with the factorial arithmetic written out as running products — the by-hand way. Combinations reuse the permutation count and divide by r!. All answers are exact integers.
 
-**Variants:** `permutation_combination_combination`, `permutation_combination_factorial`, `permutation_combination_permutation`, `permutation_combination_word`
+**Variants:** `permutation_combination_combination`, `permutation_combination_factorial`, `permutation_combination_permutation`, `permutation_combination_word_distractor`, `permutation_combination_word_estimate_first`, `permutation_combination_word_plain`, `permutation_combination_word_with_model`
 
 ```
 Problem: In how many ways can 5 people be seated in a row of 5 chairs, chosen from a group of 16? The people are labeled p_83 through p_98.
 Steps:
+  ESTIMATE|predict the scale of the answer|500000
   PERM_SETUP|arrange 5 of 16|order matters
   IDENTIFY|order matters|use P(n, r)
   PERM_FORMULA|P(n, r) = n·(n-1)···(n-r+1), 5 factors
@@ -2807,6 +2812,7 @@ Steps:
   M|240|14|3360
   M|3360|13|43680
   M|43680|12|524160
+  ESTIMATE_CHECK|500000|524160|524160 ≈ 500000 ✓
   Z|524160
 Answer: 524160
 ```
@@ -4035,11 +4041,12 @@ Answer: n = 1 or n = 23
 
 Generates various types of percentage problems with detailed division steps.
 
-**Variants:** `percent_find_part`, `percent_find_percent`, `percent_find_whole`
+**Variants:** `percent_find_part_distractor`, `percent_find_part_estimate_first`, `percent_find_part_plain`, `percent_find_part_with_model`, `percent_find_percent_distractor`, `percent_find_percent_estimate_first`, `percent_find_percent_plain`, `percent_find_percent_with_model`, `percent_find_whole_distractor`, `percent_find_whole_estimate_first`, `percent_find_whole_plain`, `percent_find_whole_with_model`
 
 ```
 Problem: 177384 is what percent of 91200?
 Steps:
+  MODEL_EQ|percent = (part/whole) × 100|established relationship
   SETUP_PERCENT_EQ|percent_dec = 177384 / 91200
   DIV_SETUP|177384|91200
   D|177384|91200|1
@@ -4059,8 +4066,8 @@ Steps:
   S|456000|456000|0
   PLACE_DP_Q|1945|1|1.945
   DEC_TO_PERCENT|1.945|194.5%
-  Z|194.5%
-Answer: 194.5%
+  Z|percent = (part/whole) × 100; 194.5%
+Answer: percent = (part/whole) × 100; 194.5%
 ```
 
 ### Literal Equation — `LiteralEquationGenerator`  ·  high · difficulty 4
@@ -4269,13 +4276,14 @@ Answer: y = -1/3x - 8
 
 Generates systems of linear equations to be solved by substitution.
 
-**Variants:** `systems_substitution`
+**Variants:** `systems_substitution_distractor`, `systems_substitution_estimate_first`, `systems_substitution_plain`, `systems_substitution_with_model`
 
 ```
 Problem: Solve the system:
 1) y = 3x - 3
 2) 2x + y = 7
 Steps:
+  MODEL_EQ|isolate a variable in one equation, then substitute into the other|established relationship
   SYS_SETUP|y = 3x - 3|2x + y = 7
   SYS_SUBST|Substitute (3x - 3) for y in Eq 2
   SYS_EQ_NEW|New equation with x only
@@ -4284,21 +4292,22 @@ Steps:
   EQ_OP_BOTH|divide|5|x|2
   SYS_SUBST_BACK|Substitute x=2 into Eq 1
   CALC|y = 3
-  Z|x=2, y=3
-Answer: x=2, y=3
+  Z|isolate a variable in one equation, then substitute into the other; x=2, y=3
+Answer: isolate a variable in one equation, then substitute into the other; x=2, y=3
 ```
 
 ### Systems Elimination — `SystemsEliminationGenerator`  ·  high · difficulty 5
 
 Generates systems of linear equations to be solved by elimination.
 
-**Variants:** `systems_elimination`
+**Variants:** `systems_elimination_distractor`, `systems_elimination_estimate_first`, `systems_elimination_plain`, `systems_elimination_with_model`
 
 ```
-Problem: Solve the system by elimination:
+Problem: An unrelated note mentions 589 unrelated items. Solve the system:
 1) -x + 5y = 13
 2) 2x + 5y = 19
 Steps:
+  SELECT_RELEVANT|used: -x + 5y = 13, 2x + 5y = 19|ignored: 589 unrelated items
   SYS_SETUP|-x + 5y = 13|2x + 5y = 19
   SYS_MULT|Eq2 * -1
   SYS_REWRITE|-x + 5y = 13|-2x - 5y = -19
@@ -6328,11 +6337,12 @@ Answer: y = -8x + 1
 
 Related rates on the four classic setups, each with the relation stated, differentiated through d/dt, values substituted, and the target rate isolated - all arithmetic exact (π stays symbolic).
 
-**Variants:** `related_rates_circle`, `related_rates_cone`, `related_rates_cube`, `related_rates_ladder`
+**Variants:** `related_rates_circle_distractor`, `related_rates_circle_estimate_first`, `related_rates_circle_plain`, `related_rates_circle_with_model`, `related_rates_cone_distractor`, `related_rates_cone_estimate_first`, `related_rates_cone_plain`, `related_rates_cone_with_model`, `related_rates_cube_distractor`, `related_rates_cube_estimate_first`, `related_rates_cube_plain`, `related_rates_cube_with_model`, `related_rates_ladder_distractor`, `related_rates_ladder_estimate_first`, `related_rates_ladder_plain`, `related_rates_ladder_with_model`
 
 ```
 Problem: At the training facility, a measurement is being recorded. Water pours into a conical tank (radius equals half the depth) at 17 ft³/min. How fast is the depth rising when the water is 18 ft deep? Give an exact answer.
 Steps:
+  MODEL_EQ|V = πh³/12; dV/dt = (πh²/4) · dh/dt|established relationship
   RATE_SETUP|conical tank, radius = height/2; water in at dV/dt = 17 ft³/min; depth h = 18 ft|dh/dt
   REWRITE|V = (1/3)πr^2·h with r = h/2, so V = πh^3/12
   IMPLICIT_DIFF|d/dt of V = πh^3/12|dV/dt = (πh^2/4)·dh/dt
@@ -6341,8 +6351,8 @@ Steps:
   EQ_OP_BOTH|multiply|4|68|π·324·dh/dt
   EQ_OP_BOTH|divide|324π|dh/dt|17/(81π)
   FRAC_REDUCE|68/324|17/81
-  Z|dh/dt = 17/(81π) ft/min
-Answer: dh/dt = 17/(81π) ft/min
+  Z|V = πh³/12; dV/dt = (πh²/4) · dh/dt; dh/dt = 17/(81π) ft/min
+Answer: V = πh³/12; dV/dt = (πh²/4) · dh/dt; dh/dt = 17/(81π) ft/min
 ```
 
 ### Linear Approx — `LinearApproxGenerator`  ·  high · difficulty 4
@@ -6412,11 +6422,12 @@ Answer: inflection at x = 2; concave down on (-∞, 2), concave up on (2, ∞)
 
 Optimization word problems built so every critical point is an integer: model, expand, differentiate, solve V' = 0 (rejecting the degenerate root by name), confirm with the second derivative test, and report the optimum.
 
-**Variants:** `optimization_barn_fence`, `optimization_box`, `optimization_product`
+**Variants:** `optimization_barn_fence_distractor`, `optimization_barn_fence_estimate_first`, `optimization_barn_fence_plain`, `optimization_barn_fence_with_model`, `optimization_box_distractor`, `optimization_box_estimate_first`, `optimization_box_plain`, `optimization_box_with_model`, `optimization_product_distractor`, `optimization_product_estimate_first`, `optimization_product_plain`, `optimization_product_with_model`
 
 ```
 Problem: An open-top box is made from a 4662 by 4662 sheet by cutting squares of side x from the corners and folding. What x maximizes the volume, and what is that volume?
 Steps:
+  MODEL_EQ|V = x(W − 2x)²; max at x = W/6|established relationship
   OPT_SETUP|square sheet 4662 by 4662; cut corners x and fold|maximize volume
   REWRITE|V = x(4662 - 2x)^2
   REWRITE|V = 4x^3 - 18648x^2 + 21734244x
@@ -6429,8 +6440,8 @@ Steps:
   S|4662|1554|3108
   E|3108|2|9659664
   M|777|9659664|7505558928
-  Z|x = 777; maximum volume 7505558928
-Answer: x = 777; maximum volume 7505558928
+  Z|V = x(W − 2x)²; max at x = W/6; x = 777; maximum volume 7505558928
+Answer: V = x(W − 2x)²; max at x = W/6; x = 777; maximum volume 7505558928
 ```
 
 ### Mean Value Theorem — `MeanValueTheoremGenerator`  ·  high · difficulty 4
@@ -13330,11 +13341,12 @@ Answer: q=(-33,-11,15); dequant=(-9/5,-7/10,3/5); sum_abs_error=3/100
 
 Annuity present/future value and short amortization schedules.
 
-**Variants:** `annuity_amortization`, `annuity_due`, `annuity_future_value`, `annuity_perpetuity`, `annuity_present_value`
+**Variants:** `annuity_amortization_distractor`, `annuity_amortization_estimate_first`, `annuity_amortization_plain`, `annuity_amortization_with_model`, `annuity_due_distractor`, `annuity_due_estimate_first`, `annuity_due_plain`, `annuity_due_with_model`, `annuity_future_value_distractor`, `annuity_future_value_estimate_first`, `annuity_future_value_plain`, `annuity_future_value_with_model`, `annuity_perpetuity_distractor`, `annuity_perpetuity_estimate_first`, `annuity_perpetuity_plain`, `annuity_perpetuity_with_model`, `annuity_present_value_distractor`, `annuity_present_value_estimate_first`, `annuity_present_value_plain`, `annuity_present_value_with_model`
 
 ```
-Problem: Each period opens with a $4355 deposit into a money market account that pays 50% per period. Find the future value of the annuity due after 2 periods.
+Problem: An unrelated note mentions 398 unrelated items. Each period opens with a $4355 deposit into a money market account that pays 50% per period. Find the future value of the annuity due after 2 periods.
 Steps:
+  SELECT_RELEVANT|used: payment $4355, rate 50%, periods 2|ignored: 398 unrelated items
   ANNUITY_SETUP|annuity due future value|PMT=4355,r=50%,n=2
   PERCENT_TO_DEC|50%|0.5
   ANNUITY_FORMULA|FV(due) = PMT*((1+r)^n - 1)/r*(1+r)

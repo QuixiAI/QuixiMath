@@ -619,6 +619,46 @@ def estimate_first(steps, exact_value, work, render=None):
     return out
 
 
+#: Numeric range the close-out sweep's distractor draws its irrelevant
+#: figure from — wide enough that a handful of retrofitted generators can
+#: share it without colliding with each other's plausible data.
+SWEEP_DISTRACTOR_RANGE = range(301, 901)
+
+
+def apply_applied_modifier(result, modifier, used, value, model, renderer=None):
+    """Wraps an already-complete record (with ``problem``/``steps``/
+    ``final_answer``/``operation``, ``steps[-1]`` a ``Z`` step) in one of
+    the four applied modifiers, for generators written before the strand's
+    modifier convention existed (``plans/applied_plan.md`` §7 close-out
+    sweep). Returns a new dict; ``result`` is not mutated.
+
+    ``used`` is the distractor's ``SELECT_RELEVANT`` "used:" list; ``value``
+    (a Fraction or number) and ``renderer`` drive the ``estimate_first``
+    habit (``renderer`` defaults to :func:`num_txt`); ``model`` is the
+    formula string ``with_model`` shows. The record's ``operation`` gains a
+    ``_<modifier>`` suffix.
+    """
+    problem, steps, answer = result["problem"], list(result["steps"]), result["final_answer"]
+    if modifier == "distractor":
+        occupied = {int(token) for token in re.findall(r"\d+", problem)}
+        extra = random.choice([n for n in SWEEP_DISTRACTOR_RANGE if n not in occupied])
+        problem = f"An unrelated note mentions {extra} unrelated items. {problem}"
+        steps = [select_relevant_step(used, f"{extra} unrelated items")] + steps
+    elif modifier == "estimate_first":
+        steps = estimate_first(steps, value, "predict the scale of the answer",
+                               render=renderer or num_txt)
+    elif modifier == "with_model":
+        steps = [step("MODEL_EQ", model, "established relationship")] + steps
+        answer = f"{model}; {answer}"
+        steps[-1] = step("Z", answer)
+    elif modifier != "plain":
+        raise ValueError(f"unknown modifier {modifier!r}")
+    out = dict(result)
+    out["problem"], out["steps"], out["final_answer"] = problem, steps, answer
+    out["operation"] = f"{result['operation']}_{modifier}"
+    return out
+
+
 # ---------------------------------------------------------------------------
 # The story-template engine (plans/applied_plan.md §4)
 # ---------------------------------------------------------------------------

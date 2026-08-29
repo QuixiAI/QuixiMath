@@ -8,8 +8,12 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.annuity_generator import AnnuityGenerator
+from generators.annuity_generator import MODIFIERS, AnnuityGenerator
 from helpers import DELIM
+
+
+def clean(problem):
+    return re.sub(r"^An unrelated note mentions \d+ unrelated items\. ", "", problem)
 
 
 NAME = r"[A-Z][a-z]+"
@@ -131,6 +135,7 @@ ALL_PATTERNS = [
 
 def parse(problem):
     """(variant, template_index, fields) for a problem text, or raise."""
+    problem = clean(problem)
     hits = []
     for variant, patterns in ALL_PATTERNS:
         for index, pattern in enumerate(patterns):
@@ -265,10 +270,10 @@ class TestAnnuityGenerator(unittest.TestCase):
             result = self.gen.generate()
             variant, answer, _ = oracle(result["problem"])
             seen.add(variant)
-            self.assertEqual(result["operation"], f"annuity_{variant}",
-                             result["problem"])
-            self.assertEqual(result["final_answer"], answer,
-                             result["problem"])
+            self.assertTrue(result["operation"].startswith(f"annuity_{variant}_"),
+                            result["problem"])
+            self.assertTrue(result["final_answer"].endswith(answer),
+                            result["problem"])
             check_step_arithmetic(self, result["steps"])
         self.assertEqual(seen, set(AnnuityGenerator.VARIANTS))
 
@@ -286,7 +291,8 @@ class TestAnnuityGenerator(unittest.TestCase):
         for _ in range(400):
             result = self.gen.generate()
             variant, _, fields = oracle(result["problem"])
-            setup = result["steps"][0].split(DELIM)
+            setup = next(s for s in result["steps"]
+                        if s.startswith(f"ANNUITY_SETUP{DELIM}")).split(DELIM)
             self.assertEqual(setup[0], "ANNUITY_SETUP")
             if variant == "amortization":
                 match = AMORT_SETUP_RE.fullmatch(setup[2])
@@ -330,10 +336,10 @@ class TestAnnuityGenerator(unittest.TestCase):
         for variant in AnnuityGenerator.VARIANTS:
             for _ in range(30):
                 result = AnnuityGenerator(variant).generate()
-                self.assertEqual(result["operation"], f"annuity_{variant}")
+                self.assertTrue(result["operation"].startswith(f"annuity_{variant}_"))
                 parsed_variant, answer, _ = oracle(result["problem"])
                 self.assertEqual(parsed_variant, variant)
-                self.assertEqual(result["final_answer"], answer)
+                self.assertTrue(result["final_answer"].endswith(answer))
                 check_step_arithmetic(self, result["steps"])
 
     def test_invalid_variant_rejected(self):
@@ -366,6 +372,24 @@ class TestAnnuityGenerator(unittest.TestCase):
         random.seed(4242)
         second = [self.gen.generate()["problem"] for _ in range(20)]
         self.assertEqual(first, second)
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        import random
+        random.seed(59)
+        for variant in AnnuityGenerator.VARIANTS:
+            for modifier in MODIFIERS:
+                result = AnnuityGenerator(variant, modifier).generate()
+                codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+                self.assertEqual(result["operation"], f"annuity_{variant}_{modifier}")
+                if modifier == "distractor":
+                    self.assertEqual(codes[0], "SELECT_RELEVANT")
+                elif modifier == "estimate_first":
+                    self.assertEqual(codes[0], "ESTIMATE")
+                    self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+                elif modifier == "with_model":
+                    self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            AnnuityGenerator(modifier="bogus")
 
 
 if __name__ == "__main__":

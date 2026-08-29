@@ -1,8 +1,12 @@
+import random
 import re
 import unittest
 from fractions import Fraction
 
-from generators.systems_elimination_generator import SystemsEliminationGenerator
+from generators.systems_elimination_generator import (
+    MODIFIERS, SystemsEliminationGenerator,
+)
+from helpers import DELIM
 from tests.linear_system_oracle import solve_system_problem, RENDER_WART_RE
 
 
@@ -25,8 +29,8 @@ class TestSystemsEliminationGenerator(unittest.TestCase):
         for _ in range(500):
             result = self.gen.generate()
             x_sol, y_sol = solve_system_problem(result["problem"])
-            self.assertEqual(result["final_answer"],
-                             f"x={x_sol}, y={y_sol}", result["problem"])
+            self.assertTrue(result["final_answer"].endswith(
+                f"x={x_sol}, y={y_sol}"), result["problem"])
 
     def test_check_step_arithmetic(self):
         # CHECK|substitute|<work> = <value>|<expected>: the two sides agree
@@ -44,6 +48,22 @@ class TestSystemsEliminationGenerator(unittest.TestCase):
             result = self.gen.generate()
             blob = result["problem"] + "\n" + "\n".join(result["steps"])
             self.assertNotRegex(blob, RENDER_WART_RE, result["problem"])
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(57)
+        for modifier in MODIFIERS:
+            result = SystemsEliminationGenerator(modifier).generate()
+            codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+            self.assertEqual(result["operation"], f"systems_elimination_{modifier}")
+            if modifier == "distractor":
+                self.assertEqual(codes[0], "SELECT_RELEVANT")
+            elif modifier == "estimate_first":
+                self.assertEqual(codes[0], "ESTIMATE")
+                self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+            elif modifier == "with_model":
+                self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            SystemsEliminationGenerator(modifier="bogus")
 
 
 if __name__ == '__main__':

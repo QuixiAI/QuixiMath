@@ -1,9 +1,14 @@
 import random
 from fractions import Fraction
 
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.exponential_model_generator import dec, money
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 def exact(fr):
@@ -42,10 +47,14 @@ class FinanceGenerator(ProblemGenerator):
     BUDGET_SPLITS = [(50, 20, 30), (60, 20, 20), (70, 10, 20),
                      (40, 30, 30), (55, 15, 30)]
 
-    def __init__(self, variant=None):
+    MODIFIERS = MODIFIERS
+
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     def _simple_interest(self):
         principal = random.choice([200, 300, 400, 500, 800, 1000, 1200])
@@ -71,7 +80,8 @@ class FinanceGenerator(ProblemGenerator):
             f"at {rate_pct}% per year for {years} year{'s' if years != 1 else ''}. Find the interest "
             "and ending balance."
         )
-        return "simple_interest", problem, steps, answer
+        used = [f"principal ${principal}", f"rate {rate_pct}%", f"years {years}"]
+        return "simple_interest", problem, steps, answer, used, balance, "A = P + Prt"
 
     def _compound_interest(self):
         while True:
@@ -102,7 +112,8 @@ class FinanceGenerator(ProblemGenerator):
             f"interest compounded once per year for {years} years. Find "
             "the ending balance and total interest."
         )
-        return "compound_interest", problem, steps, answer
+        used = [f"principal ${principal}", f"rate {rate_pct}%", f"years {years}"]
+        return "compound_interest", problem, steps, answer, used, balance, "A = P(1 + r)^t"
 
     def _loan_payment(self):
         balance = random.randrange(1000, 5001, 100)
@@ -133,7 +144,9 @@ class FinanceGenerator(ProblemGenerator):
             "For this month, find the interest paid, principal paid, and "
             "new balance."
         )
-        return "loan_payment", problem, steps, answer
+        used = [f"balance ${balance}", f"payment ${payment}", f"rate {annual_pct}%"]
+        return ("loan_payment", problem, steps, answer, used, new_balance,
+                "interest = balance × monthly rate; principal = payment − interest")
 
     def _budget_split(self):
         income = random.randrange(1200, 5001, 100)
@@ -163,23 +176,28 @@ class FinanceGenerator(ProblemGenerator):
             f"savings {savings_pct}%, and fun {fun_pct}%. Find the dollar "
             "amount for each category."
         )
-        return "budget_split", problem, steps, answer
+        used = [f"income ${income}", f"needs {needs_pct}%", f"savings {savings_pct}%",
+                f"fun {fun_pct}%"]
+        return ("budget_split", problem, steps, answer, used, income,
+                "category amount = income × category percent")
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
         if variant == "simple_interest":
-            op_suffix, problem, steps, answer = self._simple_interest()
+            op_suffix, problem, steps, answer, used, value, model = self._simple_interest()
         elif variant == "compound_interest":
-            op_suffix, problem, steps, answer = self._compound_interest()
+            op_suffix, problem, steps, answer, used, value, model = self._compound_interest()
         elif variant == "loan_payment":
-            op_suffix, problem, steps, answer = self._loan_payment()
+            op_suffix, problem, steps, answer, used, value, model = self._loan_payment()
         else:
-            op_suffix, problem, steps, answer = self._budget_split()
+            op_suffix, problem, steps, answer, used, value, model = self._budget_split()
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation=f"finance_{op_suffix}",
             problem=problem,
             steps=steps,
             final_answer=answer,
         )
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=money)

@@ -9,7 +9,7 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.finance_generator import FinanceGenerator, exact
+from generators.finance_generator import MODIFIERS, FinanceGenerator, exact
 from generators.exponential_model_generator import money
 from helpers import DELIM
 
@@ -108,8 +108,8 @@ class TestFinanceGenerator(unittest.TestCase):
     def test_oracle_all_variants(self):
         for _ in range(500):
             result = self.gen.generate()
-            self.assertEqual(result["final_answer"], oracle_answer(result),
-                             result["problem"])
+            self.assertTrue(result["final_answer"].endswith(oracle_answer(result)),
+                            result["problem"])
 
     def test_step_arithmetic(self):
         for _ in range(300):
@@ -136,9 +136,29 @@ class TestFinanceGenerator(unittest.TestCase):
 
     def test_all_variants_reachable(self):
         ops = set()
-        for _ in range(100):
+        for _ in range(400):
             ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 4)
+        self.assertEqual(ops, {f"finance_{v}_{m}" for v in FinanceGenerator.VARIANTS
+                               for m in MODIFIERS})
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(54)
+        for variant in FinanceGenerator.VARIANTS:
+            for modifier in MODIFIERS:
+                result = FinanceGenerator(variant, modifier).generate()
+                codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+                self.assertEqual(result["operation"], f"finance_{variant}_{modifier}")
+                if modifier == "distractor":
+                    self.assertEqual(codes[0], "SELECT_RELEVANT")
+                elif modifier == "estimate_first":
+                    self.assertEqual(codes[0], "ESTIMATE")
+                    self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+                elif modifier == "with_model":
+                    self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            FinanceGenerator("bogus")
+        with self.assertRaises(ValueError):
+            FinanceGenerator(modifier="bogus")
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

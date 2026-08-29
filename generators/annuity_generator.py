@@ -3,11 +3,15 @@ from fractions import Fraction
 from itertools import accumulate
 from math import gcd
 
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.exponential_model_generator import dec, money
 from generators.finance_generator import exact
 
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 VARIANTS = ["future_value", "present_value", "amortization", "due",
             "perpetuity"]
@@ -236,31 +240,36 @@ class AnnuityGenerator(ProblemGenerator):
     """
 
     VARIANTS = VARIANTS
+    MODIFIERS = MODIFIERS
 
-    def __init__(self, variant=None):
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
         if variant == "future_value":
-            op, problem, steps, answer = self._future_value()
+            op, problem, steps, answer, used, value, model = self._future_value()
         elif variant == "present_value":
-            op, problem, steps, answer = self._present_value()
+            op, problem, steps, answer, used, value, model = self._present_value()
         elif variant == "due":
-            op, problem, steps, answer = self._due()
+            op, problem, steps, answer, used, value, model = self._due()
         elif variant == "perpetuity":
-            op, problem, steps, answer = self._perpetuity()
+            op, problem, steps, answer, used, value, model = self._perpetuity()
         else:
-            op, problem, steps, answer = self._amortization()
-        return dict(
+            op, problem, steps, answer, used, value, model = self._amortization()
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        result = dict(
             problem_id=jid(),
             operation=f"annuity_{op}",
             problem=problem,
             steps=steps,
             final_answer=answer,
         )
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=money)
 
     def _future_value(self):
         rate_pct, periods, payment = _pick(FV_TABLE, FV_WEIGHTS)
@@ -293,7 +302,9 @@ class AnnuityGenerator(ProblemGenerator):
         problem = random.choice(FV_TEMPLATES).format(
             pmt=payment, n=periods, nth=ordinal(periods), rate=rate_pct,
             **ctx)
-        return "future_value", problem, steps, answer
+        used = [f"payment ${payment}", f"rate {rate_pct}%", f"periods {periods}"]
+        return ("future_value", problem, steps, answer, used, value,
+                "FV = PMT × ((1 + r)^n − 1)/r")
 
     def _present_value(self):
         rate_pct, periods, payment = _pick(PV_TABLE, PV_WEIGHTS)
@@ -328,7 +339,9 @@ class AnnuityGenerator(ProblemGenerator):
         problem = random.choice(PV_TEMPLATES).format(
             pmt=payment, n=periods, nth=ordinal(periods), rate=rate_pct,
             **ctx)
-        return "present_value", problem, steps, answer
+        used = [f"payment ${payment}", f"rate {rate_pct}%", f"periods {periods}"]
+        return ("present_value", problem, steps, answer, used, value,
+                "PV = PMT × (1 − (1 + r)^(−n))/r")
 
     def _due(self):
         rate_pct, periods, payment = _pick(DUE_TABLE, DUE_WEIGHTS)
@@ -363,7 +376,9 @@ class AnnuityGenerator(ProblemGenerator):
         problem = random.choice(DUE_TEMPLATES).format(
             pmt=payment, n=periods, nth=ordinal(periods), rate=rate_pct,
             **ctx)
-        return "due", problem, steps, answer
+        used = [f"payment ${payment}", f"rate {rate_pct}%", f"periods {periods}"]
+        return ("due", problem, steps, answer, used, value,
+                "FV(due) = PMT × ((1 + r)^n − 1)/r × (1 + r)")
 
     def _perpetuity(self):
         rate_pct, payment = _pick(PERP_TABLE, PERP_WEIGHTS)
@@ -385,7 +400,8 @@ class AnnuityGenerator(ProblemGenerator):
         ctx = _context(rate_pct)
         problem = random.choice(PERP_TEMPLATES).format(
             pmt=payment, rate=rate_pct, **ctx)
-        return "perpetuity", problem, steps, answer
+        used = [f"payment ${payment}", f"rate {rate_pct}%"]
+        return "perpetuity", problem, steps, answer, used, value, "PV = PMT/r"
 
     def _amortization(self):
         while True:
@@ -463,4 +479,7 @@ class AnnuityGenerator(ProblemGenerator):
         problem = random.choice(AMORT_TEMPLATES).format(
             bal=original_balance, pmt=payment, n=periods, rate=rate_pct,
             **ctx)
-        return "amortization", problem, steps, answer
+        used = [f"balance ${original_balance}", f"payment ${payment}",
+                f"rate {rate_pct}%", f"periods {periods}"]
+        return ("amortization", problem, steps, answer, used, balance,
+                "interest = balance × r; principal = payment − interest")

@@ -1,8 +1,14 @@
 import random
 from decimal import Decimal, ROUND_HALF_UP
 from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid, DELIM # Import DELIM
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 # Op-Codes:
 # PERCENT_TO_DEC: Convert percent to decimal (percent_str, decimal_val)
@@ -22,6 +28,13 @@ def plain(value):
 
 class PercentProblemGenerator(ProblemGenerator):
     """Generates various types of percentage problems with detailed division steps."""
+
+    MODIFIERS = MODIFIERS
+
+    def __init__(self, modifier=None):
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.modifier = modifier
 
     def _generate_division_steps(self, dividend_str, divisor_str):
         """
@@ -148,6 +161,8 @@ class PercentProblemGenerator(ProblemGenerator):
             part_str = plain(part)
             steps.append(step("PERCENT_CALC_PART", str(percent_dec), whole, part_str))
             final_answer_str = part_str
+            used = [f"{percent_str}%", f"whole {whole}"]
+            value, model = Fraction(part), "part = percent × whole"
 
         elif problem_type == 'find_percent':
             # "P is what percent of W?" - Requires division: part / whole
@@ -170,6 +185,8 @@ class PercentProblemGenerator(ProblemGenerator):
             answer_percent = f"{plain(calculated_percent_val)}%"
             steps.append(step("DEC_TO_PERCENT", quotient_str, answer_percent))
             final_answer_str = answer_percent
+            used = [f"part {part}", f"whole {whole}"]
+            value, model = Fraction(calculated_percent_val), "percent = (part/whole) × 100"
 
 
         else: # find_whole
@@ -187,14 +204,17 @@ class PercentProblemGenerator(ProblemGenerator):
             division_steps, _ = self._generate_division_steps(str(part), str(percent_dec))
             steps.extend(division_steps)
             final_answer_str = str(whole)
-
+            used = [f"part {part}", f"{percent_str}%"]
+            value, model = Fraction(whole), "whole = part/percent"
 
         steps.append(step("Z", final_answer_str))
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation=operation,
             problem=problem,
             steps=steps,
             final_answer=final_answer_str
         )
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=str)

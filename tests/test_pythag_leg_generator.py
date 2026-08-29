@@ -10,8 +10,14 @@ repo_root = os.path.dirname(current_dir)
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.pythag_leg_generator import PythagoreanLegGenerator, PythagoreanWordProblemGenerator
+from generators.pythag_leg_generator import (
+    MODIFIERS, PythagoreanLegGenerator, PythagoreanWordProblemGenerator,
+)
 from helpers import DELIM
+
+
+def clean(problem):
+    return re.sub(r"^An unrelated note mentions \d+ unrelated items\. ", "", problem)
 
 
 def leg_oracle(problem):
@@ -117,7 +123,7 @@ class TestPythagoreanWordProblemGenerator(unittest.TestCase):
         result = self.generator.generate()
         self.assertIsInstance(result, dict)
         self.assertIn("operation", result)
-        self.assertEqual(result["operation"], "pythagorean_word_problem")
+        self.assertTrue(result["operation"].startswith("pythagorean_word_problem_"))
 
     def test_generate_consistency(self):
         for _ in range(20):
@@ -131,8 +137,9 @@ class TestPythagoreanWordProblemGenerator(unittest.TestCase):
         """A9 oracle: independently solve every real-world context."""
         for _ in range(600):
             result = self.generator.generate()
-            self.assertEqual(word_oracle(result["problem"]),
-                             result["final_answer"], result["problem"])
+            self.assertTrue(
+                result["final_answer"].endswith(word_oracle(clean(result["problem"]))),
+                result["problem"])
 
     def test_pipe_safety_both_generators(self):
         for generator in (PythagoreanLegGenerator(), self.generator):
@@ -141,6 +148,22 @@ class TestPythagoreanWordProblemGenerator(unittest.TestCase):
                 for raw_step in result["steps"]:
                     self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                          raw_step)
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(52)
+        for modifier in MODIFIERS:
+            result = PythagoreanWordProblemGenerator(modifier).generate()
+            codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+            self.assertEqual(result["operation"], f"pythagorean_word_problem_{modifier}")
+            if modifier == "distractor":
+                self.assertEqual(codes[0], "SELECT_RELEVANT")
+            elif modifier == "estimate_first":
+                self.assertEqual(codes[0], "ESTIMATE")
+                self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+            elif modifier == "with_model":
+                self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            PythagoreanWordProblemGenerator("bogus")
 
 
 if __name__ == '__main__':

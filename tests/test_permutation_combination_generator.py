@@ -10,6 +10,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from generators.permutation_combination_generator import (
+    MODIFIERS,
     PermutationCombinationGenerator,
 )
 from helpers import DELIM
@@ -18,7 +19,7 @@ from helpers import DELIM
 def oracle_check(example):
     """A9 oracle: recompute the count from the problem text."""
     p = example["problem"]
-    ans = int(example["final_answer"])
+    ans = int(re.search(r"(\d+)$", example["final_answer"]).group(1))
     m = re.search(r"Evaluate (\d+)!", p)
     if m:
         return ans == math.factorial(int(m.group(1)))
@@ -87,9 +88,34 @@ class TestPermutationCombinationGenerator(unittest.TestCase):
 
     def test_all_variants_reachable(self):
         ops = set()
-        for _ in range(150):
+        for _ in range(600):
             ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 4)
+        expected = {"permutation_combination_factorial",
+                   "permutation_combination_permutation",
+                   "permutation_combination_combination"}
+        expected |= {f"permutation_combination_word_{m}" for m in MODIFIERS}
+        self.assertEqual(ops, expected)
+
+    def test_word_modifier_shapes_and_invalid_inputs(self):
+        random.seed(55)
+        for modifier in MODIFIERS:
+            result = PermutationCombinationGenerator("word", modifier).generate()
+            codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+            self.assertEqual(result["operation"], f"permutation_combination_word_{modifier}")
+            if modifier == "distractor":
+                self.assertEqual(codes[0], "SELECT_RELEVANT")
+            elif modifier == "estimate_first":
+                self.assertEqual(codes[0], "ESTIMATE")
+                self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+            elif modifier == "with_model":
+                self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            PermutationCombinationGenerator(modifier="bogus")
+
+    def test_non_word_variants_have_no_modifier_suffix(self):
+        for variant in ("factorial", "permutation", "combination"):
+            result = PermutationCombinationGenerator(variant).generate()
+            self.assertEqual(result["operation"], f"permutation_combination_{variant}")
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

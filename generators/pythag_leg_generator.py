@@ -1,10 +1,17 @@
 import random
+from fractions import Fraction
+
+from applied_common import apply_applied_modifier, method_word_hits
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.pythagorean_common import (
     random_scaled_triple,
     triangle_labels,
 )
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 class PythagoreanLegGenerator(ProblemGenerator):
@@ -93,26 +100,45 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
     - PYTHAG_FORMULA: State the theorem
     - PYTHAG_SUBSTITUTE: Substitute values
     - PYTHAG_CALCULATE: Perform calculations
+    - SELECT_RELEVANT / ESTIMATE / ESTIMATE_CHECK / MODEL_EQ (established
+      applied-strand modifiers; all four applied modifiers are supported —
+      ``plans/applied_plan.md`` §7 close-out sweep)
     - Z: Final answer
     """
+
+    MODIFIERS = MODIFIERS
+
+    def __init__(self, modifier=None):
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.modifier = modifier
 
     def generate(self) -> dict:
         """Generate a Pythagorean theorem word problem."""
         context = random.choice(['ladder', 'diagonal', 'distance'])
         a, b, c = random_scaled_triple()
-        vertices = triangle_labels()
-        diagram = "".join(vertices)
+        # Vertex letters are drawn independently of any wordlist; redraw the
+        # rare triple that happens to spell a banned method abbreviation
+        # (e.g. GCF, LCM) so the diagram note never names a method.
+        while True:
+            vertices = triangle_labels()
+            diagram = "".join(vertices)
+            if not method_word_hits(diagram):
+                break
         diagram_note = (f"Use right-triangle diagram {diagram}, with the "
                         f"right angle at {vertices[1]}.")
 
         if context == 'ladder':
-            return self._generate_ladder(a, b, c, diagram, diagram_note)
+            result, used, value, model = self._generate_ladder(a, b, c, diagram, diagram_note)
         elif context == 'diagonal':
-            return self._generate_diagonal(a, b, c, diagram, diagram_note)
+            result, used, value, model = self._generate_diagonal(a, b, c, diagram, diagram_note)
         else:
-            return self._generate_distance(a, b, c, diagram, diagram_note)
+            result, used, value, model = self._generate_distance(a, b, c, diagram, diagram_note)
 
-    def _generate_ladder(self, a, b, c, diagram, diagram_note) -> dict:
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=str)
+
+    def _generate_ladder(self, a, b, c, diagram, diagram_note):
         """Generate ladder against wall problem."""
         # Ladder (c) against wall, find either height (b) or distance from wall (a)
         find_height = random.choice([True, False])
@@ -154,15 +180,17 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
         final_answer = f"{answer} feet"
         steps_list.append(step("Z", final_answer))
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation="pythagorean_word_problem",
             problem=problem,
             steps=steps_list,
             final_answer=final_answer,
         )
+        used = [f"ladder {c} ft", f"given {given} ft"]
+        return result, used, Fraction(answer), "a² + b² = c²"
 
-    def _generate_diagonal(self, a, b, c, diagram, diagram_note) -> dict:
+    def _generate_diagonal(self, a, b, c, diagram, diagram_note):
         """Generate rectangle diagonal problem."""
         problem = (f"A rectangle has a length of {a} units and a width of "
                    f"{b} units. What is the length of its diagonal? "
@@ -181,15 +209,17 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
         final_answer = f"{c} units"
         steps_list.append(step("Z", final_answer))
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation="pythagorean_word_problem",
             problem=problem,
             steps=steps_list,
             final_answer=final_answer,
         )
+        used = [f"length {a}", f"width {b}"]
+        return result, used, Fraction(c), "d² = l² + w²"
 
-    def _generate_distance(self, a, b, c, diagram, diagram_note) -> dict:
+    def _generate_distance(self, a, b, c, diagram, diagram_note):
         """Generate distance/displacement problem."""
         problem = (f"A person walks {a} meters east and then {b} meters "
                    f"north. What is the straight-line distance from the "
@@ -208,10 +238,12 @@ class PythagoreanWordProblemGenerator(ProblemGenerator):
         final_answer = f"{c} meters"
         steps_list.append(step("Z", final_answer))
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation="pythagorean_word_problem",
             problem=problem,
             steps=steps_list,
             final_answer=final_answer,
         )
+        used = [f"east {a} m", f"north {b} m"]
+        return result, used, Fraction(c), "d² = east² + north²"

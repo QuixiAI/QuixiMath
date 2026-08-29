@@ -1,7 +1,14 @@
 import random
+from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
 import math
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 def coeff_term(coeff, var):
@@ -40,9 +47,13 @@ class SystemsEliminationGenerator(ProblemGenerator):
     - Multiply Both: Both need scaling (e.g., 2x and 3x).
     """
     
-    def __init__(self):
-        pass
-        
+    MODIFIERS = MODIFIERS
+
+    def __init__(self, modifier=None):
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.modifier = modifier
+
     def generate(self) -> dict:
         x_sol = random.randint(-10, 10)
         y_sol = random.randint(-10, 10)
@@ -187,11 +198,15 @@ class SystemsEliminationGenerator(ProblemGenerator):
 
         ans = f"x={x_sol}, y={y_sol}"
         steps.append(step("Z", ans))
-        
-        return dict(
+
+        result = dict(
             problem_id=jid(),
             operation="systems_elimination",
-            problem=f"Solve the system by elimination:\n1) {eq1_str}\n2) {eq2_str}",
+            problem=f"Solve the system:\n1) {eq1_str}\n2) {eq2_str}",
             steps=steps,
             final_answer=ans
         )
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        used = [eq1_str, eq2_str]
+        model = "scale the equations so one variable's coefficients match or cancel, then add or subtract"
+        return apply_applied_modifier(result, modifier, used, Fraction(x_sol), model, renderer=str)

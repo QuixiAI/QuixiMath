@@ -1,7 +1,12 @@
 import random
 from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+APPLIED = True
 
 
 MAP_AREAS = [
@@ -232,10 +237,19 @@ class SimilarFiguresScaleGenerator(ProblemGenerator):
     - SIMILAR_SETUP: Set up the similar figures (figure_type, sides_A, sides_B)
     - SIMILAR_SCALE: Calculate scale factor from known sides (side_A, side_B, scale_factor)
     - SIMILAR_APPLY: Apply scale factor to find missing side (known_side, scale_factor, missing_side)
+    - SELECT_RELEVANT / ESTIMATE / ESTIMATE_CHECK / MODEL_EQ (established
+      applied-strand modifiers; all four applied modifiers are supported —
+      ``plans/applied_plan.md`` §7 close-out sweep)
     - Z: Final answer
     """
 
     FIGURE_TYPES = ["triangle", "rectangle", "square", "parallelogram"]
+    MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
+
+    def __init__(self, modifier=None):
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.modifier = modifier
 
     def generate(self) -> dict:
         """Generate a similar figures scale factor problem."""
@@ -323,11 +337,19 @@ class SimilarFiguresScaleGenerator(ProblemGenerator):
         steps.append(step("Z", final_answer))
 
         operation = "similar_scale_factor" if figure == "square" else "similar_missing_side"
+        if figure == "square":
+            used = [f"ABCD side {sides_small[0]}", f"EFGH side {sides_large[0]}"]
+            value, model = Fraction(scale_factor), "scale factor = EFGH side/ABCD side"
+        else:
+            used = [f"small sides {sides_small}", f"large side {sides_large[known_idx]}"]
+            value, model = Fraction(missing_side), "missing side = known side × scale factor"
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation=operation,
             problem=problem,
             steps=steps,
             final_answer=final_answer,
         )
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=str)

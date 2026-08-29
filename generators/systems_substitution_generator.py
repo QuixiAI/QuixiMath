@@ -1,9 +1,16 @@
 import random
+from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
 from generators.systems_elimination_generator import (
     coeff_term, signed_term, subst_term,
 )
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 def linear_expr(coeff, var, const):
@@ -32,8 +39,12 @@ class SystemsSubstitutionGenerator(ProblemGenerator):
     Coefficients are drawn so the system has a unique solution.
     """
 
-    def __init__(self):
-        pass
+    MODIFIERS = MODIFIERS
+
+    def __init__(self, modifier=None):
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.modifier = modifier
 
     def generate(self) -> dict:
         # Construct integer solution
@@ -122,13 +133,17 @@ class SystemsSubstitutionGenerator(ProblemGenerator):
             ans = f"x={x_sol}, y={y_sol}"
             steps.append(step("Z", ans))
 
-            return dict(
+            result = dict(
                 problem_id=jid(),
                 operation="systems_substitution",
                 problem=f"Solve the system:\n1) {eq1_str}\n2) {eq2_str}",
                 steps=steps,
                 final_answer=ans
             )
+            modifier = self.modifier or random.choice(self.MODIFIERS)
+            used = [eq1_str, eq2_str]
+            model = "isolate a variable in one equation, then substitute into the other"
+            return apply_applied_modifier(result, modifier, used, Fraction(x_sol), model, renderer=str)
 
         else:
             # Type 2: easy isolate
@@ -184,10 +199,14 @@ class SystemsSubstitutionGenerator(ProblemGenerator):
             ans = f"x={x_sol}, y={y_sol}"
             steps.append(step("Z", ans))
 
-            return dict(
+            result = dict(
                 problem_id=jid(),
                 operation="systems_substitution",
                 problem=f"Solve the system:\n1) {eq1_str}\n2) {eq2_str}",
                 steps=steps,
                 final_answer=ans
             )
+            modifier = self.modifier or random.choice(self.MODIFIERS)
+            used = [eq1_str, eq2_str]
+            model = "isolate a variable in one equation, then substitute into the other"
+            return apply_applied_modifier(result, modifier, used, Fraction(x_sol), model, renderer=str)

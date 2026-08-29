@@ -8,13 +8,31 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.optimization_generator import OptimizationGenerator
+from generators.optimization_generator import MODIFIERS, OptimizationGenerator
 from helpers import DELIM
+
+MODELS = {
+    "barn_fence": "A = x(P − 2x); max at x = P/4",
+    "box": "V = x(W − 2x)²; max at x = W/6",
+    "product": "P = x·y² with x + y = S; max at y = 2S/3",
+}
+
+
+def clean(problem):
+    return re.sub(r"^An unrelated note mentions \d+ unrelated items\. ", "", problem)
 
 
 def oracle_check(example):
     """Recompute the optimum and confirm it beats nearby values."""
-    p = example["problem"]
+    p = clean(example["problem"])
+    answer = example["final_answer"]
+    variant = None
+    for name, model in MODELS.items():
+        if answer.startswith(model + "; "):
+            answer = answer[len(model) + 2:]
+            variant = name
+            break
+
     m = re.fullmatch(r"A farmer has (\d+) m of fence.*", p)
     if m:
         P = int(m.group(1))
@@ -24,7 +42,7 @@ def oracle_check(example):
             return t * (P - 2 * t)
         want = (f"x = {x} m, long side = {P - 2 * x} m; maximum "
                 f"area {A(x)} m²")
-        return (example["final_answer"] == want and
+        return (variant in (None, "barn_fence") and answer == want and
                 A(x) > A(x - 1) and A(x) > A(x + 1))
     m = re.fullmatch(r"An open-top box is made from a (\d+) by \1 "
                      r"sheet.*", p)
@@ -35,7 +53,7 @@ def oracle_check(example):
         def V(t):
             return t * (W - 2 * t) ** 2
         want = f"x = {x}; maximum volume {V(x)}"
-        return (example["final_answer"] == want and
+        return (variant in (None, "box") and answer == want and
                 V(x) >= V(x - 0.1) and V(x) >= V(x + 0.1))
     m = re.fullmatch(r"Two positive numbers x and y satisfy "
                      r"x \+ y = (\d+)\. Maximize x·y²\.", p)
@@ -47,7 +65,7 @@ def oracle_check(example):
     def Pfn(t):
         return (S - t) * t * t
     want = f"x = {x}, y = {y}; maximum product {Pfn(y)}"
-    return (example["final_answer"] == want and
+    return (variant in (None, "product") and answer == want and
             Pfn(y) >= Pfn(y - 0.1) and Pfn(y) >= Pfn(y + 0.1))
 
 
@@ -94,9 +112,31 @@ class TestOptimizationGenerator(unittest.TestCase):
 
     def test_all_variants_reachable(self):
         ops = set()
-        for _ in range(150):
+        for _ in range(400):
             ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 3)
+        self.assertEqual(ops, {f"optimization_{v}_{m}"
+                               for v in OptimizationGenerator.VARIANTS
+                               for m in MODIFIERS})
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(50)
+        for variant in OptimizationGenerator.VARIANTS:
+            for modifier in MODIFIERS:
+                result = OptimizationGenerator(variant, modifier).generate()
+                codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+                self.assertEqual(result["operation"], f"optimization_{variant}_{modifier}")
+                if modifier == "distractor":
+                    self.assertEqual(codes[0], "SELECT_RELEVANT")
+                elif modifier == "estimate_first":
+                    self.assertEqual(codes[0], "ESTIMATE")
+                    self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+                elif modifier == "with_model":
+                    self.assertEqual(codes[0], "MODEL_EQ")
+                    self.assertTrue(result["final_answer"].startswith(MODELS[variant] + "; "))
+        with self.assertRaises(ValueError):
+            OptimizationGenerator("bogus")
+        with self.assertRaises(ValueError):
+            OptimizationGenerator(modifier="bogus")
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

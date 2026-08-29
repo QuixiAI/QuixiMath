@@ -150,7 +150,8 @@ class TestSimilarFiguresScaleGenerator(unittest.TestCase):
         self.assertIsInstance(result, dict)
         self.assertIn("problem_id", result)
         self.assertIn("operation", result)
-        self.assertIn(result["operation"], ["similar_scale_factor", "similar_missing_side"])
+        self.assertTrue(result["operation"].startswith(
+            ("similar_scale_factor_", "similar_missing_side_")), result["operation"])
         self.assertIn("problem", result)
         self.assertIn("steps", result)
         self.assertIn("final_answer", result)
@@ -168,6 +169,24 @@ class TestSimilarFiguresScaleGenerator(unittest.TestCase):
             has_scale_step = any(s.startswith(f"SIMILAR_SCALE{DELIM}") for s in result["steps"])
             self.assertTrue(has_setup_step, "Missing SIMILAR_SETUP step")
             self.assertTrue(has_scale_step, "Missing SIMILAR_SCALE step")
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(53)
+        for modifier in SimilarFiguresScaleGenerator.MODIFIERS:
+            result = SimilarFiguresScaleGenerator(modifier).generate()
+            codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+            self.assertTrue(result["operation"].endswith(f"_{modifier}"))
+            self.assertTrue(result["operation"].startswith(
+                ("similar_scale_factor_", "similar_missing_side_")))
+            if modifier == "distractor":
+                self.assertEqual(codes[0], "SELECT_RELEVANT")
+            elif modifier == "estimate_first":
+                self.assertEqual(codes[0], "ESTIMATE")
+                self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+            elif modifier == "with_model":
+                self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            SimilarFiguresScaleGenerator(modifier="bogus")
 
 
 if __name__ == '__main__':

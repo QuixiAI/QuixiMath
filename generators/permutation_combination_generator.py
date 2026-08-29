@@ -1,7 +1,16 @@
 import math
 import random
+from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+APPLIED = True
+#: Modifiers apply only to the ``word`` variant — the other three are
+#: symbolic drills with no story to add a distractor or estimate to.
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 def product_steps(factors):
@@ -38,11 +47,14 @@ class PermutationCombinationGenerator(ProblemGenerator):
     """
 
     VARIANTS = ["factorial", "permutation", "combination", "word"]
+    MODIFIERS = MODIFIERS
 
-    def __init__(self, variant=None):
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     def _perm_steps(self, n, r):
         """Steps computing P(n,r) and its value (numerator product)."""
@@ -123,6 +135,7 @@ class PermutationCombinationGenerator(ProblemGenerator):
                            f"seated in a row of {r} chairs, chosen "
                            f"from a group of {n}? The people are labeled "
                            f"p_{start} through p_{start + n - 1}.")
+                model = "P(n, r) = n·(n − 1)···(n − r + 1)"
             else:
                 steps = [
                     step("COMB_SETUP", f"choose {r} of {n}",
@@ -144,13 +157,19 @@ class PermutationCombinationGenerator(ProblemGenerator):
                            f"be chosen from a group of {n}? The people "
                            f"are labeled p_{start} through "
                            f"p_{start + n - 1}.")
+                model = "C(n, r) = P(n, r)/r!"
             answer = str(value)
         steps.append(step("Z", answer))
 
-        return dict(
+        result = dict(
             problem_id=jid(),
             operation=f"permutation_combination_{variant}",
             problem=problem,
             steps=steps,
             final_answer=answer,
         )
+        if variant != "word":
+            return result
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        used = [f"n = {n}", f"r = {r}"]
+        return apply_applied_modifier(result, modifier, used, Fraction(value), model, renderer=str)

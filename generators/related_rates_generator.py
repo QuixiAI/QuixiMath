@@ -1,7 +1,13 @@
 import random
 from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 LADDERS = [(5, 12, 13), (12, 5, 13), (3, 4, 5), (4, 3, 5),
            (6, 8, 10), (8, 6, 10), (8, 15, 17), (15, 8, 17)]
@@ -53,11 +59,14 @@ class RelatedRatesGenerator(ProblemGenerator):
     """
 
     VARIANTS = ["circle", "ladder", "cube", "cone"]
+    MODIFIERS = MODIFIERS
 
-    def __init__(self, variant=None):
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
@@ -86,6 +95,8 @@ class RelatedRatesGenerator(ProblemGenerator):
                        f"{length_unit}/{time_unit}. How "
                        f"fast is the area increasing when the radius "
                        f"is {r0} {length_unit}? Give an exact answer.")
+            used = [f"dr/dt = {k} {length_unit}/{time_unit}", f"r = {r0} {length_unit}"]
+            value, model = Fraction(val), "dA/dt = 2πr · dr/dt"
         elif variant == "ladder":
             x0, y0, L = random.choice(LADDERS)
             scale = random.randint(1, 8)
@@ -121,6 +132,9 @@ class RelatedRatesGenerator(ProblemGenerator):
                        f"{length_unit}/{time_unit}. How fast "
                        f"is the top sliding down when the base is {x0} "
                        f"{length_unit} from the wall?")
+            used = [f"{L} {length_unit} ladder", f"dx/dt = {k} {length_unit}/{time_unit}",
+                    f"x = {x0} {length_unit}"]
+            value, model = abs(rate), "x² + y² = L²; 2x·dx/dt + 2y·dy/dt = 0"
         elif variant == "cube":
             s0 = random.randint(2, 25)
             k = random.randint(1, 15)
@@ -143,6 +157,8 @@ class RelatedRatesGenerator(ProblemGenerator):
                        f"{length_unit}/{time_unit}. How "
                        f"fast is the volume increasing when the edge "
                        f"is {s0} {length_unit}?")
+            used = [f"ds/dt = {k} {length_unit}/{time_unit}", f"s = {s0} {length_unit}"]
+            value, model = Fraction(val), "dV/dt = 3s² · ds/dt"
         else:
             h0 = random.randint(2, 30)
             k = random.randint(2, 20)
@@ -173,12 +189,16 @@ class RelatedRatesGenerator(ProblemGenerator):
                        f"{time_unit}. How fast is the depth rising when the "
                        f"water is {h0} {length_unit} deep? "
                        f"Give an exact answer.")
+            used = [f"dV/dt = {k} {length_unit}³/{time_unit}", f"h = {h0} {length_unit}"]
+            value, model = rate, "V = πh³/12; dV/dt = (πh²/4) · dh/dt"
         steps.append(step("Z", answer))
 
-        return dict(
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        result = dict(
             problem_id=jid(),
             operation=f"related_rates_{variant}",
             problem=problem,
             steps=steps,
             final_answer=answer,
         )
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=str)

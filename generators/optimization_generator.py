@@ -1,6 +1,13 @@
 import random
+from fractions import Fraction
+
+from applied_common import apply_applied_modifier
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 class OptimizationGenerator(ProblemGenerator):
@@ -15,21 +22,30 @@ class OptimizationGenerator(ProblemGenerator):
     - box:        V = x(W - 2x)², open-top box from a square sheet
     - product:    x + y = S, maximize x·y²
 
+    All four applied modifiers (``plain``, ``distractor``, ``estimate_first``,
+    ``with_model``) are supported (``plans/applied_plan.md`` §7 close-out
+    sweep), applied uniformly via ``applied_common.apply_applied_modifier``.
+
     Op-codes used:
     - OPT_SETUP: the scenario and the objective
     - REWRITE / POWER_RULE / FACTOR_GROUP / FACTOR_PAIR_GOAL / TRY /
       REJECT / ACCEPT / ZERO_PRODUCT (established)
     - SECOND_DERIV_TEST / SUBST / E / M / A / S / D / EVAL
       (established)
+    - SELECT_RELEVANT / ESTIMATE / ESTIMATE_CHECK / MODEL_EQ (established
+      applied-strand modifiers)
     - Z: the optimizer and the optimal value with units
     """
 
     VARIANTS = ["barn_fence", "box", "product"]
+    MODIFIERS = MODIFIERS
 
-    def __init__(self, variant=None):
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
@@ -57,6 +73,7 @@ class OptimizationGenerator(ProblemGenerator):
                        f"rectangular field against a barn (the barn "
                        f"forms one side). What dimensions maximize the "
                        f"area, and what is that area?")
+            used, value, model = [f"{P} m of fence"], Fraction(area), "A = x(P − 2x); max at x = P/4"
         elif variant == "box":
             W = 6 * random.randint(1, 800)
             xs = W // 6
@@ -92,6 +109,7 @@ class OptimizationGenerator(ProblemGenerator):
                        f"sheet by cutting squares of side x from the "
                        f"corners and folding. What x maximizes the "
                        f"volume, and what is that volume?")
+            used, value, model = [f"sheet {W} by {W}"], Fraction(vol), "V = x(W − 2x)²; max at x = W/6"
         else:
             S = 3 * random.randint(2, 1000)
             y = 2 * S // 3
@@ -117,12 +135,15 @@ class OptimizationGenerator(ProblemGenerator):
             answer = f"x = {x}, y = {y}; maximum product {best}"
             problem = (f"Two positive numbers x and y satisfy "
                        f"x + y = {S}. Maximize x·y².")
+            used, value, model = [f"x + y = {S}"], Fraction(best), "P = x·y² with x + y = S; max at y = 2S/3"
         steps.append(step("Z", answer))
 
-        return dict(
+        modifier = self.modifier or random.choice(self.MODIFIERS)
+        result = dict(
             problem_id=jid(),
             operation=f"optimization_{variant}",
             problem=problem,
             steps=steps,
             final_answer=answer,
         )
+        return apply_applied_modifier(result, modifier, used, value, model, renderer=str)

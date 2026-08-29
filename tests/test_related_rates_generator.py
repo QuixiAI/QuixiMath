@@ -9,7 +9,7 @@ repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
-from generators.related_rates_generator import RelatedRatesGenerator
+from generators.related_rates_generator import MODIFIERS, RelatedRatesGenerator
 from helpers import DELIM
 
 
@@ -70,8 +70,8 @@ class TestRelatedRatesGenerator(unittest.TestCase):
     def test_oracle_answer_from_problem_text(self):
         for _ in range(500):
             result = self.gen.generate()
-            self.assertEqual(oracle_answer(result), result["final_answer"],
-                             result["problem"])
+            self.assertTrue(result["final_answer"].endswith(oracle_answer(result)),
+                            result["problem"])
 
     def test_relation_differentiated_in_t(self):
         for _ in range(200):
@@ -117,9 +117,30 @@ class TestRelatedRatesGenerator(unittest.TestCase):
 
     def test_all_variants_reachable(self):
         ops = set()
-        for _ in range(150):
+        for _ in range(400):
             ops.add(self.gen.generate()["operation"])
-        self.assertEqual(len(ops), 4)
+        self.assertEqual(ops, {f"related_rates_{v}_{m}"
+                               for v in RelatedRatesGenerator.VARIANTS
+                               for m in MODIFIERS})
+
+    def test_modifier_shapes_and_invalid_inputs(self):
+        random.seed(51)
+        for variant in RelatedRatesGenerator.VARIANTS:
+            for modifier in MODIFIERS:
+                result = RelatedRatesGenerator(variant, modifier).generate()
+                codes = [raw.split(DELIM)[0] for raw in result["steps"]]
+                self.assertEqual(result["operation"], f"related_rates_{variant}_{modifier}")
+                if modifier == "distractor":
+                    self.assertEqual(codes[0], "SELECT_RELEVANT")
+                elif modifier == "estimate_first":
+                    self.assertEqual(codes[0], "ESTIMATE")
+                    self.assertEqual(codes[-2], "ESTIMATE_CHECK")
+                elif modifier == "with_model":
+                    self.assertEqual(codes[0], "MODEL_EQ")
+        with self.assertRaises(ValueError):
+            RelatedRatesGenerator("bogus")
+        with self.assertRaises(ValueError):
+            RelatedRatesGenerator(modifier="bogus")
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):
