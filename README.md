@@ -28,16 +28,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **638 problem-type entries** in the generated catalog, one per registered
+- **673 problem-type entries** in the generated catalog, one per registered
   generator class
-- **654 registered generator instances**; **653** are in the default pool
-- **637 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **696 registered generator instances**; **695** are in the default pool
+- **672 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **1,938 distinct operation variant labels** across the catalog
-- **1,963 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
-- Catalog grade-band distribution: **49 elementary**, **85 middle**,
-  **185 high**, **190 college**, **129 graduate**
+- **2,953 distinct operation variant labels** across the catalog
+- **2,057 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- Catalog grade-band distribution: **52 elementary**, **98 middle**,
+  **204 high**, **190 college**, **129 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
@@ -83,6 +83,23 @@ Coverage now spans elementary through graduate-level topics:
   estimator quality, and conjugate Bayesian updating. Every variant has 3–5
   prompt phrasings and a problem-text-only oracle; required normal and critical
   values are supplied in the prompt, while other arithmetic remains exact.
+- **Applied strand:** modeling word problems (work rate, mixture, motion,
+  systems, quadratics, growth comparison, optimization, rate-of-change
+  interpretation), number sense and measurement judgment (mental-math
+  strategies, magnitude comparison, rounding effects, significant figures,
+  measurement uncertainty), judgment tasks (missing information, method
+  discrimination, assumption checking, qualitative reasoning, plausibility
+  critiquing), quantitative literacy (risk communication, Simpson's paradox,
+  statistical literacy, index and growth, decision under uncertainty),
+  representation translation, formula derivation, spatial intuition
+  (square-cube law, packing, spatial description), and multi-part scenarios
+  that compose several of the above into one record with a `skills` list
+  naming what was reused. The strand's defining rule is that the problem
+  text never names the solution method; `distractor`, `estimate_first`, and
+  `with_model` variants run throughout, including retrofitted onto several
+  pre-existing generators (finance, annuities, related rates, optimization,
+  percent problems, linear systems, Pythagorean word problems, similar
+  figures, and permutation/combination word problems).
 
 ### Hugging Face dataset-card note
 
