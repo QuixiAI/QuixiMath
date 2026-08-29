@@ -697,6 +697,7 @@ CURRICULUM = {
     "RepresentationTranslationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "FormulaDerivationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "RiskCommunicationGenerator": {"grade_level": HIGH, "difficulty": 2},
+    "SimpsonsParadoxGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 

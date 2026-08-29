@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**665 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**666 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7920,6 +7920,23 @@ Steps:
   CMP|35|12.9|>
   Z|rate = cases/(population/1000); place 1 higher (35 vs 12.9 per 1000) despite fewer raw cases
 Answer: rate = cases/(population/1000); place 1 higher (35 vs 12.9 per 1000) despite fewer raw cases
+```
+
+### Simpsons Paradox — `SimpsonsParadoxGenerator`  ·  high · difficulty 3
+
+Generate five exact subgroup-vs-pooled-rate models without naming the phenomenon.
+
+**Variants:** `applied_simpsons_paradox_compute_and_state_reversal_distractor`, `applied_simpsons_paradox_compute_and_state_reversal_estimate_first`, `applied_simpsons_paradox_compute_and_state_reversal_plain`, `applied_simpsons_paradox_compute_and_state_reversal_with_model`, `applied_simpsons_paradox_no_reversal_control_distractor`, `applied_simpsons_paradox_no_reversal_control_estimate_first`, `applied_simpsons_paradox_no_reversal_control_plain`, `applied_simpsons_paradox_no_reversal_control_with_model`, `applied_simpsons_paradox_weights_explain_distractor`, `applied_simpsons_paradox_weights_explain_estimate_first`, `applied_simpsons_paradox_weights_explain_plain`, `applied_simpsons_paradox_weights_explain_with_model`, `applied_simpsons_paradox_which_is_better_in_each_group_distractor`, `applied_simpsons_paradox_which_is_better_in_each_group_estimate_first`, `applied_simpsons_paradox_which_is_better_in_each_group_plain`, `applied_simpsons_paradox_which_is_better_in_each_group_with_model`, `applied_simpsons_paradox_which_is_better_overall_distractor`, `applied_simpsons_paradox_which_is_better_overall_estimate_first`, `applied_simpsons_paradox_which_is_better_overall_plain`, `applied_simpsons_paradox_which_is_better_overall_with_model`
+
+```
+Problem: Player A has the better rate in both day at-bats and night at-bats, yet Player B has the better overall rate. What do the two group sizes show? A report reviewed by Pia at the market stand states: Player A: 8 of 10 day at-bats were hits, 27 of 90 night at-bats were hits. Player B: 63 of 90 day at-bats were hits, 2 of 10 night at-bats were hits.
+Steps:
+  MODEL_EQ|composition = subgroup size/total|pooled-rate relationship
+  WEIGHT|A|90% night
+  WEIGHT|B|90% day
+  CHECK|A's cases are 90% night; B's cases are 90% day
+  Z|composition = subgroup size/total; A's cases are 90% night; B's cases are 90% day
+Answer: composition = subgroup size/total; A's cases are 90% night; B's cases are 90% day
 ```
 
 ## College
