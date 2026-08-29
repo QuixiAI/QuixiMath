@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**664 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**665 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7903,6 +7903,23 @@ Steps:
   CHECK|P(1.1)^3|$374011.00
   Z|A = P(1 + r)^t; A = P(1 + r)^t; after 3 years $374011.00
 Answer: A = P(1 + r)^t; A = P(1 + r)^t; after 3 years $374011.00
+```
+
+### Risk Communication — `RiskCommunicationGenerator`  ·  high · difficulty 2
+
+Generate six exact risk-communication models without naming a method.
+
+**Variants:** `applied_risk_communication_doubling_a_small_risk_distractor`, `applied_risk_communication_doubling_a_small_risk_estimate_first`, `applied_risk_communication_doubling_a_small_risk_plain`, `applied_risk_communication_doubling_a_small_risk_with_model`, `applied_risk_communication_nnt_distractor`, `applied_risk_communication_nnt_estimate_first`, `applied_risk_communication_nnt_plain`, `applied_risk_communication_nnt_with_model`, `applied_risk_communication_per_capita_vs_raw_distractor`, `applied_risk_communication_per_capita_vs_raw_estimate_first`, `applied_risk_communication_per_capita_vs_raw_plain`, `applied_risk_communication_per_capita_vs_raw_with_model`, `applied_risk_communication_percent_vs_percentage_points_distractor`, `applied_risk_communication_percent_vs_percentage_points_estimate_first`, `applied_risk_communication_percent_vs_percentage_points_plain`, `applied_risk_communication_percent_vs_percentage_points_with_model`, `applied_risk_communication_rate_per_1000_distractor`, `applied_risk_communication_rate_per_1000_estimate_first`, `applied_risk_communication_rate_per_1000_plain`, `applied_risk_communication_rate_per_1000_with_model`, `applied_risk_communication_relative_vs_absolute_distractor`, `applied_risk_communication_relative_vs_absolute_estimate_first`, `applied_risk_communication_relative_vs_absolute_plain`, `applied_risk_communication_relative_vs_absolute_with_model`
+
+```
+Problem: A bulletin from the library corner, checked by Milo, reads: Place 1 recorded 70 cases among 2000 people. Place 2 recorded 129 cases among 10000 people. Which place has the higher case rate per 1000 people?
+Steps:
+  MODEL_EQ|rate = cases/(population/1000)|risk-communication relationship
+  PER_1000|70 × 1000/2000|35 per 1000
+  PER_1000|129 × 1000/10000|12.9 per 1000
+  CMP|35|12.9|>
+  Z|rate = cases/(population/1000); place 1 higher (35 vs 12.9 per 1000) despite fewer raw cases
+Answer: rate = cases/(population/1000); place 1 higher (35 vs 12.9 per 1000) despite fewer raw cases
 ```
 
 ## College

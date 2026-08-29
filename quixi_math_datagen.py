@@ -686,6 +686,7 @@ from generators.optimization_in_context_generator import OptimizationInContextGe
 from generators.rate_of_change_interpret_generator import RateOfChangeInterpretGenerator
 from generators.representation_translation_generator import RepresentationTranslationGenerator
 from generators.formula_derivation_generator import FormulaDerivationGenerator
+from generators.risk_communication_generator import RiskCommunicationGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1443,6 +1444,7 @@ ALL_GENERATORS = [
     RateOfChangeInterpretGenerator(),
     RepresentationTranslationGenerator(),
     FormulaDerivationGenerator(),
+    RiskCommunicationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

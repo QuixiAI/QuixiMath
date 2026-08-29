@@ -696,6 +696,7 @@ CURRICULUM = {
     "RateOfChangeInterpretGenerator": {"grade_level": HIGH, "difficulty": 3},
     "RepresentationTranslationGenerator": {"grade_level": HIGH, "difficulty": 3},
     "FormulaDerivationGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "RiskCommunicationGenerator": {"grade_level": HIGH, "difficulty": 2},
 }
 
 
