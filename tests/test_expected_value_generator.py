@@ -32,7 +32,7 @@ def oracle_check(example):
         mu = sum(x * pp for x, pp in zip(xs, ps))
         var = sum(pp * (x - mu) ** 2 for x, pp in zip(xs, ps))
         return ans == dec(var)
-    m = re.search(r"expected value of the game", p)
+    m = re.search(r"expected payout of the game", p)
     if m:
         outs = re.findall(r"(win|lose) \$(\d+) with probability (\S+?)[,.]",
                           p)

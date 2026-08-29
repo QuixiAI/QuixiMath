@@ -143,7 +143,7 @@ class ExpectedValueGenerator(ProblemGenerator):
                 f"probability {prob_txt(pr)}"
                 for p, pr in zip(payoffs, ps))
             problem = (f"In a game you {outcomes}. What is the "
-                       f"expected value of the game?")
+                       f"expected payout of the game?")
         else:
             m = random.randint(2, 3)
             payoffs, ps = self._distribution(m, 1, 12)
