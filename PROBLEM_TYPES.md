@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**667 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**668 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7953,6 +7953,21 @@ Steps:
   SHRINK_FACTOR|25%/6.25%|4
   Z|margin = 1/√n; factor of 4; margin goes from 25% to 6.25%
 Answer: margin = 1/√n; factor of 4; margin goes from 25% to 6.25%
+```
+
+### Index And Growth — `IndexAndGrowthGenerator`  ·  high · difficulty 2
+
+Generate six exact index/growth models without naming a method.
+
+**Variants:** `applied_index_and_growth_cagr_perfect_power_distractor`, `applied_index_and_growth_cagr_perfect_power_estimate_first`, `applied_index_and_growth_cagr_perfect_power_plain`, `applied_index_and_growth_cagr_perfect_power_with_model`, `applied_index_and_growth_index_number_distractor`, `applied_index_and_growth_index_number_estimate_first`, `applied_index_and_growth_index_number_plain`, `applied_index_and_growth_index_number_with_model`, `applied_index_and_growth_log_scale_reading_distractor`, `applied_index_and_growth_log_scale_reading_estimate_first`, `applied_index_and_growth_log_scale_reading_plain`, `applied_index_and_growth_log_scale_reading_with_model`, `applied_index_and_growth_percent_change_vs_points_distractor`, `applied_index_and_growth_percent_change_vs_points_estimate_first`, `applied_index_and_growth_percent_change_vs_points_plain`, `applied_index_and_growth_percent_change_vs_points_with_model`, `applied_index_and_growth_real_vs_nominal_supplied_cpi_distractor`, `applied_index_and_growth_real_vs_nominal_supplied_cpi_estimate_first`, `applied_index_and_growth_real_vs_nominal_supplied_cpi_plain`, `applied_index_and_growth_real_vs_nominal_supplied_cpi_with_model`, `applied_index_and_growth_repeated_doubling_distractor`, `applied_index_and_growth_repeated_doubling_estimate_first`, `applied_index_and_growth_repeated_doubling_plain`, `applied_index_and_growth_repeated_doubling_with_model`
+
+```
+Problem: Consider the figures Lena received from the back of the garage. A wage rises 13% nominally while inflation (CPI) for the year is 0%. What is the exact real (inflation-adjusted) percent change?
+Steps:
+  MODEL_EQ|real = 100(100 + nominal)/(100 + inflation) − 100|index/growth relationship
+  REAL_RATE|100·(100 + 13)/(100 + 0) − 100|13%
+  Z|real = 100(100 + nominal)/(100 + inflation) − 100; 13%
+Answer: real = 100(100 + nominal)/(100 + inflation) − 100; 13%
 ```
 
 ## College

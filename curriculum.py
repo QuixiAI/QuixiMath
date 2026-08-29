@@ -699,6 +699,7 @@ CURRICULUM = {
     "RiskCommunicationGenerator": {"grade_level": HIGH, "difficulty": 2},
     "SimpsonsParadoxGenerator": {"grade_level": HIGH, "difficulty": 3},
     "StatisticalLiteracyGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "IndexAndGrowthGenerator": {"grade_level": HIGH, "difficulty": 2},
 }
 
 
