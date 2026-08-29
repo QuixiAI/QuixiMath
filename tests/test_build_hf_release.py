@@ -10,12 +10,19 @@ from pathlib import Path
 try:
     import pyarrow as pa
     import pyarrow.parquet as pq
-    from tools.build_hf_release import SCHEMA, make_row
+    from tools.build_hf_release import (
+        JUDGMENT_EVAL_CONFIG,
+        SCHEMA,
+        generate_release,
+        make_row,
+    )
 except ModuleNotFoundError:  # ordinary generator-only environments omit it
     pa = None
     pq = None
     SCHEMA = None
     make_row = None
+    generate_release = None
+    JUDGMENT_EVAL_CONFIG = None
 
 
 class ExampleGenerator:
@@ -63,6 +70,40 @@ class TestBuildHfRelease(unittest.TestCase):
             decoded = pq.read_table(path).to_pylist()
         self.assertEqual(decoded[0]["skills"], ["budget", "percent_change"])
         self.assertIsNone(decoded[1]["skills"])
+
+    def test_judgment_composition_eval_is_held_out_and_skills_tagged(self):
+        """The new config (plans/applied_plan.md §9) contains only
+        skills-tagged rows, and never overlaps the ordinary splits."""
+        configs = {
+            "preview": {"train": 30},
+            JUDGMENT_EVAL_CONFIG: {"test": 8},
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            metadata = generate_release(
+                output_dir=output_dir,
+                configs=configs,
+                seed=101,
+                shard_rows=1_000,
+                compression="snappy",
+            )
+            self.assertIn(JUDGMENT_EVAL_CONFIG, metadata["rows_by_config_split"])
+            self.assertEqual(
+                metadata["rows_by_config_split"][JUDGMENT_EVAL_CONFIG]["test"], 8)
+
+            eval_rows = pq.read_table(
+                output_dir / JUDGMENT_EVAL_CONFIG / "test-00000-of-00001.parquet"
+            ).to_pylist()
+            self.assertEqual(len(eval_rows), 8)
+            for row in eval_rows:
+                self.assertTrue(row["skills"], row)
+
+            preview_rows = pq.read_table(
+                output_dir / "preview" / "train-00000-of-00001.parquet"
+            ).to_pylist()
+            preview_keys = {(row["operation"], row["problem"]) for row in preview_rows}
+            eval_keys = {(row["operation"], row["problem"]) for row in eval_rows}
+            self.assertEqual(preview_keys & eval_keys, set())
 
 
 if __name__ == "__main__":

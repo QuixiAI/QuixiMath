@@ -37,11 +37,20 @@ from quixi_math_datagen import (  # noqa: E402
 from curriculum import stamp_metadata  # noqa: E402
 
 
+#: A standalone, held-out eval config carved from records that carry a
+#: non-null ``skills`` list (currently only ``ScenarioGenerator``'s
+#: multi-part records; ``plans/applied_plan.md`` §9). It is generated in a
+#: dedicated pass after the main splits (never mixed into their nested
+#: prefix-subset logic below) so its rows never overlap the training data —
+#: it measures compositional transfer, not execution of a single procedure.
+JUDGMENT_EVAL_CONFIG = "judgment_composition_eval"
+
 DEFAULT_CONFIGS = {
     "preview": {"train": 50_000},
     "10M_tokens": {"train": 100_000, "validation": 10_000},
     "100M_tokens": {"train": 800_000, "validation": 50_000, "test": 50_000},
     "1B_tokens": {"train": 8_800_000, "validation": 100_000, "test": 100_000},
+    JUDGMENT_EVAL_CONFIG: {"test": 5_000},
 }
 
 SMOKE_CONFIGS = {
@@ -49,8 +58,11 @@ SMOKE_CONFIGS = {
     "10M_tokens": {"train": 400, "validation": 100},
     "100M_tokens": {"train": 800, "validation": 150, "test": 150},
     "1B_tokens": {"train": 1_200, "validation": 200, "test": 200},
+    JUDGMENT_EVAL_CONFIG: {"test": 60},
 }
 
+#: The nested prefix-subset configs only — JUDGMENT_EVAL_CONFIG is generated
+#: by its own pass and deliberately excluded from this order.
 CONFIG_ORDER = ("preview", "10M_tokens", "100M_tokens", "1B_tokens")
 SPLIT_ORDER = ("test", "validation", "train")
 
@@ -355,6 +367,56 @@ def generate_release(
                 f"after {attempts:,} attempts."
             )
 
+    judgment_target = configs.get(JUDGMENT_EVAL_CONFIG, {}).get("test", 0)
+    if judgment_target > 0:
+        judgment_writer = SplitWriter(
+            output_dir=output_dir,
+            config=JUDGMENT_EVAL_CONFIG,
+            split="test",
+            target_rows=judgment_target,
+            shard_rows=shard_rows,
+            compression=compression,
+        )
+        print(
+            f"Generating {judgment_target:,} held-out judgment/composition "
+            "rows (skills-tagged records only)..."
+        )
+        emitted = 0
+        attempts = 0
+        # Most draws are rejected (only skills-tagged generators qualify),
+        # so this pass needs a much larger attempt budget per row than the
+        # main splits above.
+        max_attempts = judgment_target * 500 + 200_000
+        while emitted < judgment_target and attempts < max_attempts:
+            attempts += 1
+            gen_instance = random.choice(gen_pool)
+            label = _instance_label(gen_instance)
+            try:
+                example = gen_instance.generate()
+                if not example:
+                    raise ValueError("generate() returned an empty example")
+                example = stamp_metadata(example, gen_instance)
+                validate_example(example)
+            except Exception:
+                continue
+            if not example.get("skills"):
+                continue
+            key = (example["operation"], example["problem"])
+            if key in seen:
+                continue
+            seen.add(key)
+            row = make_row(example, gen_instance, "test", emitted)
+            judgment_writer.add(row)
+            stats.generator_stats[label]["judgment_eval_emitted"] += 1
+            emitted += 1
+        if emitted != judgment_target:
+            raise RuntimeError(
+                f"Judgment/composition eval target not reached: emitted "
+                f"{emitted:,}/{judgment_target:,} after {attempts:,} attempts."
+            )
+        judgment_writer.close()
+        stats.observe_writer(judgment_writer)
+
     for writer in writers.values():
         writer.close()
         stats.observe_writer(writer)
@@ -390,7 +452,7 @@ def split_stats_table(metadata: Mapping[str, object]) -> str:
     rows_by_config = metadata["rows_by_config_split"]
     tokens_by_config = metadata["rough_tokens_by_config_split"]
     lines = ["| Config | Split | Rows | Estimated tokens |", "|---|---|---:|---:|"]
-    for config in CONFIG_ORDER:
+    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG):
         splits = rows_by_config.get(config, {})
         for split in ("train", "validation", "test"):
             if split in splits:
@@ -433,8 +495,10 @@ def yaml_header(metadata: Mapping[str, object]) -> str:
         "pretty_name: QuixiMath-1B",
         "configs:",
     ]
-    for config in CONFIG_ORDER:
+    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG):
         splits = metadata["rows_by_config_split"].get(config, {})
+        if not splits:
+            continue
         lines.append(f"- config_name: {config}")
         lines.append("  data_files:")
         for split in ("train", "validation", "test"):
@@ -480,6 +544,7 @@ def write_readme(output_dir: Path, metadata: Mapping[str, object]) -> None:
     tokens_by_config = metadata["rough_tokens_by_config_split"]
     largest_rows = sum(rows_by_config["1B_tokens"].values())
     largest_tokens = sum(tokens_by_config["1B_tokens"].values())
+    judgment_eval_rows = sum(rows_by_config.get(JUDGMENT_EVAL_CONFIG, {}).values())
     body = f"""# Dataset Card for QuixiMath-1B
 
 ## Dataset Summary
@@ -523,6 +588,19 @@ ds = load_dataset("{output_dir}", "preview")
 
 The largest config contains {largest_rows:,} rows and approximately
 {largest_tokens:,} rough text tokens, estimated as `len(text) / 4`.
+
+### Judgment/Composition Eval
+
+`{JUDGMENT_EVAL_CONFIG}` ({judgment_eval_rows:,} rows, `test` split only) is
+a standalone, held-out config carved from records whose `skills` column is
+non-null — currently `ScenarioGenerator`'s multi-part records, each of whose
+sub-questions is tagged with the procedure it reuses (e.g. `percent_change`,
+`break_even`, `unit_rate_division`). Its rows are generated in their own
+pass and are guaranteed disjoint from every other split, so it measures
+whether a model can *compose* procedures it already executes correctly in
+isolation elsewhere in the corpus — transfer, not raw execution. It has no
+paired `train` split by design; evaluate a model trained on any of the other
+configs against it directly.
 
 ## Data Schema
 
