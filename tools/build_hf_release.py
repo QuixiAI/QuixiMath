@@ -13,6 +13,7 @@ import json
 import math
 import os
 import random
+import shlex
 import shutil
 import subprocess
 import sys
@@ -697,6 +698,8 @@ Source git commit: `{metadata.get("source_git_commit") or "unknown"}`
 
 Source git dirty: `{metadata["source_git_dirty"]}`
 
+Generation command: `{metadata.get("generation_command") or "unknown"}`
+
 Exact duplicate `(operation, problem)` pairs were skipped across the generated
 largest splits before nested configs were materialized. Per-generator duplicate
 and error counts are stored in `generation_stats.json`.
@@ -751,6 +754,9 @@ def main() -> None:
         shard_rows=args.shard_rows,
         compression=args.compression,
     )
+    # plans/dataset_plan.md's Quality Gates section: "store the generation
+    # command" alongside the fixed seed, for exact reproducibility.
+    metadata["generation_command"] = "python " + shlex.join(sys.argv)
     (output_dir / "generation_stats.json").write_text(
         json.dumps(metadata, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
