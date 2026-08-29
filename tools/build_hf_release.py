@@ -653,6 +653,32 @@ Columns:
 
 {distribution_table(metadata["rows_by_difficulty"], "Difficulty")}
 
+### Suggested Training Recipes
+
+The distributions above come from equal-per-skill sampling, which is
+coverage-first, not grade-balanced — college and graduate material make up
+more than half the corpus. That is a deliberate choice for the canonical
+release: it keeps every procedural skill visible rather than baking one
+grade mix into the only release. Trainers can filter or reweight rows with
+the `grade_level` and `difficulty` columns; two starting recipes:
+
+**Grade-balanced train mix:**
+
+| Grade level | Suggested share |
+|---|---:|
+| elementary | 15% |
+| middle | 20% |
+| high | 30% |
+| college | 25% |
+| graduate | 10% |
+
+**Within-grade difficulty smoothing** (relative to each grade band — a
+`college` difficulty 2 is not the same thing as an `elementary` difficulty
+2): 10% at difficulty 1, 20% at difficulty 2, 35% at difficulty 3, 25% at
+difficulty 4, 10% at difficulty 5. Where a grade band is missing a
+difficulty bucket, redistribute its share across the buckets that exist and
+keep per-skill minimums so small buckets stay represented.
+
 ### Top Operations
 
 {distribution_table(metadata["rows_by_operation"], "Operation", limit=25)}
