@@ -704,6 +704,7 @@ CURRICULUM = {
     "SquareCubeLawGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SpatialPackingGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SpatialDescriptionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "ScenarioGenerator": {"grade_level": HIGH, "difficulty": 4},
 }
 
 

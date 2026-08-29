@@ -694,6 +694,7 @@ from generators.decision_under_uncertainty_generator import DecisionUnderUncerta
 from generators.square_cube_law_generator import SquareCubeLawGenerator
 from generators.spatial_packing_generator import SpatialPackingGenerator
 from generators.spatial_description_generator import SpatialDescriptionGenerator
+from generators.scenario_generator import ScenarioGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1459,6 +1460,7 @@ ALL_GENERATORS = [
     SquareCubeLawGenerator(),
     SpatialPackingGenerator(),
     SpatialDescriptionGenerator(),
+    ScenarioGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

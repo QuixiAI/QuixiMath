@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**672 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**673 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8036,6 +8036,30 @@ Steps:
   CMP|40|108|<
   Z|worst case = smallest possible payout; expected = probability-weighted average; worst-case: A; expected value: B ($108 vs $40)
 Answer: worst case = smallest possible payout; expected = probability-weighted average; worst-case: A; expected value: B ($108 vs $40)
+```
+
+### Scenario — `ScenarioGenerator`  ·  high · difficulty 4
+
+Generate eight exact multi-part scenarios without naming a method.
+
+**Variants:** `scenario_data_report_estimate_first`, `scenario_data_report_plain`, `scenario_data_report_with_model`, `scenario_event_planning_distractor`, `scenario_event_planning_estimate_first`, `scenario_event_planning_plain`, `scenario_event_planning_with_model`, `scenario_home_project_distractor`, `scenario_home_project_estimate_first`, `scenario_home_project_plain`, `scenario_home_project_with_model`, `scenario_personal_finance_distractor`, `scenario_personal_finance_estimate_first`, `scenario_personal_finance_plain`, `scenario_personal_finance_with_model`, `scenario_road_trip_distractor`, `scenario_road_trip_estimate_first`, `scenario_road_trip_plain`, `scenario_road_trip_with_model`, `scenario_science_lab_distractor`, `scenario_science_lab_estimate_first`, `scenario_science_lab_with_model`, `scenario_small_business_distractor`, `scenario_small_business_plain`, `scenario_small_business_with_model`, `scenario_sports_stats_distractor`, `scenario_sports_stats_estimate_first`, `scenario_sports_stats_plain`, `scenario_sports_stats_with_model`
+
+```
+Problem: the Riverside Hawks track their season so far. (1) After 12 games with 9 wins, what is the win percentage? (2) To finish the 24-game season at 75% wins or better, how many more wins are needed? (3) Over the last 3 games the team scored 79, 95, 78 points; what is the average?
+Steps:
+  MODEL_EQ|each part reuses an established procedure|scenario composition
+  PART|1|After 12 games with 9 wins, what is the win percentage?
+  D|9|12|0.75
+  DEC_TO_PERCENT|0.75|75%
+  PART|2|To finish the 24-game season at 75% wins or better, how many more wins are needed?
+  M|24|0.75|18
+  S|18|9|9
+  PART|3|Over the last 3 games the team scored 79, 95, 78 points; what is the average?
+  A|79|95|174
+  A|174|78|252
+  D|252|3|84
+  Z|composed of 3 parts; Q1 75%; Q2 9 more wins; Q3 84 points
+Answer: composed of 3 parts; Q1 75%; Q2 9 more wins; Q3 84 points
 ```
 
 ## College
