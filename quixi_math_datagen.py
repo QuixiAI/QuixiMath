@@ -685,6 +685,7 @@ from generators.growth_comparison_generator import GrowthComparisonGenerator
 from generators.optimization_in_context_generator import OptimizationInContextGenerator
 from generators.rate_of_change_interpret_generator import RateOfChangeInterpretGenerator
 from generators.representation_translation_generator import RepresentationTranslationGenerator
+from generators.formula_derivation_generator import FormulaDerivationGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1441,6 +1442,7 @@ ALL_GENERATORS = [
     OptimizationInContextGenerator(),
     RateOfChangeInterpretGenerator(),
     RepresentationTranslationGenerator(),
+    FormulaDerivationGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**663 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**664 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7880,6 +7880,29 @@ Steps:
   CHECK|h = 0|$25.00
   Z|C = 25 + 26h; 25; the fixed call-out fee
 Answer: C = 25 + 26h; 25; the fixed call-out fee
+```
+
+### Formula Derivation — `FormulaDerivationGenerator`  ·  high · difficulty 3
+
+Generate eight concrete-to-general exact derivations.
+
+**Variants:** `applied_formula_derivation_arithmetic_series_pairing_distractor`, `applied_formula_derivation_arithmetic_series_pairing_estimate_first`, `applied_formula_derivation_arithmetic_series_pairing_plain`, `applied_formula_derivation_arithmetic_series_pairing_with_model`, `applied_formula_derivation_compound_interest_repeated_multiplication_distractor`, `applied_formula_derivation_compound_interest_repeated_multiplication_estimate_first`, `applied_formula_derivation_compound_interest_repeated_multiplication_plain`, `applied_formula_derivation_compound_interest_repeated_multiplication_with_model`, `applied_formula_derivation_distance_formula_from_pythagoras_distractor`, `applied_formula_derivation_distance_formula_from_pythagoras_estimate_first`, `applied_formula_derivation_distance_formula_from_pythagoras_plain`, `applied_formula_derivation_distance_formula_from_pythagoras_with_model`, `applied_formula_derivation_divide_by_fraction_reciprocal_distractor`, `applied_formula_derivation_divide_by_fraction_reciprocal_estimate_first`, `applied_formula_derivation_divide_by_fraction_reciprocal_plain`, `applied_formula_derivation_interior_angle_sum_triangulation_distractor`, `applied_formula_derivation_interior_angle_sum_triangulation_estimate_first`, `applied_formula_derivation_interior_angle_sum_triangulation_plain`, `applied_formula_derivation_interior_angle_sum_triangulation_with_model`, `applied_formula_derivation_quadratic_formula_complete_square_concrete_distractor`, `applied_formula_derivation_quadratic_formula_complete_square_concrete_estimate_first`, `applied_formula_derivation_quadratic_formula_complete_square_concrete_plain`, `applied_formula_derivation_trapezoid_from_triangles_distractor`, `applied_formula_derivation_trapezoid_from_triangles_estimate_first`, `applied_formula_derivation_trapezoid_from_triangles_with_model`, `applied_formula_derivation_triangle_area_from_rectangle_distractor`, `applied_formula_derivation_triangle_area_from_rectangle_estimate_first`, `applied_formula_derivation_triangle_area_from_rectangle_plain`
+
+```
+Problem: A note from the candle workshop, checked by Zane, gives: An account starts with $281000.00 and grows 10% once per year for 3 years. Show the repeated yearly multiplication, state the general relationship, and find the final balance.
+Steps:
+  MODEL_EQ|A = P(1 + r)^t|general relationship
+  A|1|0.1|1.1
+  M|281000|1.1|309100
+  DERIVE|year 1|$309100.00
+  M|309100|1.1|340010
+  DERIVE|year 2|$340010.00
+  M|340010|1.1|374011
+  DERIVE|year 3|$374011.00
+  GENERALIZE|same factor t times|A = P(1 + r)^t
+  CHECK|P(1.1)^3|$374011.00
+  Z|A = P(1 + r)^t; A = P(1 + r)^t; after 3 years $374011.00
+Answer: A = P(1 + r)^t; A = P(1 + r)^t; after 3 years $374011.00
 ```
 
 ## College
