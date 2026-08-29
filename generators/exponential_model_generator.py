@@ -1,8 +1,23 @@
+"""Compound growth, decay, half-life, and continuous compounding, kept exact.
+
+Variants: ``growth``, ``decay``, ``half_life``, ``continuous``. Six phrasings
+per variant over forty names and dozens of contexts, plus all four applied
+modifiers (``plain``, ``distractor``, ``estimate_first``, ``with_model``).
+Op-codes: ``MODEL``, ``MODEL_APPLY``, ``PERCENT_TO_DEC``, ``SELECT_RELEVANT``,
+``ESTIMATE``, ``ESTIMATE_CHECK``, ``A``, ``S``, ``E``, ``M``, ``D``, ``Z``.
+"""
 import random
+import re
 from fractions import Fraction
 from math import gcd
+
+from applied_common import estimate_first, select_relevant_step
 from base_generator import ProblemGenerator
 from helpers import step, jid
+
+
+APPLIED = True
+MODIFIERS = ("plain", "distractor", "estimate_first", "with_model")
 
 
 def dec(fr):
@@ -152,6 +167,10 @@ CONTINUOUS_TEMPLATES = [
     "the exact value in dollars after {t} years.",
 ]
 
+#: What the distractor sentence names, chosen not to collide with any digit
+#: pattern the oracle scans for (dollars, percents, years, mass/time units).
+DISTRACTOR_RANGE = range(151, 551)
+
 
 def _cap(phrase):
     return phrase[0].upper() + phrase[1:]
@@ -175,20 +194,30 @@ class ExponentialModelGenerator(ProblemGenerator):
     from an exact remainder, three mass units and three time units, and
     six phrasings per variant over forty names and dozens of contexts.
 
+    Modifiers (``plain``, ``distractor``, ``estimate_first``,
+    ``with_model``): ``distractor`` names an irrelevant count and flags it
+    with ``SELECT_RELEVANT``; ``estimate_first`` predicts the answer's scale
+    (``ESTIMATE`` / ``ESTIMATE_CHECK``) before the exact steps run;
+    ``with_model`` puts the named formula in front of the answer.
+
     Op-codes used:
     - MODEL: the model formula (formula)
     - MODEL_APPLY: the formula with values substituted (instantiation)
     - PERCENT_TO_DEC: rate conversion (established)
+    - SELECT_RELEVANT / ESTIMATE / ESTIMATE_CHECK: shared applied modifiers
     - A / S / E / M / D: exact decimal arithmetic (established)
     - Z: money, mass with unit, or exact exponential form
     """
 
     VARIANTS = ["growth", "decay", "half_life", "continuous"]
+    MODIFIERS = MODIFIERS
 
-    def __init__(self, variant=None):
+    def __init__(self, variant=None, modifier=None):
         if variant is not None and variant not in self.VARIANTS:
             raise ValueError(f"variant must be one of {self.VARIANTS} or None")
-        self.variant = variant
+        if modifier is not None and modifier not in self.MODIFIERS:
+            raise ValueError(f"modifier must be one of {self.MODIFIERS} or None")
+        self.variant, self.modifier = variant, modifier
 
     @staticmethod
     def _principal(factor):
@@ -206,6 +235,7 @@ class ExponentialModelGenerator(ProblemGenerator):
 
     def generate(self) -> dict:
         variant = self.variant or random.choice(self.VARIANTS)
+        modifier = self.modifier or random.choice(self.MODIFIERS)
 
         if variant in ("growth", "decay"):
             grow = variant == "growth"
@@ -237,9 +267,10 @@ class ExponentialModelGenerator(ProblemGenerator):
                 combine,
                 step("E", base_txt, t, dec(base ** t)),
                 step("M", P, dec(base ** t), dec(value)),
-                step("Z", answer),
             ]
-            op = f"exponential_{variant}"
+            used = [f"principal ${P}", f"rate {r}%", f"years {t}"]
+            est_value, renderer = value, money
+            est_work = "predict the compounded value's scale"
         elif variant == "half_life":
             k = random.randint(2, 6)
             h = random.choice([2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18,
@@ -252,9 +283,10 @@ class ExponentialModelGenerator(ProblemGenerator):
             unit = random.choice(MASS_UNITS)
             tu = random.choice(TIME_UNITS)
             sub = random.choice(SUBSTANCES)
+            formula = "A = P · (1/2)^(t/h)"
             answer = f"{remaining} {unit}"
             steps = [
-                step("MODEL", "A = P · (1/2)^(t/h)"),
+                step("MODEL", formula),
                 step("MODEL_APPLY", f"A = {m0} · (1/2)^({t}/{h})"),
                 step("D", t, h, k),
             ]
@@ -262,33 +294,49 @@ class ExponentialModelGenerator(ProblemGenerator):
             for _ in range(k):
                 steps.append(step("D", cur, 2, cur // 2))
                 cur //= 2
-            steps.append(step("Z", answer))
             problem = random.choice(HALF_LIFE_TEMPLATES).format(
                 m0=m0, h=h, t=t, u=unit, tu=tu, sub=sub, Sub=_cap(sub),
                 name=random.choice(NAMES))
-            op = "exponential_half_life"
+            used = [f"initial {m0} {unit}", f"half-life {h} {tu}",
+                    f"elapsed {t} {tu}"]
+            est_value, renderer = Fraction(remaining), (lambda v, u=unit: f"{v} {u}")
+            est_work = "predict the remaining amount after repeated halving"
         else:
             P = 25 * random.randint(4, 2000)
             r = random.choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14,
                                15, 16, 18, 20, 24, 25])
             t = random.randint(2, 20)
             rt = dec(Fraction(r * t, 100))
+            formula = "A = Pe^(rt)"
             answer = f"{P}e^{rt}"
             steps = [
-                step("MODEL", "A = Pe^(rt)"),
+                step("MODEL", formula),
                 step("PERCENT_TO_DEC", f"{r}%", dec(Fraction(r, 100))),
                 step("M", dec(Fraction(r, 100)), t, rt),
                 step("MODEL_APPLY", f"A = {P}e^{rt}"),
-                step("Z", answer),
             ]
             problem = random.choice(CONTINUOUS_TEMPLATES).format(
                 P=P, r=r, t=t, name=random.choice(NAMES),
                 thing=random.choice(CONT_THINGS))
-            op = "exponential_continuous"
+            used = [f"principal ${P}", f"rate {r}%", f"years {t}"]
+            est_value, renderer = Fraction(P), money
+            est_work = "predict the principal's scale in the exact answer"
 
+        if modifier == "distractor":
+            occupied = {int(x) for x in re.findall(r"\d+", problem)}
+            extra = random.choice([n for n in DISTRACTOR_RANGE if n not in occupied])
+            problem = f"A nearby ledger lists {extra} unrelated entries. {problem}"
+            steps.insert(0, select_relevant_step(used, f"{extra} unrelated entries"))
+        elif modifier == "estimate_first":
+            steps = estimate_first(steps + [step("Z", answer)], est_value,
+                                   est_work, render=renderer)[:-1]
+        elif modifier == "with_model":
+            answer = f"{formula}; {answer}"
+
+        steps.append(step("Z", answer))
         return dict(
             problem_id=jid(),
-            operation=op,
+            operation=f"applied_exponential_model_{variant}_{modifier}",
             problem=problem,
             steps=steps,
             final_answer=answer,

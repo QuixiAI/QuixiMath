@@ -5231,17 +5231,17 @@ Answer: VA: x = 3; hole at x = -2; HA: y = 1
 
 Exponential models kept exact by hand: compound growth and decay with terminating-decimal bases, half-life as literal repeated halving, and continuous compounding left in exact Pe^rt form.
 
-**Variants:** `exponential_continuous`, `exponential_decay`, `exponential_growth`, `exponential_half_life`
+**Variants:** `applied_exponential_model_continuous_distractor`, `applied_exponential_model_continuous_estimate_first`, `applied_exponential_model_continuous_plain`, `applied_exponential_model_continuous_with_model`, `applied_exponential_model_decay_distractor`, `applied_exponential_model_decay_estimate_first`, `applied_exponential_model_decay_plain`, `applied_exponential_model_decay_with_model`, `applied_exponential_model_growth_distractor`, `applied_exponential_model_growth_estimate_first`, `applied_exponential_model_growth_plain`, `applied_exponential_model_growth_with_model`, `applied_exponential_model_half_life_distractor`, `applied_exponential_model_half_life_estimate_first`, `applied_exponential_model_half_life_plain`, `applied_exponential_model_half_life_with_model`
 
 ```
-Problem: $38900 is placed in an account paying 15% continuously compounded interest. Give the exact value in dollars after 3 years.
+Problem: A trust holds $2150 earning 9% compounded continuously. Give its exact value in dollars after 18 years.
 Steps:
   MODEL|A = Pe^(rt)
-  PERCENT_TO_DEC|15%|0.15
-  M|0.15|3|0.45
-  MODEL_APPLY|A = 38900e^0.45
-  Z|38900e^0.45
-Answer: 38900e^0.45
+  PERCENT_TO_DEC|9%|0.09
+  M|0.09|18|1.62
+  MODEL_APPLY|A = 2150e^1.62
+  Z|A = Pe^(rt); 2150e^1.62
+Answer: A = Pe^(rt); 2150e^1.62
 ```
 
 ### Log Conversion — `LogConversionGenerator`  ·  high · difficulty 4
