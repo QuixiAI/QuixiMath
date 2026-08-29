@@ -11,7 +11,7 @@ if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
 
 from generators.standard_deviation_generator import (
-    LEGACY_VARIANTS, NEW_QUERIES, StandardDeviationGenerator,
+    LEGACY_PROMPTS, LEGACY_VARIANTS, NEW_QUERIES, StandardDeviationGenerator,
 )
 from helpers import DELIM
 
@@ -114,7 +114,7 @@ class TestStandardDeviationGenerator(unittest.TestCase):
 
     def test_all_variants_reachable(self):
         ops = set()
-        for _ in range(100):
+        for _ in range(600):
             ops.add(self.gen.generate()["operation"])
         self.assertEqual(len(ops), 7)
 
@@ -180,6 +180,16 @@ class TestStandardDeviationGenerator(unittest.TestCase):
                 seen.update(query for query in queries
                             if problem.endswith("\n" + query))
             self.assertEqual(seen, set(queries))
+
+    def test_legacy_variants_have_four_phrasings(self):
+        for variant, templates in LEGACY_PROMPTS.items():
+            gen = StandardDeviationGenerator(variant)
+            seen = set()
+            for _ in range(250):
+                problem = gen.generate()["problem"]
+                seen.update(t for t in templates
+                            if problem.startswith(t.split("{raw}")[0]))
+            self.assertEqual(seen, set(templates))
 
     def test_fixed_variant_constructor(self):
         with self.assertRaises(ValueError):

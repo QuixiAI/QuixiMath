@@ -477,7 +477,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `DET` | 2 | `DET\|K\|-70` | kernel_ridge_generator.py, kernel_validity_generator.py |
 | `DET2` | 2 | `DET2\|ad - bc\|-4` | ode_system_generator.py |
 | `DET_FORMULA` | 1 | `DET_FORMULA\|det = a11·M11 - a12·M12 + a13·M13` | cramers_rule_generator.py, determinant_generator.py, matrix_inverse_generator.py |
-| `DEV_ROW` | 3 | `DEV_ROW\|57\|-6\|36` | anova_generator.py, estimator_bias_enum_generator.py, mle_generator.py, slope_inference_generator.py, standard_deviation_generator.py, t_interval_generator.py |
+| `DEV_ROW` | 3 | `DEV_ROW\|47\|-21\|441` | anova_generator.py, estimator_bias_enum_generator.py, mle_generator.py, slope_inference_generator.py, standard_deviation_generator.py, t_interval_generator.py |
 | `DFA_ACCEPT` | 1 | `DFA_ACCEPT\|q2` | dfa_minimization_generator.py, dfa_simulation_generator.py |
 | `DFA_INPUT` | 1 | `DFA_INPUT\|1101` | dfa_simulation_generator.py |
 | `DFA_MIN_SETUP` | 3 | `DFA_MIN_SETUP\|states A, B, C\|alphabet 0, 1\|start A` | dfa_minimization_generator.py |
@@ -731,7 +731,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `FRAC_BUILD` | 2 | `FRAC_BUILD\|17/70\|17/70` | classic_probability_puzzles_generator.py, conditional_probability_generator.py, geometric_probability_generator.py, hypergeometric_generator.py, two_way_table_probability_generator.py |
 | `FRAC_REDUCE` | 2 | `FRAC_REDUCE\|31/-14\|-31/14` | angle_measure_generator.py, arc_length_generator.py, arc_sector_generator.py, complex_division_generator.py, frequency_table_generator.py, function_operations_generator.py, hyperbola_features_generator.py, implicit_diff_generator.py, improper_integral_generator.py, probability_addition_rule_generator.py, related_rates_generator.py, right_triangle_trig_generator.py |
 | `FRAC_TO_DEC` | 2 | `FRAC_TO_DEC\|54/50\|1.08` | fraction_decimal_percent_converter.py, simple_probability_generator.py |
-| `FREQ_SETUP` | 2 | `FREQ_SETUP\|population standard deviation\|n=7` | frequency_table_generator.py, grouped_data_generator.py, standard_deviation_generator.py |
+| `FREQ_SETUP` | 2 | `FREQ_SETUP\|population standard deviation\|n=6` | frequency_table_generator.py, grouped_data_generator.py, standard_deviation_generator.py |
 | `FULL_CHANGE` | 2 | `FULL_CHANGE\|(250 − 200)/200\|25%` | statistical_literacy_generator.py |
 | `FUNC_OP` | 2 | `FUNC_OP\|(f · g)(-5)\|f(-5) · g(-5)` | function_composition_generator.py, function_operations_generator.py |
 | `FUNC_SETUP` | 2 | `FUNC_SETUP\|x: -1, 2, 4, 5, 9; h(x): 12, -9, -6, 23, -13\|h(5)` | domain_range_generator.py, function_composition_generator.py, function_evaluation_generator.py, function_operations_generator.py, function_table_generator.py, inverse_function_generator.py, piecewise_evaluation_generator.py, rational_function_features_generator.py |
@@ -783,12 +783,12 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `GRAD_ENTRY` | 2 | `GRAD_ENTRY\|g1\|-4` | matrix_calculus_generator.py |
 | `GRAD_RESULT` | 2 | `GRAD_RESULT\|grad g\|(1, 1)` | lagrange_multiplier_generator.py |
 | `GRAD_SETUP` | 3 | `GRAD_SETUP\|f(x,y) = 5*x^2 + 3*y^2 + x + 4*y\|point (1, 1)\|gradient` | gradient_generator.py |
-| `GRAPH_CHANGE` | 3 | `GRAPH_CHANGE\|9am\|10am\|-3` | graph_interpret_generator.py |
-| `GRAPH_DATA` | 2 | `GRAPH_DATA\|bar_chart\|Baseball:2,Basketball:2,Football:7,Soccer:5,Swimming:5,Tennis:5` | graph_interpret_generator.py |
-| `GRAPH_MAX` | 2 | `GRAPH_MAX\|Fish\|15` | graph_interpret_generator.py |
-| `GRAPH_MAX_CHANGE` | 3 | `GRAPH_MAX_CHANGE\|12pm\|1pm\|-4` | graph_interpret_generator.py |
-| `GRAPH_MIN` | 2 | `GRAPH_MIN\|2020\|12` | graph_interpret_generator.py |
-| `GRAPH_READ` | 2 | `GRAPH_READ\|Art\|30` | graph_interpret_generator.py |
+| `GRAPH_CHANGE` | 3 | `GRAPH_CHANGE\|Jan\|Feb\|-3` | graph_interpret_generator.py |
+| `GRAPH_DATA` | 2 | `GRAPH_DATA\|double_bar Morning\|Orange:50,Red:14,Green:32,Purple:34,Blue:24` | graph_interpret_generator.py |
+| `GRAPH_MAX` | 2 | `GRAPH_MAX\|Tennis\|38` | graph_interpret_generator.py |
+| `GRAPH_MAX_CHANGE` | 3 | `GRAPH_MAX_CHANGE\|Mar\|Apr\|8` | graph_interpret_generator.py |
+| `GRAPH_MIN` | 2 | `GRAPH_MIN\|2022\|23` | graph_interpret_generator.py |
+| `GRAPH_READ` | 2 | `GRAPH_READ\|Morning Orange\|50` | graph_interpret_generator.py |
 | `GRAPH_SETUP` | 2 | `GRAPH_SETUP\|vertices A, B, C, D\|edges AB, AD, BD` | dijkstra_generator.py, euler_circuit_generator.py, graph_counting_generator.py, graph_traversal_generator.py |
 | `GRASSMANN_RESULT` | 3 | `GRASSMANN_RESULT\|constant=1\|theta=-1\|1 - theta` | grassmann_generator.py |
 | `GRASSMANN_SETUP` | 3 | `GRASSMANN_SETUP\|integrate\|expr=-8 + 2theta\|int1=0,inttheta=1` | grassmann_generator.py |
@@ -1387,8 +1387,8 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `PH_FORMULA` | 1 | `PH_FORMULA\|pH=-log10([H+])` | ph_calculation_generator.py |
 | `PH_SETUP` | 2, 3 | `PH_SETUP\|hydronium_with_log\|[H+]=4*10^-5\|log10(4)=0.6` | ph_calculation_generator.py |
 | `PI2_NUM` | 3 | `PI2_NUM\|-57/163840\|π^2\|-57π^2/163840` | casimir_force_generator.py |
-| `PICTO_COUNT` | 2 | `PICTO_COUNT\|Fish\|3` | graph_interpret_generator.py |
-| `PICTO_KEY` | 2 | `PICTO_KEY\|●\|5` | graph_interpret_generator.py |
+| `PICTO_COUNT` | 2 | `PICTO_COUNT\|Planes\|7` | graph_interpret_generator.py |
+| `PICTO_KEY` | 2 | `PICTO_KEY\|●\|10` | graph_interpret_generator.py |
 | `PIVOT` | 3 | `PIVOT\|row=s1\|column=x\|pivot=1` | simplex_generator.py |
 | `PIVOT_COLS` | 2 | `PIVOT_COLS\|columns 1, 2, 3\|rank = 3` | subspace_basis_generator.py |
 | `PI_COEFF` | 2 | `PI_COEFF\|16π/9\|16/9` | arc_sector_generator.py |
@@ -1810,7 +1810,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `STATICS_SETUP` | 3 | `STATICS_SETUP\|supported_beam\|W=173, L=18\|x=4` | statics_generator.py |
 | `STATIONARY` | 2 | `STATIONARY\|pi0=2/3\|pi1=1/3` | entropy_rate_markov_generator.py |
 | `STAT_ABS_DEV` | 2 | `STAT_ABS_DEV\|8\|8` | statistics_generator.py |
-| `STAT_AVERAGE` | 2 | `STAT_AVERAGE\|(48 + 50) / 2\|49` | statistics_generator.py |
+| `STAT_AVERAGE` | 2 | `STAT_AVERAGE\|(35 + 35) / 2\|35` | statistics_generator.py |
 | `STAT_COUNT` | 1 | `STAT_COUNT\|5` | grouped_data_generator.py, statistics_generator.py |
 | `STAT_DEVIATION` | 3 | `STAT_DEVIATION\|44\|36\|8` | statistics_generator.py |
 | `STAT_DIVIDE` | 2 | `STAT_DIVIDE\|305 / 5\|61` | statistics_generator.py |
@@ -2046,7 +2046,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `WAVE_SETUP` | 3 | `WAVE_SETUP\|power_interval\|psi=N*(x/L)^3\|0<=x<=42` | wavefunction_generator.py |
 | `WEEKDAY_SCAN` | 2, 3 | `WEEKDAY_SCAN\|extra day 1\|Tuesday\|hit 0` | calendar_arithmetic_generator.py |
 | `WEIGHT` | 2 | `WEIGHT\|green\|35/44` | complement_probability_generator.py, expectation_of_function_generator.py, pmf_cdf_quantile_generator.py, probability_axioms_finite_generator.py, probability_measure_generator.py, simpsons_paradox_generator.py |
-| `WEIGHT_ROW` | 3 | `WEIGHT_ROW\|57\|1\|57` | standard_deviation_generator.py, weighted_mean_generator.py |
+| `WEIGHT_ROW` | 3 | `WEIGHT_ROW\|47\|1\|47` | standard_deviation_generator.py, weighted_mean_generator.py |
 | `WEIGHT_VECTOR` | 2 | `WEIGHT_VECTOR\|w\|(-12,-5)` | svm_margin_generator.py |
 | `WIDTH_FORMULA` | 1 | `WIDTH_FORMULA\|width = 2E, E = z*·σ/√n` | confidence_interval_generator.py |
 | `WIDTH_SETUP` | 3 | `WIDTH_SETUP\|combined\|Gamma_a=6, Gamma_b=10, Gamma_c=11,hbar=2\|target=BR_b,tau` | branching_ratio_generator.py |

@@ -46,6 +46,38 @@ NEW_QUERIES = {
         "What percent coefficient of variation do these summaries give?",
     ),
 }
+LEGACY_PROMPTS = {
+    "population_variance": (
+        "Find the population variance of the data set: {raw}. "
+        "Give an exact answer.",
+        "Treating this as the full population, find the population "
+        "variance of the data set: {raw}. Give an exact answer.",
+        "Report the population variance of the data set: {raw}. "
+        "Give an exact answer.",
+        "What is the population variance of the following data set: "
+        "{raw}. Give an exact answer.",
+    ),
+    "sample_variance": (
+        "Find the sample variance of the data set: {raw}. "
+        "Give an exact answer.",
+        "Treating this as a sample drawn from a larger population, find "
+        "the sample variance of the data set: {raw}. Give an exact answer.",
+        "Report the sample variance of the data set: {raw}. "
+        "Give an exact answer.",
+        "What is the sample variance of the following data set: "
+        "{raw}. Give an exact answer.",
+    ),
+    "population_std": (
+        "Find the population standard deviation of the data set: {raw}. "
+        "Give an exact answer.",
+        "Treating this as the full population, find the population "
+        "standard deviation of the data set: {raw}. Give an exact answer.",
+        "Report the population standard deviation of the data set: "
+        "{raw}. Give an exact answer.",
+        "What is the population standard deviation of the following data "
+        "set: {raw}. Give an exact answer.",
+    ),
+}
 LEGACY_VARIANTS = ("population_variance", "sample_variance", "population_std")
 EXTENSION_VARIANTS = tuple(NEW_QUERIES)
 
@@ -328,22 +360,22 @@ class StandardDeviationGenerator(ProblemGenerator):
             var = Fraction(ss, n)
             steps.append(step("D", ss, n, str(var)))
             answer = str(var)
-            problem = (f"Find the population variance of the data "
-                       f"set: {raw}. Give an exact answer.")
+            problem = random.choice(
+                LEGACY_PROMPTS["population_variance"]).format(raw=raw)
         elif variant == "sample_variance":
             var = Fraction(ss, n - 1)
             steps.append(step("EVAL", "n - 1", n - 1))
             steps.append(step("D", ss, n - 1, str(var)))
             answer = str(var)
-            problem = (f"Find the sample variance of the data set: "
-                       f"{raw}. Give an exact answer.")
+            problem = random.choice(
+                LEGACY_PROMPTS["sample_variance"]).format(raw=raw)
         else:
             var = ss // n
             steps.append(step("D", ss, n, var))
             answer = sqrt_txt(var)
             steps.append(step("EVAL", f"σ = √{var}", answer))
-            problem = (f"Find the population standard deviation of "
-                       f"the data set: {raw}. Give an exact answer.")
+            problem = random.choice(
+                LEGACY_PROMPTS["population_std"]).format(raw=raw)
         steps.append(step("Z", answer))
 
         return dict(

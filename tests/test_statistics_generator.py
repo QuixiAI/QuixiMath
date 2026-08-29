@@ -36,7 +36,8 @@ class TestMeanGenerator(unittest.TestCase):
     def test_generate_consistency(self):
         for _ in range(20):
             result = self.generator.generate()
-            self.assertIn("mean", result["problem"].lower())
+            text = result["problem"].lower()
+            self.assertTrue("mean" in text or "average" in text)
             has_sum = any(s.startswith(f"STAT_SUM{DELIM}") for s in result["steps"])
             has_count = any(s.startswith(f"STAT_COUNT{DELIM}") for s in result["steps"])
             has_divide = any(s.startswith(f"STAT_DIVIDE{DELIM}") for s in result["steps"])
@@ -150,6 +151,43 @@ class TestMeanAbsoluteDeviationGenerator(unittest.TestCase):
             self.assertTrue(has_mean)
             self.assertTrue(has_deviation)
             self.assertTrue(has_mad)
+
+
+class TestPhrasingDiversity(unittest.TestCase):
+    """Each class should draw from 3-5 problem-statement templates,
+    not one fixed sentence frame (TODO.md phrasing sweep)."""
+
+    def test_mean_has_multiple_phrasings(self):
+        gen = MeanGenerator()
+        problems = {gen.generate()["problem"] for _ in range(40)}
+        # distinct data sets could coincidentally repeat text, but with 40
+        # draws across >=3 templates we expect more than one template shape
+        starts = {p.split(":")[0].split(".")[0] for p in problems}
+        self.assertGreater(len(starts), 1)
+
+    def test_median_has_multiple_phrasings(self):
+        gen = MedianGenerator()
+        problems = {gen.generate()["problem"] for _ in range(40)}
+        starts = {p.split(":")[0].split(".")[0] for p in problems}
+        self.assertGreater(len(starts), 1)
+
+    def test_mode_has_multiple_phrasings(self):
+        gen = ModeGenerator()
+        problems = {gen.generate()["problem"] for _ in range(40)}
+        starts = {p.split(":")[0].split(".")[0] for p in problems}
+        self.assertGreater(len(starts), 1)
+
+    def test_range_has_multiple_phrasings(self):
+        gen = RangeGenerator()
+        problems = {gen.generate()["problem"] for _ in range(40)}
+        starts = {p.split(":")[0].split(".")[0] for p in problems}
+        self.assertGreater(len(starts), 1)
+
+    def test_mad_has_multiple_phrasings(self):
+        gen = MeanAbsoluteDeviationGenerator()
+        problems = {gen.generate()["problem"] for _ in range(40)}
+        starts = {p.split(":")[0].split(".")[0] for p in problems}
+        self.assertGreater(len(starts), 1)
 
 
 if __name__ == '__main__':

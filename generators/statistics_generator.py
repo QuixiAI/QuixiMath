@@ -2,6 +2,41 @@ import random
 from base_generator import ProblemGenerator
 from helpers import step, jid
 
+MEAN_PROMPTS = (
+    "Find the mean of the following data set: {values}",
+    "What is the average of these values: {values}?",
+    "A data set contains these values: {values}. Find the mean.",
+    "Calculate the mean of: {values}",
+)
+
+MEDIAN_PROMPTS = (
+    "Find the median of the following data set: {values}",
+    "What is the median of these values: {values}?",
+    "A data set contains these values: {values}. Find the median.",
+    "Order the values {values} and report the median.",
+)
+
+MODE_PROMPTS = (
+    "Find the mode of the following data set: {values}",
+    "What is the mode of these values: {values}?",
+    "A data set contains these values: {values}. Find the mode.",
+    "Which value (or values) appears most often in: {values}?",
+)
+
+RANGE_PROMPTS = (
+    "Find the range of the following data set: {values}",
+    "What is the range of these values: {values}?",
+    "A data set contains these values: {values}. Find the range.",
+    "Calculate the spread (range) of: {values}",
+)
+
+MAD_PROMPTS = (
+    "Find the Mean Absolute Deviation (MAD) of the following data set: {values}",
+    "What is the MAD of these values: {values}?",
+    "A data set contains these values: {values}. Find the MAD.",
+    "Calculate the Mean Absolute Deviation (MAD) for: {values}",
+)
+
 
 class MeanGenerator(ProblemGenerator):
     """
@@ -53,7 +88,7 @@ class MeanGenerator(ProblemGenerator):
         random.shuffle(values)
 
         values_str = ", ".join(str(v) for v in values)
-        problem = f"Find the mean of the following data set: {values_str}"
+        problem = random.choice(MEAN_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -113,7 +148,7 @@ class MedianGenerator(ProblemGenerator):
         values = [random.randint(10, 99) for _ in range(size)]
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the median of the following data set: {values_str}"
+        problem = random.choice(MEDIAN_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -206,7 +241,7 @@ class ModeGenerator(ProblemGenerator):
         random.shuffle(values)
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the mode of the following data set: {values_str}"
+        problem = random.choice(MODE_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -249,7 +284,7 @@ class ModeGenerator(ProblemGenerator):
         random.shuffle(values)
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the mode of the following data set: {values_str}"
+        problem = random.choice(MODE_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -281,7 +316,7 @@ class ModeGenerator(ProblemGenerator):
 
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the mode of the following data set: {values_str}"
+        problem = random.choice(MODE_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -324,7 +359,7 @@ class RangeGenerator(ProblemGenerator):
 
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the range of the following data set: {values_str}"
+        problem = random.choice(RANGE_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))
@@ -391,7 +426,7 @@ class MeanAbsoluteDeviationGenerator(ProblemGenerator):
 
         values_str = ", ".join(str(v) for v in values)
 
-        problem = f"Find the Mean Absolute Deviation (MAD) of the following data set: {values_str}"
+        problem = random.choice(MAD_PROMPTS).format(values=values_str)
 
         steps_list = []
         steps_list.append(step("STAT_SETUP", values_str))

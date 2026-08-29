@@ -118,6 +118,23 @@ class TestTwoSampleTestGenerator(GeneratorTestMixin, unittest.TestCase):
                                     for s in result["steps"]))
                 self.assertEqual(result["final_answer"], oracle_two_sample(result))
 
+    def test_four_phrasings_reachable_for_every_variant(self):
+        def shape(problem):
+            if problem.startswith("At the "):
+                return "at"
+            if problem.startswith("For records from the "):
+                return "for_records"
+            if problem.startswith("During the "):
+                return "during"
+            self.assertIn(" Context: ", problem)
+            self.assertTrue(problem.endswith("."))
+            return "direct"
+
+        for variant in self.VARIANTS:
+            generator = self.GEN(variant)
+            seen = {shape(generator.generate()["problem"]) for _ in range(350)}
+            self.assertEqual(seen, {"at", "for_records", "during", "direct"})
+
 
 if __name__ == "__main__":
     unittest.main()

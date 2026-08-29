@@ -1,14 +1,16 @@
 """Read and construct text bar, line, pictograph, and double-bar displays.
 
 Legacy variants remain ``bar`` (six operations), ``line`` (six), and
-``pictograph`` (five). The statistics extension adds ``double_bar`` with
+``pictograph`` (five); every question type in all three now draws from
+3-5 phrasing templates (``BAR_QUERIES``, ``LINE_QUERIES``,
+``PICTOGRAPH_QUERIES``). The statistics extension adds ``double_bar`` with
 compare, total, and largest-gap questions, plus ``construct_bar`` from raw
 categorical observations. Op-codes include ``GRAPH_DATA``, ``GRAPH_READ``,
 ``COUNT``, ``CMP``, ``GRAPH_MIN``, ``GRAPH_MAX``, ``GRAPH_CHANGE``,
 ``GRAPH_MAX_CHANGE``, ``PICTO_KEY``, ``PICTO_COUNT``, ``SORT``, ``A``, ``S``,
 ``M``, ``CHECK``, and ``Z``. All values and arithmetic are integers; distinct
 extrema and gaps are enforced when a question needs a unique answer. Random
-data, category sets, series labels, raw-data order, and four new-variant
+data, category sets, series labels, raw-data order, and per-question
 phrasings give unbounded capacity.
 """
 import hashlib
@@ -52,6 +54,121 @@ CONSTRUCT_BAR_QUERIES = (
     "Question: Turn the raw observations into a category-to-count bar list.",
     "Question: Build the text bar chart by tallying every observation.",
 )
+BAR_QUERIES = {
+    "read_value": (
+        "Question: What is the value for {target}?",
+        "Question: How many does {target} have?",
+        "Question: Read the bar chart value for {target}.",
+        "Question: What does the {target} bar show?",
+    ),
+    "compare": (
+        "Question: Compare {a} and {b}. Which is greater and by how much?",
+        "Question: Between {a} and {b}, which is greater and by how much?",
+        "Question: Which bar is taller, {a} or {b}, and by how much?",
+        "Question: How much greater is the larger of {a} and {b}?",
+    ),
+    "total": (
+        "Question: What is the total of all values?",
+        "Question: Add up every bar's value.",
+        "Question: What do all the bars sum to?",
+        "Question: Find the combined total across all categories.",
+    ),
+    "difference": (
+        "Question: What is the difference between {a} and {b}?",
+        "Question: By how much do {a} and {b} differ?",
+        "Question: Find the gap between {a} and {b}.",
+        "Question: How far apart are {a} and {b}?",
+    ),
+    "max": (
+        "Question: Which category has the highest value?",
+        "Question: Which bar is tallest?",
+        "Question: Name the category with the largest value.",
+        "Question: Which category peaks the highest?",
+    ),
+    "min": (
+        "Question: Which category has the lowest value?",
+        "Question: Which bar is shortest?",
+        "Question: Name the category with the smallest value.",
+        "Question: Which category dips the lowest?",
+    ),
+}
+LINE_QUERIES = {
+    "read_value": (
+        "Question: What is the value at {target}?",
+        "Question: What does the line show at {target}?",
+        "Question: Read the value plotted at {target}.",
+        "Question: What is recorded at {target}?",
+    ),
+    "increase": (
+        "Question: Between which two consecutive time periods was there "
+        "the largest increase?",
+        "Question: Find the consecutive pair with the biggest rise.",
+        "Question: Where did the value climb the most from one period to "
+        "the next?",
+        "Question: Identify the two consecutive points with the largest "
+        "increase.",
+    ),
+    "decrease": (
+        "Question: Between which two consecutive time periods was there "
+        "the largest decrease?",
+        "Question: Find the consecutive pair with the biggest drop.",
+        "Question: Where did the value fall the most from one period to "
+        "the next?",
+        "Question: Identify the two consecutive points with the largest "
+        "decrease.",
+    ),
+    "max": (
+        "Question: At which time was the value highest?",
+        "Question: When did the line peak?",
+        "Question: Identify the time with the maximum value.",
+        "Question: Which point on the line is highest?",
+    ),
+    "min": (
+        "Question: At which time was the value lowest?",
+        "Question: When did the line bottom out?",
+        "Question: Identify the time with the minimum value.",
+        "Question: Which point on the line is lowest?",
+    ),
+    "range": (
+        "Question: What is the range (difference between highest and "
+        "lowest values)?",
+        "Question: Find the spread between the highest and lowest values.",
+        "Question: By how much do the maximum and minimum values differ?",
+        "Question: Compute the range of the plotted values.",
+    ),
+}
+PICTOGRAPH_QUERIES = {
+    "read_value": (
+        "Question: How many does {target} represent?",
+        "Question: What value does {target} show?",
+        "Question: Read the pictograph value for {target}.",
+        "Question: How many symbols' worth does {target} have?",
+    ),
+    "compare": (
+        "Question: Compare {a} and {b}. Which has more and by how much?",
+        "Question: Between {a} and {b}, which has more and by how much?",
+        "Question: Which has more symbols, {a} or {b}, and by how much?",
+        "Question: How many more does the larger of {a} and {b} have?",
+    ),
+    "total": (
+        "Question: What is the total represented by all categories?",
+        "Question: Add up the values shown for every category.",
+        "Question: What do all the pictograph rows sum to?",
+        "Question: Find the combined total across all categories.",
+    ),
+    "difference": (
+        "Question: What is the difference between {a} and {b}?",
+        "Question: By how much do {a} and {b} differ?",
+        "Question: Find the gap between {a} and {b}.",
+        "Question: How far apart are {a} and {b}?",
+    ),
+    "max": (
+        "Question: Which category has the highest value?",
+        "Question: Which category has the most symbols?",
+        "Question: Name the category with the largest value.",
+        "Question: Which category is represented the most?",
+    ),
+}
 
 
 class GraphInterpretGenerator(ProblemGenerator):
@@ -394,7 +511,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             value = values[target]
             steps.append(step("GRAPH_READ", target, value))
             final_answer = str(value)
-            problem = f"{chart_repr}\n\nQuestion: What is the value for {target}?"
+            query = random.choice(BAR_QUERIES["read_value"]).format(target=target)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_read"
 
         elif question_type == "compare":
@@ -416,7 +534,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 relation = "equal"
                 final_answer = f"{cat1} and {cat2} are equal"
             steps.append(step("CMP", cat1, cat2, relation))
-            problem = f"{chart_repr}\n\nQuestion: Compare {cat1} and {cat2}. Which is greater and by how much?"
+            query = random.choice(BAR_QUERIES["compare"]).format(a=cat1, b=cat2)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_compare"
 
         elif question_type == "total":
@@ -428,7 +547,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("A", total, v, new_total))
                 total = new_total
             final_answer = str(total)
-            problem = f"{chart_repr}\n\nQuestion: What is the total of all values?"
+            query = random.choice(BAR_QUERIES["total"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_total"
 
         elif question_type == "difference":
@@ -442,7 +562,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             else:
                 steps.append(step("S", v2, v1, diff))
             final_answer = str(diff)
-            problem = f"{chart_repr}\n\nQuestion: What is the difference between {cat1} and {cat2}?"
+            query = random.choice(BAR_QUERIES["difference"]).format(a=cat1, b=cat2)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_difference"
 
         elif question_type == "max":
@@ -452,7 +573,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("GRAPH_READ", cat, values[cat]))
             steps.append(step("GRAPH_MAX", max_cat, max_val))
             final_answer = f"{max_cat} ({max_val})"
-            problem = f"{chart_repr}\n\nQuestion: Which category has the highest value?"
+            query = random.choice(BAR_QUERIES["max"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_max"
 
         else:  # min
@@ -462,7 +584,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("GRAPH_READ", cat, values[cat]))
             steps.append(step("GRAPH_MIN", min_cat, min_val))
             final_answer = f"{min_cat} ({min_val})"
-            problem = f"{chart_repr}\n\nQuestion: Which category has the lowest value?"
+            query = random.choice(BAR_QUERIES["min"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "bar_chart_min"
 
         steps.append(step("Z", final_answer))
@@ -488,7 +611,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             value = values[target]
             steps.append(step("GRAPH_READ", target, value))
             final_answer = str(value)
-            problem = f"{chart_repr}\n\nQuestion: What is the value at {target}?"
+            query = random.choice(LINE_QUERIES["read_value"]).format(target=target)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_read"
 
         elif question_type == "increase":
@@ -507,7 +631,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                     max_pair = (t1, t2)
             steps.append(step("GRAPH_MAX_CHANGE", max_pair[0], max_pair[1], max_increase))
             final_answer = f"{max_pair[0]} to {max_pair[1]} (increase of {max_increase})"
-            problem = f"{chart_repr}\n\nQuestion: Between which two consecutive time periods was there the largest increase?"
+            query = random.choice(LINE_QUERIES["increase"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_increase"
 
         elif question_type == "decrease":
@@ -529,7 +654,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 final_answer = f"{max_pair[0]} to {max_pair[1]} (decrease of {max_decrease})"
             else:
                 final_answer = "No decrease occurred"
-            problem = f"{chart_repr}\n\nQuestion: Between which two consecutive time periods was there the largest decrease?"
+            query = random.choice(LINE_QUERIES["decrease"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_decrease"
 
         elif question_type == "max":
@@ -539,7 +665,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("GRAPH_READ", t, values[t]))
             steps.append(step("GRAPH_MAX", max_time, max_val))
             final_answer = f"{max_time} ({max_val})"
-            problem = f"{chart_repr}\n\nQuestion: At which time was the value highest?"
+            query = random.choice(LINE_QUERIES["max"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_max"
 
         elif question_type == "min":
@@ -549,7 +676,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("GRAPH_READ", t, values[t]))
             steps.append(step("GRAPH_MIN", min_time, min_val))
             final_answer = f"{min_time} ({min_val})"
-            problem = f"{chart_repr}\n\nQuestion: At which time was the value lowest?"
+            query = random.choice(LINE_QUERIES["min"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_min"
 
         else:  # range
@@ -562,7 +690,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             range_val = max_val - min_val
             steps.append(step("S", max_val, min_val, range_val))
             final_answer = str(range_val)
-            problem = f"{chart_repr}\n\nQuestion: What is the range (difference between highest and lowest values)?"
+            query = random.choice(LINE_QUERIES["range"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "line_graph_range"
 
         steps.append(step("Z", final_answer))
@@ -595,7 +724,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             steps.append(step("PICTO_COUNT", target, count))
             steps.append(step("M", count, symbol_value, value))
             final_answer = str(value)
-            problem = f"{chart_repr}\n\nQuestion: How many does {target} represent?"
+            query = random.choice(PICTOGRAPH_QUERIES["read_value"]).format(target=target)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "pictograph_read"
 
         elif question_type == "compare":
@@ -617,7 +747,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             else:
                 final_answer = f"{cat1} and {cat2} are equal"
             steps.append(step("CMP", cat1, cat2, "v1>v2" if v1 > v2 else ("v1<v2" if v1 < v2 else "equal")))
-            problem = f"{chart_repr}\n\nQuestion: Compare {cat1} and {cat2}. Which has more and by how much?"
+            query = random.choice(PICTOGRAPH_QUERIES["compare"]).format(a=cat1, b=cat2)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "pictograph_compare"
 
         elif question_type == "total":
@@ -631,7 +762,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("A", total, value, new_total))
                 total = new_total
             final_answer = str(total)
-            problem = f"{chart_repr}\n\nQuestion: What is the total represented by all categories?"
+            query = random.choice(PICTOGRAPH_QUERIES["total"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "pictograph_total"
 
         elif question_type == "difference":
@@ -648,7 +780,8 @@ class GraphInterpretGenerator(ProblemGenerator):
             else:
                 steps.append(step("S", v2, v1, diff))
             final_answer = str(diff)
-            problem = f"{chart_repr}\n\nQuestion: What is the difference between {cat1} and {cat2}?"
+            query = random.choice(PICTOGRAPH_QUERIES["difference"]).format(a=cat1, b=cat2)
+            problem = f"{chart_repr}\n\n{query}"
             operation = "pictograph_difference"
 
         else:  # max
@@ -661,7 +794,8 @@ class GraphInterpretGenerator(ProblemGenerator):
                 steps.append(step("M", count, symbol_value, value))
             steps.append(step("GRAPH_MAX", max_cat, max_val))
             final_answer = f"{max_cat} ({max_val})"
-            problem = f"{chart_repr}\n\nQuestion: Which category has the highest value?"
+            query = random.choice(PICTOGRAPH_QUERIES["max"])
+            problem = f"{chart_repr}\n\n{query}"
             operation = "pictograph_max"
 
         steps.append(step("Z", final_answer))

@@ -5,9 +5,12 @@ import unittest
 from fractions import Fraction
 
 from generators.graph_interpret_generator import (
+    BAR_QUERIES,
     CONSTRUCT_BAR_QUERIES,
     DOUBLE_BAR_QUERIES,
     GraphInterpretGenerator,
+    LINE_QUERIES,
+    PICTOGRAPH_QUERIES,
 )
 from helpers import DELIM
 
@@ -76,10 +79,24 @@ def _double_chart(problem):
     return series
 
 
+def _labels_in_question(question, labels):
+    # Word-boundary match: some line-graph label sets aren't prefix-free
+    # (e.g. "2pm" is a substring of "12pm", "Mon" of "Mon2"), so plain
+    # substring search would misfire.
+    return [label for label in labels
+            if re.search(rf"\b{re.escape(label)}\b", question)]
+
+
 def _target_in_question(question, labels):
-    found = [label for label in labels if label in question]
+    found = _labels_in_question(question, labels)
     assert len(found) == 1, (question, found)
     return found[0]
+
+
+def _two_targets_in_question(question, labels):
+    found = _labels_in_question(question, labels)
+    assert len(found) == 2, (question, found)
+    return found
 
 
 def _construct_oracle(problem):
@@ -128,16 +145,10 @@ def oracle_answer(example):
     kind, values = _single_chart(problem)
     labels = list(values)
     if operation.endswith("_read"):
-        if kind == "line":
-            target = re.search(r"value at (.+)\?", question).group(1)
-        elif kind == "bar":
-            target = re.search(r"value for (.+)\?", question).group(1)
-        else:
-            target = re.search(r"does (.+) represent\?", question).group(1)
+        target = _target_in_question(question, labels)
         return str(values[target])
     if operation.endswith("_compare"):
-        match = re.search(r"Compare (.+) and (.+)\. Which", question)
-        first, second = match.groups()
+        first, second = _two_targets_in_question(question, labels)
         value1, value2 = values[first], values[second]
         winner, high, low = ((first, value1, value2) if value1 > value2
                              else (second, value2, value1))
@@ -147,8 +158,7 @@ def oracle_answer(example):
     if operation.endswith("_total"):
         return str(sum(values.values()))
     if operation.endswith("_difference"):
-        match = re.search(r"difference between (.+) and (.+)\?", question)
-        first, second = match.groups()
+        first, second = _two_targets_in_question(question, labels)
         return str(abs(values[first] - values[second]))
     if operation.endswith("_max"):
         target = max(values, key=values.get)
@@ -176,13 +186,30 @@ def oracle_answer(example):
 
 def _query_template(example):
     query = example["problem"].rsplit("\n", 1)[-1]
-    if example["operation"] == "construct_bar":
+    op = example["operation"]
+    if op == "construct_bar":
         return next(template for template in CONSTRUCT_BAR_QUERIES
                     if query == template)
-    question_type = example["operation"].removeprefix("double_bar_")
-    for template in DOUBLE_BAR_QUERIES[question_type]:
+    if op.startswith("double_bar_"):
+        bank = DOUBLE_BAR_QUERIES
+        question_type = op.removeprefix("double_bar_")
+        fields = ("category", "series1", "series2")
+    else:
+        for prefix, candidate_bank in (("bar_chart_", BAR_QUERIES),
+                                       ("line_graph_", LINE_QUERIES),
+                                       ("pictograph_", PICTOGRAPH_QUERIES)):
+            if op.startswith(prefix):
+                bank = candidate_bank
+                question_type = op.removeprefix(prefix)
+                if question_type == "read":
+                    question_type = "read_value"
+                break
+        else:
+            raise AssertionError(op)
+        fields = ("target", "a", "b")
+    for template in bank[question_type]:
         pattern = re.escape(template)
-        for field in ("category", "series1", "series2"):
+        for field in fields:
             pattern = pattern.replace(r"\{" + field + r"\}", r".+?")
         if re.fullmatch(pattern, query):
             return template
@@ -273,6 +300,24 @@ class TestGraphInterpretGenerator(unittest.TestCase):
             seen[question_type].add(_query_template(example))
         for question_type, templates in DOUBLE_BAR_QUERIES.items():
             self.assertEqual(seen[question_type], set(templates))
+
+    def test_legacy_variants_have_four_phrasings_per_question(self):
+        for graph_type, prefix, bank in (
+            ("bar", "bar_chart_", BAR_QUERIES),
+            ("line", "line_graph_", LINE_QUERIES),
+            ("pictograph", "pictograph_", PICTOGRAPH_QUERIES),
+        ):
+            generator = GraphInterpretGenerator(graph_type)
+            seen = {question_type: set() for question_type in bank}
+            for _ in range(1500):
+                example = generator.generate()
+                question_type = example["operation"].removeprefix(prefix)
+                if question_type == "read":
+                    question_type = "read_value"
+                seen[question_type].add(_query_template(example))
+            for question_type, templates in bank.items():
+                self.assertEqual(seen[question_type], set(templates),
+                                 (graph_type, question_type))
 
     def test_all_new_verdict_outcomes_occur(self):
         generator = GraphInterpretGenerator("double_bar")

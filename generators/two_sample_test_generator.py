@@ -36,9 +36,17 @@ LOCATIONS = ("north campus", "south campus", "east annex", "west annex",
 
 
 def _frame(core):
+    """Original direct wording plus three contextual phrasings."""
     code = f"cohort {random.choice('ABCDEFGH')}{random.randint(10, 99)}"
-    return (f"At the {random.choice(LOCATIONS)} during the "
-            f"{random.choice(SETTINGS)} ({code}), {core[0].lower() + core[1:]}")
+    location, setting = random.choice(LOCATIONS), random.choice(SETTINGS)
+    site = f"{location} during the {setting} ({code})"
+    lowered = core[0].lower() + core[1:]
+    return random.choice((
+        f"{core} Context: {site}.",
+        f"At the {site}, {lowered}",
+        f"For records from the {site}, {lowered}",
+        f"During the {setting} at the {location} ({code}), {lowered}",
+    ))
 
 
 def _prop_cases():

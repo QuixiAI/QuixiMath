@@ -895,35 +895,38 @@ Answer: 432 selections
 
 Generate bar, line, pictograph, double-bar, and bar-construction problems.
 
-**Variants:** `bar_chart_compare`, `bar_chart_difference`, `bar_chart_max`, `bar_chart_min`, `bar_chart_read`, `bar_chart_total`, `construct_bar`, `double_bar_compare`, `double_bar_largest_gap`, `double_bar_total`, `line_graph_decrease`, `line_graph_increase`, `line_graph_max`, `line_graph_min`, `line_graph_range`, `line_graph_read`, `pictograph_compare`, `pictograph_difference`, `pictograph_max`, `pictograph_read`, `pictograph_total`
+**Variants:** `bar_chart_compare`, `bar_chart_difference`, `bar_chart_max`, `bar_chart_min`, `bar_chart_read`, `construct_bar`, `double_bar_compare`, `double_bar_largest_gap`, `double_bar_total`, `line_graph_decrease`, `line_graph_increase`, `line_graph_max`, `line_graph_min`, `line_graph_range`, `line_graph_read`, `pictograph_compare`, `pictograph_difference`, `pictograph_max`, `pictograph_read`, `pictograph_total`
 
 ```
-Problem: Double Bar Chart Data:
-Series Year 1:
-  Art: 35
-  English: 24
-  History: 7
-  Math: 6
-  Science: 21
-  Music: 13
-Series Year 2:
-  Art: 13
-  English: 49
-  History: 37
-  Math: 15
-  Science: 11
-  Music: 45
+Problem: Line Graph Data:
+  2018: 25
+  2019: 25
+  2020: 29
+  2021: 27
+  2022: 30
 
-Question: Which group has the larger English bar, and what is the difference?
+Question: Where did the value fall the most from one period to the next?
 Steps:
-  GRAPH_DATA|double_bar Year 1|Art:35,English:24,History:7,Math:6,Science:21,Music:13
-  GRAPH_DATA|double_bar Year 2|Art:13,English:49,History:37,Math:15,Science:11,Music:45
-  GRAPH_READ|Year 1 English|24
-  GRAPH_READ|Year 2 English|49
-  S|49|24|25
-  CMP|Year 1|Year 2|Year 2
-  Z|Year 2; English 49 > 24 by 25
-Answer: Year 2; English 49 > 24 by 25
+  GRAPH_DATA|line_graph|2018:25,2019:25,2020:29,2021:27,2022:30
+  GRAPH_READ|2018|25
+  GRAPH_READ|2019|25
+  S|25|25|0
+  GRAPH_CHANGE|2018|2019|0
+  GRAPH_READ|2019|25
+  GRAPH_READ|2020|29
+  S|25|29|-4
+  GRAPH_CHANGE|2019|2020|4
+  GRAPH_READ|2020|29
+  GRAPH_READ|2021|27
+  S|29|27|2
+  GRAPH_CHANGE|2020|2021|-2
+  GRAPH_READ|2021|27
+  GRAPH_READ|2022|30
+  S|27|30|-3
+  GRAPH_CHANGE|2021|2022|3
+  GRAPH_MAX_CHANGE|2020|2021|-2
+  Z|2020 to 2021 (decrease of 2)
+Answer: 2020 to 2021 (decrease of 2)
 ```
 
 ### Composite Arithmetic — `CompositeArithmeticGenerator`  ·  elementary · difficulty 4
@@ -2205,7 +2208,7 @@ Generates median calculation problems.
 **Variants:** `median`
 
 ```
-Problem: Find the median of the following data set: 63, 15, 43, 75, 72, 61, 48, 71
+Problem: A data set contains these values: 63, 15, 43, 75, 72, 61, 48, 71. Find the median.
 Steps:
   STAT_SETUP|63, 15, 43, 75, 72, 61, 48, 71
   STAT_ORDER|15, 43, 48, 61, 63, 71, 72, 75
@@ -2222,7 +2225,7 @@ Generates mode calculation problems.
 **Variants:** `mode`, `mode_bimodal`, `mode_none`
 
 ```
-Problem: Find the mode of the following data set: 44, 73, 43, 73, 88, 44, 88, 43, 76, 15, 44, 76, 88, 44, 15, 88
+Problem: A data set contains these values: 44, 73, 43, 73, 88, 44, 88, 43, 76, 15, 44, 76, 88, 44, 15, 88. Find the mode.
 Steps:
   STAT_SETUP|44, 73, 43, 73, 88, 44, 88, 43, 76, 15, 44, 76, 88, 44, 15, 88
   STAT_FREQUENCY|15|2
@@ -2243,7 +2246,7 @@ Generates range calculation problems.
 **Variants:** `range`
 
 ```
-Problem: Find the range of the following data set: 59, 63, 15, 43, 75, 72, 61, 48, 71, 55, 84, 37
+Problem: What is the range of these values: 59, 63, 15, 43, 75, 72, 61, 48, 71, 55, 84, 37?
 Steps:
   STAT_SETUP|59, 63, 15, 43, 75, 72, 61, 48, 71, 55, 84, 37
   STAT_MIN|15
@@ -2260,7 +2263,7 @@ Generates Mean Absolute Deviation (MAD) problems.
 **Variants:** `mean_absolute_deviation`
 
 ```
-Problem: Find the Mean Absolute Deviation (MAD) of the following data set: 13, 53, 62, 51, 59, 56
+Problem: A data set contains these values: 13, 53, 62, 51, 59, 56. Find the MAD.
 Steps:
   STAT_SETUP|13, 53, 62, 51, 59, 56
   STAT_MEAN|294 / 6|49
@@ -2754,28 +2757,16 @@ Variance and standard deviation by hand with the classic deviation table: mean f
 **Variants:** `standard_deviation_coefficient_of_variation`, `standard_deviation_from_frequency_table`, `standard_deviation_population_std`, `standard_deviation_population_variance`, `standard_deviation_sample_std`, `standard_deviation_sample_variance`, `standard_deviation_shortcut_formula`
 
 ```
-Problem: At the maple office during the cedar trial, sample data are: 73, 85, 85, 85.
-Use divisor n - 1 and report the sample sd.
+Problem: At the cedar clinic during the amber study, a population has mean μ = 40 and standard deviation σ = 16. CV rule: σ/μ × 100%.
+What percent coefficient of variation do these summaries give?
 Steps:
-  STAT_SETUP|sample standard deviation|n=4
-  A|73|85|158
-  A|158|85|243
-  A|243|85|328
-  MEAN_DIV|328|4|82
-  DEV_ROW|73|-9|81
-  DEV_ROW|85|3|9
-  DEV_ROW|85|3|9
-  DEV_ROW|85|3|9
-  A|81|9|90
-  A|90|9|99
-  A|99|9|108
-  SUM|squared deviations|108
-  EVAL|n - 1|3
-  D|108|3|36
-  EVAL|s = √36|6
-  CHECK|square s|6²|36
-  Z|6
-Answer: 6
+  STAT_SETUP|coefficient of variation|μ=40, σ=16
+  CV_FORMULA|σ/μ × 100%
+  D|16|40|0.4
+  DEC_TO_PERCENT|0.4|40%
+  CHECK|relative spread|40%
+  Z|40%
+Answer: 40%
 ```
 
 ### Frequency Table — `FrequencyTableGenerator`  ·  middle · difficulty 3
@@ -6988,7 +6979,7 @@ Two-sample t and two-proportion z tests with supplied critical values and exact-
 **Variants:** `two_sample_test_prop_z_decision`, `two_sample_test_prop_z_stat`, `two_sample_test_prop_z_unequal_n`, `two_sample_test_t_decision`, `two_sample_test_t_pooled_decision`, `two_sample_test_t_pooled_stat`, `two_sample_test_t_stat`, `two_sample_test_t_welch_stat`
 
 ```
-Problem: At the cedar clinic during the indigo review (cohort E20), for a Welch two-sample t statistic, sample 1 has n1=16, x̄1=99, s1=4; sample 2 has n2=15, x̄2=88, s2=15. Use conservative df = min(n1 − 1, n2 − 1).
+Problem: For a Welch two-sample t statistic, sample 1 has n1=16, x̄1=99, s1=4; sample 2 has n2=15, x̄2=88, s2=15. Use conservative df = min(n1 − 1, n2 − 1). Context: cedar clinic during the indigo review (cohort E20).
 Steps:
   HT_SETUP|H0: μ1 = μ2; Ha: μ1 ≠ μ2|unequal variances
   TEST_STAT_FORMULA|t = (x̄1 − x̄2)/√(s1²/n1 + s2²/n2)
