@@ -7156,10 +7156,10 @@ Answer: x^3 + 3x^2
 
 Verification-style induction problems: check the base case, then show the algebraic k to k+1 step for standard identities.
 
-**Variants:** `induction_verify_divisibility`, `induction_verify_geometric`, `induction_verify_strong_induction`, `induction_verify_sum_linear`, `induction_verify_sum_odds`, `induction_verify_sum_squares`, `induction_verify_well_ordering`
+**Variants:** `induction_verify_divisibility`, `induction_verify_strong_induction`, `induction_verify_sum_odds`, `induction_verify_well_ordering`
 
 ```
-Problem: Use well-ordering to justify the division algorithm. For N=42550 and d=267, consider the nonnegative values N−dq, choose the least r, and show r<d. Report the resulting quotient and remainder.
+Problem: Use the well-ordering principle to establish the division algorithm. For N=42550 and d=267, consider the nonnegative values N−dq, choose the least r, and show r<d. Report the resulting quotient and remainder.
 Steps:
   SETUP|S = nonnegative values N−dq|S is nonempty
   LEAST|r = least element of S

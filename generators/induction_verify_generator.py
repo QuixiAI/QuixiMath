@@ -14,6 +14,13 @@ INTROS = (
     "Give a complete induction verification",
     "Establish by induction",
 )
+WELL_ORDERING_INTROS = (
+    "Use well-ordering to justify the division algorithm.",
+    "Apply the well-ordering principle to justify the division algorithm.",
+    "Give a well-ordering argument for the division algorithm.",
+    "Justify the division algorithm with a well-ordering proof.",
+    "Use the well-ordering principle to establish the division algorithm.",
+)
 
 
 class InductionVerifyGenerator(ProblemGenerator):
@@ -84,7 +91,7 @@ class InductionVerifyGenerator(ProblemGenerator):
             divisor = random.randint(2, min(1000, number - 1))
             quotient, remainder = divmod(number, divisor)
             problem = (
-                "Use well-ordering to justify the division algorithm. "
+                f"{random.choice(WELL_ORDERING_INTROS)} "
                 f"For N={number} and d={divisor}, consider the nonnegative "
                 "values N−dq, choose the least r, and show r<d. "
                 "Report the resulting quotient and remainder."

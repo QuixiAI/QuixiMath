@@ -59,6 +59,16 @@ class TestInductionVerifyGenerator(GeneratorTestMixin, unittest.TestCase):
             self.assertEqual(number, divisor * quotient + remainder)
             self.assertLess(remainder, divisor)
 
+    def test_well_ordering_has_five_phrasings(self):
+        from generators.induction_verify_generator import WELL_ORDERING_INTROS
+        generator = InductionVerifyGenerator("well_ordering")
+        seen = set()
+        for _ in range(300):
+            problem = generator.generate()["problem"]
+            seen.update(intro for intro in WELL_ORDERING_INTROS
+                        if problem.startswith(intro))
+        self.assertEqual(seen, set(WELL_ORDERING_INTROS))
+
 
 if __name__ == "__main__":
     unittest.main()

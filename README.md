@@ -68,10 +68,12 @@ Coverage now spans elementary through graduate-level topics:
   information, Lie/group and tensor notation, relativity, particle/field
   physics, advanced probability/statistics, information theory, deep learning,
   kernel methods, transformer arithmetic, and quantitative finance.
-- **Foundations strand:** concrete classification and correspondence, formal
-  propositional and predicate logic, proof systems, sets, relations, functions,
-  number constructions, ordinals and cardinals, type theory, ZF axiom
-  identification, finite-structure isomorphism, and critic records.
+- **Foundations strand:** 55 generator classes and 238 internal variants span
+  concrete classification and correspondence, formal propositional and
+  predicate logic, proof systems, sets, relations, functions, number
+  constructions, ordinals and cardinals, type theory, ZF axiom identification,
+  finite-structure isomorphism, and critic records. Every variant has 3–5
+  prompt phrasings and a prompt-only exact oracle test.
 - **Probability strand:** 47 generator classes and 280 internal variants span
   likelihood language and finite experiments through conditional expectation,
   named distributions, limit bounds, random walks, finite Markov chains,
@@ -106,13 +108,11 @@ Coverage now spans elementary through graduate-level topics:
 The hosted [QuixiMath-1B dataset](https://huggingface.co/datasets/QuixiAI/QuixiMath-1B)
 is a release artifact and may lag the current generator registry. Future
 dataset cards should pin the source commit and publish the generated inventory
-and observed grade/difficulty/operation distributions for that release. For the
-probability strand, the card should also state that answers use reduced exact
-fractions wherever possible; four-decimal probabilities appear only when the
-needed normal-table or exponential constant is supplied inside the prompt.
-For the statistics strand, the card should state that Φ, z, t, χ², and F values
-are supplied inline whenever needed, rule-dependent procedures name their rule,
-and estimator or sampling-enumeration results use exact rational arithmetic.
+and observed grade/difficulty/operation distributions for that release.
+`tools/build_hf_release.py`'s `write_readme()` already documents the
+foundations, probability, and statistics strands (exactness guarantees and
+supplied lookup values); regenerate the card after any change to those
+strands' answer format so the description stays accurate.
 
 Signature behaviors:
 
