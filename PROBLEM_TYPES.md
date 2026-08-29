@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**671 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**672 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3298,6 +3298,22 @@ Steps:
   EXTRA_MATERIAL|50%|20000|30000
   Z|paper = surface area × (100 + extra%)/100; 30000 cm²
 Answer: paper = surface area × (100 + extra%)/100; 30000 cm²
+```
+
+### Spatial Description — `SpatialDescriptionGenerator`  ·  middle · difficulty 2
+
+Generate six exact spatial-reasoning models without naming a method.
+
+**Variants:** `applied_spatial_description_bearing_after_turns_distractor`, `applied_spatial_description_bearing_after_turns_estimate_first`, `applied_spatial_description_bearing_after_turns_with_model`, `applied_spatial_description_clock_angle_distractor`, `applied_spatial_description_clock_angle_estimate_first`, `applied_spatial_description_clock_angle_plain`, `applied_spatial_description_clock_angle_with_model`, `applied_spatial_description_compass_turns_distractor`, `applied_spatial_description_compass_turns_estimate_first`, `applied_spatial_description_compass_turns_plain`, `applied_spatial_description_compass_turns_with_model`, `applied_spatial_description_coordinates_from_story_distractor`, `applied_spatial_description_coordinates_from_story_estimate_first`, `applied_spatial_description_coordinates_from_story_plain`, `applied_spatial_description_coordinates_from_story_with_model`, `applied_spatial_description_net_matches_solid_distractor`, `applied_spatial_description_net_matches_solid_estimate_first`, `applied_spatial_description_net_matches_solid_plain`, `applied_spatial_description_net_matches_solid_with_model`, `applied_spatial_description_perimeter_from_walk_distractor`, `applied_spatial_description_perimeter_from_walk_estimate_first`, `applied_spatial_description_perimeter_from_walk_plain`, `applied_spatial_description_perimeter_from_walk_with_model`
+
+```
+Problem: Consider the situation Milo is picturing. A rectangular path is walked: 15 m in one direction, then 43 m turning a corner, then back to the start along the remaining two sides. What is the total distance walked?
+Steps:
+  MODEL_EQ|perimeter = 2 × (leg1 + leg2)|spatial relationship
+  A|15|43|58
+  M|2|58|116
+  Z|perimeter = 2 × (leg1 + leg2); 116 m
+Answer: perimeter = 2 × (leg1 + leg2); 116 m
 ```
 
 ## High School

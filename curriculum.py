@@ -703,6 +703,7 @@ CURRICULUM = {
     "DecisionUnderUncertaintyGenerator": {"grade_level": HIGH, "difficulty": 3},
     "SquareCubeLawGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SpatialPackingGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "SpatialDescriptionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 
