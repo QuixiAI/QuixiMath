@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**668 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**669 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7968,6 +7968,25 @@ Steps:
   REAL_RATE|100·(100 + 13)/(100 + 0) − 100|13%
   Z|real = 100(100 + nominal)/(100 + inflation) − 100; 13%
 Answer: real = 100(100 + nominal)/(100 + inflation) − 100; 13%
+```
+
+### Decision Under Uncertainty — `DecisionUnderUncertaintyGenerator`  ·  high · difficulty 3
+
+Generate six exact expected-cost decision models without naming a method.
+
+**Variants:** `applied_decision_under_uncertainty_expected_cost_two_plans_distractor`, `applied_decision_under_uncertainty_expected_cost_two_plans_estimate_first`, `applied_decision_under_uncertainty_expected_cost_two_plans_plain`, `applied_decision_under_uncertainty_expected_cost_two_plans_with_model`, `applied_decision_under_uncertainty_fair_price_distractor`, `applied_decision_under_uncertainty_fair_price_estimate_first`, `applied_decision_under_uncertainty_fair_price_plain`, `applied_decision_under_uncertainty_fair_price_with_model`, `applied_decision_under_uncertainty_insurance_premium_vs_expected_loss_distractor`, `applied_decision_under_uncertainty_insurance_premium_vs_expected_loss_plain`, `applied_decision_under_uncertainty_insurance_premium_vs_expected_loss_with_model`, `applied_decision_under_uncertainty_minimax_vs_expected_distractor`, `applied_decision_under_uncertainty_minimax_vs_expected_estimate_first`, `applied_decision_under_uncertainty_minimax_vs_expected_plain`, `applied_decision_under_uncertainty_minimax_vs_expected_with_model`, `applied_decision_under_uncertainty_risk_of_ruin_simple_distractor`, `applied_decision_under_uncertainty_risk_of_ruin_simple_estimate_first`, `applied_decision_under_uncertainty_risk_of_ruin_simple_plain`, `applied_decision_under_uncertainty_risk_of_ruin_simple_with_model`, `applied_decision_under_uncertainty_wait_or_buy_distractor`, `applied_decision_under_uncertainty_wait_or_buy_estimate_first`, `applied_decision_under_uncertainty_wait_or_buy_plain`, `applied_decision_under_uncertainty_wait_or_buy_with_model`
+
+```
+Problem: A memo from the school woodshop, reviewed by Zane, reads: Option A guarantees $40. Option B pays $120 with probability 0.9 and $0 otherwise. Which option does the worst-case rule choose, and which option is better once each outcome's probability is accounted for?
+Steps:
+  MODEL_EQ|worst case = smallest possible payout; expected = probability-weighted average|decision-under-uncertainty relationship
+  WORST_CASE|A|40
+  WORST_CASE|B|0
+  MINIMAX|A|40 > 0
+  EXPECTED_COST|B|0.9·120|108
+  CMP|40|108|<
+  Z|worst case = smallest possible payout; expected = probability-weighted average; worst-case: A; expected value: B ($108 vs $40)
+Answer: worst case = smallest possible payout; expected = probability-weighted average; worst-case: A; expected value: B ($108 vs $40)
 ```
 
 ## College

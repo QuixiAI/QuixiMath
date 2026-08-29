@@ -690,6 +690,7 @@ from generators.risk_communication_generator import RiskCommunicationGenerator
 from generators.simpsons_paradox_generator import SimpsonsParadoxGenerator
 from generators.statistical_literacy_generator import StatisticalLiteracyGenerator
 from generators.index_and_growth_generator import IndexAndGrowthGenerator
+from generators.decision_under_uncertainty_generator import DecisionUnderUncertaintyGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1451,6 +1452,7 @@ ALL_GENERATORS = [
     SimpsonsParadoxGenerator(),
     StatisticalLiteracyGenerator(),
     IndexAndGrowthGenerator(),
+    DecisionUnderUncertaintyGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
