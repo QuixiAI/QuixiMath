@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**666 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**667 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -7937,6 +7937,22 @@ Steps:
   CHECK|A's cases are 90% night; B's cases are 90% day
   Z|composition = subgroup size/total; A's cases are 90% night; B's cases are 90% day
 Answer: composition = subgroup size/total; A's cases are 90% night; B's cases are 90% day
+```
+
+### Statistical Literacy — `StatisticalLiteracyGenerator`  ·  high · difficulty 3
+
+Generate six exact statistical-literacy traps without naming a method.
+
+**Variants:** `applied_statistical_literacy_averaging_rates_wrong_distractor`, `applied_statistical_literacy_averaging_rates_wrong_estimate_first`, `applied_statistical_literacy_averaging_rates_wrong_plain`, `applied_statistical_literacy_averaging_rates_wrong_with_model`, `applied_statistical_literacy_cherry_picked_interval_distractor`, `applied_statistical_literacy_cherry_picked_interval_estimate_first`, `applied_statistical_literacy_cherry_picked_interval_plain`, `applied_statistical_literacy_cherry_picked_interval_with_model`, `applied_statistical_literacy_percent_of_what_distractor`, `applied_statistical_literacy_percent_of_what_estimate_first`, `applied_statistical_literacy_percent_of_what_plain`, `applied_statistical_literacy_percent_of_what_with_model`, `applied_statistical_literacy_regression_to_mean_distractor`, `applied_statistical_literacy_regression_to_mean_estimate_first`, `applied_statistical_literacy_regression_to_mean_plain`, `applied_statistical_literacy_regression_to_mean_with_model`, `applied_statistical_literacy_sampling_error_scale_distractor`, `applied_statistical_literacy_sampling_error_scale_estimate_first`, `applied_statistical_literacy_sampling_error_scale_plain`, `applied_statistical_literacy_sampling_error_scale_with_model`, `applied_statistical_literacy_visual_ratio_truncated_axis_distractor`, `applied_statistical_literacy_visual_ratio_truncated_axis_estimate_first`, `applied_statistical_literacy_visual_ratio_truncated_axis_plain`, `applied_statistical_literacy_visual_ratio_truncated_axis_with_model`
+
+```
+Problem: Consider the figures Lena received from the back of the garage. Using the approximation that margin of error is about 1/√n, a poll of n = 16 people has a margin of error of about 25%. If the poll grows to n = 256 people, by what factor does the margin of error shrink, and what is the new margin of error?
+Steps:
+  MODEL_EQ|margin = 1/√n|statistical-literacy relationship
+  MOE|1/√256|6.25%
+  SHRINK_FACTOR|25%/6.25%|4
+  Z|margin = 1/√n; factor of 4; margin goes from 25% to 6.25%
+Answer: margin = 1/√n; factor of 4; margin goes from 25% to 6.25%
 ```
 
 ## College

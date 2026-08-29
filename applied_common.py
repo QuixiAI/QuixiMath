@@ -103,6 +103,52 @@ def cap(text):
     return text[:1].upper() + text[1:]
 
 
+def smooth_step(d):
+    """The leftover factor of ``d`` after removing every 2 and 5 — a count
+    out of ``d`` terminates as a percent exactly when it is a multiple of
+    this."""
+    while d % 2 == 0:
+        d //= 2
+    while d % 5 == 0:
+        d //= 5
+    return d
+
+
+def banded_count(size, lo_frac, hi_frac, rng=random):
+    """A count out of ``size``, a multiple of its smooth step, whose rate
+    falls in ``[lo_frac, hi_frac]`` of ``size`` (widened if that band holds
+    no valid multiple)."""
+    step = smooth_step(size)
+    top_k = size // step - 1
+    lo_k = min(top_k, max(1, -(-int(size * lo_frac) // step)))
+    hi_k = max(1, min(top_k, int(size * hi_frac) // step))
+    if lo_k > hi_k:
+        lo_k, hi_k = 1, top_k
+    return step * rng.randint(lo_k, hi_k)
+
+
+def lower_count(size, ceiling, rng=random):
+    """A count out of ``size`` (a multiple of its smooth step, possibly 0)
+    strictly below ``ceiling`` — which is itself always a multiple of that
+    step, so ``ceiling // step - 1`` is a safe, always-nonnegative top."""
+    step = smooth_step(size)
+    top_k = ceiling // step - 1
+    return step * rng.randint(0, top_k)
+
+
+def frac_percent(fr):
+    """Percent text for any positive ``Fraction``: a clean decimal when it
+    terminates, else a mixed number (``Fraction(1, 3)`` -> ``'33 1/3%'``)."""
+    pct_value = Fraction(fr) * 100
+    whole, remainder = divmod(pct_value.numerator, pct_value.denominator)
+    remainder = Fraction(remainder, pct_value.denominator)
+    if remainder == 0:
+        return f"{whole}%"
+    if terminates(pct_value):
+        return dec(pct_value) + "%"
+    return f"{whole} {remainder.numerator}/{remainder.denominator}%"
+
+
 # ---------------------------------------------------------------------------
 # The context bank (plans/applied_plan.md §3: contexts come from one shared bank)
 # ---------------------------------------------------------------------------

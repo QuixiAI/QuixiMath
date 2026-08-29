@@ -13,7 +13,7 @@ import random
 import re
 from fractions import Fraction
 
-from applied_common import CONTEXTS, NAMES, dec, estimate_first, select_relevant_step, terminates
+from applied_common import CONTEXTS, NAMES, dec, estimate_first, frac_percent, select_relevant_step
 from base_generator import ProblemGenerator
 from helpers import jid, step
 
@@ -43,19 +43,6 @@ def _render(facts, question):
     return random.choice(FRAMES).format(facts=facts, question=question,
                                         place=random.choice(PLACES),
                                         name=random.choice(NAMES))
-
-
-def frac_percent(fr):
-    """Percent text for any positive ``Fraction``: a clean decimal when it
-    terminates, else a mixed number (``Fraction(1, 3)`` -> ``'33 1/3%'``)."""
-    pct_value = Fraction(fr) * 100
-    whole, remainder = divmod(pct_value.numerator, pct_value.denominator)
-    remainder = Fraction(remainder, pct_value.denominator)
-    if remainder == 0:
-        return f"{whole}%"
-    if terminates(pct_value):
-        return dec(pct_value) + "%"
-    return f"{whole} {remainder.numerator}/{remainder.denominator}%"
 
 
 class RiskCommunicationGenerator(ProblemGenerator):

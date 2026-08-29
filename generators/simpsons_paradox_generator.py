@@ -13,7 +13,8 @@ import random
 import re
 from fractions import Fraction
 
-from applied_common import CONTEXTS, NAMES, dec, estimate_first, select_relevant_step
+from applied_common import (CONTEXTS, NAMES, banded_count, dec, estimate_first,
+                            lower_count, select_relevant_step)
 from base_generator import ProblemGenerator
 from helpers import jid, step
 
@@ -68,39 +69,6 @@ SP_CONTEXTS = (
 )
 
 
-def _smooth_step(d):
-    """The leftover factor of ``d`` after removing every 2 and 5 — a count
-    out of ``d`` terminates as a percent exactly when it is a multiple of
-    this."""
-    while d % 2 == 0:
-        d //= 2
-    while d % 5 == 0:
-        d //= 5
-    return d
-
-
-def _banded_count(size, lo_frac, hi_frac):
-    """A count out of ``size``, a multiple of its smooth step, whose rate
-    falls in ``[lo_frac, hi_frac]`` of ``size`` (widened if that band holds
-    no valid multiple)."""
-    step = _smooth_step(size)
-    top_k = size // step - 1
-    lo_k = min(top_k, max(1, -(-int(size * lo_frac) // step)))
-    hi_k = max(1, min(top_k, int(size * hi_frac) // step))
-    if lo_k > hi_k:
-        lo_k, hi_k = 1, top_k
-    return step * random.randint(lo_k, hi_k)
-
-
-def _lower_count(size, ceiling):
-    """A count out of ``size`` (a multiple of its smooth step, possibly 0)
-    strictly below ``ceiling`` — which is itself always a multiple of that
-    step, so ``ceiling // step - 1`` is a safe, always-nonnegative top."""
-    step = _smooth_step(size)
-    top_k = ceiling // step - 1
-    return step * random.randint(0, top_k)
-
-
 def _pct(fr):
     return dec(fr * 100)
 
@@ -110,8 +78,8 @@ def _draw_reversal(small, large):
     wins pooled, because A's cases skew to the low-rate subgroup and B's
     skew to the high-rate one."""
     for _ in range(2000):
-        a1, a2 = _banded_count(small, *HIGH_BAND), _banded_count(large, *LOW_BAND)
-        b1, b2 = _banded_count(large, *HIGH_BAND), _banded_count(small, *LOW_BAND)
+        a1, a2 = banded_count(small, *HIGH_BAND), banded_count(large, *LOW_BAND)
+        b1, b2 = banded_count(large, *HIGH_BAND), banded_count(small, *LOW_BAND)
         rate_a1, rate_a2 = Fraction(a1, small), Fraction(a2, large)
         rate_b1, rate_b2 = Fraction(b1, large), Fraction(b2, small)
         if rate_a1 <= rate_b1 or rate_a2 <= rate_b2:
@@ -128,10 +96,10 @@ def _draw_control(size1, size2):
     """Counts where both entities split cases the same way between the two
     subgroups, so A winning both subgroups forces A to win pooled too — no
     reversal is possible."""
-    a1 = _banded_count(size1, *HIGH_BAND)
-    b1 = _lower_count(size1, a1)
-    a2 = _banded_count(size2, *HIGH_BAND)
-    b2 = _lower_count(size2, a2)
+    a1 = banded_count(size1, *HIGH_BAND)
+    b1 = lower_count(size1, a1)
+    a2 = banded_count(size2, *HIGH_BAND)
+    b2 = lower_count(size2, a2)
     rate_a1, rate_b1 = Fraction(a1, size1), Fraction(b1, size1)
     rate_a2, rate_b2 = Fraction(a2, size2), Fraction(b2, size2)
     pooled_a = Fraction(a1 + a2, size1 + size2)
