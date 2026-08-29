@@ -683,6 +683,10 @@ keep per-skill minimums so small buckets stay represented.
 
 {distribution_table(metadata["rows_by_operation"], "Operation", limit=25)}
 
+### Top Generators
+
+{distribution_table(metadata["rows_by_generator"], "Generator", limit=25)}
+
 ## Generation
 
 Generated at: `{metadata["generated_at_utc"]}`
