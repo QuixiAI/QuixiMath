@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**670 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**671 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3282,6 +3282,22 @@ Steps:
   CMP|0.0625|0.015625|vs
   Z|area ×k²; volume ×k³; area ×0.0625; volume ×0.015625; volume changes by the larger factor
 Answer: area ×k²; volume ×k³; area ×0.0625; volume ×0.015625; volume changes by the larger factor
+```
+
+### Spatial Packing — `SpatialPackingGenerator`  ·  middle · difficulty 3
+
+Generate six exact packing/fit models without naming a method.
+
+**Variants:** `applied_spatial_packing_boxes_in_box_orientation_distractor`, `applied_spatial_packing_boxes_in_box_orientation_estimate_first`, `applied_spatial_packing_boxes_in_box_orientation_plain`, `applied_spatial_packing_boxes_in_box_orientation_with_model`, `applied_spatial_packing_cans_in_case_distractor`, `applied_spatial_packing_cans_in_case_estimate_first`, `applied_spatial_packing_cans_in_case_plain`, `applied_spatial_packing_cans_in_case_with_model`, `applied_spatial_packing_leftover_material_distractor`, `applied_spatial_packing_leftover_material_estimate_first`, `applied_spatial_packing_leftover_material_plain`, `applied_spatial_packing_leftover_material_with_model`, `applied_spatial_packing_shelves_from_board_distractor`, `applied_spatial_packing_shelves_from_board_estimate_first`, `applied_spatial_packing_shelves_from_board_plain`, `applied_spatial_packing_shelves_from_board_with_model`, `applied_spatial_packing_tiles_with_grout_distractor`, `applied_spatial_packing_tiles_with_grout_estimate_first`, `applied_spatial_packing_tiles_with_grout_plain`, `applied_spatial_packing_tiles_with_grout_with_model`, `applied_spatial_packing_wrapping_paper_overlap_distractor`, `applied_spatial_packing_wrapping_paper_overlap_estimate_first`, `applied_spatial_packing_wrapping_paper_overlap_plain`, `applied_spatial_packing_wrapping_paper_overlap_with_model`
+
+```
+Problem: A note from the allotment, checked by Milo, reads: A gift box is 25 cm × 60 cm × 100 cm. Wrapping paper must cover the full surface area plus 50% extra for overlaps and folds. How much paper is needed?
+Steps:
+  MODEL_EQ|paper = surface area × (100 + extra%)/100|packing relationship
+  AREA|2×(25×60+25×100+60×100)|20000
+  EXTRA_MATERIAL|50%|20000|30000
+  Z|paper = surface area × (100 + extra%)/100; 30000 cm²
+Answer: paper = surface area × (100 + extra%)/100; 30000 cm²
 ```
 
 ## High School
