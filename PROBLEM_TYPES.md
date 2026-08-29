@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**669 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**670 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3265,6 +3265,23 @@ Steps:
   S|324|126|198
   Z|path = (27 × 12) − (21 × 6); 198 m²
 Answer: path = (27 × 12) − (21 × 6); 198 m²
+```
+
+### Square Cube Law — `SquareCubeLawGenerator`  ·  middle · difficulty 3
+
+Generate seven exact area/volume scaling models without naming the law.
+
+**Variants:** `applied_square_cube_law_area_unit_conversion_distractor`, `applied_square_cube_law_area_unit_conversion_estimate_first`, `applied_square_cube_law_area_unit_conversion_plain`, `applied_square_cube_law_area_unit_conversion_with_model`, `applied_square_cube_law_giant_or_miniature_distractor`, `applied_square_cube_law_giant_or_miniature_estimate_first`, `applied_square_cube_law_giant_or_miniature_plain`, `applied_square_cube_law_giant_or_miniature_with_model`, `applied_square_cube_law_how_many_small_cubes_distractor`, `applied_square_cube_law_how_many_small_cubes_plain`, `applied_square_cube_law_how_many_small_cubes_with_model`, `applied_square_cube_law_map_area_distractor`, `applied_square_cube_law_map_area_estimate_first`, `applied_square_cube_law_map_area_plain`, `applied_square_cube_law_recipe_pan_scaling_distractor`, `applied_square_cube_law_recipe_pan_scaling_estimate_first`, `applied_square_cube_law_recipe_pan_scaling_plain`, `applied_square_cube_law_recipe_pan_scaling_with_model`, `applied_square_cube_law_scale_model_area_volume_distractor`, `applied_square_cube_law_scale_model_area_volume_estimate_first`, `applied_square_cube_law_scale_model_area_volume_plain`, `applied_square_cube_law_scale_model_area_volume_with_model`, `applied_square_cube_law_volume_unit_conversion_distractor`, `applied_square_cube_law_volume_unit_conversion_estimate_first`, `applied_square_cube_law_volume_unit_conversion_plain`, `applied_square_cube_law_volume_unit_conversion_with_model`
+
+```
+Problem: At the candle workshop, Nadia works out the following scale problem. A creature's linear size scales by a factor of 0.25, with every body proportion unchanged. By what factor do its cross-sectional area (strength) and its volume (weight) change?
+Steps:
+  MODEL_EQ|area ×k²; volume ×k³|area/volume scale relationship
+  SCALE_LAW|area|k² = 0.0625
+  SCALE_LAW|volume|k³ = 0.015625
+  CMP|0.0625|0.015625|vs
+  Z|area ×k²; volume ×k³; area ×0.0625; volume ×0.015625; volume changes by the larger factor
+Answer: area ×k²; volume ×k³; area ×0.0625; volume ×0.015625; volume changes by the larger factor
 ```
 
 ## High School

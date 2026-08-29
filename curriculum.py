@@ -701,6 +701,7 @@ CURRICULUM = {
     "StatisticalLiteracyGenerator": {"grade_level": HIGH, "difficulty": 3},
     "IndexAndGrowthGenerator": {"grade_level": HIGH, "difficulty": 2},
     "DecisionUnderUncertaintyGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "SquareCubeLawGenerator": {"grade_level": MIDDLE, "difficulty": 3},
 }
 
 

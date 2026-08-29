@@ -691,6 +691,7 @@ from generators.simpsons_paradox_generator import SimpsonsParadoxGenerator
 from generators.statistical_literacy_generator import StatisticalLiteracyGenerator
 from generators.index_and_growth_generator import IndexAndGrowthGenerator
 from generators.decision_under_uncertainty_generator import DecisionUnderUncertaintyGenerator
+from generators.square_cube_law_generator import SquareCubeLawGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1453,6 +1454,7 @@ ALL_GENERATORS = [
     StatisticalLiteracyGenerator(),
     IndexAndGrowthGenerator(),
     DecisionUnderUncertaintyGenerator(),
+    SquareCubeLawGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
