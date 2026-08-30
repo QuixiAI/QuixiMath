@@ -309,10 +309,16 @@ long-form "catch the drift" skill made explicit. Variants over the three
 underlying trace types; `error_free` control (verify all N rows, answer
 `no errors; total confirmed`) at 20% weight.
 
-**⟲ FractalIterationGenerator** — depth-tier retrofit, re-verify its
-emission against the chaining convention first (the original draft's
-"already chain correctly" claim was wrong for the Euclid family and
-must not be assumed here). **ModularInverseGenerator retrofit dropped:**
+**⟲ FractalIterationGenerator retrofit dropped** (verified 2026-08-30):
+the draft's "already chains correctly" claim was wrong — measured
+dependency depth of its traces is 3-4 (complex-arithmetic sub-steps
+interleave x and y and break the convention) — and, decisively,
+z -> z² + c over Q squares the denominator every iteration, so state
+grows like 2^(2^n) and no exact deep tier can exist under §3. That is
+exactly why the legacy class caps at ~9 iterations. The deep face of
+iterated quadratic-flavored maps lives in `IteratedAffineMapGenerator`
+(mod m) and `IteratedCompositionGenerator` (finite Möbius orbits)
+instead. **ModularInverseGenerator retrofit dropped:**
 it is the same algorithm as `ExtendedEuclidGenerator` with the same
 φ^n depth cost; its tiered face is subsumed by the ⟲ ExtendedEuclid
 `bezout` variant, and duplicating a d50-only retrofit adds nothing.
@@ -324,7 +330,7 @@ it is the same algorithm as `ExtendedEuclidGenerator` with the same
 | elementary | 2 (DigitProcess d2, ArithmeticChain d2) | — |
 | middle | 5 (IteratedAffineMap d2, CollatzTrace d2, BigExactDivision d2, RadixMarathon d3, CompoundLedger d2, LedgerAudit d3) | — |
 | high | 5 (IteratedComposition d3, ModExpLadder d3, RecurrenceUnroll d3, PartialSumMarathon d3, PipelineComposition d4) | ContinuedFraction, ExtendedEuclid |
-| college | 4 (AmortizationSchedule d3, RegisterMachineTrace d3, TokenRewrite d3) | FractalIteration, ModularInverse |
+| college | 4 (AmortizationSchedule d3, RegisterMachineTrace d3, TokenRewrite d3) | — (FractalIteration and ModularInverse retrofits dropped, §5) |
 
 Total: **16 new classes, 4 extended**, ~60 operation variants before the
 tier × modifier product. Difficulties listed at `d50`; +1/+2 at
@@ -342,7 +348,7 @@ the full suite, the capacity probe on the phase's classes, a seeded
 | 1 | ArithmeticChain, DigitProcess, IteratedAffineMap, CollatzTrace | cheapest; proves `chain()`/checkpoint machinery end to end |
 | 2 | BigExactDivision, RadixMarathon, CompoundLedger | marathons over familiar arithmetic |
 | 3 | ExtendedEuclid ⟲, ContinuedFraction ⟲, ModExpLadder, ModularInverse ⟲ | number-theory chains; worst-case-length constructions |
-| 4 | RecurrenceUnroll, PartialSumMarathon, IteratedComposition, FractalIteration ⟲ | closed-form cross-check oracles |
+| 4 | RecurrenceUnroll, PartialSumMarathon, IteratedComposition (FractalIteration ⟲ dropped after verification, §5) | closed-form cross-check oracles |
 | 5 | AmortizationSchedule, RegisterMachineTrace, TokenRewrite | exact-cents and machine-trace banks |
 | 6 | PipelineComposition (needs applied strand's context bank + skills plumbing), LedgerAudit | composition + the long critic record |
 | 7 | Phrasing sweep to 3–5 templates; full capacity probe; README inventory/coverage bullet; regenerate `PROBLEM_TYPES.md`, `OPCODES.md`; HF dataset-card paragraph (state the tier suffixes and that long records are token-weighted in the size configs); consider a `depth_eval` held-out config (d200-only, mirroring `judgment_composition_eval`) | close-out |
