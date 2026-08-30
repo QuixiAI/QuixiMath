@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**683 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**684 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9376,6 +9376,140 @@ Steps:
   CHECK|telescoped closed form|1/11 - 1/122 = 111/1342|accumulated = 111/1342
   Z|111/1342
 Answer: 111/1342
+```
+
+### Iterated Composition — `IteratedCompositionGenerator`  ·  high · difficulty 3
+
+Long alternating-map chains with tiny bounded orbits.
+
+**Variants:** `iterated_composition_cycle_length_d100`, `iterated_composition_cycle_length_d200`, `iterated_composition_cycle_length_d50`, `iterated_composition_final_value_d100`, `iterated_composition_final_value_d200`, `iterated_composition_final_value_d50`, `iterated_composition_shortcut_check_d100`, `iterated_composition_shortcut_check_d200`, `iterated_composition_shortcut_check_d50`
+
+```
+Problem: Let x = 10/9. Alternately apply f: x -> 1 - x and g: x -> 1/(1 - x) (f first) until the value-and-turn state repeats (at most 125 steps). What is the period of the alternation?
+Steps:
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MILESTONE|13|numerator + denominator mod 9|8
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MILESTONE|25|numerator + denominator mod 9|8
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MILESTONE|38|numerator + denominator mod 9|1
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MILESTONE|50|numerator + denominator mod 9|1
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MILESTONE|64|numerator + denominator mod 9|1
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MILESTONE|75|numerator + denominator mod 9|2
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MILESTONE|89|numerator + denominator mod 9|8
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MILESTONE|100|numerator + denominator mod 9|1
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MAP_APPLY|10/9|x -> 1 - x|-1/9
+  MAP_APPLY|-1/9|x -> 1/(1 - x)|9/10
+  MAP_APPLY|9/10|x -> 1 - x|1/10
+  MAP_APPLY|1/10|x -> 1/(1 - x)|10/9
+  MILESTONE|112|numerator + denominator mod 9|1
+  Z|4
+Answer: 4
 ```
 
 ## College

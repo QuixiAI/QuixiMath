@@ -718,6 +718,7 @@ CURRICULUM = {
     "ModExpLadderGenerator": {"grade_level": HIGH, "difficulty": 3},
     "RecurrenceUnrollGenerator": {"grade_level": HIGH, "difficulty": 3},
     "PartialSumMarathonGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "IteratedCompositionGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
