@@ -72,6 +72,17 @@ def tier_of(operation):
     return match.group(1) if match else None
 
 
+#: Difficulty bump per tier (plans/depth_plan.md §3), applied by each
+#: generator via :func:`tier_difficulty` — ``stamp_metadata`` lets
+#: generator-provided values win over the class's CURRICULUM entry.
+_TIER_BUMP = {"d50": 0, "d100": 1, "d200": 2, "d400": 2}
+
+
+def tier_difficulty(base, tier):
+    """The class's base difficulty bumped for the tier, capped at 5."""
+    return min(5, base + _TIER_BUMP[tier])
+
+
 # ---------------------------------------------------------------------------
 # The chain emitter
 # ---------------------------------------------------------------------------

@@ -705,6 +705,10 @@ CURRICULUM = {
     "SpatialPackingGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "SpatialDescriptionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "ScenarioGenerator": {"grade_level": HIGH, "difficulty": 4},
+
+    # Depth strand (plans/depth_plan.md) — difficulty here is the d50 base;
+    # generators bump it per tier via depth_common.tier_difficulty.
+    "ArithmeticChainGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
 }
 
 

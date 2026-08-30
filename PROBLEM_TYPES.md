@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**673 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**674 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1105,6 +1105,138 @@ Steps:
   CHECK|10 × 35|350
   Z|10 × 35 = 5 × 70; A: doubling and halving; 350 (5 × 70)
 Answer: 10 × 35 = 5 × 70; A: doubling and halving; 350 (5 × 70)
+```
+
+### Arithmetic Chain — `ArithmeticChainGenerator`  ·  elementary · difficulty 2
+
+Long bounded chains of elementary arithmetic (depth strand).
+
+**Variants:** `arithmetic_chain_fraction_chain_d100`, `arithmetic_chain_fraction_chain_d200`, `arithmetic_chain_fraction_chain_d50`, `arithmetic_chain_integer_chain_d100`, `arithmetic_chain_integer_chain_d200`, `arithmetic_chain_integer_chain_d50`, `arithmetic_chain_missing_start_d100`, `arithmetic_chain_missing_start_d200`, `arithmetic_chain_missing_start_d50`, `arithmetic_chain_money_chain_d100`, `arithmetic_chain_money_chain_d200`, `arithmetic_chain_money_chain_d50`
+
+```
+Problem: After applying the following 111 steps in order (halve it; add 30; add 35; add 42; halve it; double it; add 13; double it; subtract 56; add 39; add 24; add 51; halve it; add 35; subtract 11; add 32; add 44; subtract 18; subtract 35; add 60; subtract 8; add 10; subtract 50; subtract 45; double it; subtract 36; add 20; subtract 25; add 17; subtract 19; add 56; add 56; subtract 10; add 25; subtract 36; halve it; add 40; add 50; halve it; add 57; subtract 18; subtract 40; subtract 23; subtract 10; subtract 25; subtract 20; add 16; double it; halve it; double it; add 35; double it; halve it; subtract 53; halve it; halve it; double it; double it; subtract 58; add 38; halve it; double it; subtract 42; add 33; add 47; add 10; add 44; double it; add 42; subtract 59; add 20; subtract 51; add 12; subtract 19; subtract 55; halve it; add 32; double it; halve it; double it; subtract 19; add 57; subtract 45; add 6; add 45; halve it; subtract 58; subtract 12; add 10; add 58; double it; halve it; subtract 6; double it; halve it; subtract 12; add 18; subtract 56; double it; subtract 6; subtract 32; subtract 11; subtract 9; halve it; double it; subtract 24; add 32; halve it; double it; subtract 34; double it), the result is 476. What was the starting value?
+Steps:
+  D|476|2|undo double|238
+  A|238|34|undo subtract|272
+  D|272|2|undo double|136
+  M|136|2|undo halve|272
+  S|272|32|undo add|240
+  A|240|24|undo subtract|264
+  D|264|2|undo double|132
+  M|132|2|undo halve|264
+  A|264|9|undo subtract|273
+  A|273|11|undo subtract|284
+  A|284|32|undo subtract|316
+  A|316|6|undo subtract|322
+  D|322|2|undo double|161
+  A|161|56|undo subtract|217
+  S|217|18|undo add|199
+  MILESTONE|15|value mod 9|1
+  A|199|12|undo subtract|211
+  M|211|2|undo halve|422
+  D|422|2|undo double|211
+  A|211|6|undo subtract|217
+  M|217|2|undo halve|434
+  D|434|2|undo double|217
+  S|217|58|undo add|159
+  S|159|10|undo add|149
+  A|149|12|undo subtract|161
+  A|161|58|undo subtract|219
+  M|219|2|undo halve|438
+  S|438|45|undo add|393
+  S|393|6|undo add|387
+  MILESTONE|28|value mod 9|0
+  A|387|45|undo subtract|432
+  S|432|57|undo add|375
+  A|375|19|undo subtract|394
+  D|394|2|undo double|197
+  M|197|2|undo halve|394
+  D|394|2|undo double|197
+  S|197|32|undo add|165
+  M|165|2|undo halve|330
+  A|330|55|undo subtract|385
+  A|385|19|undo subtract|404
+  S|404|12|undo add|392
+  MILESTONE|39|value mod 9|5
+  A|392|51|undo subtract|443
+  S|443|20|undo add|423
+  A|423|59|undo subtract|482
+  S|482|42|undo add|440
+  D|440|2|undo double|220
+  S|220|44|undo add|176
+  S|176|10|undo add|166
+  S|166|47|undo add|119
+  S|119|33|undo add|86
+  A|86|42|undo subtract|128
+  D|128|2|undo double|64
+  M|64|2|undo halve|128
+  MILESTONE|51|value mod 9|2
+  S|128|38|undo add|90
+  A|90|58|undo subtract|148
+  D|148|2|undo double|74
+  D|74|2|undo double|37
+  M|37|2|undo halve|74
+  M|74|2|undo halve|148
+  A|148|53|undo subtract|201
+  M|201|2|undo halve|402
+  D|402|2|undo double|201
+  S|201|35|undo add|166
+  D|166|2|undo double|83
+  M|83|2|undo halve|166
+  MILESTONE|63|value mod 9|4
+  D|166|2|undo double|83
+  S|83|16|undo add|67
+  A|67|20|undo subtract|87
+  A|87|25|undo subtract|112
+  A|112|10|undo subtract|122
+  A|122|23|undo subtract|145
+  A|145|40|undo subtract|185
+  A|185|18|undo subtract|203
+  S|203|57|undo add|146
+  M|146|2|undo halve|292
+  S|292|50|undo add|242
+  S|242|40|undo add|202
+  M|202|2|undo halve|404
+  A|404|36|undo subtract|440
+  S|440|25|undo add|415
+  MILESTONE|78|value mod 9|1
+  A|415|10|undo subtract|425
+  S|425|56|undo add|369
+  S|369|56|undo add|313
+  A|313|19|undo subtract|332
+  S|332|17|undo add|315
+  A|315|25|undo subtract|340
+  S|340|20|undo add|320
+  A|320|36|undo subtract|356
+  D|356|2|undo double|178
+  A|178|45|undo subtract|223
+  A|223|50|undo subtract|273
+  S|273|10|undo add|263
+  A|263|8|undo subtract|271
+  MILESTONE|91|value mod 9|1
+  S|271|60|undo add|211
+  A|211|35|undo subtract|246
+  A|246|18|undo subtract|264
+  S|264|44|undo add|220
+  S|220|32|undo add|188
+  A|188|11|undo subtract|199
+  S|199|35|undo add|164
+  M|164|2|undo halve|328
+  S|328|51|undo add|277
+  S|277|24|undo add|253
+  S|253|39|undo add|214
+  A|214|56|undo subtract|270
+  D|270|2|undo double|135
+  S|135|13|undo add|122
+  MILESTONE|105|value mod 9|5
+  D|122|2|undo double|61
+  M|61|2|undo halve|122
+  S|122|42|undo add|80
+  S|80|35|undo add|45
+  S|45|30|undo add|15
+  M|15|2|undo halve|30
+  Z|30
+Answer: 30
 ```
 
 ## Middle School (grades 6–8)
