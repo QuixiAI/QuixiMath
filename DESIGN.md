@@ -160,6 +160,31 @@ section (don't fork it) when a new tier introduces new answer shapes.
   physical roots or orientations are explicit, e.g. `REJECT|t = -1|negative
   time`.
 
+## Depth answers (A0 extension)
+
+- **Depth tiers in the operation string:** every depth-strand operation
+  carries a `_d50` / `_d100` / `_d200` suffix; the tier floor applies to the
+  measured serial dependency chain (consecutive steps linked by the previous
+  step's result appearing as the next step's first payload field), not the
+  raw step count.
+- **Chained steps** put the previous value first and the new value LAST
+  (`ITER|<x_prev>|n=<k>|<x_next>`); an annotation field, when present, sits
+  between them and never displaces the result from last position.
+- **Milestones:** `MILESTONE|<k>|<invariant>|<value>` recomputes a running
+  invariant every 10–15 chain steps in `checkpointed` variants (the default
+  at `d100` and above). The names `CHECKPOINT`, `CHECK_POINT`, and
+  `INVARIANT` are reserved against confusion — the latter two already carry
+  different field semantics.
+- **Answers are short:** a long trace ends in a small exact answer
+  (`x_120 = 341`, `$1204.63`, `first error at row 73; correct value 418`);
+  never a list of intermediates. Composite verdicts use the house
+  `label; fact` form.
+- **Bounded intermediates:** chain state never grows with depth (modular
+  reduction, exact-cents ledgers, shrinking chains, geometric-decay
+  segments); one record's rendered size stays under 16,000 characters.
+- **Problem text states N** ("iterate 120 times", "the first 96 payments")
+  in a form the shared count parser inverts.
+
 ## Verification & Trial-and-Error Vocabulary (A1 / A2)
 
 - `CHECK|method|lhs_work|rhs_work` — two independent routes to the same

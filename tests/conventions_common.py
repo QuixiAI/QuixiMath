@@ -18,7 +18,8 @@ if repo_root not in sys.path:
 
 from helpers import DELIM  # noqa: E402
 
-STRAND_FLAGS = ("FOUNDATIONS", "PROBABILITY", "STATISTICS", "APPLIED")
+STRAND_FLAGS = ("FOUNDATIONS", "PROBABILITY", "STATISTICS", "APPLIED",
+                "DEPTH")
 
 
 def flagged_generators(flag):

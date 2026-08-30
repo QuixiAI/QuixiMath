@@ -69,7 +69,10 @@ individual step stays hand-small — the grind is long, never big. This is
 the carve-out from the repo's "never digit grinding" rule: the *chain* is
 the pedagogical target, but each link is trivially hand-checkable.
 
-**Checkpoints.** New op-code `CHECKPOINT|k|<invariant>|<value>`: an honest
+**Checkpoints.** New op-code `MILESTONE|k|<invariant>|<value>` (the names
+`CHECKPOINT`, `CHECK_POINT`, and `INVARIANT` are avoided: `CHECK_POINT`
+and `INVARIANT` already exist with different field semantics, and
+`CHECKPOINT` differs from `CHECK_POINT` by one underscore): an honest
 recomputation of a running invariant (running total mod 9, current
 balance, iteration count × known period offset) emitted every 10–15 chain
 steps. Two variant modifiers on every class: `checkpointed` (default at
@@ -122,7 +125,7 @@ helpers shared with the oracle. `tests/depth_oracle.py`: independent
 chain re-simulators and the closed-form cross-checks. Conventions test as
 in §3, with fixtures proving each checker rejects a violating trace.
 DESIGN.md gets a "Depth answers (A0 extension)" block. `OPCODES.md`
-check for `CHECKPOINT`, `PIPE_STAGE`, and each strand's chain codes
+check for `MILESTONE`, `PIPE_STAGE`, and each strand's chain codes
 before naming them.
 
 ## 5. The curriculum
@@ -134,7 +137,9 @@ m, all values < 1000. Variants: `final_state` (x_N), `orbit_period`
 (detect the cycle, answer `period 12; enters cycle at n=7`),
 `first_return` (smallest n > 0 with x_n = x_0, constructed to exist),
 `backward` (given x_N and the map, run the inverse map — a is chosen
-coprime to m). Steps: one `ITER|n|x` per iteration via `chain()`.
+coprime to m). Steps: one `ITER|<x_prev>|n=<k>|<x_next>` per iteration
+via the `Chain` emitter (previous value first, new value last — the
+chaining convention).
 
 **CollatzTraceGenerator** · middle · d2 — full 3n+1 trace; seeds
 pre-screened per tier for total stopping time in the tier window.
@@ -213,7 +218,10 @@ schedule, payments constructed so every interest/principal split is
 exact cents (rates from the 2,5-smooth bank, principal built backward).
 Variants: `balance_after_k`, `total_interest`, `payoff_period`,
 `extra_payment` (one extra principal payment at period j; find the new
-payoff period). One `AMORT_ROW|k|interest|principal|balance` per period.
+payoff period). One row step per period, reusing `annuity_generator.py`'s
+existing `AMORT_ROW|k|interest=…|principal=…,balance=…` shape verbatim
+(one op-code = one meaning; do not introduce a second amortization row
+format).
 
 **CompoundLedgerGenerator** · middle · d2 — a running account ledger:
 deposits, withdrawals, periodic interest, N = tier events, exact cents
@@ -284,7 +292,7 @@ the full suite, the capacity probe on the phase's classes, a seeded
 
 | Phase | Deliverable | Why this order |
 |---|---|---|
-| 0 | `depth_common.py`, `tests/depth_oracle.py`, conventions test with violating fixtures, DESIGN.md block, `CHECKPOINT` op-code registered | every later class chains, checkpoints, and is policed the same way |
+| 0 | `depth_common.py`, `tests/depth_oracle.py`, conventions test with violating fixtures, DESIGN.md block, `MILESTONE` op-code registered | every later class chains, checkpoints, and is policed the same way |
 | 1 | ArithmeticChain, DigitProcess, IteratedAffineMap, CollatzTrace | cheapest; proves `chain()`/checkpoint machinery end to end |
 | 2 | BigExactDivision, RadixMarathon, CompoundLedger | marathons over familiar arithmetic |
 | 3 | ExtendedEuclid ⟲, ContinuedFraction ⟲, ModExpLadder, ModularInverse ⟲ | number-theory chains; worst-case-length constructions |
@@ -316,7 +324,7 @@ the full suite, the capacity probe on the phase's classes, a seeded
    +1/+2 at the higher tiers, capped at 5.
 3. Bounded intermediates always; the four bounded-state patterns in §3
    are the only sanctioned constructions.
-4. `CHECKPOINT` recomputes an invariant; `checkpointed` default at
+4. `MILESTONE` recomputes an invariant; `checkpointed` default at
    `d100`+, `plain` default at `d50`.
 5. Answers are short; traces are long; no all-intermediates answers.
 6. `PipelineCompositionGenerator` carries `skills` metadata and obeys the
