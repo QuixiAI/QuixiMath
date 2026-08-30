@@ -719,6 +719,7 @@ CURRICULUM = {
     "RecurrenceUnrollGenerator": {"grade_level": HIGH, "difficulty": 3},
     "PartialSumMarathonGenerator": {"grade_level": HIGH, "difficulty": 3},
     "IteratedCompositionGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "AmortizationScheduleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 

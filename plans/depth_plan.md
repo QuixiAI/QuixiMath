@@ -253,14 +253,19 @@ screened into the tier window).
 ### Strand F — Financial schedules (middle / college)
 
 **AmortizationScheduleGenerator** · college · d3 — full period-by-period
-schedule, payments constructed so every interest/principal split is
-exact cents (rates from the 2,5-smooth bank, principal built backward).
-Variants: `balance_after_k`, `total_interest`, `payoff_period`,
-`extra_payment` (one extra principal payment at period j; find the new
-payoff period). One row step per period, reusing `annuity_generator.py`'s
-existing `AMORT_ROW|k|interest=…|principal=…,balance=…` shape verbatim
-(one op-code = one meaning; do not introduce a second amortization row
-format).
+schedule, exact for *any* balance via the same floor-interest mechanism
+as `CompoundLedgerGenerator` (interest = r% of the whole-dollar balance,
+credited in cents, stated in the header) — no 2,5-smooth balance
+gymnastics needed. Variants: `balance_after_k` (a long loan truncated at
+tier-many periods), `total_interest`, `payoff_period` (payments sized by
+a float *guide* then screened by exact simulation until payoff lands in
+the tier window), `extra_payment` (one extra principal payment at period
+j; find the new payoff period). One `AMORT_STEP|<balance>|k=<k>,
+i=<int>, p=<prin>|<balance'>` per period — an earlier draft said to
+reuse `annuity_generator.py`'s `AMORT_ROW` verbatim, but that shape
+leads with the period index and cannot satisfy the chaining convention
+(balance first, new balance last), so the strand mints its own code
+rather than bending an existing one.
 
 **CompoundLedgerGenerator** · middle · d2 — a running account ledger:
 deposits, withdrawals, periodic interest, N = tier events, exact cents

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**684 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**685 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15253,6 +15253,133 @@ Steps:
   ECDF_ROW|jump at 9|1/7
   Z|1/7
 Answer: 1/7
+```
+
+### Amortization Schedule — `AmortizationScheduleGenerator`  ·  college · difficulty 3
+
+Tier-length exact amortization schedules (depth strand).
+
+**Variants:** `amortization_schedule_balance_after_k_d100`, `amortization_schedule_balance_after_k_d200`, `amortization_schedule_balance_after_k_d50`, `amortization_schedule_extra_payment_d100`, `amortization_schedule_extra_payment_d200`, `amortization_schedule_extra_payment_d50`, `amortization_schedule_payoff_period_d100`, `amortization_schedule_payoff_period_d200`, `amortization_schedule_payoff_period_d50`, `amortization_schedule_total_interest_d100`, `amortization_schedule_total_interest_d200`, `amortization_schedule_total_interest_d50`
+
+```
+Problem: Amortize $58075.00 at 2% per period (whole-dollar interest, in cents), payment $1306.50, plus an extra $1966.50 toward principal in period 42 (at most 125 periods). Report the payoff period.
+Steps:
+  AMORT_STEP|$58075.00|k=1, i=$1161.50, p=$145.00|$57930.00
+  AMORT_STEP|$57930.00|k=2, i=$1158.60, p=$147.90|$57782.10
+  AMORT_STEP|$57782.10|k=3, i=$1155.64, p=$150.86|$57631.24
+  AMORT_STEP|$57631.24|k=4, i=$1152.62, p=$153.88|$57477.36
+  AMORT_STEP|$57477.36|k=5, i=$1149.54, p=$156.96|$57320.40
+  AMORT_STEP|$57320.40|k=6, i=$1146.40, p=$160.10|$57160.30
+  AMORT_STEP|$57160.30|k=7, i=$1143.20, p=$163.30|$56997.00
+  AMORT_STEP|$56997.00|k=8, i=$1139.94, p=$166.56|$56830.44
+  AMORT_STEP|$56830.44|k=9, i=$1136.60, p=$169.90|$56660.54
+  AMORT_STEP|$56660.54|k=10, i=$1133.20, p=$173.30|$56487.24
+  AMORT_STEP|$56487.24|k=11, i=$1129.74, p=$176.76|$56310.48
+  AMORT_STEP|$56310.48|k=12, i=$1126.20, p=$180.30|$56130.18
+  AMORT_STEP|$56130.18|k=13, i=$1122.60, p=$183.90|$55946.28
+  AMORT_STEP|$55946.28|k=14, i=$1118.92, p=$187.58|$55758.70
+  MILESTONE|14|balance cents mod 9|1
+  AMORT_STEP|$55758.70|k=15, i=$1115.16, p=$191.34|$55567.36
+  AMORT_STEP|$55567.36|k=16, i=$1111.34, p=$195.16|$55372.20
+  AMORT_STEP|$55372.20|k=17, i=$1107.44, p=$199.06|$55173.14
+  AMORT_STEP|$55173.14|k=18, i=$1103.46, p=$203.04|$54970.10
+  AMORT_STEP|$54970.10|k=19, i=$1099.40, p=$207.10|$54763.00
+  AMORT_STEP|$54763.00|k=20, i=$1095.26, p=$211.24|$54551.76
+  AMORT_STEP|$54551.76|k=21, i=$1091.02, p=$215.48|$54336.28
+  AMORT_STEP|$54336.28|k=22, i=$1086.72, p=$219.78|$54116.50
+  AMORT_STEP|$54116.50|k=23, i=$1082.32, p=$224.18|$53892.32
+  AMORT_STEP|$53892.32|k=24, i=$1077.84, p=$228.66|$53663.66
+  AMORT_STEP|$53663.66|k=25, i=$1073.26, p=$233.24|$53430.42
+  MILESTONE|25|balance cents mod 9|3
+  AMORT_STEP|$53430.42|k=26, i=$1068.60, p=$237.90|$53192.52
+  AMORT_STEP|$53192.52|k=27, i=$1063.84, p=$242.66|$52949.86
+  AMORT_STEP|$52949.86|k=28, i=$1058.98, p=$247.52|$52702.34
+  AMORT_STEP|$52702.34|k=29, i=$1054.04, p=$252.46|$52449.88
+  AMORT_STEP|$52449.88|k=30, i=$1048.98, p=$257.52|$52192.36
+  AMORT_STEP|$52192.36|k=31, i=$1043.84, p=$262.66|$51929.70
+  AMORT_STEP|$51929.70|k=32, i=$1038.58, p=$267.92|$51661.78
+  AMORT_STEP|$51661.78|k=33, i=$1033.22, p=$273.28|$51388.50
+  AMORT_STEP|$51388.50|k=34, i=$1027.76, p=$278.74|$51109.76
+  AMORT_STEP|$51109.76|k=35, i=$1022.18, p=$284.32|$50825.44
+  AMORT_STEP|$50825.44|k=36, i=$1016.50, p=$290.00|$50535.44
+  AMORT_STEP|$50535.44|k=37, i=$1010.70, p=$295.80|$50239.64
+  AMORT_STEP|$50239.64|k=38, i=$1004.78, p=$301.72|$49937.92
+  AMORT_STEP|$49937.92|k=39, i=$998.74, p=$307.76|$49630.16
+  MILESTONE|39|balance cents mod 9|2
+  AMORT_STEP|$49630.16|k=40, i=$992.60, p=$313.90|$49316.26
+  AMORT_STEP|$49316.26|k=41, i=$986.32, p=$320.18|$48996.08
+  AMORT_STEP|$48996.08|k=42, i=$979.92, p=$2293.08|$46703.00
+  AMORT_STEP|$46703.00|k=43, i=$934.06, p=$372.44|$46330.56
+  AMORT_STEP|$46330.56|k=44, i=$926.60, p=$379.90|$45950.66
+  AMORT_STEP|$45950.66|k=45, i=$919.00, p=$387.50|$45563.16
+  AMORT_STEP|$45563.16|k=46, i=$911.26, p=$395.24|$45167.92
+  AMORT_STEP|$45167.92|k=47, i=$903.34, p=$403.16|$44764.76
+  AMORT_STEP|$44764.76|k=48, i=$895.28, p=$411.22|$44353.54
+  AMORT_STEP|$44353.54|k=49, i=$887.06, p=$419.44|$43934.10
+  AMORT_STEP|$43934.10|k=50, i=$878.68, p=$427.82|$43506.28
+  MILESTONE|50|balance cents mod 9|1
+  AMORT_STEP|$43506.28|k=51, i=$870.12, p=$436.38|$43069.90
+  AMORT_STEP|$43069.90|k=52, i=$861.38, p=$445.12|$42624.78
+  AMORT_STEP|$42624.78|k=53, i=$852.48, p=$454.02|$42170.76
+  AMORT_STEP|$42170.76|k=54, i=$843.40, p=$463.10|$41707.66
+  AMORT_STEP|$41707.66|k=55, i=$834.14, p=$472.36|$41235.30
+  AMORT_STEP|$41235.30|k=56, i=$824.70, p=$481.80|$40753.50
+  AMORT_STEP|$40753.50|k=57, i=$815.06, p=$491.44|$40262.06
+  AMORT_STEP|$40262.06|k=58, i=$805.24, p=$501.26|$39760.80
+  AMORT_STEP|$39760.80|k=59, i=$795.20, p=$511.30|$39249.50
+  AMORT_STEP|$39249.50|k=60, i=$784.98, p=$521.52|$38727.98
+  AMORT_STEP|$38727.98|k=61, i=$774.54, p=$531.96|$38196.02
+  AMORT_STEP|$38196.02|k=62, i=$763.92, p=$542.58|$37653.44
+  MILESTONE|62|balance cents mod 9|5
+  AMORT_STEP|$37653.44|k=63, i=$753.06, p=$553.44|$37100.00
+  AMORT_STEP|$37100.00|k=64, i=$742.00, p=$564.50|$36535.50
+  AMORT_STEP|$36535.50|k=65, i=$730.70, p=$575.80|$35959.70
+  AMORT_STEP|$35959.70|k=66, i=$719.18, p=$587.32|$35372.38
+  AMORT_STEP|$35372.38|k=67, i=$707.44, p=$599.06|$34773.32
+  AMORT_STEP|$34773.32|k=68, i=$695.46, p=$611.04|$34162.28
+  AMORT_STEP|$34162.28|k=69, i=$683.24, p=$623.26|$33539.02
+  AMORT_STEP|$33539.02|k=70, i=$670.78, p=$635.72|$32903.30
+  AMORT_STEP|$32903.30|k=71, i=$658.06, p=$648.44|$32254.86
+  AMORT_STEP|$32254.86|k=72, i=$645.08, p=$661.42|$31593.44
+  AMORT_STEP|$31593.44|k=73, i=$631.86, p=$674.64|$30918.80
+  MILESTONE|73|balance cents mod 9|2
+  AMORT_STEP|$30918.80|k=74, i=$618.36, p=$688.14|$30230.66
+  AMORT_STEP|$30230.66|k=75, i=$604.60, p=$701.90|$29528.76
+  AMORT_STEP|$29528.76|k=76, i=$590.56, p=$715.94|$28812.82
+  AMORT_STEP|$28812.82|k=77, i=$576.24, p=$730.26|$28082.56
+  AMORT_STEP|$28082.56|k=78, i=$561.64, p=$744.86|$27337.70
+  AMORT_STEP|$27337.70|k=79, i=$546.74, p=$759.76|$26577.94
+  AMORT_STEP|$26577.94|k=80, i=$531.54, p=$774.96|$25802.98
+  AMORT_STEP|$25802.98|k=81, i=$516.04, p=$790.46|$25012.52
+  AMORT_STEP|$25012.52|k=82, i=$500.24, p=$806.26|$24206.26
+  AMORT_STEP|$24206.26|k=83, i=$484.12, p=$822.38|$23383.88
+  MILESTONE|83|balance cents mod 9|8
+  AMORT_STEP|$23383.88|k=84, i=$467.66, p=$838.84|$22545.04
+  AMORT_STEP|$22545.04|k=85, i=$450.90, p=$855.60|$21689.44
+  AMORT_STEP|$21689.44|k=86, i=$433.78, p=$872.72|$20816.72
+  AMORT_STEP|$20816.72|k=87, i=$416.32, p=$890.18|$19926.54
+  AMORT_STEP|$19926.54|k=88, i=$398.52, p=$907.98|$19018.56
+  AMORT_STEP|$19018.56|k=89, i=$380.36, p=$926.14|$18092.42
+  AMORT_STEP|$18092.42|k=90, i=$361.84, p=$944.66|$17147.76
+  AMORT_STEP|$17147.76|k=91, i=$342.94, p=$963.56|$16184.20
+  AMORT_STEP|$16184.20|k=92, i=$323.68, p=$982.82|$15201.38
+  AMORT_STEP|$15201.38|k=93, i=$304.02, p=$1002.48|$14198.90
+  AMORT_STEP|$14198.90|k=94, i=$283.96, p=$1022.54|$13176.36
+  AMORT_STEP|$13176.36|k=95, i=$263.52, p=$1042.98|$12133.38
+  AMORT_STEP|$12133.38|k=96, i=$242.66, p=$1063.84|$11069.54
+  AMORT_STEP|$11069.54|k=97, i=$221.38, p=$1085.12|$9984.42
+  MILESTONE|97|balance cents mod 9|0
+  AMORT_STEP|$9984.42|k=98, i=$199.68, p=$1106.82|$8877.60
+  AMORT_STEP|$8877.60|k=99, i=$177.54, p=$1128.96|$7748.64
+  AMORT_STEP|$7748.64|k=100, i=$154.96, p=$1151.54|$6597.10
+  AMORT_STEP|$6597.10|k=101, i=$131.94, p=$1174.56|$5422.54
+  AMORT_STEP|$5422.54|k=102, i=$108.44, p=$1198.06|$4224.48
+  AMORT_STEP|$4224.48|k=103, i=$84.48, p=$1222.02|$3002.46
+  AMORT_STEP|$3002.46|k=104, i=$60.04, p=$1246.46|$1756.00
+  AMORT_STEP|$1756.00|k=105, i=$35.12, p=$1271.38|$484.62
+  AMORT_STEP|$484.62|k=106, i=$9.68, p=$484.62|$0.00
+  Z|106
+Answer: 106
 ```
 
 ## Graduate
