@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**678 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**679 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3963,6 +3963,111 @@ Steps:
   MILESTONE|111|remainder mod 9|7
   Z|491
 Answer: 491
+```
+
+### Radix Marathon — `RadixMarathonGenerator`  ·  middle · difficulty 3
+
+Base-conversion marathons with unbroken chains (depth strand).
+
+**Variants:** `radix_marathon_base_tour_d100`, `radix_marathon_base_tour_d200`, `radix_marathon_base_tour_d50`, `radix_marathon_chain_two_d100`, `radix_marathon_chain_two_d50`, `radix_marathon_round_trip_check_d50`
+
+```
+Problem: Convert 849118145 to base 5, rebuild it in decimal, then convert it to base 2 (2 conversions in all). Report the base-2 representation.
+Steps:
+  RADIX_STEP|849118145|div 5 rem 0|169823629
+  RADIX_STEP|169823629|div 5 rem 4|33964725
+  RADIX_STEP|33964725|div 5 rem 0|6792945
+  RADIX_STEP|6792945|div 5 rem 0|1358589
+  RADIX_STEP|1358589|div 5 rem 4|271717
+  RADIX_STEP|271717|div 5 rem 2|54343
+  RADIX_STEP|54343|div 5 rem 3|10868
+  RADIX_STEP|10868|div 5 rem 3|2173
+  RADIX_STEP|2173|div 5 rem 3|434
+  RADIX_STEP|434|div 5 rem 4|86
+  RADIX_STEP|86|div 5 rem 1|17
+  RADIX_STEP|17|div 5 rem 2|3
+  RADIX_STEP|3|div 5 rem 3|0
+  HORNER|0|x 5 + 3|3
+  MILESTONE|14|value mod 9|3
+  HORNER|3|x 5 + 2|17
+  HORNER|17|x 5 + 1|86
+  HORNER|86|x 5 + 4|434
+  HORNER|434|x 5 + 3|2173
+  HORNER|2173|x 5 + 3|10868
+  HORNER|10868|x 5 + 3|54343
+  HORNER|54343|x 5 + 2|271717
+  HORNER|271717|x 5 + 4|1358589
+  HORNER|1358589|x 5 + 0|6792945
+  HORNER|6792945|x 5 + 0|33964725
+  HORNER|33964725|x 5 + 4|169823629
+  HORNER|169823629|x 5 + 0|849118145
+  RADIX_STEP|849118145|div 2 rem 1|424559072
+  RADIX_STEP|424559072|div 2 rem 0|212279536
+  RADIX_STEP|212279536|div 2 rem 0|106139768
+  MILESTONE|29|value mod 9|5
+  RADIX_STEP|106139768|div 2 rem 0|53069884
+  RADIX_STEP|53069884|div 2 rem 0|26534942
+  RADIX_STEP|26534942|div 2 rem 0|13267471
+  RADIX_STEP|13267471|div 2 rem 1|6633735
+  RADIX_STEP|6633735|div 2 rem 1|3316867
+  RADIX_STEP|3316867|div 2 rem 1|1658433
+  RADIX_STEP|1658433|div 2 rem 1|829216
+  RADIX_STEP|829216|div 2 rem 0|414608
+  RADIX_STEP|414608|div 2 rem 0|207304
+  RADIX_STEP|207304|div 2 rem 0|103652
+  RADIX_STEP|103652|div 2 rem 0|51826
+  RADIX_STEP|51826|div 2 rem 0|25913
+  RADIX_STEP|25913|div 2 rem 1|12956
+  RADIX_STEP|12956|div 2 rem 0|6478
+  MILESTONE|43|value mod 9|7
+  RADIX_STEP|6478|div 2 rem 0|3239
+  RADIX_STEP|3239|div 2 rem 1|1619
+  RADIX_STEP|1619|div 2 rem 1|809
+  RADIX_STEP|809|div 2 rem 1|404
+  RADIX_STEP|404|div 2 rem 0|202
+  RADIX_STEP|202|div 2 rem 0|101
+  RADIX_STEP|101|div 2 rem 1|50
+  RADIX_STEP|50|div 2 rem 0|25
+  RADIX_STEP|25|div 2 rem 1|12
+  RADIX_STEP|12|div 2 rem 0|6
+  RADIX_STEP|6|div 2 rem 0|3
+  RADIX_STEP|3|div 2 rem 1|1
+  RADIX_STEP|1|div 2 rem 1|0
+  HORNER|0|x 2 + 1|1
+  MILESTONE|57|value mod 9|1
+  HORNER|1|x 2 + 1|3
+  HORNER|3|x 2 + 0|6
+  HORNER|6|x 2 + 0|12
+  HORNER|12|x 2 + 1|25
+  HORNER|25|x 2 + 0|50
+  HORNER|50|x 2 + 1|101
+  HORNER|101|x 2 + 0|202
+  HORNER|202|x 2 + 0|404
+  HORNER|404|x 2 + 1|809
+  HORNER|809|x 2 + 1|1619
+  HORNER|1619|x 2 + 1|3239
+  HORNER|3239|x 2 + 0|6478
+  HORNER|6478|x 2 + 0|12956
+  HORNER|12956|x 2 + 1|25913
+  HORNER|25913|x 2 + 0|51826
+  MILESTONE|72|value mod 9|4
+  HORNER|51826|x 2 + 0|103652
+  HORNER|103652|x 2 + 0|207304
+  HORNER|207304|x 2 + 0|414608
+  HORNER|414608|x 2 + 0|829216
+  HORNER|829216|x 2 + 1|1658433
+  HORNER|1658433|x 2 + 1|3316867
+  HORNER|3316867|x 2 + 1|6633735
+  HORNER|6633735|x 2 + 1|13267471
+  HORNER|13267471|x 2 + 0|26534942
+  HORNER|26534942|x 2 + 0|53069884
+  MILESTONE|82|value mod 9|7
+  HORNER|53069884|x 2 + 0|106139768
+  HORNER|106139768|x 2 + 0|212279536
+  HORNER|212279536|x 2 + 0|424559072
+  HORNER|424559072|x 2 + 1|849118145
+  Z|110010100111001000001111000001 (base 2)
+Answer: 110010100111001000001111000001 (base 2)
 ```
 
 ## High School

@@ -182,10 +182,19 @@ answers-are-short rule (§3), and terminating expansions cannot reach tier
 depth with a bounded divisor, so the long outputs became checksums/lengths
 and `decimal_expansion` was dropped.
 
-**RadixMarathonGenerator** · middle · d3 — chained base conversions
-(base a → 10 → base b) of 10–14 digit values, digit-by-digit; variants:
-`chain_two`, `round_trip_check` (convert back, `CHECK` equality),
-`arbitrary_pair` (a, b ∈ 2..16).
+**RadixMarathonGenerator** · middle · d3 — chained base conversions of a
+value in [10^8, 10^9), digit by digit, fully on-chain: a decomposition
+runs the value down to 0 (`RADIX_STEP|<v>|div b rem d|<v//b>`), and the
+following Horner recomposition starts from that same 0
+(`HORNER|<acc>|x b + d|<acc'>`), so decompose→recompose→decompose…
+chains unbroken through every base. Bases 2..16, digits above 9 as
+letters. Variants: `round_trip_check` (one base, `CHECK` equality with
+the start; a single trip peaks near 60 links, so `d50`-only),
+`chain_two` (a → 10 → b for any pair, screened to the window;
+`d50`/`d100`), `base_tour` (a screened sequence of bases; all tiers).
+Amended from the `chain_two`/`round_trip_check`/`arbitrary_pair` draft:
+`arbitrary_pair` is `chain_two` (pairs were always arbitrary in 2..16),
+and per-variant tier latitude reflects what bounded values can reach.
 
 ### Strand E — Number-theory chains (high / college)
 

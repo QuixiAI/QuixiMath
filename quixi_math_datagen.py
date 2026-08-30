@@ -700,6 +700,7 @@ from generators.digit_process_generator import DigitProcessGenerator
 from generators.iterated_affine_map_generator import IteratedAffineMapGenerator
 from generators.collatz_trace_generator import CollatzTraceGenerator
 from generators.big_exact_division_generator import BigExactDivisionGenerator
+from generators.radix_marathon_generator import RadixMarathonGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1471,6 +1472,7 @@ ALL_GENERATORS = [
     IteratedAffineMapGenerator(),
     CollatzTraceGenerator(),
     BigExactDivisionGenerator(),
+    RadixMarathonGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
