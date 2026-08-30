@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**687 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**688 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4202,6 +4202,139 @@ Steps:
   CHECK|statement totals|$761.50 + $3937.25 - $3587.50 + $402.15|$1513.40
   Z|$1513.40
 Answer: $1513.40
+```
+
+### Ledger Audit — `LedgerAuditGenerator`  ·  middle · difficulty 3
+
+Find the one bad row in a tier-length claimed trace.
+
+**Variants:** `ledger_audit_affine_table_d100`, `ledger_audit_affine_table_d200`, `ledger_audit_affine_table_d50`, `ledger_audit_money_ledger_d100`, `ledger_audit_money_ledger_d200`, `ledger_audit_money_ledger_d50`, `ledger_audit_running_sum_d100`, `ledger_audit_running_sum_d200`, `ledger_audit_running_sum_d50`
+
+```
+Problem: A tally starts at 85. The following 111 rows were posted, but at most one result may be wrong (later rows were computed from it): 1: +28 = 113; 2: +33 = 146; 3: +40 = 186; 4: -35 = 151; 5: -21 = 130; 6: -9 = 121; 7: +37 = 158; 8: -22 = 136; 9: -7 = 129; 10: +33 = 162; 11: -25 = 137; 12: +23 = 160; 13: -38 = 122; 14: +31 = 153; 15: +6 = 159; 16: -8 = 151; 17: +3 = 154; 18: +24 = 178; 19: -23 = 155; 20: -15 = 140; 21: -18 = 122; 22: -37 = 85; 23: +8 = 93; 24: -23 = 70; 25: +9 = 79; 26: +38 = 117; 27: +10 = 127; 28: +37 = 164; 29: -38 = 126; 30: +31 = 157; 31: -27 = 130; 32: +39 = 169; 33: -21 = 148; 34: -15 = 133; 35: -5 = 128; 36: +33 = 161; 37: -8 = 153; 38: -12 = 141; 39: -8 = 133; 40: +36 = 169; 41: +36 = 205; 42: -16 = 189; 43: +40 = 229; 44: +31 = 260; 45: +25 = 285; 46: -23 = 262; 47: -34 = 228; 48: +15 = 243; 49: -4 = 239; 50: +10 = 249; 51: -26 = 223; 52: -24 = 199; 53: +6 = 205; 54: -12 = 193; 55: -5 = 188; 56: -4 = 184; 57: -15 = 169; 58: -28 = 141; 59: -26 = 115; 60: -5 = 110; 61: -15 = 95; 62: -10 = 85; 63: +16 = 101; 64: -4 = 97; 65: +9 = 106; 66: +7 = 113; 67: -7 = 106; 68: +25 = 131; 69: +14 = 145; 70: -35 = 110; 71: +5 = 115; 72: -28 = 87; 73: -19 = 68; 74: +33 = 101; 75: -16 = 85; 76: -13 = 72; 77: -24 = 48; 78: +10 = 58; 79: +14 = 72; 80: -33 = 39; 81: +39 = 78; 82: +25 = 103; 83: +19 = 122; 84: -38 = 84; 85: -32 = 52; 86: -24 = 28; 87: -37 = -9; 88: +11 = 2; 89: -33 = -31; 90: +21 = -10; 91: +40 = 30; 92: -22 = 8; 93: +29 = 37; 94: -3 = 34; 95: -24 = 10; 96: -18 = -8; 97: -31 = -39; 98: +39 = 0; 99: +5 = 5; 100: +39 = 44; 101: +5 = 49; 102: -31 = 18; 103: -19 = -1; 104: -31 = -32; 105: +38 = 6; 106: -5 = 1; 107: +23 = 24; 108: +32 = 56; 109: -29 = 27; 110: -38 = -11; 111: -11 = -22. Audit the tally row by row. Identify the first wrong row, or confirm there is none, and give the correct final value.
+Steps:
+  AUDIT_ROW|85|row 1: +28 ok|113
+  AUDIT_ROW|113|row 2: +33 ok|146
+  AUDIT_ROW|146|row 3: +40 ok|186
+  AUDIT_ROW|186|row 4: -35 ok|151
+  AUDIT_ROW|151|row 5: -21 ok|130
+  AUDIT_ROW|130|row 6: -9 ok|121
+  AUDIT_ROW|121|row 7: +37 ok|158
+  AUDIT_ROW|158|row 8: -22 ok|136
+  AUDIT_ROW|136|row 9: -7 ok|129
+  AUDIT_ROW|129|row 10: +33 ok|162
+  MILESTONE|10|true value mod 9|0
+  AUDIT_ROW|162|row 11: -25 ok|137
+  AUDIT_ROW|137|row 12: +23 ok|160
+  AUDIT_ROW|160|row 13: -38 ok|122
+  AUDIT_ROW|122|row 14: +31 ok|153
+  AUDIT_ROW|153|row 15: +6 ok|159
+  AUDIT_ROW|159|row 16: -8 ok|151
+  AUDIT_ROW|151|row 17: +3 ok|154
+  AUDIT_ROW|154|row 18: +24 ok|178
+  AUDIT_ROW|178|row 19: -23 ok|155
+  AUDIT_ROW|155|row 20: -15 ok|140
+  AUDIT_ROW|140|row 21: -18 ok|122
+  AUDIT_ROW|122|row 22: -37 ok|85
+  AUDIT_ROW|85|row 23: +8 ok|93
+  MILESTONE|23|true value mod 9|3
+  AUDIT_ROW|93|row 24: -23 ok|70
+  AUDIT_ROW|70|row 25: +9 ok|79
+  AUDIT_ROW|79|row 26: +38 ok|117
+  AUDIT_ROW|117|row 27: +10 ok|127
+  AUDIT_ROW|127|row 28: +37 ok|164
+  AUDIT_ROW|164|row 29: -38 ok|126
+  AUDIT_ROW|126|row 30: +31 ok|157
+  AUDIT_ROW|157|row 31: -27 ok|130
+  AUDIT_ROW|130|row 32: +39 ok|169
+  AUDIT_ROW|169|row 33: -21 ok|148
+  AUDIT_ROW|148|row 34: -15 ok|133
+  AUDIT_ROW|133|row 35: -5 ok|128
+  AUDIT_ROW|128|row 36: +33 ok|161
+  AUDIT_ROW|161|row 37: -8 ok|153
+  AUDIT_ROW|153|row 38: -12 ok|141
+  MILESTONE|38|true value mod 9|6
+  AUDIT_ROW|141|row 39: -8 ok|133
+  AUDIT_ROW|133|row 40: +36 ok|169
+  AUDIT_ROW|169|row 41: +36 ok|205
+  AUDIT_ROW|205|row 42: -16 ok|189
+  AUDIT_ROW|189|row 43: +40 ok|229
+  AUDIT_ROW|229|row 44: +31 ok|260
+  AUDIT_ROW|260|row 45: +25 ok|285
+  AUDIT_ROW|285|row 46: -23 ok|262
+  AUDIT_ROW|262|row 47: -34 ok|228
+  AUDIT_ROW|228|row 48: +15 ok|243
+  AUDIT_ROW|243|row 49: -4 ok|239
+  AUDIT_ROW|239|row 50: +10 ok|249
+  AUDIT_ROW|249|row 51: -26 ok|223
+  MILESTONE|51|true value mod 9|7
+  AUDIT_ROW|223|row 52: -24 ok|199
+  AUDIT_ROW|199|row 53: +6 ok|205
+  AUDIT_ROW|205|row 54: -12 ok|193
+  AUDIT_ROW|193|row 55: -5 ok|188
+  AUDIT_ROW|188|row 56: -4 ok|184
+  AUDIT_ROW|184|row 57: -15 ok|169
+  AUDIT_ROW|169|row 58: -28 ok|141
+  AUDIT_ROW|141|row 59: -26 ok|115
+  AUDIT_ROW|115|row 60: -5 ok|110
+  AUDIT_ROW|110|row 61: -15 ok|95
+  AUDIT_ROW|95|row 62: -10 ok|85
+  AUDIT_ROW|85|row 63: +16 ok|101
+  MILESTONE|63|true value mod 9|2
+  AUDIT_ROW|101|row 64: -4 ok|97
+  AUDIT_ROW|97|row 65: +9 ok|106
+  AUDIT_ROW|106|row 66: +7 ok|113
+  AUDIT_ROW|113|row 67: -7 ok|106
+  AUDIT_ROW|106|row 68: +25 ok|131
+  AUDIT_ROW|131|row 69: +14 ok|145
+  AUDIT_ROW|145|row 70: -35 ok|110
+  AUDIT_ROW|110|row 71: +5 ok|115
+  AUDIT_ROW|115|row 72: -28 ok|87
+  AUDIT_ROW|87|row 73: -19 ok|68
+  MILESTONE|73|true value mod 9|5
+  AUDIT_ROW|68|row 74: +33 ok|101
+  AUDIT_ROW|101|row 75: -16 ok|85
+  AUDIT_ROW|85|row 76: -13 ok|72
+  AUDIT_ROW|72|row 77: -24 ok|48
+  AUDIT_ROW|48|row 78: +10 ok|58
+  AUDIT_ROW|58|row 79: +14 ok|72
+  AUDIT_ROW|72|row 80: -33 ok|39
+  AUDIT_ROW|39|row 81: +39 ok|78
+  AUDIT_ROW|78|row 82: +25 ok|103
+  AUDIT_ROW|103|row 83: +19 ok|122
+  AUDIT_ROW|122|row 84: -38 ok|84
+  MILESTONE|84|true value mod 9|3
+  AUDIT_ROW|84|row 85: -32 ok|52
+  AUDIT_ROW|52|row 86: -24 ok|28
+  AUDIT_ROW|28|row 87: -37 ok|-9
+  AUDIT_ROW|-9|row 88: +11 ok|2
+  AUDIT_ROW|2|row 89: -33 ok|-31
+  AUDIT_ROW|-31|row 90: +21 ok|-10
+  AUDIT_ROW|-10|row 91: +40 ok|30
+  AUDIT_ROW|30|row 92: -22 ok|8
+  AUDIT_ROW|8|row 93: +29 ok|37
+  AUDIT_ROW|37|row 94: -3 ok|34
+  MILESTONE|94|true value mod 9|7
+  AUDIT_ROW|34|row 95: -24 ok|10
+  AUDIT_ROW|10|row 96: -18 ok|-8
+  AUDIT_ROW|-8|row 97: -31 ok|-39
+  AUDIT_ROW|-39|row 98: +39 ok|0
+  AUDIT_ROW|0|row 99: +5 ok|5
+  AUDIT_ROW|5|row 100: +39 ok|44
+  AUDIT_ROW|44|row 101: +5 ok|49
+  AUDIT_ROW|49|row 102: -31 ok|18
+  AUDIT_ROW|18|row 103: -19 ok|-1
+  AUDIT_ROW|-1|row 104: -31 ok|-32
+  AUDIT_ROW|-32|row 105: +38 ok|6
+  AUDIT_ROW|6|row 106: -5 ok|1
+  AUDIT_ROW|1|row 107: +23 ok|24
+  AUDIT_ROW|24|row 108: +32 ok|56
+  AUDIT_ROW|56|row 109: -29 ok|27
+  MILESTONE|109|true value mod 9|0
+  AUDIT_ROW|27|row 110: -38 ok|-11
+  AUDIT_ROW|-11|row 111: -11 ok|-22
+  Z|no errors; final value -22 confirmed
+Answer: no errors; final value -22 confirmed
 ```
 
 ## High School
