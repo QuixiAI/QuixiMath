@@ -717,6 +717,7 @@ CURRICULUM = {
     "CompoundLedgerGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "ModExpLadderGenerator": {"grade_level": HIGH, "difficulty": 3},
     "RecurrenceUnrollGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "PartialSumMarathonGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 

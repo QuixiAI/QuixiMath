@@ -239,11 +239,16 @@ alternating-sign construction. Variants: `term_n_mod_m`,
 `pisano_period`, `two_term_mod` (Fibonacci-like), `matrix_check`
 (composite: 2×2 matrix power closed form vs the unrolled value).
 
-**PartialSumMarathonGenerator** · high · d3 — accumulate N terms of a
-geometric / telescoping / arithmetic-of-fractions series, running sum
-exact with denominators fixed by construction. Variants: `partial_sum`,
-`first_exceed` (smallest N with S_N > bound), `telescope_check`
-(composite: closed form vs the accumulated value).
+**PartialSumMarathonGenerator** · high · d3 — accumulate N terms with
+the running sum re-derived against a closed form in a final `CHECK`.
+Families chosen for *bounded* running sums (amended from the original
+draft's "geometric" family: an exact geometric partial sum's
+denominator grows like r^-N, so its rendering grows linearly with depth
+and violates §3): `arithmetic` (Σ(a + kd), Gauss closed form),
+`telescoping` (Σ 1/(k(k+1)) from k = s — every running sum reduces to a
+two-small-integer fraction 1/s − 1/(s+k)), `first_exceed` (the smallest
+N with an arithmetic partial sum above a stated bound, the crossing
+screened into the tier window).
 
 ### Strand F — Financial schedules (middle / college)
 
