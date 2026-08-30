@@ -156,8 +156,8 @@ def record_chars(example):
 # ---------------------------------------------------------------------------
 
 _N_RE = re.compile(
-    r"\b(\d+)\s+(?:times|iterations|steps|terms|payments|periods|events|"
-    r"rows|instructions|conversions|digits)\b|"
+    r"\b(\d+)\s+(?:times|iterations|applications|steps|terms|payments|"
+    r"periods|events|rows|instructions|conversions|digits)\b|"
     r"\b(?:iterate|apply|run|repeat|unroll|accumulate|execute)"
     r"(?:\s+\S+){0,3}?\s+(\d+)\s|"
     r"\bfirst\s+(\d+)\b")

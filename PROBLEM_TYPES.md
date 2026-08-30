@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**675 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**676 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3574,6 +3574,139 @@ Steps:
   M|2|58|116
   Z|perimeter = 2 × (leg1 + leg2); 116 m
 Answer: perimeter = 2 × (leg1 + leg2); 116 m
+```
+
+### Iterated Affine Map — `IteratedAffineMapGenerator`  ·  middle · difficulty 2
+
+Long affine orbits mod m (depth strand).
+
+**Variants:** `iterated_affine_map_backward_d100`, `iterated_affine_map_backward_d200`, `iterated_affine_map_backward_d50`, `iterated_affine_map_final_state_d100`, `iterated_affine_map_final_state_d200`, `iterated_affine_map_final_state_d50`, `iterated_affine_map_first_return_d100`, `iterated_affine_map_first_return_d200`, `iterated_affine_map_first_return_d50`, `iterated_affine_map_orbit_period_d100`, `iterated_affine_map_orbit_period_d200`, `iterated_affine_map_orbit_period_d50`
+
+```
+Problem: Applying x -> (67x + 62) mod 91 exactly 111 times turned an unknown start into 23. Invert it with x -> 72(x - 62) mod 91, one step at a time. Find the start.
+Steps:
+  ITER_INV|23|n=1|13
+  ITER_INV|13|n=2|21
+  ITER_INV|21|n=3|51
+  ITER_INV|51|n=4|27
+  ITER_INV|27|n=5|28
+  ITER_INV|28|n=6|9
+  ITER_INV|9|n=7|6
+  ITER_INV|6|n=8|63
+  ITER_INV|63|n=9|72
+  ITER_INV|72|n=10|83
+  ITER_INV|83|n=11|56
+  ITER_INV|56|n=12|23
+  MILESTONE|12|state mod 9|5
+  ITER_INV|23|n=13|13
+  ITER_INV|13|n=14|21
+  ITER_INV|21|n=15|51
+  ITER_INV|51|n=16|27
+  ITER_INV|27|n=17|28
+  ITER_INV|28|n=18|9
+  ITER_INV|9|n=19|6
+  ITER_INV|6|n=20|63
+  ITER_INV|63|n=21|72
+  ITER_INV|72|n=22|83
+  ITER_INV|83|n=23|56
+  ITER_INV|56|n=24|23
+  ITER_INV|23|n=25|13
+  MILESTONE|25|state mod 9|4
+  ITER_INV|13|n=26|21
+  ITER_INV|21|n=27|51
+  ITER_INV|51|n=28|27
+  ITER_INV|27|n=29|28
+  ITER_INV|28|n=30|9
+  ITER_INV|9|n=31|6
+  ITER_INV|6|n=32|63
+  ITER_INV|63|n=33|72
+  ITER_INV|72|n=34|83
+  ITER_INV|83|n=35|56
+  ITER_INV|56|n=36|23
+  ITER_INV|23|n=37|13
+  MILESTONE|37|state mod 9|4
+  ITER_INV|13|n=38|21
+  ITER_INV|21|n=39|51
+  ITER_INV|51|n=40|27
+  ITER_INV|27|n=41|28
+  ITER_INV|28|n=42|9
+  ITER_INV|9|n=43|6
+  ITER_INV|6|n=44|63
+  ITER_INV|63|n=45|72
+  ITER_INV|72|n=46|83
+  ITER_INV|83|n=47|56
+  ITER_INV|56|n=48|23
+  ITER_INV|23|n=49|13
+  ITER_INV|13|n=50|21
+  ITER_INV|21|n=51|51
+  MILESTONE|51|state mod 9|6
+  ITER_INV|51|n=52|27
+  ITER_INV|27|n=53|28
+  ITER_INV|28|n=54|9
+  ITER_INV|9|n=55|6
+  ITER_INV|6|n=56|63
+  ITER_INV|63|n=57|72
+  ITER_INV|72|n=58|83
+  ITER_INV|83|n=59|56
+  ITER_INV|56|n=60|23
+  ITER_INV|23|n=61|13
+  ITER_INV|13|n=62|21
+  MILESTONE|62|state mod 9|3
+  ITER_INV|21|n=63|51
+  ITER_INV|51|n=64|27
+  ITER_INV|27|n=65|28
+  ITER_INV|28|n=66|9
+  ITER_INV|9|n=67|6
+  ITER_INV|6|n=68|63
+  ITER_INV|63|n=69|72
+  ITER_INV|72|n=70|83
+  ITER_INV|83|n=71|56
+  ITER_INV|56|n=72|23
+  ITER_INV|23|n=73|13
+  ITER_INV|13|n=74|21
+  ITER_INV|21|n=75|51
+  ITER_INV|51|n=76|27
+  MILESTONE|76|state mod 9|0
+  ITER_INV|27|n=77|28
+  ITER_INV|28|n=78|9
+  ITER_INV|9|n=79|6
+  ITER_INV|6|n=80|63
+  ITER_INV|63|n=81|72
+  ITER_INV|72|n=82|83
+  ITER_INV|83|n=83|56
+  ITER_INV|56|n=84|23
+  ITER_INV|23|n=85|13
+  ITER_INV|13|n=86|21
+  ITER_INV|21|n=87|51
+  MILESTONE|87|state mod 9|6
+  ITER_INV|51|n=88|27
+  ITER_INV|27|n=89|28
+  ITER_INV|28|n=90|9
+  ITER_INV|9|n=91|6
+  ITER_INV|6|n=92|63
+  ITER_INV|63|n=93|72
+  ITER_INV|72|n=94|83
+  ITER_INV|83|n=95|56
+  ITER_INV|56|n=96|23
+  ITER_INV|23|n=97|13
+  ITER_INV|13|n=98|21
+  ITER_INV|21|n=99|51
+  MILESTONE|99|state mod 9|6
+  ITER_INV|51|n=100|27
+  ITER_INV|27|n=101|28
+  ITER_INV|28|n=102|9
+  ITER_INV|9|n=103|6
+  ITER_INV|6|n=104|63
+  ITER_INV|63|n=105|72
+  ITER_INV|72|n=106|83
+  ITER_INV|83|n=107|56
+  ITER_INV|56|n=108|23
+  ITER_INV|23|n=109|13
+  ITER_INV|13|n=110|21
+  MILESTONE|110|state mod 9|3
+  ITER_INV|21|n=111|51
+  Z|51
+Answer: 51
 ```
 
 ## High School

@@ -710,6 +710,7 @@ CURRICULUM = {
     # generators bump it per tier via depth_common.tier_difficulty.
     "ArithmeticChainGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "DigitProcessGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "IteratedAffineMapGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 
