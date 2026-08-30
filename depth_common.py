@@ -246,7 +246,7 @@ def cents_ledger(start_cents, n, rng=random, low=0, high=1_000_00):
 #: count through one of these shapes so :func:`parse_count` inverts it.
 _COUNT_PATTERNS = (
     re.compile(r"\b(\d+)\s+(?:times|iterations|applications|steps|terms|payments|"
-               r"periods|events|rows|instructions|conversions|digits)\b"),
+               r"periods|events|rows|instructions|conversions|digits|bits)\b"),
     re.compile(r"\b(?:iterate|apply|run|repeat|unroll|accumulate|execute)"
                r"(?:\s+\S+){0,3}?\s+(\d+)\s"),
     re.compile(r"\bfirst\s+(\d+)\b"),

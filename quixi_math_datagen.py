@@ -702,6 +702,7 @@ from generators.collatz_trace_generator import CollatzTraceGenerator
 from generators.big_exact_division_generator import BigExactDivisionGenerator
 from generators.radix_marathon_generator import RadixMarathonGenerator
 from generators.compound_ledger_generator import CompoundLedgerGenerator
+from generators.mod_exp_ladder_generator import ModExpLadderGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1475,6 +1476,7 @@ ALL_GENERATORS = [
     BigExactDivisionGenerator(),
     RadixMarathonGenerator(),
     CompoundLedgerGenerator(),
+    ModExpLadderGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

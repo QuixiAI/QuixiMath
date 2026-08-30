@@ -715,6 +715,7 @@ CURRICULUM = {
     "BigExactDivisionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "RadixMarathonGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "CompoundLedgerGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "ModExpLadderGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 

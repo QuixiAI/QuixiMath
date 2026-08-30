@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**680 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**681 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -8953,6 +8953,153 @@ Steps:
   D|252|3|84
   Z|composed of 3 parts; Q1 75%; Q2 9 more wins; Q3 84 points
 Answer: composed of 3 parts; Q1 75%; Q2 9 more wins; Q3 84 points
+```
+
+### Mod Exp Ladder — `ModExpLadderGenerator`  ·  high · difficulty 3
+
+Modular exponentiation marathons (depth strand).
+
+**Variants:** `mod_exp_ladder_fermat_route_d100`, `mod_exp_ladder_fermat_route_d200`, `mod_exp_ladder_fermat_route_d50`, `mod_exp_ladder_final_residue_d100`, `mod_exp_ladder_final_residue_d200`, `mod_exp_ladder_final_residue_d50`, `mod_exp_ladder_ladder_audit_d100`, `mod_exp_ladder_ladder_audit_d200`, `mod_exp_ladder_ladder_audit_d50`
+
+```
+Problem: Walk the 82 bits of the exponent to compute 10^4440304788954931681149413 mod 25 by repeated squaring. State the result and the bits consumed.
+Steps:
+  LADDER|1|start acc = a (bit 1 of 82)|10
+  LADDER|10|square (bit 2 of 82)|0
+  LADDER|0|multiply by 10 (bit 2)|0
+  LADDER|0|square (bit 3 of 82)|0
+  LADDER|0|multiply by 10 (bit 3)|0
+  LADDER|0|square (bit 4 of 82)|0
+  LADDER|0|square (bit 5 of 82)|0
+  LADDER|0|multiply by 10 (bit 5)|0
+  LADDER|0|square (bit 6 of 82)|0
+  LADDER|0|square (bit 7 of 82)|0
+  LADDER|0|multiply by 10 (bit 7)|0
+  LADDER|0|square (bit 8 of 82)|0
+  MILESTONE|12|exponent bits consumed|8
+  LADDER|0|multiply by 10 (bit 8)|0
+  LADDER|0|square (bit 9 of 82)|0
+  LADDER|0|square (bit 10 of 82)|0
+  LADDER|0|square (bit 11 of 82)|0
+  LADDER|0|square (bit 12 of 82)|0
+  LADDER|0|multiply by 10 (bit 12)|0
+  LADDER|0|square (bit 13 of 82)|0
+  LADDER|0|square (bit 14 of 82)|0
+  LADDER|0|square (bit 15 of 82)|0
+  LADDER|0|square (bit 16 of 82)|0
+  LADDER|0|multiply by 10 (bit 16)|0
+  LADDER|0|square (bit 17 of 82)|0
+  LADDER|0|square (bit 18 of 82)|0
+  MILESTONE|25|exponent bits consumed|18
+  LADDER|0|multiply by 10 (bit 18)|0
+  LADDER|0|square (bit 19 of 82)|0
+  LADDER|0|square (bit 20 of 82)|0
+  LADDER|0|multiply by 10 (bit 20)|0
+  LADDER|0|square (bit 21 of 82)|0
+  LADDER|0|multiply by 10 (bit 21)|0
+  LADDER|0|square (bit 22 of 82)|0
+  LADDER|0|square (bit 23 of 82)|0
+  LADDER|0|square (bit 24 of 82)|0
+  LADDER|0|multiply by 10 (bit 24)|0
+  LADDER|0|square (bit 25 of 82)|0
+  LADDER|0|multiply by 10 (bit 25)|0
+  MILESTONE|37|exponent bits consumed|25
+  LADDER|0|square (bit 26 of 82)|0
+  LADDER|0|multiply by 10 (bit 26)|0
+  LADDER|0|square (bit 27 of 82)|0
+  LADDER|0|multiply by 10 (bit 27)|0
+  LADDER|0|square (bit 28 of 82)|0
+  LADDER|0|square (bit 29 of 82)|0
+  LADDER|0|multiply by 10 (bit 29)|0
+  LADDER|0|square (bit 30 of 82)|0
+  LADDER|0|square (bit 31 of 82)|0
+  LADDER|0|multiply by 10 (bit 31)|0
+  LADDER|0|square (bit 32 of 82)|0
+  LADDER|0|square (bit 33 of 82)|0
+  LADDER|0|square (bit 34 of 82)|0
+  LADDER|0|multiply by 10 (bit 34)|0
+  MILESTONE|51|exponent bits consumed|34
+  LADDER|0|square (bit 35 of 82)|0
+  LADDER|0|multiply by 10 (bit 35)|0
+  LADDER|0|square (bit 36 of 82)|0
+  LADDER|0|multiply by 10 (bit 36)|0
+  LADDER|0|square (bit 37 of 82)|0
+  LADDER|0|square (bit 38 of 82)|0
+  LADDER|0|square (bit 39 of 82)|0
+  LADDER|0|square (bit 40 of 82)|0
+  LADDER|0|square (bit 41 of 82)|0
+  LADDER|0|multiply by 10 (bit 41)|0
+  LADDER|0|square (bit 42 of 82)|0
+  MILESTONE|62|exponent bits consumed|42
+  LADDER|0|multiply by 10 (bit 42)|0
+  LADDER|0|square (bit 43 of 82)|0
+  LADDER|0|square (bit 44 of 82)|0
+  LADDER|0|multiply by 10 (bit 44)|0
+  LADDER|0|square (bit 45 of 82)|0
+  LADDER|0|multiply by 10 (bit 45)|0
+  LADDER|0|square (bit 46 of 82)|0
+  LADDER|0|multiply by 10 (bit 46)|0
+  LADDER|0|square (bit 47 of 82)|0
+  LADDER|0|multiply by 10 (bit 47)|0
+  LADDER|0|square (bit 48 of 82)|0
+  LADDER|0|square (bit 49 of 82)|0
+  LADDER|0|square (bit 50 of 82)|0
+  LADDER|0|square (bit 51 of 82)|0
+  MILESTONE|76|exponent bits consumed|51
+  LADDER|0|square (bit 52 of 82)|0
+  LADDER|0|multiply by 10 (bit 52)|0
+  LADDER|0|square (bit 53 of 82)|0
+  LADDER|0|multiply by 10 (bit 53)|0
+  LADDER|0|square (bit 54 of 82)|0
+  LADDER|0|multiply by 10 (bit 54)|0
+  LADDER|0|square (bit 55 of 82)|0
+  LADDER|0|multiply by 10 (bit 55)|0
+  LADDER|0|square (bit 56 of 82)|0
+  LADDER|0|multiply by 10 (bit 56)|0
+  LADDER|0|square (bit 57 of 82)|0
+  MILESTONE|87|exponent bits consumed|57
+  LADDER|0|square (bit 58 of 82)|0
+  LADDER|0|square (bit 59 of 82)|0
+  LADDER|0|square (bit 60 of 82)|0
+  LADDER|0|multiply by 10 (bit 60)|0
+  LADDER|0|square (bit 61 of 82)|0
+  LADDER|0|multiply by 10 (bit 61)|0
+  LADDER|0|square (bit 62 of 82)|0
+  LADDER|0|square (bit 63 of 82)|0
+  LADDER|0|square (bit 64 of 82)|0
+  LADDER|0|multiply by 10 (bit 64)|0
+  LADDER|0|square (bit 65 of 82)|0
+  LADDER|0|square (bit 66 of 82)|0
+  MILESTONE|99|exponent bits consumed|66
+  LADDER|0|multiply by 10 (bit 66)|0
+  LADDER|0|square (bit 67 of 82)|0
+  LADDER|0|multiply by 10 (bit 67)|0
+  LADDER|0|square (bit 68 of 82)|0
+  LADDER|0|multiply by 10 (bit 68)|0
+  LADDER|0|square (bit 69 of 82)|0
+  LADDER|0|square (bit 70 of 82)|0
+  LADDER|0|square (bit 71 of 82)|0
+  LADDER|0|square (bit 72 of 82)|0
+  LADDER|0|square (bit 73 of 82)|0
+  LADDER|0|square (bit 74 of 82)|0
+  MILESTONE|110|exponent bits consumed|74
+  LADDER|0|multiply by 10 (bit 74)|0
+  LADDER|0|square (bit 75 of 82)|0
+  LADDER|0|multiply by 10 (bit 75)|0
+  LADDER|0|square (bit 76 of 82)|0
+  LADDER|0|multiply by 10 (bit 76)|0
+  LADDER|0|square (bit 77 of 82)|0
+  LADDER|0|multiply by 10 (bit 77)|0
+  LADDER|0|square (bit 78 of 82)|0
+  LADDER|0|square (bit 79 of 82)|0
+  LADDER|0|square (bit 80 of 82)|0
+  MILESTONE|120|exponent bits consumed|80
+  LADDER|0|multiply by 10 (bit 80)|0
+  LADDER|0|square (bit 81 of 82)|0
+  LADDER|0|square (bit 82 of 82)|0
+  LADDER|0|multiply by 10 (bit 82)|0
+  Z|0; 82 bits consumed
+Answer: 0; 82 bits consumed
 ```
 
 ## College
