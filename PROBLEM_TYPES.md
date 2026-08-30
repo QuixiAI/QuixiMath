@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**674 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**675 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -1237,6 +1237,137 @@ Steps:
   M|15|2|undo halve|30
   Z|30
 Answer: 30
+```
+
+### Digit Process — `DigitProcessGenerator`  ·  elementary · difficulty 2
+
+Long digit-collapse chains on many-digit seeds (depth strand).
+
+**Variants:** `digit_process_fixed_point_d100`, `digit_process_fixed_point_d200`, `digit_process_fixed_point_d50`, `digit_process_happy_classification_d100`, `digit_process_happy_classification_d200`, `digit_process_happy_classification_d50`, `digit_process_step_count_d100`, `digit_process_step_count_d200`, `digit_process_step_count_d50`
+
+```
+Problem: A number with 108 digits is given: 587647593824219489241157815659387784080160975351393328711587148418583989471965934232094711220186848339694775. Keep adding its digits until a single digit is left. How many digit-sum passes are needed?
+Steps:
+  A|5|8|13
+  A|13|7|20
+  A|20|6|26
+  A|26|4|30
+  A|30|7|37
+  A|37|5|42
+  A|42|9|51
+  A|51|3|54
+  A|54|8|62
+  A|62|2|64
+  MILESTONE|10|running total mod 9|1
+  A|64|4|68
+  A|68|2|70
+  A|70|1|71
+  A|71|9|80
+  A|80|4|84
+  A|84|8|92
+  A|92|9|101
+  A|101|2|103
+  A|103|4|107
+  A|107|1|108
+  A|108|1|109
+  A|109|5|114
+  MILESTONE|22|running total mod 9|6
+  A|114|7|121
+  A|121|8|129
+  A|129|1|130
+  A|130|5|135
+  A|135|6|141
+  A|141|5|146
+  A|146|9|155
+  A|155|3|158
+  A|158|8|166
+  A|166|7|173
+  A|173|7|180
+  A|180|8|188
+  A|188|4|192
+  A|192|0|192
+  MILESTONE|36|running total mod 9|3
+  A|192|8|200
+  A|200|0|200
+  A|200|1|201
+  A|201|6|207
+  A|207|0|207
+  A|207|9|216
+  A|216|7|223
+  A|223|5|228
+  A|228|3|231
+  A|231|5|236
+  MILESTONE|46|running total mod 9|2
+  A|236|1|237
+  A|237|3|240
+  A|240|9|249
+  A|249|3|252
+  A|252|3|255
+  A|255|2|257
+  A|257|8|265
+  A|265|7|272
+  A|272|1|273
+  A|273|1|274
+  A|274|5|279
+  A|279|8|287
+  A|287|7|294
+  MILESTONE|59|running total mod 9|6
+  A|294|1|295
+  A|295|4|299
+  A|299|8|307
+  A|307|4|311
+  A|311|1|312
+  A|312|8|320
+  A|320|5|325
+  A|325|8|333
+  A|333|3|336
+  A|336|9|345
+  A|345|8|353
+  A|353|9|362
+  A|362|4|366
+  A|366|7|373
+  MILESTONE|73|running total mod 9|4
+  A|373|1|374
+  A|374|9|383
+  A|383|6|389
+  A|389|5|394
+  A|394|9|403
+  A|403|3|406
+  A|406|4|410
+  A|410|2|412
+  A|412|3|415
+  A|415|2|417
+  A|417|0|417
+  A|417|9|426
+  A|426|4|430
+  A|430|7|437
+  A|437|1|438
+  MILESTONE|88|running total mod 9|6
+  A|438|1|439
+  A|439|2|441
+  A|441|2|443
+  A|443|0|443
+  A|443|1|444
+  A|444|8|452
+  A|452|6|458
+  A|458|8|466
+  A|466|4|470
+  A|470|8|478
+  A|478|3|481
+  A|481|3|484
+  MILESTONE|100|running total mod 9|7
+  A|484|9|493
+  A|493|6|499
+  A|499|9|508
+  A|508|4|512
+  A|512|7|519
+  A|519|7|526
+  A|526|5|531
+  DIGIT_SPLIT|531|digits 5,3,1|5
+  A|5|3|8
+  A|8|1|9
+  Z|2
+Answer: 2
 ```
 
 ## Middle School (grades 6–8)

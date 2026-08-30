@@ -709,6 +709,7 @@ CURRICULUM = {
     # Depth strand (plans/depth_plan.md) — difficulty here is the d50 base;
     # generators bump it per tier via depth_common.tier_difficulty.
     "ArithmeticChainGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
+    "DigitProcessGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
 }
 
 

@@ -696,6 +696,7 @@ from generators.spatial_packing_generator import SpatialPackingGenerator
 from generators.spatial_description_generator import SpatialDescriptionGenerator
 from generators.scenario_generator import ScenarioGenerator
 from generators.arithmetic_chain_generator import ArithmeticChainGenerator
+from generators.digit_process_generator import DigitProcessGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1463,6 +1464,7 @@ ALL_GENERATORS = [
     SpatialDescriptionGenerator(),
     ScenarioGenerator(),
     ArithmeticChainGenerator(),
+    DigitProcessGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
