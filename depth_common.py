@@ -247,7 +247,7 @@ def cents_ledger(start_cents, n, rng=random, low=0, high=1_000_00):
 _COUNT_PATTERNS = (
     re.compile(r"\b(\d+)\s+(?:times|iterations|applications|steps|terms|payments|"
                r"periods|events|rows|instructions|conversions|digits|bits|"
-               r"congruences)\b"),
+               r"congruences|stages)\b"),
     re.compile(r"\b(?:iterate|apply|run|repeat|unroll|accumulate|execute)"
                r"(?:\s+\S+){0,3}?\s+(\d+)\s"),
     re.compile(r"\bfirst\s+(\d+)\b"),

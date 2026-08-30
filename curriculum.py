@@ -723,6 +723,7 @@ CURRICULUM = {
     "RegisterMachineTraceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "TokenRewriteGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "LedgerAuditGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "PipelineCompositionGenerator": {"grade_level": COLLEGE, "difficulty": 4},
 }
 
 

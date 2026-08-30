@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**688 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**689 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15771,6 +15771,181 @@ Steps:
   RW_STEP|aaaaaaaaaaaaaababbbbbb|ba@14|aaaaaaaaaaaaaaabbbbbbb
   Z|104
 Answer: 104
+```
+
+### Pipeline Composition — `PipelineCompositionGenerator`  ·  college · difficulty 4
+
+Serial skill pipelines with tier-length chains (depth strand).
+
+**Variants:** `pipeline_composition_final_count_d100`, `pipeline_composition_final_count_d200`, `pipeline_composition_final_count_d50`, `pipeline_composition_stage_audit_d100`, `pipeline_composition_stage_audit_d200`, `pipeline_composition_stage_audit_d50`
+
+```
+Problem: A shipment starts at 360 items and passes through 70 stages in order: 1) 315 items are set aside; 2) a delivery adds 195 items; 3) a delivery adds 230 items; 4) 140 items are set aside; 5) 90 items are set aside; 6) only 3 of every 4 items pass inspection; 7) the lot is divided evenly 2 ways; keep one share; 8) demand grows the count by 10 for every 100; 9) 65 items are set aside; 10) each item is repacked into 3 smaller packs; 11) a delivery adds 285 items; 12) only 2 of every 3 items pass inspection; 13) each item is repacked into 6 smaller packs; 14) each item is repacked into 2 smaller packs; 15) 320 items are set aside; 16) spoilage removes 25 of every 100; 17) each item is repacked into 2 smaller packs; 18) the lot is divided evenly 4 ways; keep one share; 19) a delivery adds 60 items; 20) 315 items are set aside; 21) 190 items are set aside; 22) each item is repacked into 2 smaller packs; 23) spoilage removes 25 of every 100; 24) a delivery adds 60 items; 25) 250 items are set aside; 26) spoilage removes 25 of every 100; 27) the lot is divided evenly 2 ways; keep one share; 28) demand grows the count by 25 for every 100; 29) a delivery adds 45 items; 30) demand grows the count by 20 for every 100; 31) spoilage removes 10 of every 100; 32) each item is repacked into 12 smaller packs; 33) each item is repacked into 6 smaller packs; 34) the lot is divided evenly 4 ways; keep one share; 35) 180 items are set aside; 36) 155 items are set aside; 37) each item is repacked into 12 smaller packs; 38) the lot is divided evenly 3 ways; keep one share; 39) 180 items are set aside; 40) a delivery adds 320 items; 41) demand grows the count by 25 for every 100; 42) demand grows the count by 50 for every 100; 43) 405 items are set aside; 44) only 3 of every 4 items pass inspection; 45) demand grows the count by 20 for every 100; 46) the lot is divided evenly 2 ways; keep one share; 47) 440 items are set aside; 48) 370 items are set aside; 49) each item is repacked into 2 smaller packs; 50) a delivery adds 135 items; 51) each item is repacked into 2 smaller packs; 52) 65 items are set aside; 53) 300 items are set aside; 54) 285 items are set aside; 55) 330 items are set aside; 56) a delivery adds 425 items; 57) 445 items are set aside; 58) 180 items are set aside; 59) 410 items are set aside; 60) the lot is divided evenly 4 ways; keep one share; 61) a delivery adds 480 items; 62) a delivery adds 420 items; 63) 125 items are set aside; 64) each item is repacked into 4 smaller packs; 65) spoilage removes 50 of every 100; 66) demand grows the count by 50 for every 100; 67) the lot is divided evenly 4 ways; keep one share; 68) 270 items are set aside; 69) each item is repacked into 2 smaller packs; 70) spoilage removes 50 of every 100. Report the final count and confirm the number of stages processed.
+Steps:
+  PIPE_STAGE|1|fixed_adjustment
+  S|360|315|45
+  PIPE_STAGE|2|fixed_adjustment
+  A|45|195|240
+  PIPE_STAGE|3|fixed_adjustment
+  A|240|230|470
+  PIPE_STAGE|4|fixed_adjustment
+  S|470|140|330
+  PIPE_STAGE|5|fixed_adjustment
+  S|330|90|240
+  PIPE_STAGE|6|ratio_split
+  M|240|3|720
+  D|720|4|180
+  PIPE_STAGE|7|ratio_split
+  D|180|2|90
+  PIPE_STAGE|8|percent_change
+  M|90|11|990
+  D|990|10|99
+  PIPE_STAGE|9|fixed_adjustment
+  S|99|65|34
+  PIPE_STAGE|10|unit_conversion
+  M|34|3|102
+  MILESTONE|12|count mod 9|3
+  PIPE_STAGE|11|fixed_adjustment
+  A|102|285|387
+  PIPE_STAGE|12|ratio_split
+  M|387|2|774
+  D|774|3|258
+  PIPE_STAGE|13|unit_conversion
+  M|258|6|1548
+  PIPE_STAGE|14|unit_conversion
+  M|1548|2|3096
+  PIPE_STAGE|15|fixed_adjustment
+  S|3096|320|2776
+  PIPE_STAGE|16|percent_change
+  M|2776|3|8328
+  D|8328|4|2082
+  PIPE_STAGE|17|unit_conversion
+  M|2082|2|4164
+  PIPE_STAGE|18|ratio_split
+  D|4164|4|1041
+  PIPE_STAGE|19|fixed_adjustment
+  A|1041|60|1101
+  PIPE_STAGE|20|fixed_adjustment
+  S|1101|315|786
+  PIPE_STAGE|21|fixed_adjustment
+  S|786|190|596
+  PIPE_STAGE|22|unit_conversion
+  M|596|2|1192
+  MILESTONE|26|count mod 9|4
+  PIPE_STAGE|23|percent_change
+  M|1192|3|3576
+  D|3576|4|894
+  PIPE_STAGE|24|fixed_adjustment
+  A|894|60|954
+  PIPE_STAGE|25|fixed_adjustment
+  S|954|250|704
+  PIPE_STAGE|26|percent_change
+  M|704|3|2112
+  D|2112|4|528
+  PIPE_STAGE|27|ratio_split
+  D|528|2|264
+  PIPE_STAGE|28|percent_change
+  M|264|5|1320
+  D|1320|4|330
+  PIPE_STAGE|29|fixed_adjustment
+  A|330|45|375
+  PIPE_STAGE|30|percent_change
+  M|375|6|2250
+  D|2250|5|450
+  PIPE_STAGE|31|percent_change
+  M|450|9|4050
+  D|4050|10|405
+  MILESTONE|40|count mod 9|0
+  PIPE_STAGE|32|unit_conversion
+  M|405|12|4860
+  PIPE_STAGE|33|unit_conversion
+  M|4860|6|29160
+  PIPE_STAGE|34|ratio_split
+  D|29160|4|7290
+  PIPE_STAGE|35|fixed_adjustment
+  S|7290|180|7110
+  PIPE_STAGE|36|fixed_adjustment
+  S|7110|155|6955
+  PIPE_STAGE|37|unit_conversion
+  M|6955|12|83460
+  PIPE_STAGE|38|ratio_split
+  D|83460|3|27820
+  PIPE_STAGE|39|fixed_adjustment
+  S|27820|180|27640
+  PIPE_STAGE|40|fixed_adjustment
+  A|27640|320|27960
+  PIPE_STAGE|41|percent_change
+  M|27960|5|139800
+  MILESTONE|50|count mod 9|3
+  D|139800|4|34950
+  PIPE_STAGE|42|percent_change
+  M|34950|3|104850
+  D|104850|2|52425
+  PIPE_STAGE|43|fixed_adjustment
+  S|52425|405|52020
+  PIPE_STAGE|44|ratio_split
+  M|52020|3|156060
+  D|156060|4|39015
+  PIPE_STAGE|45|percent_change
+  M|39015|6|234090
+  D|234090|5|46818
+  PIPE_STAGE|46|ratio_split
+  D|46818|2|23409
+  PIPE_STAGE|47|fixed_adjustment
+  S|23409|440|22969
+  PIPE_STAGE|48|fixed_adjustment
+  S|22969|370|22599
+  PIPE_STAGE|49|unit_conversion
+  M|22599|2|45198
+  PIPE_STAGE|50|fixed_adjustment
+  A|45198|135|45333
+  PIPE_STAGE|51|unit_conversion
+  M|45333|2|90666
+  MILESTONE|64|count mod 9|0
+  PIPE_STAGE|52|fixed_adjustment
+  S|90666|65|90601
+  PIPE_STAGE|53|fixed_adjustment
+  S|90601|300|90301
+  PIPE_STAGE|54|fixed_adjustment
+  S|90301|285|90016
+  PIPE_STAGE|55|fixed_adjustment
+  S|90016|330|89686
+  PIPE_STAGE|56|fixed_adjustment
+  A|89686|425|90111
+  PIPE_STAGE|57|fixed_adjustment
+  S|90111|445|89666
+  PIPE_STAGE|58|fixed_adjustment
+  S|89666|180|89486
+  PIPE_STAGE|59|fixed_adjustment
+  S|89486|410|89076
+  PIPE_STAGE|60|ratio_split
+  D|89076|4|22269
+  PIPE_STAGE|61|fixed_adjustment
+  A|22269|480|22749
+  PIPE_STAGE|62|fixed_adjustment
+  A|22749|420|23169
+  PIPE_STAGE|63|fixed_adjustment
+  S|23169|125|23044
+  PIPE_STAGE|64|unit_conversion
+  M|23044|4|92176
+  PIPE_STAGE|65|percent_change
+  M|92176|1|92176
+  D|92176|2|46088
+  MILESTONE|79|count mod 9|8
+  PIPE_STAGE|66|percent_change
+  M|46088|3|138264
+  D|138264|2|69132
+  PIPE_STAGE|67|ratio_split
+  D|69132|4|17283
+  PIPE_STAGE|68|fixed_adjustment
+  S|17283|270|17013
+  PIPE_STAGE|69|unit_conversion
+  M|17013|2|34026
+  PIPE_STAGE|70|percent_change
+  M|34026|1|34026
+  D|34026|2|17013
+  Z|17013 items; 70 stages
+Answer: 17013 items; 70 stages
 ```
 
 ## Graduate

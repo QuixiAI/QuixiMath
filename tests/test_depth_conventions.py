@@ -78,6 +78,14 @@ class TestChainEmitter(unittest.TestCase):
         chain.apply("ITER", "n=2", 94)
         self.assertEqual(chain_depth(chain.steps), 2)
 
+    def test_pipe_stage_annotations_do_not_break_depth(self):
+        from tests.depth_oracle import chain_depth as measure
+        steps = [step("A", 10, 5, 15),
+                 step("PIPE_STAGE", 2, "ratio_split"),
+                 step("A", 15, 5, 20),
+                 step("A", 20, 5, 25)]
+        self.assertEqual(measure(steps), 3)
+
     def test_milestones_interleave_without_breaking_depth(self):
         chain = Chain(5, milestone_spacing=True)
         chain.set_invariant("value mod 9", lambda v, k: v % 9)

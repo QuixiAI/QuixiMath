@@ -74,7 +74,7 @@ def brent_cycle(f, x0, limit=100_000):
 # ---------------------------------------------------------------------------
 
 #: Steps that interleave with a chain without breaking measured depth.
-NON_CHAIN_OPS = {"MILESTONE", "Z", "CHECK"}
+NON_CHAIN_OPS = {"MILESTONE", "Z", "CHECK", "PIPE_STAGE"}
 
 
 def chain_depth(steps):
@@ -158,7 +158,7 @@ def record_chars(example):
 _N_RE = re.compile(
     r"\b(\d+)\s+(?:times|iterations|applications|steps|terms|payments|"
     r"periods|events|rows|instructions|conversions|digits|bits|"
-    r"congruences)\b|"
+    r"congruences|stages)\b|"
     r"\b(?:iterate|apply|run|repeat|unroll|accumulate|execute)"
     r"(?:\s+\S+){0,3}?\s+(\d+)\s|"
     r"\bfirst\s+(\d+)\b")

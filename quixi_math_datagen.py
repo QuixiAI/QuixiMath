@@ -710,6 +710,7 @@ from generators.amortization_schedule_generator import AmortizationScheduleGener
 from generators.register_machine_trace_generator import RegisterMachineTraceGenerator
 from generators.token_rewrite_generator import TokenRewriteGenerator
 from generators.ledger_audit_generator import LedgerAuditGenerator
+from generators.pipeline_composition_generator import PipelineCompositionGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1491,6 +1492,7 @@ ALL_GENERATORS = [
     RegisterMachineTraceGenerator(),
     TokenRewriteGenerator(),
     LedgerAuditGenerator(),
+    PipelineCompositionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]
