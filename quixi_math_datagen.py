@@ -699,6 +699,7 @@ from generators.arithmetic_chain_generator import ArithmeticChainGenerator
 from generators.digit_process_generator import DigitProcessGenerator
 from generators.iterated_affine_map_generator import IteratedAffineMapGenerator
 from generators.collatz_trace_generator import CollatzTraceGenerator
+from generators.big_exact_division_generator import BigExactDivisionGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1469,6 +1470,7 @@ ALL_GENERATORS = [
     DigitProcessGenerator(),
     IteratedAffineMapGenerator(),
     CollatzTraceGenerator(),
+    BigExactDivisionGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**677 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**678 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3830,6 +3830,139 @@ Steps:
   D|2|2|1
   Z|24
 Answer: 24
+```
+
+### Big Exact Division — `BigExactDivisionGenerator`  ·  middle · difficulty 2
+
+Tier-length long-division chains (depth strand).
+
+**Variants:** `big_exact_division_quotient_digit_sum_d100`, `big_exact_division_quotient_digit_sum_d200`, `big_exact_division_quotient_digit_sum_d50`, `big_exact_division_remainder_only_d100`, `big_exact_division_remainder_only_d200`, `big_exact_division_remainder_only_d50`, `big_exact_division_repetend_length_d100`, `big_exact_division_repetend_length_d200`, `big_exact_division_repetend_length_d50`
+
+```
+Problem: Divide the number with 111 digits (587647593824219489241157815659387784080160975351393328711587148418583989471965934232094711220186848339694775159) by 16 using long division, one digit at a time. What is the sum of the quotient's digits?
+Steps:
+  DIV_STEP|0|d=5, q=0|5
+  DIV_STEP|5|d=8, q=3|10
+  DIV_STEP|10|d=7, q=6|11
+  DIV_STEP|11|d=6, q=7|4
+  DIV_STEP|4|d=4, q=2|12
+  DIV_STEP|12|d=7, q=7|15
+  DIV_STEP|15|d=5, q=9|11
+  DIV_STEP|11|d=9, q=7|7
+  DIV_STEP|7|d=3, q=4|9
+  DIV_STEP|9|d=8, q=6|2
+  MILESTONE|10|remainder mod 9|2
+  DIV_STEP|2|d=2, q=1|6
+  DIV_STEP|6|d=4, q=4|0
+  DIV_STEP|0|d=2, q=0|2
+  DIV_STEP|2|d=1, q=1|5
+  DIV_STEP|5|d=9, q=3|11
+  DIV_STEP|11|d=4, q=7|2
+  DIV_STEP|2|d=8, q=1|12
+  DIV_STEP|12|d=9, q=8|1
+  DIV_STEP|1|d=2, q=0|12
+  DIV_STEP|12|d=4, q=7|12
+  DIV_STEP|12|d=1, q=7|9
+  DIV_STEP|9|d=1, q=5|11
+  DIV_STEP|11|d=5, q=7|3
+  MILESTONE|23|remainder mod 9|3
+  DIV_STEP|3|d=7, q=2|5
+  DIV_STEP|5|d=8, q=3|10
+  DIV_STEP|10|d=1, q=6|5
+  DIV_STEP|5|d=5, q=3|7
+  DIV_STEP|7|d=6, q=4|12
+  DIV_STEP|12|d=5, q=7|13
+  DIV_STEP|13|d=9, q=8|11
+  DIV_STEP|11|d=3, q=7|1
+  DIV_STEP|1|d=8, q=1|2
+  DIV_STEP|2|d=7, q=1|11
+  DIV_STEP|11|d=7, q=7|5
+  DIV_STEP|5|d=8, q=3|10
+  DIV_STEP|10|d=4, q=6|8
+  DIV_STEP|8|d=0, q=5|0
+  MILESTONE|37|remainder mod 9|0
+  DIV_STEP|0|d=8, q=0|8
+  DIV_STEP|8|d=0, q=5|0
+  DIV_STEP|0|d=1, q=0|1
+  DIV_STEP|1|d=6, q=1|0
+  DIV_STEP|0|d=0, q=0|0
+  DIV_STEP|0|d=9, q=0|9
+  DIV_STEP|9|d=7, q=6|1
+  DIV_STEP|1|d=5, q=0|15
+  DIV_STEP|15|d=3, q=9|9
+  DIV_STEP|9|d=5, q=5|15
+  DIV_STEP|15|d=1, q=9|7
+  DIV_STEP|7|d=3, q=4|9
+  DIV_STEP|9|d=9, q=6|3
+  DIV_STEP|3|d=3, q=2|1
+  DIV_STEP|1|d=3, q=0|13
+  MILESTONE|52|remainder mod 9|4
+  DIV_STEP|13|d=2, q=8|4
+  DIV_STEP|4|d=8, q=3|0
+  DIV_STEP|0|d=7, q=0|7
+  DIV_STEP|7|d=1, q=4|7
+  DIV_STEP|7|d=1, q=4|7
+  DIV_STEP|7|d=5, q=4|11
+  DIV_STEP|11|d=8, q=7|6
+  DIV_STEP|6|d=7, q=4|3
+  DIV_STEP|3|d=1, q=1|15
+  DIV_STEP|15|d=4, q=9|10
+  DIV_STEP|10|d=8, q=6|12
+  DIV_STEP|12|d=4, q=7|12
+  MILESTONE|64|remainder mod 9|3
+  DIV_STEP|12|d=1, q=7|9
+  DIV_STEP|9|d=8, q=6|2
+  DIV_STEP|2|d=5, q=1|9
+  DIV_STEP|9|d=8, q=6|2
+  DIV_STEP|2|d=3, q=1|7
+  DIV_STEP|7|d=9, q=4|15
+  DIV_STEP|15|d=8, q=9|14
+  DIV_STEP|14|d=9, q=9|5
+  DIV_STEP|5|d=4, q=3|6
+  DIV_STEP|6|d=7, q=4|3
+  DIV_STEP|3|d=1, q=1|15
+  MILESTONE|75|remainder mod 9|6
+  DIV_STEP|15|d=9, q=9|15
+  DIV_STEP|15|d=6, q=9|12
+  DIV_STEP|12|d=5, q=7|13
+  DIV_STEP|13|d=9, q=8|11
+  DIV_STEP|11|d=3, q=7|1
+  DIV_STEP|1|d=4, q=0|14
+  DIV_STEP|14|d=2, q=8|14
+  DIV_STEP|14|d=3, q=8|15
+  DIV_STEP|15|d=2, q=9|8
+  DIV_STEP|8|d=0, q=5|0
+  DIV_STEP|0|d=9, q=0|9
+  MILESTONE|86|remainder mod 9|0
+  DIV_STEP|9|d=4, q=5|14
+  DIV_STEP|14|d=7, q=9|3
+  DIV_STEP|3|d=1, q=1|15
+  DIV_STEP|15|d=1, q=9|7
+  DIV_STEP|7|d=2, q=4|8
+  DIV_STEP|8|d=2, q=5|2
+  DIV_STEP|2|d=0, q=1|4
+  DIV_STEP|4|d=1, q=2|9
+  DIV_STEP|9|d=8, q=6|2
+  DIV_STEP|2|d=6, q=1|10
+  MILESTONE|96|remainder mod 9|1
+  DIV_STEP|10|d=8, q=6|12
+  DIV_STEP|12|d=4, q=7|12
+  DIV_STEP|12|d=8, q=8|0
+  DIV_STEP|0|d=3, q=0|3
+  DIV_STEP|3|d=3, q=2|1
+  DIV_STEP|1|d=9, q=1|3
+  DIV_STEP|3|d=6, q=2|4
+  DIV_STEP|4|d=9, q=3|1
+  DIV_STEP|1|d=4, q=0|14
+  DIV_STEP|14|d=7, q=9|3
+  DIV_STEP|3|d=7, q=2|5
+  DIV_STEP|5|d=5, q=3|7
+  DIV_STEP|7|d=1, q=4|7
+  DIV_STEP|7|d=5, q=4|11
+  DIV_STEP|11|d=9, q=7|7
+  MILESTONE|111|remainder mod 9|7
+  Z|491
+Answer: 491
 ```
 
 ## High School

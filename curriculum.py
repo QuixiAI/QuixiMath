@@ -712,6 +712,7 @@ CURRICULUM = {
     "DigitProcessGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "IteratedAffineMapGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "CollatzTraceGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "BigExactDivisionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 

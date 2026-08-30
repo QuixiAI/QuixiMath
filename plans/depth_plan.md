@@ -167,12 +167,20 @@ positive integer < 500. Variants: `integer_chain`, `fraction_chain`
 (denominators kept in {2,3,4,6,12} by construction), `money_chain`
 (exact cents), `missing_start` (given the end, invert the chain).
 
-**BigExactDivisionGenerator** · middle · d2 — long division with 8–14
-digit dividends built as divisor × quotient (+ remainder); one `DIV_STEP`
-per digit brought down, so depth scales with digits. Variants:
-`quotient_remainder`, `decimal_expansion` (terminating by construction),
-`repeating_block` (find the full repetend of p/q, q chosen so the period
-lands in the tier window — the period *is* the chain).
+**BigExactDivisionGenerator** · middle · d2 — long division of a
+tier-many-digit dividend by a two-digit divisor; one `DIV_STEP` per digit
+brought down, so the chain length *is* the digit count (the dividend is
+never manipulated whole — state is always the sub-divisor remainder).
+Variants: `remainder_only` (short answer, whole chain required),
+`quotient_digit_sum` (a checksum over every quotient digit — wrong if any
+single step drifts), `repetend_length` (the decimal period of p/q for a
+prime q screened so ord_q(10) lands in the tier window; the chain runs one
+full period until the starting remainder returns). Amended from the
+original `quotient_remainder`/`decimal_expansion`/`repeating_block` draft:
+a tier-length quotient or repetend as the *answer* violates the
+answers-are-short rule (§3), and terminating expansions cannot reach tier
+depth with a bounded divisor, so the long outputs became checksums/lengths
+and `decimal_expansion` was dropped.
 
 **RadixMarathonGenerator** · middle · d3 — chained base conversions
 (base a → 10 → base b) of 10–14 digit values, digit-by-digit; variants:
