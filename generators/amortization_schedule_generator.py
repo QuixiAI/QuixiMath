@@ -149,6 +149,11 @@ class AmortizationScheduleGenerator(ProblemGenerator):
         variant = self.variant or random.choice(self.VARIANTS)
         tier = self.tier or pick_tier()
         n = tier_target(tier)
+        if tier == "d200":
+            # AMORT_STEP rows run ~58 chars; a full 275-row schedule can
+            # break the 16k record cap, so this class tops d200 at 235
+            # (window floor 170 untouched)
+            n = min(n, 235)
         lo, hi = TIER_FLOORS[tier], n + 15
 
         for _ in range(8000):
