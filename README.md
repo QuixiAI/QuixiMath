@@ -28,16 +28,16 @@ The generated catalog is the source of truth:
 
 Current repo snapshot:
 
-- **673 problem-type entries** in the generated catalog, one per registered
+- **689 problem-type entries** in the generated catalog, one per registered
   generator class
-- **696 registered generator instances**; **695** are in the default pool
-- **672 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
+- **712 registered generator instances**; **711** are in the default pool
+- **688 default sampled skills** in dataset builds; `MixedNumberOperationsRandom`
   is an opt-in wrapper and is excluded from the default pool to avoid
   double-counting the four explicit mixed-number operation variants
-- **2,953 distinct operation variant labels** across the catalog
-- **2,057 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
-- Catalog grade-band distribution: **52 elementary**, **98 middle**,
-  **204 high**, **190 college**, **129 graduate**
+- **3,104 distinct operation variant labels** across the catalog
+- **2,062 observed scratchpad op-codes** in [OPCODES.md](OPCODES.md)
+- Catalog grade-band distribution: **54 elementary**, **104 middle**,
+  **208 high**, **194 college**, **129 graduate**
 
 The CLI samples equally per skill by default, not equally per generator
 instance. Variant instances of one class, such as `FractionOpGenerator('+')`
@@ -102,6 +102,20 @@ Coverage now spans elementary through graduate-level topics:
   pre-existing generators (finance, annuities, related rates, optimization,
   percent problems, linear systems, Pythagorean word problems, similar
   figures, and permutation/combination word problems).
+- **Depth strand:** 16 generator classes plus two retrofits
+  (`ExtendedEuclid`, `ContinuedFraction`) teach *endurance*: serial
+  dependency chains of 40–260 steps where each step consumes the previous
+  step's result, one slip propagates to the final answer, and the state
+  stays bounded by construction (modular orbits, exact-cents ledgers,
+  digit processes, √d's (P, Q) recurrence, register machines, sorting
+  rewrites, amortization schedules, and serial skill pipelines carrying a
+  `skills` list). Depth tiers ride the operation suffix
+  (`_d50`/`_d100`/`_d200`, chain-length floors 40/85/170, measured
+  structurally — enumeration cannot masquerade as depth), `MILESTONE`
+  rows recompute a running invariant every 10–15 links at `d100`+, one
+  long-form critic class (`LedgerAudit`) hides a single propagated error
+  in a tier-length claimed table, and every variant has 4 prompt
+  phrasings with a prompt-only exact oracle.
 
 ### Hugging Face dataset-card note
 

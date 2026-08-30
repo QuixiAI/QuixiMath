@@ -11,6 +11,7 @@ try:
     import pyarrow as pa
     import pyarrow.parquet as pq
     from tools.build_hf_release import (
+        DEPTH_EVAL_CONFIG,
         JUDGMENT_EVAL_CONFIG,
         SCHEMA,
         generate_release,
@@ -23,6 +24,7 @@ except ModuleNotFoundError:  # ordinary generator-only environments omit it
     make_row = None
     generate_release = None
     JUDGMENT_EVAL_CONFIG = None
+    DEPTH_EVAL_CONFIG = None
 
 
 class ExampleGenerator:
@@ -103,6 +105,42 @@ class TestBuildHfRelease(unittest.TestCase):
             ).to_pylist()
             preview_keys = {(row["operation"], row["problem"]) for row in preview_rows}
             eval_keys = {(row["operation"], row["problem"]) for row in eval_rows}
+            self.assertEqual(preview_keys & eval_keys, set())
+
+
+    def test_depth_endurance_eval_is_held_out_and_d200_only(self):
+        """The depth config (plans/depth_plan.md §7) contains only _d200
+        operations and never overlaps the ordinary splits."""
+        configs = {
+            "preview": {"train": 30},
+            DEPTH_EVAL_CONFIG: {"test": 6},
+        }
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            metadata = generate_release(
+                output_dir=output_dir,
+                configs=configs,
+                seed=77,
+                shard_rows=1_000,
+                compression="snappy",
+            )
+            self.assertEqual(
+                metadata["rows_by_config_split"][DEPTH_EVAL_CONFIG]["test"],
+                6)
+            eval_rows = pq.read_table(
+                output_dir / DEPTH_EVAL_CONFIG / "test-00000-of-00001.parquet"
+            ).to_pylist()
+            self.assertEqual(len(eval_rows), 6)
+            for row in eval_rows:
+                self.assertTrue(row["operation"].endswith("_d200"), row)
+                self.assertGreaterEqual(len(row["steps"]), 170, row)
+            preview_rows = pq.read_table(
+                output_dir / "preview" / "train-00000-of-00001.parquet"
+            ).to_pylist()
+            preview_keys = {(row["operation"], row["problem"])
+                            for row in preview_rows}
+            eval_keys = {(row["operation"], row["problem"])
+                         for row in eval_rows}
             self.assertEqual(preview_keys & eval_keys, set())
 
 

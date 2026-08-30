@@ -46,12 +46,21 @@ from curriculum import stamp_metadata  # noqa: E402
 #: it measures compositional transfer, not execution of a single procedure.
 JUDGMENT_EVAL_CONFIG = "judgment_composition_eval"
 
+#: A standalone, held-out eval config of d200-only depth-strand records
+#: (``plans/depth_plan.md`` §7): serial dependency chains of 170+ steps,
+#: generated in a dedicated pass and disjoint from every other split, so
+#: it measures long-horizon endurance — staying on track through a chain
+#: far longer than the training median — separately from procedure
+#: execution.
+DEPTH_EVAL_CONFIG = "depth_endurance_eval"
+
 DEFAULT_CONFIGS = {
     "preview": {"train": 50_000},
     "10M_tokens": {"train": 100_000, "validation": 10_000},
     "100M_tokens": {"train": 800_000, "validation": 50_000, "test": 50_000},
     "1B_tokens": {"train": 8_800_000, "validation": 100_000, "test": 100_000},
     JUDGMENT_EVAL_CONFIG: {"test": 5_000},
+    DEPTH_EVAL_CONFIG: {"test": 5_000},
 }
 
 SMOKE_CONFIGS = {
@@ -60,6 +69,7 @@ SMOKE_CONFIGS = {
     "100M_tokens": {"train": 800, "validation": 150, "test": 150},
     "1B_tokens": {"train": 1_200, "validation": 200, "test": 200},
     JUDGMENT_EVAL_CONFIG: {"test": 60},
+    DEPTH_EVAL_CONFIG: {"test": 40},
 }
 
 #: The nested prefix-subset configs only — JUDGMENT_EVAL_CONFIG is generated
@@ -418,6 +428,65 @@ def generate_release(
         judgment_writer.close()
         stats.observe_writer(judgment_writer)
 
+    depth_target = configs.get(DEPTH_EVAL_CONFIG, {}).get("test", 0)
+    if depth_target > 0:
+        import importlib
+
+        depth_pool = [
+            gen for gen in gen_pool
+            if getattr(importlib.import_module(type(gen).__module__),
+                       "DEPTH", False) is True
+        ]
+        if not depth_pool:
+            raise RuntimeError(
+                "depth_endurance_eval requested but no DEPTH-flagged "
+                "generators are registered")
+        depth_writer = SplitWriter(
+            output_dir=output_dir,
+            config=DEPTH_EVAL_CONFIG,
+            split="test",
+            target_rows=depth_target,
+            shard_rows=shard_rows,
+            compression=compression,
+        )
+        print(
+            f"Generating {depth_target:,} held-out depth-endurance rows "
+            "(d200 records only)..."
+        )
+        emitted = 0
+        attempts = 0
+        # d200 draws are ~15% of a depth generator's stream (and the two
+        # retrofits emit tiered records for only part of theirs).
+        max_attempts = depth_target * 200 + 100_000
+        while emitted < depth_target and attempts < max_attempts:
+            attempts += 1
+            gen_instance = random.choice(depth_pool)
+            label = _instance_label(gen_instance)
+            try:
+                example = gen_instance.generate()
+                if not example:
+                    raise ValueError("generate() returned an empty example")
+                example = stamp_metadata(example, gen_instance)
+                validate_example(example)
+            except Exception:
+                continue
+            if not str(example["operation"]).endswith("_d200"):
+                continue
+            key = (example["operation"], example["problem"])
+            if key in seen:
+                continue
+            seen.add(key)
+            row = make_row(example, gen_instance, "test", emitted)
+            depth_writer.add(row)
+            stats.generator_stats[label]["depth_eval_emitted"] += 1
+            emitted += 1
+        if emitted != depth_target:
+            raise RuntimeError(
+                f"Depth-endurance eval target not reached: emitted "
+                f"{emitted:,}/{depth_target:,} after {attempts:,} attempts.")
+        depth_writer.close()
+        stats.observe_writer(depth_writer)
+
     for writer in writers.values():
         writer.close()
         stats.observe_writer(writer)
@@ -453,7 +522,8 @@ def split_stats_table(metadata: Mapping[str, object]) -> str:
     rows_by_config = metadata["rows_by_config_split"]
     tokens_by_config = metadata["rough_tokens_by_config_split"]
     lines = ["| Config | Split | Rows | Estimated tokens |", "|---|---|---:|---:|"]
-    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG):
+    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG,
+                   DEPTH_EVAL_CONFIG):
         splits = rows_by_config.get(config, {})
         for split in ("train", "validation", "test"):
             if split in splits:
@@ -496,7 +566,8 @@ def yaml_header(metadata: Mapping[str, object]) -> str:
         "pretty_name: QuixiMath-1B",
         "configs:",
     ]
-    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG):
+    for config in (*CONFIG_ORDER, JUDGMENT_EVAL_CONFIG,
+                   DEPTH_EVAL_CONFIG):
         splits = metadata["rows_by_config_split"].get(config, {})
         if not splits:
             continue
@@ -546,6 +617,7 @@ def write_readme(output_dir: Path, metadata: Mapping[str, object]) -> None:
     largest_rows = sum(rows_by_config["1B_tokens"].values())
     largest_tokens = sum(tokens_by_config["1B_tokens"].values())
     judgment_eval_rows = sum(rows_by_config.get(JUDGMENT_EVAL_CONFIG, {}).values())
+    depth_eval_rows = sum(rows_by_config.get(DEPTH_EVAL_CONFIG, {}).values())
     body = f"""# Dataset Card for QuixiMath-1B
 
 ## Dataset Summary
@@ -580,6 +652,14 @@ distributions, inference, study design, estimator theory, and conjugate Bayes.
 Problems supply every required Φ, z, t, χ², or F lookup value inline and state
 rule-dependent procedures explicitly; non-table arithmetic and finite
 enumerations retain exact rational answers.
+
+The depth strand teaches endurance: serial dependency chains of 40-260 steps
+where each step consumes the previous step's result and the running state
+stays bounded by construction, with every intermediate exactly checkable.
+Operations carry a `_d50`/`_d100`/`_d200` tier suffix for filtering by chain
+length; the deeper tiers interleave `MILESTONE` rows that recompute a running
+invariant every 10-15 steps. Depth records are longer than the corpus median
+by design and are token-weighted accordingly in the size configs.
 
 ## How to Load
 
@@ -617,6 +697,18 @@ whether a model can *compose* procedures it already executes correctly in
 isolation elsewhere in the corpus — transfer, not raw execution. It has no
 paired `train` split by design; evaluate a model trained on any of the other
 configs against it directly.
+
+### Depth/Endurance Eval
+
+`{DEPTH_EVAL_CONFIG}` ({depth_eval_rows:,} rows, `test` split only) is a
+standalone, held-out config of the depth strand's longest records: every row's
+operation ends in `_d200`, meaning a serial dependency chain of at least 170
+steps in which each step consumes the previous step's result. Its rows are
+generated in their own pass and are guaranteed disjoint from every other
+split, so it measures whether a model can *stay on track* through a chain far
+longer than the training median — long-horizon state tracking, separately
+from procedure knowledge. Like the judgment config, it has no paired `train`
+split; evaluate models trained on the other configs against it directly.
 
 ## Data Schema
 

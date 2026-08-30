@@ -356,7 +356,7 @@ the full suite, the capacity probe on the phase's classes, a seeded
 | 4 | RecurrenceUnroll, PartialSumMarathon, IteratedComposition (FractalIteration ⟲ dropped after verification, §5) | closed-form cross-check oracles |
 | 5 | AmortizationSchedule, RegisterMachineTrace, TokenRewrite | exact-cents and machine-trace banks |
 | 6 | PipelineComposition (needs applied strand's context bank + skills plumbing), LedgerAudit | composition + the long critic record |
-| 7 | Phrasing sweep to 3–5 templates; full capacity probe; README inventory/coverage bullet; regenerate `PROBLEM_TYPES.md`, `OPCODES.md`; HF dataset-card paragraph (state the tier suffixes and that long records are token-weighted in the size configs); consider a `depth_eval` held-out config (d200-only, mirroring `judgment_composition_eval`) | close-out |
+| 7 | Phrasing sweep to 3–5 templates; full capacity probe; README inventory/coverage bullet; regenerate `PROBLEM_TYPES.md`, `OPCODES.md`; HF dataset-card paragraph (state the tier suffixes and that long records are token-weighted in the size configs); the considered `depth_eval` held-out config was BUILT as `depth_endurance_eval` (d200-only, own generation pass, disjoint from every split, mirroring `judgment_composition_eval`) | close-out |
 
 ## 8. Out of scope, and why
 

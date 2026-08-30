@@ -143,12 +143,12 @@ class TokenRewriteGenerator(ProblemGenerator):
         rules = SYSTEMS[system]
         for _ in range(4000):
             if system == "sort2":
-                j = random.randint(4, 18)
-                k = max(1, target // j + random.randint(-4, 4))
+                j = random.randint(3, 20)
+                k = max(1, target // j + random.randint(-5, 5))
                 blocks = "b" * j + "a" * k
             else:
                 base = max(2, int((target / 3) ** 0.5))
-                i, j, k = (max(1, base + random.randint(-3, 4))
+                i, j, k = (max(1, base + random.randint(-4, 5))
                            for _ in range(3))
                 blocks = "c" * i + "b" * j + "a" * k
             chars = list(blocks)
@@ -159,7 +159,7 @@ class TokenRewriteGenerator(ProblemGenerator):
                 chars[p_swap], chars[p_swap + 1] = (chars[p_swap + 1],
                                                     chars[p_swap])
             start = "".join(chars)
-            if len(start) > 28:
+            if len(start) > 30:
                 continue
             applications, usage, normal = rewrite(start, rules)
             if lo <= applications <= hi:
