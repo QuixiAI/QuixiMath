@@ -703,6 +703,7 @@ from generators.big_exact_division_generator import BigExactDivisionGenerator
 from generators.radix_marathon_generator import RadixMarathonGenerator
 from generators.compound_ledger_generator import CompoundLedgerGenerator
 from generators.mod_exp_ladder_generator import ModExpLadderGenerator
+from generators.recurrence_unroll_generator import RecurrenceUnrollGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1477,6 +1478,7 @@ ALL_GENERATORS = [
     RadixMarathonGenerator(),
     CompoundLedgerGenerator(),
     ModExpLadderGenerator(),
+    RecurrenceUnrollGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

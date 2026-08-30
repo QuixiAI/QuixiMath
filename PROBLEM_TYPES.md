@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**681 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**682 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -9100,6 +9100,149 @@ Steps:
   LADDER|0|multiply by 10 (bit 82)|0
   Z|0; 82 bits consumed
 Answer: 0; 82 bits consumed
+```
+
+### Recurrence Unroll — `RecurrenceUnrollGenerator`  ·  high · difficulty 3
+
+Tier-length recurrence unrolls mod m (depth strand).
+
+**Variants:** `recurrence_unroll_matrix_check_d100`, `recurrence_unroll_matrix_check_d200`, `recurrence_unroll_matrix_check_d50`, `recurrence_unroll_pisano_period_d200`, `recurrence_unroll_pisano_period_d50`, `recurrence_unroll_term_n_mod_m_d100`, `recurrence_unroll_term_n_mod_m_d200`, `recurrence_unroll_term_n_mod_m_d50`, `recurrence_unroll_two_term_mod_d100`, `recurrence_unroll_two_term_mod_d200`, `recurrence_unroll_two_term_mod_d50`
+
+```
+Problem: Starting from x0 = 8 and x1 = 16, unroll x(k+1) = (8*x(k) + 7*x(k-1)) mod 30 for 111 terms; cross-check with [[8, 7], [1, 0]]^111. Give the final term.
+Steps:
+  REC_STEP|(8, 16)|n=1|(16, 4)
+  REC_STEP|(16, 4)|n=2|(4, 24)
+  REC_STEP|(4, 24)|n=3|(24, 10)
+  REC_STEP|(24, 10)|n=4|(10, 8)
+  REC_STEP|(10, 8)|n=5|(8, 14)
+  REC_STEP|(8, 14)|n=6|(14, 18)
+  REC_STEP|(14, 18)|n=7|(18, 2)
+  REC_STEP|(18, 2)|n=8|(2, 22)
+  REC_STEP|(2, 22)|n=9|(22, 10)
+  REC_STEP|(22, 10)|n=10|(10, 24)
+  REC_STEP|(10, 24)|n=11|(24, 22)
+  REC_STEP|(24, 22)|n=12|(22, 14)
+  MILESTONE|12|(a + b) mod 9|0
+  REC_STEP|(22, 14)|n=13|(14, 26)
+  REC_STEP|(14, 26)|n=14|(26, 6)
+  REC_STEP|(26, 6)|n=15|(6, 20)
+  REC_STEP|(6, 20)|n=16|(20, 22)
+  REC_STEP|(20, 22)|n=17|(22, 16)
+  REC_STEP|(22, 16)|n=18|(16, 12)
+  REC_STEP|(16, 12)|n=19|(12, 28)
+  REC_STEP|(12, 28)|n=20|(28, 8)
+  REC_STEP|(28, 8)|n=21|(8, 20)
+  REC_STEP|(8, 20)|n=22|(20, 6)
+  REC_STEP|(20, 6)|n=23|(6, 8)
+  REC_STEP|(6, 8)|n=24|(8, 16)
+  REC_STEP|(8, 16)|n=25|(16, 4)
+  MILESTONE|25|(a + b) mod 9|2
+  REC_STEP|(16, 4)|n=26|(4, 24)
+  REC_STEP|(4, 24)|n=27|(24, 10)
+  REC_STEP|(24, 10)|n=28|(10, 8)
+  REC_STEP|(10, 8)|n=29|(8, 14)
+  REC_STEP|(8, 14)|n=30|(14, 18)
+  REC_STEP|(14, 18)|n=31|(18, 2)
+  REC_STEP|(18, 2)|n=32|(2, 22)
+  REC_STEP|(2, 22)|n=33|(22, 10)
+  REC_STEP|(22, 10)|n=34|(10, 24)
+  REC_STEP|(10, 24)|n=35|(24, 22)
+  REC_STEP|(24, 22)|n=36|(22, 14)
+  REC_STEP|(22, 14)|n=37|(14, 26)
+  MILESTONE|37|(a + b) mod 9|4
+  REC_STEP|(14, 26)|n=38|(26, 6)
+  REC_STEP|(26, 6)|n=39|(6, 20)
+  REC_STEP|(6, 20)|n=40|(20, 22)
+  REC_STEP|(20, 22)|n=41|(22, 16)
+  REC_STEP|(22, 16)|n=42|(16, 12)
+  REC_STEP|(16, 12)|n=43|(12, 28)
+  REC_STEP|(12, 28)|n=44|(28, 8)
+  REC_STEP|(28, 8)|n=45|(8, 20)
+  REC_STEP|(8, 20)|n=46|(20, 6)
+  REC_STEP|(20, 6)|n=47|(6, 8)
+  REC_STEP|(6, 8)|n=48|(8, 16)
+  REC_STEP|(8, 16)|n=49|(16, 4)
+  REC_STEP|(16, 4)|n=50|(4, 24)
+  REC_STEP|(4, 24)|n=51|(24, 10)
+  MILESTONE|51|(a + b) mod 9|7
+  REC_STEP|(24, 10)|n=52|(10, 8)
+  REC_STEP|(10, 8)|n=53|(8, 14)
+  REC_STEP|(8, 14)|n=54|(14, 18)
+  REC_STEP|(14, 18)|n=55|(18, 2)
+  REC_STEP|(18, 2)|n=56|(2, 22)
+  REC_STEP|(2, 22)|n=57|(22, 10)
+  REC_STEP|(22, 10)|n=58|(10, 24)
+  REC_STEP|(10, 24)|n=59|(24, 22)
+  REC_STEP|(24, 22)|n=60|(22, 14)
+  REC_STEP|(22, 14)|n=61|(14, 26)
+  REC_STEP|(14, 26)|n=62|(26, 6)
+  MILESTONE|62|(a + b) mod 9|5
+  REC_STEP|(26, 6)|n=63|(6, 20)
+  REC_STEP|(6, 20)|n=64|(20, 22)
+  REC_STEP|(20, 22)|n=65|(22, 16)
+  REC_STEP|(22, 16)|n=66|(16, 12)
+  REC_STEP|(16, 12)|n=67|(12, 28)
+  REC_STEP|(12, 28)|n=68|(28, 8)
+  REC_STEP|(28, 8)|n=69|(8, 20)
+  REC_STEP|(8, 20)|n=70|(20, 6)
+  REC_STEP|(20, 6)|n=71|(6, 8)
+  REC_STEP|(6, 8)|n=72|(8, 16)
+  REC_STEP|(8, 16)|n=73|(16, 4)
+  REC_STEP|(16, 4)|n=74|(4, 24)
+  REC_STEP|(4, 24)|n=75|(24, 10)
+  REC_STEP|(24, 10)|n=76|(10, 8)
+  MILESTONE|76|(a + b) mod 9|0
+  REC_STEP|(10, 8)|n=77|(8, 14)
+  REC_STEP|(8, 14)|n=78|(14, 18)
+  REC_STEP|(14, 18)|n=79|(18, 2)
+  REC_STEP|(18, 2)|n=80|(2, 22)
+  REC_STEP|(2, 22)|n=81|(22, 10)
+  REC_STEP|(22, 10)|n=82|(10, 24)
+  REC_STEP|(10, 24)|n=83|(24, 22)
+  REC_STEP|(24, 22)|n=84|(22, 14)
+  REC_STEP|(22, 14)|n=85|(14, 26)
+  REC_STEP|(14, 26)|n=86|(26, 6)
+  REC_STEP|(26, 6)|n=87|(6, 20)
+  MILESTONE|87|(a + b) mod 9|8
+  REC_STEP|(6, 20)|n=88|(20, 22)
+  REC_STEP|(20, 22)|n=89|(22, 16)
+  REC_STEP|(22, 16)|n=90|(16, 12)
+  REC_STEP|(16, 12)|n=91|(12, 28)
+  REC_STEP|(12, 28)|n=92|(28, 8)
+  REC_STEP|(28, 8)|n=93|(8, 20)
+  REC_STEP|(8, 20)|n=94|(20, 6)
+  REC_STEP|(20, 6)|n=95|(6, 8)
+  REC_STEP|(6, 8)|n=96|(8, 16)
+  REC_STEP|(8, 16)|n=97|(16, 4)
+  REC_STEP|(16, 4)|n=98|(4, 24)
+  REC_STEP|(4, 24)|n=99|(24, 10)
+  MILESTONE|99|(a + b) mod 9|7
+  REC_STEP|(24, 10)|n=100|(10, 8)
+  REC_STEP|(10, 8)|n=101|(8, 14)
+  REC_STEP|(8, 14)|n=102|(14, 18)
+  REC_STEP|(14, 18)|n=103|(18, 2)
+  REC_STEP|(18, 2)|n=104|(2, 22)
+  REC_STEP|(2, 22)|n=105|(22, 10)
+  REC_STEP|(22, 10)|n=106|(10, 24)
+  REC_STEP|(10, 24)|n=107|(24, 22)
+  REC_STEP|(24, 22)|n=108|(22, 14)
+  REC_STEP|(22, 14)|n=109|(14, 26)
+  REC_STEP|(14, 26)|n=110|(26, 6)
+  MILESTONE|110|(a + b) mod 9|5
+  REC_STEP|(26, 6)|n=111|(6, 20)
+  MAT_POW|square|[[11, 26], [8, 7]]
+  MAT_POW|square|[[29, 18], [24, 17]]
+  MAT_POW|square|[[13, 18], [24, 1]]
+  MAT_POW|square|[[1, 12], [6, 13]]
+  MAT_POW|multiply|[[1, 12], [6, 13]]
+  MAT_POW|square|[[13, 18], [24, 1]]
+  MAT_POW|multiply|[[1, 0], [0, 1]]
+  MAT_POW|square|[[1, 12], [6, 13]]
+  MAT_POW|multiply|[[1, 12], [6, 13]]
+  CHECK|matrix route agrees|bottom row of C^112 on (x1, x0) = 20|unrolled final term = 20
+  Z|20
+Answer: 20
 ```
 
 ## College

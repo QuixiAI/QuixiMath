@@ -716,6 +716,7 @@ CURRICULUM = {
     "RadixMarathonGenerator": {"grade_level": MIDDLE, "difficulty": 3},
     "CompoundLedgerGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "ModExpLadderGenerator": {"grade_level": HIGH, "difficulty": 3},
+    "RecurrenceUnrollGenerator": {"grade_level": HIGH, "difficulty": 3},
 }
 
 
