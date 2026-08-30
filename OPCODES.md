@@ -115,7 +115,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `BACKPROP_GRAD` | 2 | `BACKPROP_GRAD\|dL/dy_hat\|-2` | backprop_generator.py |
 | `BACKPROP_SETUP` | 3 | `BACKPROP_SETUP\|x=(1,-2)\|y=1\|eta=1/3` | backprop_generator.py |
 | `BACK_SUB` | 2 | `BACK_SUB\|u = 1/y\|y = 1/(2 + 6e^(2x))` | ode_substitution_generator.py |
-| `BACK_SUB_ROW` | 3 | `BACK_SUB_ROW\|r=354\|x=1\|y=0` | extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
+| `BACK_SUB_ROW` | 3 | `BACK_SUB_ROW\|r=282\|x=1\|y=0` | extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
 | `BALANCED_EQ` | 1 | `BALANCED_EQ\|4 Al + 3 O2 -> 2 Al2O3` | stoichiometry_generator.py |
 | `BALANCE_COEFFS` | 2 | `BALANCE_COEFFS\|reactants=4,3\|products=2` | stoichiometry_generator.py |
 | `BALLOT_FORMULA` | 1 | `BALLOT_FORMULA\|strict lead probability=(a-b)/(a+b)` | ballot_reflection_generator.py |
@@ -143,7 +143,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `BEREZIN_RULE` | 2 | `BEREZIN_RULE\|int dtheta 1\|0` | grassmann_generator.py |
 | `BETA` | 1, 3 | `BETA\|line 1\|1L: 2: g ∧ (¬f ∨ ¬f)\|1R: 3: g ∨ t` | lambda_reduction_generator.py, semantic_tableau_generator.py |
 | `BETA_COUNT` | 1 | `BETA_COUNT\|1` | lambda_reduction_generator.py |
-| `BEZOUT_CHECK` | 2 | `BEZOUT_CHECK\|354*-1 + 180*2\|6` | extended_euclid_generator.py |
+| `BEZOUT_CHECK` | 2 | `BEZOUT_CHECK\|282*4 + 102*-11\|6` | extended_euclid_generator.py |
 | `BIAS` | 3 | `BIAS\|E[max] = 3.125\|N = 4\|-0.875` | estimator_bias_enum_generator.py, mse_decomposition_generator.py |
 | `BIAS_CORRECT` | 2 | `BIAS_CORRECT\|m_hat\|5` | adam_step_generator.py |
 | `BIJECTION_RULE` | 2 | `BIJECTION_RULE\|s(n)\|n²` | countability_bijection_generator.py |
@@ -628,7 +628,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `ESCAPE_CHECK` | 3 | `ESCAPE_CHECK\|n=1\|norm2=281/16\|escaped` | fractal_iteration_generator.py |
 | `ESTIMATE` | 2 | `ESTIMATE\|round the base before applying the percent\|$100.00` | applied_common.py, assumption_check_generator.py, fermi_estimation_generator.py, long_division_generator.py, magnitude_comparison_generator.py, missing_information_generator.py, multi_digit_multiplication_generator.py, rounding_effect_generator.py |
 | `ESTIMATE_CHECK` | 3 | `ESTIMATE_CHECK\|$100.00\|$111.35\|$111.35 ≈ $100.00 ✓` | applied_common.py, assumption_check_generator.py, fermi_estimation_generator.py, long_division_generator.py, magnitude_comparison_generator.py, missing_information_generator.py, multi_digit_multiplication_generator.py, rounding_effect_generator.py |
-| `EUCLID_DIV` | 4 | `EUCLID_DIV\|354\|180\|1\|174` | continued_fraction_generator.py, extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
+| `EUCLID_DIV` | 4 | `EUCLID_DIV\|282\|102\|2\|78` | continued_fraction_generator.py, extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
 | `EULER_BACKTRACK` | 3 | `EULER_BACKTRACK\|A\|route suffix A\|stack A-B-D-C` | euler_circuit_generator.py |
 | `EULER_CRITERION` | 2 | `EULER_CRITERION\|14^5 mod 11\|1` | quadratic_residue_generator.py |
 | `EULER_FORMULA` | 1 | `EULER_FORMULA\|V - E + F = 2` | euler_characteristic_generator.py, euler_formula_generator.py |
@@ -666,7 +666,7 @@ The scratchpad vocabulary belongs to the model and evolves organically: generato
 | `EXP_SUB` | 3 | `EXP_SUB\|t/tau\|6\|e^-6` | transient_circuit_generator.py |
 | `EXP_VALUE` | 2 | `EXP_VALUE\|exp(-z)\|1` | activation_generator.py |
 | `EXTRA_MATERIAL` | 3 | `EXTRA_MATERIAL\|10%\|26750\|29425` | spatial_packing_generator.py |
-| `EXT_GCD_SETUP` | 2 | `EXT_GCD_SETUP\|354\|180` | extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
+| `EXT_GCD_SETUP` | 2 | `EXT_GCD_SETUP\|282\|102` | extended_euclid_generator.py, modular_inverse_generator.py, rsa_generator.py |
 | `F` | 2, 3 | `F\|28/6\|14/3` | complement_probability_generator.py, composite_arithmetic_generator.py, counting_to_probability_generator.py, derangement_generator.py, discrete_uniform_bernoulli_generator.py, fraction_decimal_percent_converter.py, fraction_op_generator.py, fundamental_counting_principle_generator.py, independence_check_generator.py, likelihood_language_generator.py, mixed_number_operation_generator.py, mobius_transform_generator.py, order_of_operations_generator.py, quaternion_generator.py, radical_rationalize_generator.py, random_digit_simulation_generator.py, rational_exponent_generator.py, rational_expr_add_sub_generator.py, repeating_decimal_generator.py, sample_space_list_generator.py, sampling_distribution_enum_generator.py, simple_probability_generator.py, slope_two_points_generator.py, two_way_table_probability_generator.py, venn_probability_generator.py |
 | `FACT` | 2 | `FACT\|7\|5040` | counting_to_probability_generator.py, derangement_generator.py, expected_value_classics_generator.py, multinomial_probability_generator.py, named_distribution_generator.py, order_statistics_generator.py, poisson_process_generator.py, young_tableaux_generator.py |
 | `FACTOR` | 1, 2 | `FACTOR\|2(2qb + q + b) + 1` | direct_proof_algebra_generator.py, polynomial_inequality_generator.py, second_order_ode_generator.py, transfer_function_generator.py, undetermined_coeff_generator.py, variation_parameters_generator.py |

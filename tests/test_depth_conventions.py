@@ -27,10 +27,17 @@ def depth_generators():
 
 
 class TestRegisteredDepthGenerators(unittest.TestCase):
-    """The per-generator battery (vacuous until Phase 1 lands classes)."""
+    """The per-generator battery (vacuous until Phase 1 lands classes).
+
+    Retrofit semantics (plans/depth_plan.md §3): a ⟲ class keeps its
+    legacy variants untiered, and untiered draws are exempt from the
+    depth checks — but every flagged module must REACH tiered
+    operations in sampling, or its DEPTH flag is meaningless.
+    """
 
     def test_strand_contract(self):
         for gen in depth_generators():
+            tiered_seen = 0
             for example in sample_examples(gen, n=25, seed=11):
                 with self.subTest(gen=type(gen).__name__,
                                   op=example["operation"]):
@@ -39,8 +46,9 @@ class TestRegisteredDepthGenerators(unittest.TestCase):
                     self.assertLessEqual(record_chars(example),
                                          MAX_RECORD_CHARS)
                     tier = tier_of(example["operation"])
-                    self.assertIsNotNone(
-                        tier, "depth operations must carry a tier suffix")
+                    if tier is None:
+                        continue  # a retrofit class's legacy face
+                    tiered_seen += 1
                     self.assertGreaterEqual(
                         chain_depth(example["steps"]), TIER_FLOORS[tier],
                         "measured dependency depth below the tier floor")
@@ -48,6 +56,10 @@ class TestRegisteredDepthGenerators(unittest.TestCase):
                     self.assertIsNotNone(
                         oracle_parse_count(example["problem"]),
                         "problem text must state the chain length")
+            self.assertGreater(
+                tiered_seen, 0,
+                f"{type(gen).__name__} is DEPTH-flagged but never "
+                "produced a tiered operation in 25 draws")
 
 
 class TestChainEmitter(unittest.TestCase):

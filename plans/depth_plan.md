@@ -86,7 +86,11 @@ chain length ≥ tier floor, where consecutive arithmetic steps (`A`, `S`,
 `M`, `D`, and the strand's chain codes) are chained iff one operand
 string-equals the previous step's result field; checkpoint values
 recompute exactly; pipe safety; `steps[-1] == Z|<answer>`; token length
-under 16k characters.
+under 16k characters. **Retrofit semantics:** a ⟲ class keeps its legacy
+variants untiered (add, never rename), and draws whose operation carries
+no tier suffix are exempt from the depth checks — but a flagged module
+must *reach* tiered operations in sampling, or the flag is meaningless
+and the test fails.
 
 **Answers.** Usually short — the whole point is a long trace ending in a
 small exact answer (`x_120 = 341`, `balance $1,204.63` → house money
@@ -198,10 +202,19 @@ and per-variant tier latitude reflects what bounded values can reach.
 
 ### Strand E — Number-theory chains (high / college)
 
-**⟲ ExtendedEuclidGenerator** — add depth tiers; Fibonacci-neighbor and
-near-Fibonacci pairs give worst-case chain lengths on demand. New
-variants: `crt_chain` (solve 3–5 congruences sequentially, each folding
-into the running solution), `bezout_verify` (full back-substitution).
+**⟲ ExtendedEuclidGenerator** — tiered variants at **d50 only**, a
+mathematical bound, not a scoping choice: Euclid's chain length n costs
+Fibonacci-sized inputs (~φ^n), so the bounded-intermediates rule (§3)
+caps chained gcd work near n = 70 (16-digit values, quotients mostly 1).
+The legacy `extended_euclid` operation is untouched. New variants:
+`bezout` (quotient sequences of mostly-1s built backward through
+continuants, emitted as a chained remainder-pair trace
+`EUCLID_DIV|(a, b)|q=<q>|(b, a-qb)`; Bezout coefficients computed and
+spot-verified mod a small prime so no tier-length product ever
+appears), `crt_chain` (10-16 small pairwise-coprime congruences folded
+sequentially into the running solution, chained on the solution value).
+Deeper number-theory tiers live in `ModExpLadderGenerator` and
+`BigExactDivisionGenerator`, whose state is genuinely bounded.
 
 **ModExpLadderGenerator** · high · d3 — square-and-multiply for
 exponents with 40–200 bits of ladder, all mod m ≤ 500. Variants:
@@ -209,10 +222,14 @@ exponents with 40–200 bits of ladder, all mod m ≤ 500. Variants:
 bits consumed), `fermat_route` (composite: reduce the exponent mod
 ord(a) first, then a short ladder; answer states both).
 
-**⟲ ContinuedFractionGenerator** — depth tiers via near-Fibonacci
-ratios; add `sqrt_periodic` (expand √d to N terms of its known period)
-and `convergent_error` (track p_k/q_k and the error sign, alternating —
-an invariant the checkpoints recompute).
+**⟲ ContinuedFractionGenerator** — the retrofit that DOES reach every
+tier: `sqrt_periodic` expands √d by the standard (P, Q) recurrence,
+whose state is bounded by 2√d forever, with d screened so the period
+(or the requested prefix) lands in the tier window; the milestone
+invariant is Q's divisibility check `Q | d - P²` — recomputable at any
+point. Near-Fibonacci rational expansions hit the same φ^n wall as
+Euclid, so no deep rational-CF variant is added; `convergent_error`
+is dropped for the same reason (p_k, q_k grow like continuants).
 
 ### Strand R — Recurrences and sums (high)
 
@@ -287,9 +304,13 @@ long-form "catch the drift" skill made explicit. Variants over the three
 underlying trace types; `error_free` control (verify all N rows, answer
 `no errors; total confirmed`) at 20% weight.
 
-**⟲ FractalIterationGenerator, ⟲ ModularInverseGenerator** — depth-tier
-retrofits (both already chain correctly; they only need the tier knob,
-checkpoints, and tiered operation suffixes).
+**⟲ FractalIterationGenerator** — depth-tier retrofit, re-verify its
+emission against the chaining convention first (the original draft's
+"already chain correctly" claim was wrong for the Euclid family and
+must not be assumed here). **ModularInverseGenerator retrofit dropped:**
+it is the same algorithm as `ExtendedEuclidGenerator` with the same
+φ^n depth cost; its tiered face is subsumed by the ⟲ ExtendedEuclid
+`bezout` variant, and duplicating a d50-only retrofit adds nothing.
 
 ## 6. Band and difficulty summary
 
