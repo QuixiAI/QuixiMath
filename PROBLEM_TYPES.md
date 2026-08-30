@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**679 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**680 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -4068,6 +4068,140 @@ Steps:
   HORNER|424559072|x 2 + 1|849118145
   Z|110010100111001000001111000001 (base 2)
 Answer: 110010100111001000001111000001 (base 2)
+```
+
+### Compound Ledger — `CompoundLedgerGenerator`  ·  middle · difficulty 2
+
+Tier-length exact-cents ledgers (depth strand).
+
+**Variants:** `compound_ledger_final_balance_d100`, `compound_ledger_final_balance_d200`, `compound_ledger_final_balance_d50`, `compound_ledger_first_negative_d100`, `compound_ledger_first_negative_d200`, `compound_ledger_first_negative_d50`, `compound_ledger_interest_earned_d100`, `compound_ledger_interest_earned_d200`, `compound_ledger_interest_earned_d50`, `compound_ledger_statement_check_d100`, `compound_ledger_statement_check_d200`, `compound_ledger_statement_check_d50`
+
+```
+Problem: An account opens at $761.50. Interest events credit 5% of the whole-dollar balance, in cents. Process the following 111 events in order: deposit $4.00; withdraw $107.00; withdraw $1.00; deposit $3.75; interest; deposit $49.00; deposit $51.00; withdraw $71.75; deposit $25.75; withdraw $101.75; deposit $5.75; withdraw $116.00; interest; withdraw $34.25; withdraw $29.50; deposit $71.50; deposit $11.00; deposit $52.75; withdraw $143.00; withdraw $94.00; interest; deposit $126.75; withdraw $111.50; withdraw $137.75; deposit $53.25; withdraw $74.75; deposit $35.50; deposit $69.50; withdraw $86.50; withdraw $24.00; withdraw $9.25; deposit $69.25; interest; deposit $149.50; withdraw $92.50; withdraw $140.50; deposit $75.25; deposit $122.50; deposit $12.50; withdraw $46.00; deposit $77.50; interest; withdraw $76.75; withdraw $28.00; deposit $143.75; withdraw $121.50; withdraw $88.00; deposit $122.75; deposit $127.50; withdraw $9.75; withdraw $86.00; deposit $42.75; interest; withdraw $22.50; deposit $21.75; deposit $56.75; deposit $98.75; deposit $25.25; withdraw $142.50; withdraw $115.00; withdraw $149.75; deposit $108.50; deposit $94.50; deposit $67.00; interest; deposit $110.50; deposit $92.00; deposit $16.50; deposit $134.75; withdraw $51.75; deposit $127.50; withdraw $65.75; deposit $11.00; deposit $37.50; deposit $50.75; withdraw $97.00; interest; deposit $27.00; withdraw $38.00; withdraw $108.50; withdraw $82.75; withdraw $127.75; deposit $139.00; deposit $2.50; withdraw $81.50; withdraw $9.25; interest; deposit $66.00; deposit $97.25; withdraw $120.50; deposit $21.75; deposit $17.00; deposit $33.50; deposit $77.00; deposit $115.00; withdraw $41.25; deposit $118.00; withdraw $129.50; interest; deposit $147.00; deposit $132.75; deposit $109.25; deposit $74.25; withdraw $123.50; withdraw $60.00; deposit $0.25; deposit $77.50; withdraw $85.25; deposit $126.50; interest; withdraw $104.50. State the closing balance and verify it as start plus deposits minus withdrawals plus interest.
+Steps:
+  A|$761.50|$4.00|$765.50
+  S|$765.50|$107.00|$658.50
+  S|$658.50|$1.00|$657.50
+  A|$657.50|$3.75|$661.25
+  INTEREST|$661.25|5% of $661 = 3305 cents|$694.30
+  A|$694.30|$49.00|$743.30
+  A|$743.30|$51.00|$794.30
+  S|$794.30|$71.75|$722.55
+  A|$722.55|$25.75|$748.30
+  S|$748.30|$101.75|$646.55
+  A|$646.55|$5.75|$652.30
+  S|$652.30|$116.00|$536.30
+  INTEREST|$536.30|5% of $536 = 2680 cents|$563.10
+  MILESTONE|13|balance cents mod 9|6
+  S|$563.10|$34.25|$528.85
+  S|$528.85|$29.50|$499.35
+  A|$499.35|$71.50|$570.85
+  A|$570.85|$11.00|$581.85
+  A|$581.85|$52.75|$634.60
+  S|$634.60|$143.00|$491.60
+  S|$491.60|$94.00|$397.60
+  INTEREST|$397.60|5% of $397 = 1985 cents|$417.45
+  A|$417.45|$126.75|$544.20
+  S|$544.20|$111.50|$432.70
+  S|$432.70|$137.75|$294.95
+  A|$294.95|$53.25|$348.20
+  S|$348.20|$74.75|$273.45
+  MILESTONE|26|balance cents mod 9|3
+  A|$273.45|$35.50|$308.95
+  A|$308.95|$69.50|$378.45
+  S|$378.45|$86.50|$291.95
+  S|$291.95|$24.00|$267.95
+  S|$267.95|$9.25|$258.70
+  A|$258.70|$69.25|$327.95
+  INTEREST|$327.95|5% of $327 = 1635 cents|$344.30
+  A|$344.30|$149.50|$493.80
+  S|$493.80|$92.50|$401.30
+  S|$401.30|$140.50|$260.80
+  MILESTONE|36|balance cents mod 9|7
+  A|$260.80|$75.25|$336.05
+  A|$336.05|$122.50|$458.55
+  A|$458.55|$12.50|$471.05
+  S|$471.05|$46.00|$425.05
+  A|$425.05|$77.50|$502.55
+  INTEREST|$502.55|5% of $502 = 2510 cents|$527.65
+  S|$527.65|$76.75|$450.90
+  S|$450.90|$28.00|$422.90
+  A|$422.90|$143.75|$566.65
+  S|$566.65|$121.50|$445.15
+  S|$445.15|$88.00|$357.15
+  MILESTONE|47|balance cents mod 9|3
+  A|$357.15|$122.75|$479.90
+  A|$479.90|$127.50|$607.40
+  S|$607.40|$9.75|$597.65
+  S|$597.65|$86.00|$511.65
+  A|$511.65|$42.75|$554.40
+  INTEREST|$554.40|5% of $554 = 2770 cents|$582.10
+  S|$582.10|$22.50|$559.60
+  A|$559.60|$21.75|$581.35
+  A|$581.35|$56.75|$638.10
+  A|$638.10|$98.75|$736.85
+  A|$736.85|$25.25|$762.10
+  S|$762.10|$142.50|$619.60
+  S|$619.60|$115.00|$504.60
+  S|$504.60|$149.75|$354.85
+  A|$354.85|$108.50|$463.35
+  MILESTONE|62|balance cents mod 9|3
+  A|$463.35|$94.50|$557.85
+  A|$557.85|$67.00|$624.85
+  INTEREST|$624.85|5% of $624 = 3120 cents|$656.05
+  A|$656.05|$110.50|$766.55
+  A|$766.55|$92.00|$858.55
+  A|$858.55|$16.50|$875.05
+  A|$875.05|$134.75|$1009.80
+  S|$1009.80|$51.75|$958.05
+  A|$958.05|$127.50|$1085.55
+  S|$1085.55|$65.75|$1019.80
+  A|$1019.80|$11.00|$1030.80
+  MILESTONE|73|balance cents mod 9|3
+  A|$1030.80|$37.50|$1068.30
+  A|$1068.30|$50.75|$1119.05
+  S|$1119.05|$97.00|$1022.05
+  INTEREST|$1022.05|5% of $1022 = 5110 cents|$1073.15
+  A|$1073.15|$27.00|$1100.15
+  S|$1100.15|$38.00|$1062.15
+  S|$1062.15|$108.50|$953.65
+  S|$953.65|$82.75|$870.90
+  S|$870.90|$127.75|$743.15
+  A|$743.15|$139.00|$882.15
+  A|$882.15|$2.50|$884.65
+  MILESTONE|84|balance cents mod 9|4
+  S|$884.65|$81.50|$803.15
+  S|$803.15|$9.25|$793.90
+  INTEREST|$793.90|5% of $793 = 3965 cents|$833.55
+  A|$833.55|$66.00|$899.55
+  A|$899.55|$97.25|$996.80
+  S|$996.80|$120.50|$876.30
+  A|$876.30|$21.75|$898.05
+  A|$898.05|$17.00|$915.05
+  A|$915.05|$33.50|$948.55
+  A|$948.55|$77.00|$1025.55
+  A|$1025.55|$115.00|$1140.55
+  S|$1140.55|$41.25|$1099.30
+  MILESTONE|96|balance cents mod 9|4
+  A|$1099.30|$118.00|$1217.30
+  S|$1217.30|$129.50|$1087.80
+  INTEREST|$1087.80|5% of $1087 = 5435 cents|$1142.15
+  A|$1142.15|$147.00|$1289.15
+  A|$1289.15|$132.75|$1421.90
+  A|$1421.90|$109.25|$1531.15
+  A|$1531.15|$74.25|$1605.40
+  S|$1605.40|$123.50|$1481.90
+  S|$1481.90|$60.00|$1421.90
+  A|$1421.90|$0.25|$1422.15
+  A|$1422.15|$77.50|$1499.65
+  S|$1499.65|$85.25|$1414.40
+  A|$1414.40|$126.50|$1540.90
+  INTEREST|$1540.90|5% of $1540 = 7700 cents|$1617.90
+  S|$1617.90|$104.50|$1513.40
+  MILESTONE|111|balance cents mod 9|5
+  CHECK|statement totals|$761.50 + $3937.25 - $3587.50 + $402.15|$1513.40
+  Z|$1513.40
+Answer: $1513.40
 ```
 
 ## High School

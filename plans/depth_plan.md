@@ -242,9 +242,12 @@ format).
 
 **CompoundLedgerGenerator** · middle · d2 — a running account ledger:
 deposits, withdrawals, periodic interest, N = tier events, exact cents
-throughout. Variants: `final_balance`, `interest_earned`,
-`first_negative` (constructed to occur), `statement_check` (composite:
-sum of credits − debits + interest vs final balance).
+throughout. Interest stays exact for *any* balance by crediting r% of
+the whole-dollar part only (D dollars → r·D cents, the floor a real
+bank applies), stated in the problem header. Variants: `final_balance`,
+`interest_earned`, `first_negative` (overdraft allowed and screened to
+occur late), `statement_check` (composite: start + credits − debits +
+interest re-derived against the running final, shown in a `CHECK`).
 
 ### Strand S — Machine traces (college)
 

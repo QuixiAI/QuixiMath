@@ -714,6 +714,7 @@ CURRICULUM = {
     "CollatzTraceGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "BigExactDivisionGenerator": {"grade_level": MIDDLE, "difficulty": 2},
     "RadixMarathonGenerator": {"grade_level": MIDDLE, "difficulty": 3},
+    "CompoundLedgerGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 
