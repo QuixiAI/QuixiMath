@@ -711,6 +711,7 @@ CURRICULUM = {
     "ArithmeticChainGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "DigitProcessGenerator": {"grade_level": ELEMENTARY, "difficulty": 2},
     "IteratedAffineMapGenerator": {"grade_level": MIDDLE, "difficulty": 2},
+    "CollatzTraceGenerator": {"grade_level": MIDDLE, "difficulty": 2},
 }
 
 

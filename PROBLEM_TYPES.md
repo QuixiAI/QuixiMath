@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**676 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**677 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -3707,6 +3707,129 @@ Steps:
   ITER_INV|21|n=111|51
   Z|51
 Answer: 51
+```
+
+### Collatz Trace — `CollatzTraceGenerator`  ·  middle · difficulty 2
+
+Long Collatz trajectories, every arithmetic step shown.
+
+**Variants:** `collatz_trace_max_value_d100`, `collatz_trace_max_value_d200`, `collatz_trace_max_value_d50`, `collatz_trace_parity_checksum_d100`, `collatz_trace_parity_checksum_d200`, `collatz_trace_parity_checksum_d50`, `collatz_trace_steps_to_below_seed_d50`, `collatz_trace_stopping_time_d100`, `collatz_trace_stopping_time_d50`
+
+```
+Problem: Start at 53082. Repeatedly halve even values and send odd values to 3n+1, until the value reaches 1 (at most 100 steps). How many of the values along the way (the start included, 1 excluded) are odd?
+Steps:
+  D|53082|2|26541
+  M|26541|3|79623
+  A|79623|1|79624
+  D|79624|2|39812
+  D|39812|2|19906
+  D|19906|2|9953
+  M|9953|3|29859
+  A|29859|1|29860
+  D|29860|2|14930
+  D|14930|2|7465
+  M|7465|3|22395
+  A|22395|1|22396
+  MILESTONE|12|value mod 9|4
+  D|22396|2|11198
+  D|11198|2|5599
+  M|5599|3|16797
+  A|16797|1|16798
+  D|16798|2|8399
+  M|8399|3|25197
+  A|25197|1|25198
+  D|25198|2|12599
+  M|12599|3|37797
+  A|37797|1|37798
+  D|37798|2|18899
+  M|18899|3|56697
+  A|56697|1|56698
+  MILESTONE|25|value mod 9|7
+  D|56698|2|28349
+  M|28349|3|85047
+  A|85047|1|85048
+  D|85048|2|42524
+  D|42524|2|21262
+  D|21262|2|10631
+  M|10631|3|31893
+  A|31893|1|31894
+  D|31894|2|15947
+  M|15947|3|47841
+  A|47841|1|47842
+  D|47842|2|23921
+  MILESTONE|37|value mod 9|8
+  M|23921|3|71763
+  A|71763|1|71764
+  D|71764|2|35882
+  D|35882|2|17941
+  M|17941|3|53823
+  A|53823|1|53824
+  D|53824|2|26912
+  D|26912|2|13456
+  D|13456|2|6728
+  D|6728|2|3364
+  D|3364|2|1682
+  D|1682|2|841
+  M|841|3|2523
+  A|2523|1|2524
+  MILESTONE|51|value mod 9|4
+  D|2524|2|1262
+  D|1262|2|631
+  M|631|3|1893
+  A|1893|1|1894
+  D|1894|2|947
+  M|947|3|2841
+  A|2841|1|2842
+  D|2842|2|1421
+  M|1421|3|4263
+  A|4263|1|4264
+  D|4264|2|2132
+  MILESTONE|62|value mod 9|8
+  D|2132|2|1066
+  D|1066|2|533
+  M|533|3|1599
+  A|1599|1|1600
+  D|1600|2|800
+  D|800|2|400
+  D|400|2|200
+  D|200|2|100
+  D|100|2|50
+  D|50|2|25
+  M|25|3|75
+  A|75|1|76
+  D|76|2|38
+  D|38|2|19
+  MILESTONE|76|value mod 9|1
+  M|19|3|57
+  A|57|1|58
+  D|58|2|29
+  M|29|3|87
+  A|87|1|88
+  D|88|2|44
+  D|44|2|22
+  D|22|2|11
+  M|11|3|33
+  A|33|1|34
+  D|34|2|17
+  MILESTONE|87|value mod 9|8
+  M|17|3|51
+  A|51|1|52
+  D|52|2|26
+  D|26|2|13
+  M|13|3|39
+  A|39|1|40
+  D|40|2|20
+  D|20|2|10
+  D|10|2|5
+  M|5|3|15
+  A|15|1|16
+  D|16|2|8
+  MILESTONE|99|value mod 9|8
+  D|8|2|4
+  D|4|2|2
+  D|2|2|1
+  Z|24
+Answer: 24
 ```
 
 ## High School
