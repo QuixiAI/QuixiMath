@@ -134,8 +134,21 @@ def _harvest_catalog_codes(tree):
     return found
 
 
+def _scan_paths(generators_dir):
+    """(fname, path) pairs to scan: generator modules plus the repo-root
+    ``*_common.py`` strand helpers, which also emit steps (e.g.
+    ``applied_common.apply_applied_modifier``, ``depth_common.Chain``)."""
+    pairs = [(fname, os.path.join(generators_dir, fname))
+             for fname in sorted(os.listdir(generators_dir))
+             if fname.endswith(".py") and fname != "__init__.py"]
+    pairs.extend((fname, os.path.join(REPO_ROOT, fname))
+                 for fname in sorted(os.listdir(REPO_ROOT))
+                 if fname.endswith("_common.py"))
+    return pairs
+
+
 def scan_opcodes(generators_dir=GENERATORS_DIR):
-    """AST-scan generator modules for step(...) calls.
+    """AST-scan generator and strand-helper modules for step(...) calls.
 
     Returns (opcodes, dynamic_sites) where opcodes maps code -> OpInfo and
     dynamic_sites lists "file:line" locations whose op-code could not be
@@ -143,10 +156,7 @@ def scan_opcodes(generators_dir=GENERATORS_DIR):
     """
     opcodes = {}
     dynamic_sites = []
-    for fname in sorted(os.listdir(generators_dir)):
-        if not fname.endswith(".py") or fname == "__init__.py":
-            continue
-        path = os.path.join(generators_dir, fname)
+    for fname, path in _scan_paths(generators_dir):
         with open(path, encoding="utf-8") as fp:
             tree = ast.parse(fp.read(), filename=path)
         catalog_site = False
