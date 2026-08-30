@@ -104,7 +104,8 @@ def expected_flow(num, den):
 class TestContinuedFractionGenerator(unittest.TestCase):
     def setUp(self):
         random.seed(42)
-        self.gen = ContinuedFractionGenerator()
+        # Pin the legacy face: default draws now mix in sqrt_periodic.
+        self.gen = ContinuedFractionGenerator("legacy")
 
     def test_output_contract(self):
         result = self.gen.generate()
@@ -158,6 +159,96 @@ class TestContinuedFractionGenerator(unittest.TestCase):
                 self.assertLessEqual(len(raw_step.split(DELIM)) - 1, 4,
                                      raw_step)
             self.assertNotIn(DELIM, result["final_answer"])
+
+
+class TestSqrtPeriodicRetrofit(unittest.TestCase):
+    """Depth-strand face (plans/depth_plan.md Strand E)."""
+
+    def setUp(self):
+        random.seed(42)
+
+    @staticmethod
+    def _oracle_period(d):
+        """Period via the classic a == 2*a0 termination — a different
+        stopping rule than the generator's state-repeat detection."""
+        from math import isqrt
+        a0 = isqrt(d)
+        P, Q, n = 0, 1, 0
+        while True:
+            a = (a0 + P) // Q
+            P = a * Q - P
+            Q = (d - P * P) // Q
+            n += 1
+            if n > 1 and a == 2 * a0:
+                return n - 1
+
+    def test_oracle_and_floor(self):
+        from depth_common import TIER_FLOORS
+        from tests.depth_oracle import (chain_depth, milestone_violations,
+                                        parse_count)
+        for tier in ("d50", "d100", "d200"):
+            gen = ContinuedFractionGenerator("sqrt_periodic", tier=tier)
+            for _ in range(8):
+                result = gen.generate()
+                d = int(re.search(r"sqrt\((\d+)\)",
+                                  result["problem"]).group(1))
+                from math import isqrt
+                expected = (f"period {self._oracle_period(d)}; "
+                            f"a0 = {isqrt(d)}")
+                self.assertEqual(result["final_answer"], expected)
+                self.assertGreaterEqual(chain_depth(result["steps"]),
+                                        TIER_FLOORS[tier])
+                self.assertFalse(milestone_violations(result["steps"]))
+                self.assertIsNotNone(parse_count(result["problem"]))
+
+    def test_every_pq_update_is_exact(self):
+        gen = ContinuedFractionGenerator("sqrt_periodic", tier="d50")
+        for _ in range(10):
+            result = gen.generate()
+            d = int(re.search(r"sqrt\((\d+)\)",
+                              result["problem"]).group(1))
+            from math import isqrt
+            a0 = isqrt(d)
+            for raw in result["steps"]:
+                fields = raw.split(DELIM)
+                if fields[0] != "SQRT_CF":
+                    continue
+                P, Q = map(int, re.fullmatch(
+                    r"\(P=(\d+), Q=(\d+)\)", fields[1]).groups())
+                a = int(fields[2].removeprefix("a = "))
+                P2, Q2 = map(int, re.fullmatch(
+                    r"\(P=(\d+), Q=(\d+)\)", fields[3]).groups())
+                self.assertEqual(a, (a0 + P) // Q, raw)
+                self.assertEqual(P2, a * Q - P, raw)
+                self.assertEqual(Q2, (d - P2 * P2) // Q, raw)
+                self.assertEqual((d - P2 * P2) % Q, 0, raw)
+                self.assertLessEqual(Q2, 2 * a0 + 1, raw)
+
+    def test_default_wrapper_preserves_legacy_rng_advancement(self):
+        for seed in range(30):
+            random.seed(seed)
+            ContinuedFractionGenerator("legacy").generate()
+            expected_state = random.getstate()
+            random.seed(seed)
+            ContinuedFractionGenerator().generate()
+            self.assertEqual(random.getstate(), expected_state)
+
+    def test_default_wrapper_reaches_both_faces(self):
+        random.seed(4)
+        gen = ContinuedFractionGenerator()
+        seen = set()
+        for _ in range(80):
+            op = gen.generate()["operation"]
+            seen.add("sqrt" if "sqrt_periodic" in op else "legacy")
+        self.assertEqual(seen, {"sqrt", "legacy"})
+
+    def test_invalid_inputs_rejected(self):
+        with self.assertRaises(ValueError):
+            ContinuedFractionGenerator("bogus")
+        with self.assertRaises(ValueError):
+            ContinuedFractionGenerator("legacy", tier="d50")
+        with self.assertRaises(ValueError):
+            ContinuedFractionGenerator("sqrt_periodic", tier="d9")
 
 
 if __name__ == "__main__":

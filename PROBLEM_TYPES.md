@@ -11692,68 +11692,129 @@ Answer: 7^96 mod 48 = 1
 
 ### Continued Fraction — `ContinuedFractionGenerator`  ·  college · difficulty 4
 
-Simple continued fractions and convergents for positive rationals.
+Simple continued fractions and convergents for positive rationals, plus the depth strand's ``sqrt_periodic`` retrofit — the (P, Q) recurrence for sqrt(d), whose state is bounded by 2*sqrt(d) forever, so it reaches every depth tier (plans/depth_plan.md Strand E; the rational expansion cannot go deep bounded — Euclid's phi^n wall).
 
-**Variants:** `continued_fraction`
+**Variants:** `continued_fraction`, `continued_fraction_sqrt_periodic_d100`, `continued_fraction_sqrt_periodic_d200`, `continued_fraction_sqrt_periodic_d50`
 
 ```
-Problem: Find the simple continued fraction for 541/110 and list all convergents.
+Problem: The continued fraction of sqrt(8527) is periodic: walk the (P, Q) recurrence to the first repeat (at most 125 steps) and state the period with a0.
 Steps:
-  CF_SETUP|541/110
-  EUCLID_DIV|541|110|4|101
-  M|4|110|440
-  S|541|440|101
-  CF_PARTIAL|a_0|4
-  EUCLID_DIV|110|101|1|9
-  M|1|101|101
-  S|110|101|9
-  CF_PARTIAL|a_1|1
-  EUCLID_DIV|101|9|11|2
-  M|11|9|99
-  S|101|99|2
-  CF_PARTIAL|a_2|11
-  EUCLID_DIV|9|2|4|1
-  M|4|2|8
-  S|9|8|1
-  CF_PARTIAL|a_3|4
-  EUCLID_DIV|2|1|2|0
-  M|2|1|2
-  S|2|2|0
-  CF_PARTIAL|a_4|2
-  CF_RESULT|[4; 1, 11, 4, 2]
-  CONV_INIT|h_-2=0,h_-1=1|k_-2=1,k_-1=0
-  M|4|1|4
-  A|4|0|4
-  M|4|0|0
-  A|0|1|1
-  CONV_STEP|i=0|h=4|k=1
-  CONVERGENT|i=0|4/1
-  M|1|4|4
-  A|4|1|5
-  M|1|1|1
-  A|1|0|1
-  CONV_STEP|i=1|h=5|k=1
-  CONVERGENT|i=1|5/1
-  M|11|5|55
-  A|55|4|59
-  M|11|1|11
-  A|11|1|12
-  CONV_STEP|i=2|h=59|k=12
-  CONVERGENT|i=2|59/12
-  M|4|59|236
-  A|236|5|241
-  M|4|12|48
-  A|48|1|49
-  CONV_STEP|i=3|h=241|k=49
-  CONVERGENT|i=3|241/49
-  M|2|241|482
-  A|482|59|541
-  M|2|49|98
-  A|98|12|110
-  CONV_STEP|i=4|h=541|k=110
-  CONVERGENT|i=4|541/110
-  Z|continued fraction = [4; 1, 11, 4, 2]; convergents = 4/1, 5/1, 59/12, 241/49, 541/110
-Answer: continued fraction = [4; 1, 11, 4, 2]; convergents = 4/1, 5/1, 59/12, 241/49, 541/110
+  CF_SETUP|sqrt(8527)|a0 = 92
+  CHECK|a0 is the integer part|92^2 = 8464 <= 8527|93^2 = 8649 > 8527
+  SQRT_CF|(P=0, Q=1)|a = 92|(P=92, Q=63)
+  SQRT_CF|(P=92, Q=63)|a = 2|(P=34, Q=117)
+  SQRT_CF|(P=34, Q=117)|a = 1|(P=83, Q=14)
+  SQRT_CF|(P=83, Q=14)|a = 12|(P=85, Q=93)
+  SQRT_CF|(P=85, Q=93)|a = 1|(P=8, Q=91)
+  SQRT_CF|(P=8, Q=91)|a = 1|(P=83, Q=18)
+  SQRT_CF|(P=83, Q=18)|a = 9|(P=79, Q=127)
+  SQRT_CF|(P=79, Q=127)|a = 1|(P=48, Q=49)
+  SQRT_CF|(P=48, Q=49)|a = 2|(P=50, Q=123)
+  SQRT_CF|(P=50, Q=123)|a = 1|(P=73, Q=26)
+  SQRT_CF|(P=73, Q=26)|a = 6|(P=83, Q=63)
+  SQRT_CF|(P=83, Q=63)|a = 2|(P=43, Q=106)
+  MILESTONE|12|(P + Q) mod 9|5
+  SQRT_CF|(P=43, Q=106)|a = 1|(P=63, Q=43)
+  SQRT_CF|(P=63, Q=43)|a = 3|(P=66, Q=97)
+  SQRT_CF|(P=66, Q=97)|a = 1|(P=31, Q=78)
+  SQRT_CF|(P=31, Q=78)|a = 1|(P=47, Q=81)
+  SQRT_CF|(P=47, Q=81)|a = 1|(P=34, Q=91)
+  SQRT_CF|(P=34, Q=91)|a = 1|(P=57, Q=58)
+  SQRT_CF|(P=57, Q=58)|a = 2|(P=59, Q=87)
+  SQRT_CF|(P=59, Q=87)|a = 1|(P=28, Q=89)
+  SQRT_CF|(P=28, Q=89)|a = 1|(P=61, Q=54)
+  SQRT_CF|(P=61, Q=54)|a = 2|(P=47, Q=117)
+  SQRT_CF|(P=47, Q=117)|a = 1|(P=70, Q=31)
+  MILESTONE|23|(P + Q) mod 9|2
+  SQRT_CF|(P=70, Q=31)|a = 5|(P=85, Q=42)
+  SQRT_CF|(P=85, Q=42)|a = 4|(P=83, Q=39)
+  SQRT_CF|(P=83, Q=39)|a = 4|(P=73, Q=82)
+  SQRT_CF|(P=73, Q=82)|a = 2|(P=91, Q=3)
+  SQRT_CF|(P=91, Q=3)|a = 61|(P=92, Q=21)
+  SQRT_CF|(P=92, Q=21)|a = 8|(P=76, Q=131)
+  SQRT_CF|(P=76, Q=131)|a = 1|(P=55, Q=42)
+  SQRT_CF|(P=55, Q=42)|a = 3|(P=71, Q=83)
+  SQRT_CF|(P=71, Q=83)|a = 1|(P=12, Q=101)
+  SQRT_CF|(P=12, Q=101)|a = 1|(P=89, Q=6)
+  SQRT_CF|(P=89, Q=6)|a = 30|(P=91, Q=41)
+  SQRT_CF|(P=91, Q=41)|a = 4|(P=73, Q=78)
+  MILESTONE|35|(P + Q) mod 9|7
+  SQRT_CF|(P=73, Q=78)|a = 2|(P=83, Q=21)
+  SQRT_CF|(P=83, Q=21)|a = 8|(P=85, Q=62)
+  SQRT_CF|(P=85, Q=62)|a = 2|(P=39, Q=113)
+  SQRT_CF|(P=39, Q=113)|a = 1|(P=74, Q=27)
+  SQRT_CF|(P=74, Q=27)|a = 6|(P=88, Q=29)
+  SQRT_CF|(P=88, Q=29)|a = 6|(P=86, Q=39)
+  SQRT_CF|(P=86, Q=39)|a = 4|(P=70, Q=93)
+  SQRT_CF|(P=70, Q=93)|a = 1|(P=23, Q=86)
+  SQRT_CF|(P=23, Q=86)|a = 1|(P=63, Q=53)
+  SQRT_CF|(P=63, Q=53)|a = 2|(P=43, Q=126)
+  SQRT_CF|(P=43, Q=126)|a = 1|(P=83, Q=13)
+  SQRT_CF|(P=83, Q=13)|a = 13|(P=86, Q=87)
+  MILESTONE|47|(P + Q) mod 9|2
+  SQRT_CF|(P=86, Q=87)|a = 2|(P=88, Q=9)
+  SQRT_CF|(P=88, Q=9)|a = 20|(P=92, Q=7)
+  SQRT_CF|(P=92, Q=7)|a = 26|(P=90, Q=61)
+  SQRT_CF|(P=90, Q=61)|a = 2|(P=32, Q=123)
+  SQRT_CF|(P=32, Q=123)|a = 1|(P=91, Q=2)
+  SQRT_CF|(P=91, Q=2)|a = 91|(P=91, Q=123)
+  SQRT_CF|(P=91, Q=123)|a = 1|(P=32, Q=61)
+  SQRT_CF|(P=32, Q=61)|a = 2|(P=90, Q=7)
+  SQRT_CF|(P=90, Q=7)|a = 26|(P=92, Q=9)
+  SQRT_CF|(P=92, Q=9)|a = 20|(P=88, Q=87)
+  SQRT_CF|(P=88, Q=87)|a = 2|(P=86, Q=13)
+  SQRT_CF|(P=86, Q=13)|a = 13|(P=83, Q=126)
+  SQRT_CF|(P=83, Q=126)|a = 1|(P=43, Q=53)
+  MILESTONE|60|(P + Q) mod 9|6
+  SQRT_CF|(P=43, Q=53)|a = 2|(P=63, Q=86)
+  SQRT_CF|(P=63, Q=86)|a = 1|(P=23, Q=93)
+  SQRT_CF|(P=23, Q=93)|a = 1|(P=70, Q=39)
+  SQRT_CF|(P=70, Q=39)|a = 4|(P=86, Q=29)
+  SQRT_CF|(P=86, Q=29)|a = 6|(P=88, Q=27)
+  SQRT_CF|(P=88, Q=27)|a = 6|(P=74, Q=113)
+  SQRT_CF|(P=74, Q=113)|a = 1|(P=39, Q=62)
+  SQRT_CF|(P=39, Q=62)|a = 2|(P=85, Q=21)
+  SQRT_CF|(P=85, Q=21)|a = 8|(P=83, Q=78)
+  SQRT_CF|(P=83, Q=78)|a = 2|(P=73, Q=41)
+  SQRT_CF|(P=73, Q=41)|a = 4|(P=91, Q=6)
+  SQRT_CF|(P=91, Q=6)|a = 30|(P=89, Q=101)
+  SQRT_CF|(P=89, Q=101)|a = 1|(P=12, Q=83)
+  MILESTONE|73|(P + Q) mod 9|5
+  SQRT_CF|(P=12, Q=83)|a = 1|(P=71, Q=42)
+  SQRT_CF|(P=71, Q=42)|a = 3|(P=55, Q=131)
+  SQRT_CF|(P=55, Q=131)|a = 1|(P=76, Q=21)
+  SQRT_CF|(P=76, Q=21)|a = 8|(P=92, Q=3)
+  SQRT_CF|(P=92, Q=3)|a = 61|(P=91, Q=82)
+  SQRT_CF|(P=91, Q=82)|a = 2|(P=73, Q=39)
+  SQRT_CF|(P=73, Q=39)|a = 4|(P=83, Q=42)
+  SQRT_CF|(P=83, Q=42)|a = 4|(P=85, Q=31)
+  SQRT_CF|(P=85, Q=31)|a = 5|(P=70, Q=117)
+  SQRT_CF|(P=70, Q=117)|a = 1|(P=47, Q=54)
+  MILESTONE|83|(P + Q) mod 9|2
+  SQRT_CF|(P=47, Q=54)|a = 2|(P=61, Q=89)
+  SQRT_CF|(P=61, Q=89)|a = 1|(P=28, Q=87)
+  SQRT_CF|(P=28, Q=87)|a = 1|(P=59, Q=58)
+  SQRT_CF|(P=59, Q=58)|a = 2|(P=57, Q=91)
+  SQRT_CF|(P=57, Q=91)|a = 1|(P=34, Q=81)
+  SQRT_CF|(P=34, Q=81)|a = 1|(P=47, Q=78)
+  SQRT_CF|(P=47, Q=78)|a = 1|(P=31, Q=97)
+  SQRT_CF|(P=31, Q=97)|a = 1|(P=66, Q=43)
+  SQRT_CF|(P=66, Q=43)|a = 3|(P=63, Q=106)
+  SQRT_CF|(P=63, Q=106)|a = 1|(P=43, Q=63)
+  SQRT_CF|(P=43, Q=63)|a = 2|(P=83, Q=26)
+  SQRT_CF|(P=83, Q=26)|a = 6|(P=73, Q=123)
+  SQRT_CF|(P=73, Q=123)|a = 1|(P=50, Q=49)
+  SQRT_CF|(P=50, Q=49)|a = 2|(P=48, Q=127)
+  MILESTONE|97|(P + Q) mod 9|4
+  SQRT_CF|(P=48, Q=127)|a = 1|(P=79, Q=18)
+  SQRT_CF|(P=79, Q=18)|a = 9|(P=83, Q=91)
+  SQRT_CF|(P=83, Q=91)|a = 1|(P=8, Q=93)
+  SQRT_CF|(P=8, Q=93)|a = 1|(P=85, Q=14)
+  SQRT_CF|(P=85, Q=14)|a = 12|(P=83, Q=117)
+  SQRT_CF|(P=83, Q=117)|a = 1|(P=34, Q=63)
+  SQRT_CF|(P=34, Q=63)|a = 2|(P=92, Q=1)
+  Z|period 104; a0 = 92
+Answer: period 104; a0 = 92
 ```
 
 ### RSA — `RSAGenerator`  ·  college · difficulty 4
