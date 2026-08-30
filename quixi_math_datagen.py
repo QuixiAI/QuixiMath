@@ -707,6 +707,7 @@ from generators.recurrence_unroll_generator import RecurrenceUnrollGenerator
 from generators.partial_sum_marathon_generator import PartialSumMarathonGenerator
 from generators.iterated_composition_generator import IteratedCompositionGenerator
 from generators.amortization_schedule_generator import AmortizationScheduleGenerator
+from generators.register_machine_trace_generator import RegisterMachineTraceGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1485,6 +1486,7 @@ ALL_GENERATORS = [
     PartialSumMarathonGenerator(),
     IteratedCompositionGenerator(),
     AmortizationScheduleGenerator(),
+    RegisterMachineTraceGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

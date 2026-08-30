@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**685 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**686 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15399,6 +15399,120 @@ Steps:
   MILESTONE|123|balance cents mod 9|0
   Z|123
 Answer: 123
+```
+
+### Register Machine Trace — `RegisterMachineTraceGenerator`  ·  college · difficulty 3
+
+Tier-length register-machine executions (depth strand).
+
+**Variants:** `register_machine_trace_final_registers_d100`, `register_machine_trace_final_registers_d200`, `register_machine_trace_final_registers_d50`, `register_machine_trace_halting_step_d100`, `register_machine_trace_halting_step_d200`, `register_machine_trace_halting_step_d50`, `register_machine_trace_trace_invariant_d100`, `register_machine_trace_trace_invariant_d200`, `register_machine_trace_trace_invariant_d50`
+
+```
+Problem: Execute the program L1: DEC r2 -> L2 else L4; L2: INC r1 -> L3; L3: INC r1 -> L1; L4: HALT starting at (r1=261, r2=31) (at most 100 instructions). Count the instructions executed.
+Steps:
+  RM_STEP|(261,31;L1)|L1: DEC r2 pos -> L2|(261,30;L2)
+  RM_STEP|(261,30;L2)|L2: INC r1 -> L3|(262,30;L3)
+  RM_STEP|(262,30;L3)|L3: INC r1 -> L1|(263,30;L1)
+  RM_STEP|(263,30;L1)|L1: DEC r2 pos -> L2|(263,29;L2)
+  RM_STEP|(263,29;L2)|L2: INC r1 -> L3|(264,29;L3)
+  RM_STEP|(264,29;L3)|L3: INC r1 -> L1|(265,29;L1)
+  RM_STEP|(265,29;L1)|L1: DEC r2 pos -> L2|(265,28;L2)
+  RM_STEP|(265,28;L2)|L2: INC r1 -> L3|(266,28;L3)
+  RM_STEP|(266,28;L3)|L3: INC r1 -> L1|(267,28;L1)
+  RM_STEP|(267,28;L1)|L1: DEC r2 pos -> L2|(267,27;L2)
+  RM_STEP|(267,27;L2)|L2: INC r1 -> L3|(268,27;L3)
+  RM_STEP|(268,27;L3)|L3: INC r1 -> L1|(269,27;L1)
+  RM_STEP|(269,27;L1)|L1: DEC r2 pos -> L2|(269,26;L2)
+  MILESTONE|13|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(269,26;L2)|L2: INC r1 -> L3|(270,26;L3)
+  RM_STEP|(270,26;L3)|L3: INC r1 -> L1|(271,26;L1)
+  RM_STEP|(271,26;L1)|L1: DEC r2 pos -> L2|(271,25;L2)
+  RM_STEP|(271,25;L2)|L2: INC r1 -> L3|(272,25;L3)
+  RM_STEP|(272,25;L3)|L3: INC r1 -> L1|(273,25;L1)
+  RM_STEP|(273,25;L1)|L1: DEC r2 pos -> L2|(273,24;L2)
+  RM_STEP|(273,24;L2)|L2: INC r1 -> L3|(274,24;L3)
+  RM_STEP|(274,24;L3)|L3: INC r1 -> L1|(275,24;L1)
+  RM_STEP|(275,24;L1)|L1: DEC r2 pos -> L2|(275,23;L2)
+  RM_STEP|(275,23;L2)|L2: INC r1 -> L3|(276,23;L3)
+  RM_STEP|(276,23;L3)|L3: INC r1 -> L1|(277,23;L1)
+  RM_STEP|(277,23;L1)|L1: DEC r2 pos -> L2|(277,22;L2)
+  RM_STEP|(277,22;L2)|L2: INC r1 -> L3|(278,22;L3)
+  MILESTONE|26|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(278,22;L3)|L3: INC r1 -> L1|(279,22;L1)
+  RM_STEP|(279,22;L1)|L1: DEC r2 pos -> L2|(279,21;L2)
+  RM_STEP|(279,21;L2)|L2: INC r1 -> L3|(280,21;L3)
+  RM_STEP|(280,21;L3)|L3: INC r1 -> L1|(281,21;L1)
+  RM_STEP|(281,21;L1)|L1: DEC r2 pos -> L2|(281,20;L2)
+  RM_STEP|(281,20;L2)|L2: INC r1 -> L3|(282,20;L3)
+  RM_STEP|(282,20;L3)|L3: INC r1 -> L1|(283,20;L1)
+  RM_STEP|(283,20;L1)|L1: DEC r2 pos -> L2|(283,19;L2)
+  RM_STEP|(283,19;L2)|L2: INC r1 -> L3|(284,19;L3)
+  RM_STEP|(284,19;L3)|L3: INC r1 -> L1|(285,19;L1)
+  RM_STEP|(285,19;L1)|L1: DEC r2 pos -> L2|(285,18;L2)
+  RM_STEP|(285,18;L2)|L2: INC r1 -> L3|(286,18;L3)
+  MILESTONE|38|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(286,18;L3)|L3: INC r1 -> L1|(287,18;L1)
+  RM_STEP|(287,18;L1)|L1: DEC r2 pos -> L2|(287,17;L2)
+  RM_STEP|(287,17;L2)|L2: INC r1 -> L3|(288,17;L3)
+  RM_STEP|(288,17;L3)|L3: INC r1 -> L1|(289,17;L1)
+  RM_STEP|(289,17;L1)|L1: DEC r2 pos -> L2|(289,16;L2)
+  RM_STEP|(289,16;L2)|L2: INC r1 -> L3|(290,16;L3)
+  RM_STEP|(290,16;L3)|L3: INC r1 -> L1|(291,16;L1)
+  RM_STEP|(291,16;L1)|L1: DEC r2 pos -> L2|(291,15;L2)
+  RM_STEP|(291,15;L2)|L2: INC r1 -> L3|(292,15;L3)
+  RM_STEP|(292,15;L3)|L3: INC r1 -> L1|(293,15;L1)
+  RM_STEP|(293,15;L1)|L1: DEC r2 pos -> L2|(293,14;L2)
+  RM_STEP|(293,14;L2)|L2: INC r1 -> L3|(294,14;L3)
+  RM_STEP|(294,14;L3)|L3: INC r1 -> L1|(295,14;L1)
+  MILESTONE|51|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(295,14;L1)|L1: DEC r2 pos -> L2|(295,13;L2)
+  RM_STEP|(295,13;L2)|L2: INC r1 -> L3|(296,13;L3)
+  RM_STEP|(296,13;L3)|L3: INC r1 -> L1|(297,13;L1)
+  RM_STEP|(297,13;L1)|L1: DEC r2 pos -> L2|(297,12;L2)
+  RM_STEP|(297,12;L2)|L2: INC r1 -> L3|(298,12;L3)
+  RM_STEP|(298,12;L3)|L3: INC r1 -> L1|(299,12;L1)
+  RM_STEP|(299,12;L1)|L1: DEC r2 pos -> L2|(299,11;L2)
+  RM_STEP|(299,11;L2)|L2: INC r1 -> L3|(300,11;L3)
+  RM_STEP|(300,11;L3)|L3: INC r1 -> L1|(301,11;L1)
+  RM_STEP|(301,11;L1)|L1: DEC r2 pos -> L2|(301,10;L2)
+  RM_STEP|(301,10;L2)|L2: INC r1 -> L3|(302,10;L3)
+  RM_STEP|(302,10;L3)|L3: INC r1 -> L1|(303,10;L1)
+  MILESTONE|63|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(303,10;L1)|L1: DEC r2 pos -> L2|(303,9;L2)
+  RM_STEP|(303,9;L2)|L2: INC r1 -> L3|(304,9;L3)
+  RM_STEP|(304,9;L3)|L3: INC r1 -> L1|(305,9;L1)
+  RM_STEP|(305,9;L1)|L1: DEC r2 pos -> L2|(305,8;L2)
+  RM_STEP|(305,8;L2)|L2: INC r1 -> L3|(306,8;L3)
+  RM_STEP|(306,8;L3)|L3: INC r1 -> L1|(307,8;L1)
+  RM_STEP|(307,8;L1)|L1: DEC r2 pos -> L2|(307,7;L2)
+  RM_STEP|(307,7;L2)|L2: INC r1 -> L3|(308,7;L3)
+  RM_STEP|(308,7;L3)|L3: INC r1 -> L1|(309,7;L1)
+  RM_STEP|(309,7;L1)|L1: DEC r2 pos -> L2|(309,6;L2)
+  RM_STEP|(309,6;L2)|L2: INC r1 -> L3|(310,6;L3)
+  RM_STEP|(310,6;L3)|L3: INC r1 -> L1|(311,6;L1)
+  RM_STEP|(311,6;L1)|L1: DEC r2 pos -> L2|(311,5;L2)
+  RM_STEP|(311,5;L2)|L2: INC r1 -> L3|(312,5;L3)
+  MILESTONE|77|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(312,5;L3)|L3: INC r1 -> L1|(313,5;L1)
+  RM_STEP|(313,5;L1)|L1: DEC r2 pos -> L2|(313,4;L2)
+  RM_STEP|(313,4;L2)|L2: INC r1 -> L3|(314,4;L3)
+  RM_STEP|(314,4;L3)|L3: INC r1 -> L1|(315,4;L1)
+  RM_STEP|(315,4;L1)|L1: DEC r2 pos -> L2|(315,3;L2)
+  RM_STEP|(315,3;L2)|L2: INC r1 -> L3|(316,3;L3)
+  RM_STEP|(316,3;L3)|L3: INC r1 -> L1|(317,3;L1)
+  RM_STEP|(317,3;L1)|L1: DEC r2 pos -> L2|(317,2;L2)
+  RM_STEP|(317,2;L2)|L2: INC r1 -> L3|(318,2;L3)
+  RM_STEP|(318,2;L3)|L3: INC r1 -> L1|(319,2;L1)
+  RM_STEP|(319,2;L1)|L1: DEC r2 pos -> L2|(319,1;L2)
+  MILESTONE|88|r1 + 2*r2 (+2 at L2, +1 at L3)|323
+  RM_STEP|(319,1;L2)|L2: INC r1 -> L3|(320,1;L3)
+  RM_STEP|(320,1;L3)|L3: INC r1 -> L1|(321,1;L1)
+  RM_STEP|(321,1;L1)|L1: DEC r2 pos -> L2|(321,0;L2)
+  RM_STEP|(321,0;L2)|L2: INC r1 -> L3|(322,0;L3)
+  RM_STEP|(322,0;L3)|L3: INC r1 -> L1|(323,0;L1)
+  RM_STEP|(323,0;L1)|L1: DEC r2 zero -> L4|(323,0;L4)
+  Z|94
+Answer: 94
 ```
 
 ## Graduate
