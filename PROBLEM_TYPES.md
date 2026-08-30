@@ -2,7 +2,7 @@
 
 Every problem type this dataset can generate. For each type: a one-line description, the grade band and coarse difficulty (1–5, read relative to the band), the internal operation variants, and one real worked example (the pipe-delimited `steps` are the model's scratchpad).
 
-**686 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
+**687 problem types.** This file is generated — do not hand-edit. Regenerate with `uv run python tools/gen_problem_types.py`.
 
 ## Elementary (grades 3–5)
 
@@ -15513,6 +15513,131 @@ Steps:
   RM_STEP|(323,0;L1)|L1: DEC r2 zero -> L4|(323,0;L4)
   Z|94
 Answer: 94
+```
+
+### Token Rewrite — `TokenRewriteGenerator`  ·  college · difficulty 3
+
+Tier-length rewriting chains to a normal form (depth strand).
+
+**Variants:** `token_rewrite_normal_form_d100`, `token_rewrite_normal_form_d200`, `token_rewrite_normal_form_d50`, `token_rewrite_rule_usage_count_d100`, `token_rewrite_rule_usage_count_d200`, `token_rewrite_rule_usage_count_d50`, `token_rewrite_step_count_d100`, `token_rewrite_step_count_d200`, `token_rewrite_step_count_d50`
+
+```
+Problem: Rewrite the string bbbbbbabaaaaaaaaaaaaaa with the rule(s) ba -> ab, always applying the leftmost match of the first applicable rule, until no rule applies (at most 125 steps). How many applications does this take?
+Steps:
+  RW_STEP|bbbbbbabaaaaaaaaaaaaaa|ba@5|bbbbbabbaaaaaaaaaaaaaa
+  RW_STEP|bbbbbabbaaaaaaaaaaaaaa|ba@4|bbbbabbbaaaaaaaaaaaaaa
+  RW_STEP|bbbbabbbaaaaaaaaaaaaaa|ba@3|bbbabbbbaaaaaaaaaaaaaa
+  RW_STEP|bbbabbbbaaaaaaaaaaaaaa|ba@2|bbabbbbbaaaaaaaaaaaaaa
+  RW_STEP|bbabbbbbaaaaaaaaaaaaaa|ba@1|babbbbbbaaaaaaaaaaaaaa
+  RW_STEP|babbbbbbaaaaaaaaaaaaaa|ba@0|abbbbbbbaaaaaaaaaaaaaa
+  RW_STEP|abbbbbbbaaaaaaaaaaaaaa|ba@7|abbbbbbabaaaaaaaaaaaaa
+  RW_STEP|abbbbbbabaaaaaaaaaaaaa|ba@6|abbbbbabbaaaaaaaaaaaaa
+  RW_STEP|abbbbbabbaaaaaaaaaaaaa|ba@5|abbbbabbbaaaaaaaaaaaaa
+  RW_STEP|abbbbabbbaaaaaaaaaaaaa|ba@4|abbbabbbbaaaaaaaaaaaaa
+  MILESTONE|10|count of a (letters are conserved)|15
+  RW_STEP|abbbabbbbaaaaaaaaaaaaa|ba@3|abbabbbbbaaaaaaaaaaaaa
+  RW_STEP|abbabbbbbaaaaaaaaaaaaa|ba@2|ababbbbbbaaaaaaaaaaaaa
+  RW_STEP|ababbbbbbaaaaaaaaaaaaa|ba@1|aabbbbbbbaaaaaaaaaaaaa
+  RW_STEP|aabbbbbbbaaaaaaaaaaaaa|ba@8|aabbbbbbabaaaaaaaaaaaa
+  RW_STEP|aabbbbbbabaaaaaaaaaaaa|ba@7|aabbbbbabbaaaaaaaaaaaa
+  RW_STEP|aabbbbbabbaaaaaaaaaaaa|ba@6|aabbbbabbbaaaaaaaaaaaa
+  RW_STEP|aabbbbabbbaaaaaaaaaaaa|ba@5|aabbbabbbbaaaaaaaaaaaa
+  RW_STEP|aabbbabbbbaaaaaaaaaaaa|ba@4|aabbabbbbbaaaaaaaaaaaa
+  RW_STEP|aabbabbbbbaaaaaaaaaaaa|ba@3|aababbbbbbaaaaaaaaaaaa
+  RW_STEP|aababbbbbbaaaaaaaaaaaa|ba@2|aaabbbbbbbaaaaaaaaaaaa
+  MILESTONE|20|count of a (letters are conserved)|15
+  RW_STEP|aaabbbbbbbaaaaaaaaaaaa|ba@9|aaabbbbbbabaaaaaaaaaaa
+  RW_STEP|aaabbbbbbabaaaaaaaaaaa|ba@8|aaabbbbbabbaaaaaaaaaaa
+  RW_STEP|aaabbbbbabbaaaaaaaaaaa|ba@7|aaabbbbabbbaaaaaaaaaaa
+  RW_STEP|aaabbbbabbbaaaaaaaaaaa|ba@6|aaabbbabbbbaaaaaaaaaaa
+  RW_STEP|aaabbbabbbbaaaaaaaaaaa|ba@5|aaabbabbbbbaaaaaaaaaaa
+  RW_STEP|aaabbabbbbbaaaaaaaaaaa|ba@4|aaababbbbbbaaaaaaaaaaa
+  RW_STEP|aaababbbbbbaaaaaaaaaaa|ba@3|aaaabbbbbbbaaaaaaaaaaa
+  RW_STEP|aaaabbbbbbbaaaaaaaaaaa|ba@10|aaaabbbbbbabaaaaaaaaaa
+  RW_STEP|aaaabbbbbbabaaaaaaaaaa|ba@9|aaaabbbbbabbaaaaaaaaaa
+  RW_STEP|aaaabbbbbabbaaaaaaaaaa|ba@8|aaaabbbbabbbaaaaaaaaaa
+  RW_STEP|aaaabbbbabbbaaaaaaaaaa|ba@7|aaaabbbabbbbaaaaaaaaaa
+  MILESTONE|31|count of a (letters are conserved)|15
+  RW_STEP|aaaabbbabbbbaaaaaaaaaa|ba@6|aaaabbabbbbbaaaaaaaaaa
+  RW_STEP|aaaabbabbbbbaaaaaaaaaa|ba@5|aaaababbbbbbaaaaaaaaaa
+  RW_STEP|aaaababbbbbbaaaaaaaaaa|ba@4|aaaaabbbbbbbaaaaaaaaaa
+  RW_STEP|aaaaabbbbbbbaaaaaaaaaa|ba@11|aaaaabbbbbbabaaaaaaaaa
+  RW_STEP|aaaaabbbbbbabaaaaaaaaa|ba@10|aaaaabbbbbabbaaaaaaaaa
+  RW_STEP|aaaaabbbbbabbaaaaaaaaa|ba@9|aaaaabbbbabbbaaaaaaaaa
+  RW_STEP|aaaaabbbbabbbaaaaaaaaa|ba@8|aaaaabbbabbbbaaaaaaaaa
+  RW_STEP|aaaaabbbabbbbaaaaaaaaa|ba@7|aaaaabbabbbbbaaaaaaaaa
+  RW_STEP|aaaaabbabbbbbaaaaaaaaa|ba@6|aaaaababbbbbbaaaaaaaaa
+  RW_STEP|aaaaababbbbbbaaaaaaaaa|ba@5|aaaaaabbbbbbbaaaaaaaaa
+  RW_STEP|aaaaaabbbbbbbaaaaaaaaa|ba@12|aaaaaabbbbbbabaaaaaaaa
+  RW_STEP|aaaaaabbbbbbabaaaaaaaa|ba@11|aaaaaabbbbbabbaaaaaaaa
+  RW_STEP|aaaaaabbbbbabbaaaaaaaa|ba@10|aaaaaabbbbabbbaaaaaaaa
+  RW_STEP|aaaaaabbbbabbbaaaaaaaa|ba@9|aaaaaabbbabbbbaaaaaaaa
+  RW_STEP|aaaaaabbbabbbbaaaaaaaa|ba@8|aaaaaabbabbbbbaaaaaaaa
+  MILESTONE|46|count of a (letters are conserved)|15
+  RW_STEP|aaaaaabbabbbbbaaaaaaaa|ba@7|aaaaaababbbbbbaaaaaaaa
+  RW_STEP|aaaaaababbbbbbaaaaaaaa|ba@6|aaaaaaabbbbbbbaaaaaaaa
+  RW_STEP|aaaaaaabbbbbbbaaaaaaaa|ba@13|aaaaaaabbbbbbabaaaaaaa
+  RW_STEP|aaaaaaabbbbbbabaaaaaaa|ba@12|aaaaaaabbbbbabbaaaaaaa
+  RW_STEP|aaaaaaabbbbbabbaaaaaaa|ba@11|aaaaaaabbbbabbbaaaaaaa
+  RW_STEP|aaaaaaabbbbabbbaaaaaaa|ba@10|aaaaaaabbbabbbbaaaaaaa
+  RW_STEP|aaaaaaabbbabbbbaaaaaaa|ba@9|aaaaaaabbabbbbbaaaaaaa
+  RW_STEP|aaaaaaabbabbbbbaaaaaaa|ba@8|aaaaaaababbbbbbaaaaaaa
+  RW_STEP|aaaaaaababbbbbbaaaaaaa|ba@7|aaaaaaaabbbbbbbaaaaaaa
+  RW_STEP|aaaaaaaabbbbbbbaaaaaaa|ba@14|aaaaaaaabbbbbbabaaaaaa
+  RW_STEP|aaaaaaaabbbbbbabaaaaaa|ba@13|aaaaaaaabbbbbabbaaaaaa
+  MILESTONE|57|count of a (letters are conserved)|15
+  RW_STEP|aaaaaaaabbbbbabbaaaaaa|ba@12|aaaaaaaabbbbabbbaaaaaa
+  RW_STEP|aaaaaaaabbbbabbbaaaaaa|ba@11|aaaaaaaabbbabbbbaaaaaa
+  RW_STEP|aaaaaaaabbbabbbbaaaaaa|ba@10|aaaaaaaabbabbbbbaaaaaa
+  RW_STEP|aaaaaaaabbabbbbbaaaaaa|ba@9|aaaaaaaababbbbbbaaaaaa
+  RW_STEP|aaaaaaaababbbbbbaaaaaa|ba@8|aaaaaaaaabbbbbbbaaaaaa
+  RW_STEP|aaaaaaaaabbbbbbbaaaaaa|ba@15|aaaaaaaaabbbbbbabaaaaa
+  RW_STEP|aaaaaaaaabbbbbbabaaaaa|ba@14|aaaaaaaaabbbbbabbaaaaa
+  RW_STEP|aaaaaaaaabbbbbabbaaaaa|ba@13|aaaaaaaaabbbbabbbaaaaa
+  RW_STEP|aaaaaaaaabbbbabbbaaaaa|ba@12|aaaaaaaaabbbabbbbaaaaa
+  RW_STEP|aaaaaaaaabbbabbbbaaaaa|ba@11|aaaaaaaaabbabbbbbaaaaa
+  MILESTONE|67|count of a (letters are conserved)|15
+  RW_STEP|aaaaaaaaabbabbbbbaaaaa|ba@10|aaaaaaaaababbbbbbaaaaa
+  RW_STEP|aaaaaaaaababbbbbbaaaaa|ba@9|aaaaaaaaaabbbbbbbaaaaa
+  RW_STEP|aaaaaaaaaabbbbbbbaaaaa|ba@16|aaaaaaaaaabbbbbbabaaaa
+  RW_STEP|aaaaaaaaaabbbbbbabaaaa|ba@15|aaaaaaaaaabbbbbabbaaaa
+  RW_STEP|aaaaaaaaaabbbbbabbaaaa|ba@14|aaaaaaaaaabbbbabbbaaaa
+  RW_STEP|aaaaaaaaaabbbbabbbaaaa|ba@13|aaaaaaaaaabbbabbbbaaaa
+  RW_STEP|aaaaaaaaaabbbabbbbaaaa|ba@12|aaaaaaaaaabbabbbbbaaaa
+  RW_STEP|aaaaaaaaaabbabbbbbaaaa|ba@11|aaaaaaaaaababbbbbbaaaa
+  RW_STEP|aaaaaaaaaababbbbbbaaaa|ba@10|aaaaaaaaaaabbbbbbbaaaa
+  RW_STEP|aaaaaaaaaaabbbbbbbaaaa|ba@17|aaaaaaaaaaabbbbbbabaaa
+  RW_STEP|aaaaaaaaaaabbbbbbabaaa|ba@16|aaaaaaaaaaabbbbbabbaaa
+  RW_STEP|aaaaaaaaaaabbbbbabbaaa|ba@15|aaaaaaaaaaabbbbabbbaaa
+  RW_STEP|aaaaaaaaaaabbbbabbbaaa|ba@14|aaaaaaaaaaabbbabbbbaaa
+  RW_STEP|aaaaaaaaaaabbbabbbbaaa|ba@13|aaaaaaaaaaabbabbbbbaaa
+  MILESTONE|81|count of a (letters are conserved)|15
+  RW_STEP|aaaaaaaaaaabbabbbbbaaa|ba@12|aaaaaaaaaaababbbbbbaaa
+  RW_STEP|aaaaaaaaaaababbbbbbaaa|ba@11|aaaaaaaaaaaabbbbbbbaaa
+  RW_STEP|aaaaaaaaaaaabbbbbbbaaa|ba@18|aaaaaaaaaaaabbbbbbabaa
+  RW_STEP|aaaaaaaaaaaabbbbbbabaa|ba@17|aaaaaaaaaaaabbbbbabbaa
+  RW_STEP|aaaaaaaaaaaabbbbbabbaa|ba@16|aaaaaaaaaaaabbbbabbbaa
+  RW_STEP|aaaaaaaaaaaabbbbabbbaa|ba@15|aaaaaaaaaaaabbbabbbbaa
+  RW_STEP|aaaaaaaaaaaabbbabbbbaa|ba@14|aaaaaaaaaaaabbabbbbbaa
+  RW_STEP|aaaaaaaaaaaabbabbbbbaa|ba@13|aaaaaaaaaaaababbbbbbaa
+  RW_STEP|aaaaaaaaaaaababbbbbbaa|ba@12|aaaaaaaaaaaaabbbbbbbaa
+  RW_STEP|aaaaaaaaaaaaabbbbbbbaa|ba@19|aaaaaaaaaaaaabbbbbbaba
+  RW_STEP|aaaaaaaaaaaaabbbbbbaba|ba@18|aaaaaaaaaaaaabbbbbabba
+  RW_STEP|aaaaaaaaaaaaabbbbbabba|ba@17|aaaaaaaaaaaaabbbbabbba
+  RW_STEP|aaaaaaaaaaaaabbbbabbba|ba@16|aaaaaaaaaaaaabbbabbbba
+  RW_STEP|aaaaaaaaaaaaabbbabbbba|ba@15|aaaaaaaaaaaaabbabbbbba
+  RW_STEP|aaaaaaaaaaaaabbabbbbba|ba@14|aaaaaaaaaaaaababbbbbba
+  MILESTONE|96|count of a (letters are conserved)|15
+  RW_STEP|aaaaaaaaaaaaababbbbbba|ba@13|aaaaaaaaaaaaaabbbbbbba
+  RW_STEP|aaaaaaaaaaaaaabbbbbbba|ba@20|aaaaaaaaaaaaaabbbbbbab
+  RW_STEP|aaaaaaaaaaaaaabbbbbbab|ba@19|aaaaaaaaaaaaaabbbbbabb
+  RW_STEP|aaaaaaaaaaaaaabbbbbabb|ba@18|aaaaaaaaaaaaaabbbbabbb
+  RW_STEP|aaaaaaaaaaaaaabbbbabbb|ba@17|aaaaaaaaaaaaaabbbabbbb
+  RW_STEP|aaaaaaaaaaaaaabbbabbbb|ba@16|aaaaaaaaaaaaaabbabbbbb
+  RW_STEP|aaaaaaaaaaaaaabbabbbbb|ba@15|aaaaaaaaaaaaaababbbbbb
+  RW_STEP|aaaaaaaaaaaaaababbbbbb|ba@14|aaaaaaaaaaaaaaabbbbbbb
+  Z|104
+Answer: 104
 ```
 
 ## Graduate

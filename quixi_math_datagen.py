@@ -708,6 +708,7 @@ from generators.partial_sum_marathon_generator import PartialSumMarathonGenerato
 from generators.iterated_composition_generator import IteratedCompositionGenerator
 from generators.amortization_schedule_generator import AmortizationScheduleGenerator
 from generators.register_machine_trace_generator import RegisterMachineTraceGenerator
+from generators.token_rewrite_generator import TokenRewriteGenerator
 
 # Import Helpers if needed (jid is used in generate methods, step/DELIM are used internally)
 # from helpers import jid, step, DELIM # Not strictly needed here anymore
@@ -1487,6 +1488,7 @@ ALL_GENERATORS = [
     IteratedCompositionGenerator(),
     AmortizationScheduleGenerator(),
     RegisterMachineTraceGenerator(),
+    TokenRewriteGenerator(),
 
     # --- (More High School generators coming soon) ---
 ]

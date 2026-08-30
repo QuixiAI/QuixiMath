@@ -721,6 +721,7 @@ CURRICULUM = {
     "IteratedCompositionGenerator": {"grade_level": HIGH, "difficulty": 3},
     "AmortizationScheduleGenerator": {"grade_level": COLLEGE, "difficulty": 3},
     "RegisterMachineTraceGenerator": {"grade_level": COLLEGE, "difficulty": 3},
+    "TokenRewriteGenerator": {"grade_level": COLLEGE, "difficulty": 3},
 }
 
 
